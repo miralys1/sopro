@@ -1,0 +1,4 @@
+*.aux
+/pflichentheft/pflichtenheft.pdf
+.log
+.out
