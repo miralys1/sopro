@@ -1,28 +1,67 @@
-\begin{tcolorbox}
-Die Zielbestimmungen dienen dazu, die Ziele der Anforderungen nach Priorität zu sortieren. 
-Es wird zwischen \textit{Muss}-, \textit{Soll-}, \textit{Kann-} und \textit{Abgrenzungskriterien} unterschieden, wobei weitere Einteilungen (z.B. nach Gerät oder Benutzer) innerhalb der Kategorien möglich sind.
-%
-\\\\
-%
-Die \textit{Musskriterien} umfassen alle Ziele und Funktionalitäten, die für einen Einsatz des entwickelten Produktes unabdingbar sind.
-Sie müssen daher ohne Kompromisse implementiert werden.
-Ein Wegfall eines einzelnen Musskriteriums würde das Produkt außer Betrieb setzen.
-%
-\\\\
-%
-\textit{Sollkriterien} (auch Wunschkriterien genannt) sind gewünschte Funktionen, die ebenfalls implementiert werden müssen, deren Wegfall auf Grund von unüblichen Umständen aber nicht den Einsatz des Produkts hindern würde.
-%
-\\\\
-%
-Die \textit{Kannkriterien} sind alle Ziele, die wünschenswert sind, aber nicht zwingend notwendige Funktionen darstellen. 
-Oftmals werden diese nach Beendigung der höher priorisierten Kriterien umgesetzt.
-%
-\\\\
-%
-\textit{Abgrenzungskriterien} dienen dazu die Grenzen des Produkts zu definieren.
-Es soll erkennbar sein, was explizit \textbf{nicht} umgesetzt wird, damit Kunden nichts Falsches erwarten und Ziele stets klar definiert bleiben.
-%
-\\\\
-%
-Für die Auflistung der Zielbestimmungen können Fließtexte oder auch Auflistungen mit ganzen Sätzen genutzt werden. 
-\end{tcolorbox}
+
+\textbf{Funktionale Zielbestimmungen}\newline
+
+\textit{Musskriterium}
+
+\begin{itemize}[leftmargin=4pc]
+	\item Die Anwendung muss über eine naive Android-App erreichbar sein.
+	\item Die Anwendung muss über eine Website erreichbar sein.
+	\item Auf der Website muss die Möglichkeit bestehen Konfigurationen zu erstellen.
+	\item Es muss eine REST-Schnittstelle geben, um Dienste einzulesen.
+	\item Die Anwendung muss eine Kompatibilitätsprüfung durchführen.
+	\item Die Speicherung von erstellten Konfigurationen muss möglich sein.
+	\item Die Android-App muss erstellte Konfigurationen anzeigen können.
+	\item Benutzer der Anwendung müssen sich registrieren können.
+	\item Benutzer der Anwendung müssen sich anmelden können.
+	\item Beim manuellen Erstellen von Diensten muss das Format überprüft werden.
+\end{itemize}
+
+\textit{Sollkriterium}
+
+\begin{itemize}[leftmargin=4pc]
+	\item Website soll die Möglichkeit bieten Dienste manuell zu erstellen. (für Admins?)
+	\item Benutzer sollen verschiedene Rechte haben.
+	\item Konfigurationen sollen mit anderen Benutzern geteilt werden können.
+	\item Veränderbarkeit von Konfigurationen durch andere Benutzer soll eingestellt werden können.
+	\item In der Android-App soll die Möglichkeit bestehen, Konfigurationen zu verschicken.
+\end{itemize}
+
+\textit{Kannkriterium}
+
+\begin{itemize}[leftmargin=4pc]
+	\item Android-App kann einzelne Dienste anzeigen.
+	\item Es können Alternativen angezeigt werden, wenn Dienste nicht kompatibel sind.
+	\item Es gibt eine Suchfunktion für Dienste und Konfigurationen
+	\item Auf der Website können Konfigurationen verschickt werden
+\end{itemize}
+
+\textit{Abgrenzungskriterium}
+
+\begin{itemize}[leftmargin=4pc]
+	\item In der Android-App können keine Konfigurationen erstellt werden.
+	\item In der Android-App können keine Dienste erstellt werden.
+	\item In der Android-App können keine Benutzer registriert werden.
+	\item Beim manuellen Erstellen von Diensten wird nicht geprüft, ob der Inhalt korrekt ist.
+	\item Es gibt keine benutzerspezifische Auswahl von Diensten.\\
+\end{itemize}
+
+
+\textbf{nicht funktionale Zielbestimmungen}\newline
+
+\textit{Musskriterium}
+
+\begin{itemize}[leftmargin=4pc]
+	\item Die Website muss mit Java-Spring erstellt werden.
+	\item Die Android-App muss ab der Android Version 6 benutzbar sein.
+	\item In der Android-App muss die URL änderbar sein.
+	\item Es muss eine grafische Rückmeldung über die Kompatibilität vn Diensten geben.
+\end{itemize}
+
+\textit{Sollkriterium}
+
+\begin{itemize}[leftmargin=4pc]
+	\item Die Kommunikation zwischen Website und Android-App soll veschlüsselt sein.
+	\item Es soll eine Drag and Drop Benutzeroberfläche geben.
+	\item Die Benutzeroberfläche soll einfach und intuitiv sein.
+	\item Es soll eine geeignete Lizenz für die Anwendung geben.
+\end{itemize}
