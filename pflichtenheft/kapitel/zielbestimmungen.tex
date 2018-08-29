@@ -1,35 +1,48 @@
+Im Folgenden ist der Funktionsumfang des SWARM Composers, insbesondere der Web-App und der Android-App, aufgeführt. Dabei werden funktionale und nicht-funktionale Zielbestimmungen getrennt aufgeführt. Des Weiteren wird zwischen Muss-, Soll-, Kann- und Abgrenzungskriterien unterschieden.
+%
+\begin{itemize}[leftmargin=4pc]
+	\item Musskriterien umfassen alle Ziele und Funktionalitäten, die für einen Einsatz des entwickelten Produktes unabdingbar sind.
+	Sie müssen daher ohne Kompromisse implementiert werden. Ein Wegfall eines einzelnen Musskriteriums würde das Produkt außer Betrieb setzen.
+	\item Sollkriterien sind gewünschte Funktionen, die ebenfalls implementiert werden müssen, deren Wegfall auf Grund von unüblichen Umständen aber nicht den Einsatz des Produkts hindern würde.
+	\item Kannkriterien sind alle Ziele, die wünschenswert sind, aber nicht zwingend notwendige Funktionen darstellen. 
+	\item Abgrenzungskriterien zeigen, was explizit \textbf{nicht} umgesetzt wird. Sie dienen dazu die Grenzen des Produkts zu definieren.
+	\\\\
+\end{itemize}
+%
 
 \textbf{Funktionale Zielbestimmungen}\newline
+%
 
 \textit{Musskriterium}
 
 \begin{itemize}[leftmargin=4pc]
-	\item Die Anwendung muss über eine naive Android-App erreichbar sein.
-	\item Die Anwendung muss über eine Website erreichbar sein.
-	\item Auf der Website muss die Möglichkeit bestehen Kompositionen zu erstellen.
-	\item Es muss eine REST-Schnittstelle geben, um Dienste einzulesen.
+	\item Der SWARM Composer muss über eine native Android-App erreichbar sein.
+	\item Der SWARM Composer muss über eine Website erreichbar sein.
+	\item Auf der Website muss die Möglichkeit bestehen, Kompositionen zu erstellen.
+	\item Es muss die Möglichkeit geben, über eine REST-Schnittstelle Dienste einzulesen.
 	\item Die Anwendung muss eine Kompatibilitätsprüfung durchführen.
+	\item Es muss eine grafische Rückmeldung über die Kompatibilität vn Diensten geben.
 	\item Die Speicherung von erstellten Kompositionen muss möglich sein.
 	\item Die Android-App muss erstellte Kompositionen anzeigen können.
-	\item Benutzer der Anwendung müssen sich registrieren können.
-	\item Benutzer der Anwendung müssen sich anmelden können.
+	\item Neue Benutzer des SWARM Composers müssen über die Website registriert werden können.
+	\item Registrierte Benutzer des SWARM Composers müssen sich anmelden können, unabhängig davon, ob sie über die Website oder die Android-App zugreifen.
 	\item Beim manuellen Erstellen von Diensten muss das Format überprüft werden.
 \end{itemize}
 
 \textit{Sollkriterium}
 
 \begin{itemize}[leftmargin=4pc]
-	\item Website soll die Möglichkeit bieten Dienste manuell zu erstellen. (für Admins?)
-	\item Benutzer sollen verschiedene Rechte haben.
-	\item Kompositionen sollen mit anderen Benutzern geteilt werden können.
-	\item Veränderbarkeit von Kompositionen durch andere Benutzer soll eingestellt werden können.
+	\item Unter allen Nutzern soll zwischen zwei Rollen, normaler Nutzer und Administrator, unterschieden werden, wobei letzterer mehr Nutzungsrechte hat.
+	\item Website soll für Administratoren die Möglichkeit bieten, Dienste manuell dem System hinzuzufügen.
+	\item Der Ersteller einer Komposition soll festlegen können, welche anderen Benutzer diese sehen können.
+	\item Der Ersteller einer Komposition soll festlegen können, welche anderen Benutzer diese verändern können.
 	\item In der Android-App soll die Möglichkeit bestehen, Kompositionen zu verschicken.
 \end{itemize}
 
 \textit{Kannkriterium}
 
 \begin{itemize}[leftmargin=4pc]
-	\item Android-App kann einzelne Dienste anzeigen.
+	\item Die Android-App kann einzelne Dienste anzeigen.
 	\item Es können Alternativen angezeigt werden, wenn Dienste nicht kompatibel sind.
 	\item Es gibt eine Suchfunktion für Dienste und Kompositionen.
 	\item Auf der Website können Konfigurationen verschickt werden.
@@ -51,10 +64,9 @@
 \textit{Musskriterium}
 
 \begin{itemize}[leftmargin=4pc]
-	\item Die Website muss mit Java-Spring erstellt werden.
+	\item Die Web-Applikation muss mit Java-Spring erstellt werden.
 	\item Die Android-App muss ab der Android Version 6 benutzbar sein.
-	\item In der Android-App muss die URL änderbar sein.
-	\item Es muss eine grafische Rückmeldung über die Kompatibilität vn Diensten geben.
+	\item Die verwendeten URLs müssen zur Laufzeit änderbar sein.
 \end{itemize}
 
 \textit{Sollkriterium}
@@ -62,6 +74,6 @@
 \begin{itemize}[leftmargin=4pc]
 	\item Die Kommunikation zwischen Website und Android-App soll veschlüsselt sein.
 	\item Es soll eine Drag and Drop Benutzeroberfläche geben.
-	\item Die Benutzeroberfläche soll einfach und intuitiv sein.
-	\item Es soll eine geeignete Lizenz für die Anwendung geben.
+	\item Die Benutzeroberfläche soll einfach und intuitiv gestaltet sein.
+	\item Der Quellcode des SWARM Composers soll unter eine geeignete Lizenz gestellt werden.
 \end{itemize}
