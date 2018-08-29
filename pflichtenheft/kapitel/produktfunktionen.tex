@@ -1,19 +1,15 @@
-\begin{tcolorbox}
 Die Produktfunktionen beschreiben jede einzelne Funktion des Produkts mittels Anwendungsfalldiagrammen und Anwendungsfalltabellen.
-Diese sollen möglichst ausschlaggebend für das zu entwickelnde System sein und nicht simple Produktfunktionen wie z.B. Login, Account erstellen, Gruppe beitreten, Passwort ändern oder ähnliches zeigen.
-\autoref{fig:anwendungsfall-app-tabelle-xx-1} stellt eine exemplarische Tabelle für die Beschreibung eines Anwendungsfalls dar. Stil und Formatierung sind variabel. Nicht jede Zelle muss immer gefüllt sein.
 \\\\
 In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschrieben.
 
 
-\end{tcolorbox}
-
 \begin{figure}[h]
 	\centering
 	
-	\begin{tabularx}{\textwidth}{ p{.2\textwidth} | p{.2\textwidth} | X }
+	\begin{tabularx}{\textwidth}{ p{.1\textwidth} | p{.4\textwidth} | X }
 		\textbf{Akteur} & \textbf{Beschreibung} & \textbf{Verwendet in Anwendungsszenario} \\ \hline
-		Informatiker & Programmiert tolle Sachen & Programmieren, Kaffee trinken, Schlafen
+		Nutzer & Nutzt den SWARM Composer & APP-1, APP-2, APP-3
+		\\ \hline Admin & Nutzt und verwaltet den SWARM-Composer & APP-1, APP-2, APP-3
 	\end{tabularx}
 	
 	\caption{Beschreibung der Akteure}
@@ -24,12 +20,13 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 %%%%%%%%%%%%%%%
 %% Anwendungsfall 1 %%
 %%%%%%%%%%%%%%%
+\newpage
 
 \section{Anwendungsfalldiagramm - App}
 
 \begin{figure}[h]
-	\centering
-	\missingfigure{Anwendungsfalldiagramm - App}		
+	\centering	
+	\includegraphics[width=\textwidth]{img/Produktfunktionen_app}	
 	\caption{Anwendungsfalldiagramm - App}
 	\label{fig:anwendungsfalldiagramm-app}
 \end{figure}
@@ -39,38 +36,101 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 \begin{figure}[h]
 	\centering
 	\begin{tabularx}{\textwidth}{ X | X }
-		\textbf{Anwendungsfall ID} & XX-1 \\ \hline
-		\textbf{Anwendungsfallname} & Hier steht ein Name. \\ \hline
-		\textbf{Initiierender Akteur} & Informatiker \\ \hline
-		\textbf{Weitere Akteure} & Designer, Techniker  \\ \hline
-		\textbf{Kurzbeschreibung} & Hier steht eine Kurzbeschreibung.  \\ \hline
-		\textbf{Vorbedingungen} & -  \\ \hline
-		\textbf{Nachbedingungen} & Y trifft zu.  \\ \hline
+		\textbf{Anwendungsfall ID} & APP-1 \\ \hline
+		\textbf{Anwendungsfallname} & Einloggen \\ \hline
+		\textbf{Initiierender Akteur} & Nutzer \\ \hline
+		\textbf{Weitere Akteure} & -  \\ \hline
+		\textbf{Kurzbeschreibung} & Der Nutzer loggt sich ein.  \\ \hline
+		\textbf{Vorbedingungen} & Die Android-App ist geöffnet. Der Nutzer ist nicht eingeloggt.  \\ \hline
+		\textbf{Nachbedingungen} & Der Nutzer ist eingeloggt.  \\ \hline
 		\textbf{Ablauf} &
 			\begin{enumerate}
-				\item Erster ganzer Satz.
-				\item Zweiter ganzer Satz.
+				\item Der Nutzer gibt Web-Adresse ein.
+				\item Der Nutzer gibt seinen Benutzernamen ein.
+				\item Der Nutzer gibt sein Passwort ein.
+				\item Der Nutzer tippt auf den Login-Button.
+				\item Der Nutzer wird zur Listenansicht weitergeleitet.
 			\end{enumerate} \\ \hline
 		\textbf{Alternative} &
-				\begin{enumerate}
-					\item Erster ganzer Satz.
-					\item Zweiter ganzer Satz.
-				\end{enumerate}  \\ \hline
+				- \\ \hline
 		\textbf{Ausnahme} &
 				\begin{enumerate}
-					\item Erster ganzer Satz.
-					\item Zweiter ganzer Satz.
+					\item Der Nutzer gibt Web-Adresse ein.
+					\item Der Nutzer gibt seinen Benutzernamen ein.
+					\item Der Nutzer gibt sein Passwort ein.
+					\item Der Nutzer tippt auf den Login-Button.
+					\item Die Anmeldung schlägt fehl und eine Fehlermeldung wird angezeigt.
 				\end{enumerate}  \\ \hline
-		\textbf{Benutzte Anwendungsfälle} & YY-1 (oder Name) \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & Fehlermeldung anzeigen \\ \hline
 		\textbf{Spezielle Anforderungen} & - \\ \hline
 		\textbf{Annahmen} & -
 	\end{tabularx}
-	\caption{Anwendungsfall XX-1}
-	\label{fig:anwendungsfall-app-tabelle-xx-1}
+	\caption{Anwendungsfall APP-1}
+	\label{fig:anwendungsfall-app-tabelle-APP-1}
 \end{figure}
 
 \newpage
 
+\begin{figure}[h]
+	\centering
+	\begin{tabularx}{\textwidth}{ X | X }
+		\textbf{Anwendungsfall ID} & APP-2 \\ \hline
+		\textbf{Anwendungsfallname} & Listenansicht aufrufen \\ \hline
+		\textbf{Initiierender Akteur} & Nutzer \\ \hline
+		\textbf{Weitere Akteure} & -  \\ \hline
+		\textbf{Kurzbeschreibung} & Dem Nutzer wird die Listenansicht angezeigt.  \\ \hline
+		\textbf{Vorbedingungen} & Der Nutzer ist eingeloggt.  \\ \hline
+		\textbf{Nachbedingungen} & Dem Nutzer wird die Listenansicht angezeigt.  \\ \hline
+		\textbf{Ablauf} &
+		\begin{enumerate}
+			\item Die Übersichtsdaten werden vom Server abgerufen.
+			\item Die Daten werden als Liste angezeigt.
+		\end{enumerate} \\ \hline
+		\textbf{Alternative} &
+		\begin{enumerate}
+			\item Der Nutzer kehrt von einer Detailansicht zur Listenansicht zurück.
+			\item Ihm wird eine Liste der Kompositionen angezeigt.
+		\end{enumerate}  \\ \hline
+		\textbf{Ausnahme} &
+		-  \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & - \\ \hline
+		\textbf{Spezielle Anforderungen} & - \\ \hline
+		\textbf{Annahmen} & -
+	\end{tabularx}
+	\caption{Anwendungsfall APP-2}
+	\label{fig:anwendungsfall-app-tabelle-APP-2}
+\end{figure}
+
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\begin{tabularx}{\textwidth}{ X | X }
+		\textbf{Anwendungsfall ID} & APP-3 \\ \hline
+		\textbf{Anwendungsfallname} & Detailansicht aufrufen \\ \hline
+		\textbf{Initiierender Akteur} & Nutzer \\ \hline
+		\textbf{Weitere Akteure} & -  \\ \hline
+		\textbf{Kurzbeschreibung} & Der Nutzer ruft eine Detailansicht auf.  \\ \hline
+		\textbf{Vorbedingungen} & Der Nutzer hat die Listenansicht aufgerufen.  \\ \hline
+		\textbf{Nachbedingungen} & Dem Nutzer wird die Detailansicht gezeigt.  \\ \hline
+		\textbf{Ablauf} &
+		\begin{enumerate}
+			\item Der Nutzer wählt in der Listenansicht eine Komposition aus.
+			\item Dem Nutzer werden die Details der ausgewählten Komposition angezeigt.
+		\end{enumerate} \\ \hline
+		\textbf{Alternative} &
+		-  \\ \hline
+		\textbf{Ausnahme} &
+		- \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & - \\ \hline
+		\textbf{Spezielle Anforderungen} & - \\ \hline
+		\textbf{Annahmen} & -
+	\end{tabularx}
+	\caption{Anwendungsfall APP-3}
+	\label{fig:anwendungsfall-app-tabelle-APP-3}
+\end{figure}
+
+\newpage
 
 %%%%%%%%%%%%%%%
 %% Anwendungsfall 2 %%
