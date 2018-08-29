@@ -90,17 +90,20 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 \begin{figure}[h]
 	\centering
 	\begin{tabularx}{\textwidth}{ X | X }
-		\textbf{Anwendungsfall ID} & XX-1 \\ \hline
-		\textbf{Anwendungsfallname} & Hier steht ein Name. \\ \hline
-		\textbf{Initiierender Akteur} & Informatiker \\ \hline
-		\textbf{Weitere Akteure} & Designer, Techniker  \\ \hline
-		\textbf{Kurzbeschreibung} & Hier steht eine Kurzbeschreibung.  \\ \hline
-		\textbf{Vorbedingungen} & -  \\ \hline
-		\textbf{Nachbedingungen} & Y trifft zu.  \\ \hline
+		\textbf{Anwendungsfall ID} & WEB-1 \\ \hline
+		\textbf{Anwendungsfallname} & Dienst einfügen. \\ \hline
+		\textbf{Initiierender Akteur} & Administrator \\ \hline
+		\textbf{Weitere Akteure} & - \\ \hline
+		\textbf{Kurzbeschreibung} & Ein neuer Dienst wird in die Datenbank eingefügt \\ \hline
+		\textbf{Vorbedingungen} & Nutzer hat sich eingeloggt  \\ \hline
+		\textbf{Nachbedingungen} & Neuer Dienst wurde in Datenbank gespeichert \\ \hline
 		\textbf{Ablauf} &
 		\begin{enumerate}
-			\item Erster ganzer Satz.
-			\item Zweiter ganzer Satz.
+			\item  Administrator öffnet Dienst einfügen Seite.
+			\item  Administrator gibt Dienstdetails in Eingabemaske ein.
+			\item  Administrator bestätigt seine Eingabe.
+			\item  System akzeptiert Eingabe und speichert in Datenbank.
+			\item  Weiterleitung zur Hauptseite.
 		\end{enumerate} \\ \hline
 		\textbf{Alternative} &
 		\begin{enumerate}
@@ -109,13 +112,17 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 		\end{enumerate}  \\ \hline
 		\textbf{Ausnahme} &
 		\begin{enumerate}
-			\item Erster ganzer Satz.
-			\item Zweiter ganzer Satz.
+			\item  Administrator öffnet Dienst einfügen Seite.
+			\item  Administrator gibt Dienstdetails in Eingabemaske ein.
+			\item  Administrator bestätigt seine Eingabe.
+			\item  System akzeptiert Eingabe nicht, da unvollständige Eingabe.
+			\item  System zeigt Fehler und markiert fehlende Felder.
+			\item  bleibe in der Eingabemaske.
 		\end{enumerate}  \\ \hline
-		\textbf{Benutzte Anwendungsfälle} & YY-1 (oder Name) \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & WEB-2 \\ \hline
 		\textbf{Spezielle Anforderungen} & - \\ \hline
 		\textbf{Annahmen} & -
 	\end{tabularx}
-	\caption{Anwendungsfall XX-1}
-	\label{fig:anwendungsfall-server-tabelle-xx-1}
+	\caption{Anwendungsfall WEB-1}
+	\label{fig:anwendungsfall-server-tabelle-web-1}
 \end{figure}
