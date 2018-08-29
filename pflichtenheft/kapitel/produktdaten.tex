@@ -1,6 +1,35 @@
-\begin{tcolorbox}
-Die Produktdaten beschreiben die gespeicherten Daten des Produkts. 
-Hier werden alle verarbeiteten Daten mit allen Attributen aufgeschrieben.
-So kann etwa ein Auto mit Hersteller, Modell, Farbe, Hubraum usw. langfristig gespeichert werden.
-Form und Stil des Aufschrieb sind variabel, sollten jedoch sehr klar strukturiert sein.
-\end{tcolorbox}
+Zu den Benutzern werden folgende Daten gespeichert:
+\begin{itemize}
+	\item Name
+	\item ID
+	\item Passwort
+	\item Erstellte Kompositionen
+	\item Kompositionen, für die er Leserechte besitzt
+	\item Kompositionen, für die er Schreibrechte besitzt
+	\item Benutzergruppen, zu welchen er gehört.
+\end{itemize}
+Zu den Diensten werden folgende Daten gespeichert:
+\begin{itemize}
+	\item Name
+	\item Organisation
+	\item Version
+	\item ID
+	\item Schlagworte
+	\item gültige Eingabeformate
+	\item gültige Ausgabeformate
+\end{itemize}
+Zu den Kompositionen werden folgende Daten gespeichert:
+\begin{itemize}
+	\item Autor
+	\item Enthaltene Dienste
+	\item Benutzergruppen mit Leserechten
+	\item Benutzergruppen mit Schreibrechten
+\end{itemize}
+
+Zu den Ein- und Ausgabeformaten werden folgende Daten:
+\begin{itemize}
+	\item Typ des Eingabeformats (z.B JSON)
+	\item Version
+	\item Abwärtskompatibilität
+\end{itemize}
+Bei der Abwärtskompatibilität wird zwischen \textit{strict} und \textit{flexible} unterschieden. Mit \textit{flexible} markierte Formate sind abwärtskompatibel, mit \textit{strict} gekennzeichnete hingegen nicht.
