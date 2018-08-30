@@ -8,8 +8,8 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 	
 	\begin{tabularx}{\textwidth}{ p{.1\textwidth} | p{.4\textwidth} | X }
 		\textbf{Akteur} & \textbf{Beschreibung} & \textbf{Verwendet in Anwendungsszenario} \\ \hline
-		Nutzer & Nutzt den SWARM Composer & APP-1, APP-2, APP-3
-		\\ \hline Admin & Nutzt und verwaltet den SWARM-Composer & APP-1, APP-2, APP-3
+		Nutzer & Nutzt den SWARM Composer & APP-1, APP-2, APP-3, APP-4
+		\\ \hline Admin & Nutzt und verwaltet den SWARM-Composer & APP-1, APP-2, APP-3, APP-4
 	\end{tabularx}
 	
 	\caption{Beschreibung der Akteure}
@@ -78,9 +78,9 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 		\textbf{Anwendungsfallname} & Listenansicht aufrufen \\ \hline
 		\textbf{Initiierender Akteur} & Nutzer \\ \hline
 		\textbf{Weitere Akteure} & -  \\ \hline
-		\textbf{Kurzbeschreibung} & Dem Nutzer wird eine Liste von vorhandenen Komposita angezeigt.  \\ \hline
+		\textbf{Kurzbeschreibung} & Dem Nutzer wird eine Liste von vorhandenen Kompositionen angezeigt.  \\ \hline
 		\textbf{Vorbedingungen} & Der Nutzer ist eingeloggt.  \\ \hline
-		\textbf{Nachbedingungen} & Dem Nutzer wird eine Liste von vorhandenen Komposita angezeigt.  \\ \hline
+		\textbf{Nachbedingungen} & Dem Nutzer wird eine Liste von vorhandenen Kompositionen angezeigt.  \\ \hline
 		\textbf{Ablauf} &
 		\begin{enumerate}
 			\item Die Übersichtsdaten werden vom Server abgerufen.
@@ -110,9 +110,9 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 		\textbf{Anwendungsfallname} & Detailansicht aufrufen \\ \hline
 		\textbf{Initiierender Akteur} & Nutzer \\ \hline
 		\textbf{Weitere Akteure} & -  \\ \hline
-		\textbf{Kurzbeschreibung} & Der Nutzer ruft die Detailansicht eines Kompositums auf.  \\ \hline
+		\textbf{Kurzbeschreibung} & Der Nutzer ruft die Detailansicht einer Komposition auf.  \\ \hline
 		\textbf{Vorbedingungen} & Der Nutzer hat die Listenansicht aufgerufen.  \\ \hline
-		\textbf{Nachbedingungen} & Dem Nutzer wird die Detailansicht eines Kompositums gezeigt.  \\ \hline
+		\textbf{Nachbedingungen} & Dem Nutzer wird die Detailansicht einer Komposition gezeigt.  \\ \hline
 		\textbf{Ablauf} &
 		\begin{enumerate}
 			\item Der Nutzer wählt in der Listenansicht eine Komposition aus.
@@ -128,6 +128,38 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 	\end{tabularx}
 	\caption{Anwendungsfall APP-3}
 	\label{fig:anwendungsfall-app-tabelle-APP-3}
+\end{figure}
+
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\begin{tabularx}{\textwidth}{ X | X }
+		\textbf{Anwendungsfall ID} & APP-4 \\ \hline
+		\textbf{Anwendungsfallname} & Komposition verschicken \\ \hline
+		\textbf{Initiierender Akteur} & Nutzer \\ \hline
+		\textbf{Weitere Akteure} & -  \\ \hline
+		\textbf{Kurzbeschreibung} & Der Nutzer verschickt eine Komposition.  \\ \hline
+		\textbf{Vorbedingungen} & Der Nutzer hat in der Listenansicht eine Komposition ausgewählt und die Detailansicht aufgerufen.  \\ \hline
+		\textbf{Nachbedingungen} & Die Komposition wird verschickt.  \\ \hline
+		\textbf{Ablauf} &
+		\begin{enumerate}
+			\item Dem Nutzer wird eine Komposition in der Detailansicht angezeigt.
+			\item Der Nutzer tippt auf den Verschicken-Button.
+			\item Dem Nutzer werden Versandoptionen angezeigt.
+			\item Der Nutzer wählt die gewünschten Optionen aus.
+			\item Der Nutzer bestätigt den Versand.
+		\end{enumerate} \\ \hline
+		\textbf{Alternative} &
+		-  \\ \hline
+		\textbf{Ausnahme} &
+		- \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & - \\ \hline
+		\textbf{Spezielle Anforderungen} & - \\ \hline
+		\textbf{Annahmen} & -
+	\end{tabularx}
+	\caption{Anwendungsfall APP-4}
+	\label{fig:anwendungsfall-app-tabelle-APP-4}
 \end{figure}
 
 \newpage
