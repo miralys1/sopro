@@ -3,7 +3,7 @@ Im Folgenden ist der Funktionsumfang des SWARM Composers, insbesondere der Web-A
 \begin{itemize}[leftmargin=4pc]
 	\item Musskriterien umfassen alle Ziele und Funktionalitäten, die für einen Einsatz des entwickelten Produktes unabdingbar sind.
 	Sie müssen daher ohne Kompromisse implementiert werden. Ein Wegfall eines einzelnen Musskriteriums würde das Produkt außer Betrieb setzen.
-	\item Sollkriterien sind gewünschte Funktionen, die ebenfalls implementiert werden müssen, deren Wegfall auf Grund von unüblichen Umständen aber nicht den Einsatz des Produkts hindern würde.
+	\item Sollkriterien sind gewünschte Funktionen, die ebenfalls implementiert werden müssen, deren Wegfall auf Grund von unüblichen Umständen aber nicht den Einsatz des Produkts verhindern würde.
 	\item Kannkriterien sind alle Ziele, die wünschenswert sind, aber nicht zwingend notwendige Funktionen darstellen. 
 	\item Abgrenzungskriterien zeigen, was explizit \textbf{nicht} umgesetzt wird. Sie dienen dazu die Grenzen des Produkts zu definieren.
 	\\\\
@@ -18,15 +18,15 @@ Im Folgenden ist der Funktionsumfang des SWARM Composers, insbesondere der Web-A
 \begin{itemize}[leftmargin=4pc]
 	\item Der SWARM Composer muss über eine native Android-App erreichbar sein.
 	\item Der SWARM Composer muss über eine Website erreichbar sein.
-	\item Auf der Website muss die Möglichkeit bestehen, Kompositionen zu erstellen.
 	\item Es muss die Möglichkeit geben, über eine REST-Schnittstelle Dienste einzulesen.
+	\item Beim manuellen Erstellen von Diensten, über eine Webmaske, muss das Format syntaktisch überprüft werden.
+	\item Auf der Website muss die Möglichkeit bestehen, Kompositionen zu erstellen.
 	\item Der SWAMP Composer muss eine Kompatibilitätsprüfung für Kompositionen durchführen.
 	\item Es muss eine grafische Rückmeldung über die Kompatibilität von Diensten geben.
 	\item Die Speicherung von erstellten Kompositionen muss möglich sein.
 	\item Die Android-App muss erstellte Kompositionen anzeigen können.
 	\item Neue Benutzer des SWARM Composers müssen über die Website registriert werden können.
-	\item Registrierte Benutzer des SWARM Composers müssen sich anmelden können, unabhängig davon, ob sie über die Website oder die Android-App zugreifen.
-	\item Beim manuellen Erstellen von Diensten muss das Format überprüft werden.
+	\item Registrierte Benutzer des SWARM Composers müssen sich anmelden können, unabhängig davon, ob sie über die Website oder die Android-App zugreifen.x
 \end{itemize}
 
 \textit{Sollkriterium}
@@ -42,10 +42,10 @@ Im Folgenden ist der Funktionsumfang des SWARM Composers, insbesondere der Web-A
 \textit{Kannkriterium}
 
 \begin{itemize}[leftmargin=4pc]
-	\item Die Android-App kann einzelne Dienste anzeigen.
+	\item Die Android-App kann zu einzelnen Diensten die gespeicherten Informationen detailliert anzeigen.
 	\item Es können Alternativen angezeigt werden, wenn Dienste nicht kompatibel sind.
 	\item Es gibt eine Suchfunktion für Dienste und Kompositionen.
-	\item Auf der Website können Konfigurationen verschickt werden.
+	\item Auf der Website können Kompositionen verschickt werden.
 \end{itemize}
 
 \textit{Abgrenzungskriterium}
@@ -55,7 +55,7 @@ Im Folgenden ist der Funktionsumfang des SWARM Composers, insbesondere der Web-A
 	\item In der Android-App können keine Dienste erstellt werden.
 	\item In der Android-App können keine Benutzer registriert werden.
 	\item Beim manuellen Erstellen von Diensten wird nicht geprüft, ob der Inhalt korrekt ist.
-	\item Es gibt keine benutzerspezifische Auswahl von Diensten.\\
+	\item Es gibt keine benutzerspezifischen Einschränkungen bei der Sichtbarkeit einzelner Dienste. \\
 \end{itemize}
 
 
