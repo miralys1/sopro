@@ -3,16 +3,16 @@
 .log
 .out
 
-pflichtenheft/pflichtenheft\.bbl
-
-pflichtenheft/pflichtenheft\.blg
-
 pflichtenheft/pflichtenheft\.log
-
-pflichtenheft/pflichtenheft\.out
 
 pflichtenheft/pflichtenheft\.pdf
 
 pflichtenheft/pflichtenheft\.synctex\.gz
+
+pflichtenheft/pflichtenheft\.bbl
+
+pflichtenheft/pflichtenheft\.blg
+
+pflichtenheft/pflichtenheft\.out
 
 pflichtenheft/pflichtenheft\.toc
