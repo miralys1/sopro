@@ -60,15 +60,15 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 		\textbf{Anwendungsfallname} & Dienst manuell einfügen \\ \hline
 		\textbf{Initiierender Akteur} & AdministratorIn \\ \hline
 		\textbf{Weitere Akteure} & - \\ \hline
-		\textbf{Kurzbeschreibung} & Ein neuer Dienst wird in die Datenbank eingefügt \\ \hline
-		\textbf{Vorbedingungen} & AdministratorIn ist eingeloggt und befindet sich auf Administrationsseite \\ \hline
-		\textbf{Nachbedingungen} & Neuer Dienst wurde in Datenbank gespeichert \\ \hline
+		\textbf{Kurzbeschreibung} & Ein neuer Dienst wird in die Datenbank eingefügt. \\ \hline
+		\textbf{Vorbedingungen} & AdministratorIn ist eingeloggt und befindet sich auf Administrationsseite. \\ \hline
+		\textbf{Nachbedingungen} & Neuer Dienst wurde in Datenbank gespeichert. \\ \hline
 		\textbf{Ablauf} &
 		\begin{enumerate}
 			\item [1.] [Use-Case: Authentifizieren]
-			\item [2.] AdministratorIn wählt Dienst eingeben aus.
+			\item [2.] AdministratorIn wählt ``Dienst eingeben'' aus.
 			\item [3.] AdministratorIn gibt Dienstdetails in Eingabemaske ein.
-			\item [4.] AdministratorIn bestätigt seine Eingabe.
+			\item [4.] AdministratorIn bestätigt die Eingabe.
 			\item [5.] System akzeptiert Eingabe und speichert in Datenbank.
 			\item [6.] Zurück zur Administrationsseite.
 		\end{enumerate} \\ \hline
@@ -76,16 +76,16 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 		\textbf{Ausnahme} &
 		\begin{enumerate}
 			\item [1.] [Use-Case: Authentifizieren]
-			\item [2.] AdministratorIn wählt Dienst eingeben aus.
+			\item [2.] AdministratorIn wählt ``Dienst eingeben'' aus.
 			\item [3.] AdministratorIn gibt Dienstdetails in Eingabemaske ein.
 			\item [4.] AdministratorIn bestätigt seine Eingabe.
-			\item [5.] System akzeptiert Eingabe nicht, da invalide Eingabe.
-			\item [6.] System zeigt Fehler und markiert invalide Felder.
-			\item [7.] bleibe in der Eingabemaske.
+			\item [5.] System akzeptiert Eingabe nicht, da sie invalide ist.
+			\item [6.] System zeigt Fehler an und markiert invalide Felder.
+			\item [7.] Es wird in der Eingabemaske verblieben.
 		\end{enumerate} \\ \hline
-		\textbf{Benutzte Anwendungsfälle} & - \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & Authentifizieren \\ \hline
 		\textbf{Spezielle Anforderungen} & - \\ \hline
-		\textbf{Annahmen} & -
+		\textbf{Annahmen} & Die Authentifizierung ist erfolgreich.
 	\end{tabularx}
 	\caption{Anwendungsfall WEB-1}
 	\label{fig:anwendungsfall-server-tabelle-web-1}
@@ -95,34 +95,34 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 	\centering
 	\begin{tabularx}{\textwidth}{ X | X }
 		\textbf{Anwendungsfall ID} & WEB-2 \\ \hline
-		\textbf{Anwendungsfallname} & Dienste einlesen. \\ \hline
+		\textbf{Anwendungsfallname} & Dienste einlesen \\ \hline
 		\textbf{Initiierender Akteur} & AdministratorIn \\ \hline
 		\textbf{Weitere Akteure} & - \\ \hline
-		\textbf{Kurzbeschreibung} & Ein oder mehrere Dienste werden über eine Nutzerrechner lokal befindliche JSON Datei eingelesen \\ \hline
-		\textbf{Vorbedingungen} & AdministratorIn ist eingeloggt und befindet sich auf Administrationsseite \\ \hline
-		\textbf{Nachbedingungen} & Neue Dienst(e) wurden der Datenbank hinzugefügt \\ \hline
+		\textbf{Kurzbeschreibung} & Ein oder mehrere Dienste werden über eine JSON Datei eingelesen, die sich lokal auf einem Nutzerrechner befindet. \\ \hline
+		\textbf{Vorbedingungen} & AdministratorIn ist eingeloggt und befindet sich auf Administrationsseite. \\ \hline
+		\textbf{Nachbedingungen} & Neue Dienste wurden der Datenbank hinzugefügt. \\ \hline
 		\textbf{Ablauf} &
 		\begin{enumerate}
 			\item [1.] [Use-Case: Authentifizieren]
-			\item [2.] AdministratorIn wählt ``Dienste einlesen''-Button aus.
-			\item [3.] AdministratorIn wählt hochzuladene JSON Datei aus sich öffnenden Dateibrowser von seinem Rechner aus.
+			\item [2.] AdministratorIn wählt ``Dienste einlesen'' aus.
+			\item [3.] AdministratorIn wählt die hochzuladene JSON Datei aus dem sich öffnendem Dateibrowser vom lokalen Rechner aus.
 			\item [4.] Eingelesene Daten werden vom System akzeptiert und aufgelistet.
-			\item [5.] AdministratorIn drückt Speichern
-			\item [6.] Dienste werden in Datenbank gespeichert
-			\item [7.] Zurück zur Administrationsseite.
+			\item [5.] AdministratorIn speichert.
+			\item [6.] Dienste werden in Datenbank gespeichert.
+			\item [7.] Es erscheint die Administrationsseite.
 		\end{enumerate} \\ \hline
 		\textbf{Alternative} & - \\ \hline
 		\textbf{Ausnahme} &
 		\begin{enumerate}
 			\item [1.]  [Use-Case: Authentifizieren]
-			\item [2.]  AdministratorIn wählt ``Dienste einlesen''-Button aus.
-			\item [3.]  AdministratorIn wählt hochzuladene JSON Datei aus sich öffnenden Dateibrowser von seinem Rechner aus.
+			\item [2.]  AdministratorIn wählt ``Dienste einlesen'' aus.
+			\item [3.]  AdministratorIn wählt hochzuladene JSON Datei aus dem sich öffnenden Dateibrowser vom lokalen Rechner aus.
 			\item [4.]  System erkennt Fehler in der JSON Datei und gibt einen Fehler aus.
-			\item [5.]  Administrator bleibt auf der Administrationseite
+			\item [5.]  Administrator bleibt auf der Administrationseite.
 		\end{enumerate}  \\ \hline
-		\textbf{Benutzte Anwendungsfälle} & - \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & Authentifizieren \\ \hline
 		\textbf{Spezielle Anforderungen} & - \\ \hline
-		\textbf{Annahmen} & -
+		\textbf{Annahmen} & Die Authentifizierung ist erfolgreich.
 	\end{tabularx}
 	\caption{Anwendungsfall WEB-2}
 	\label{fig:anwendungsfall-server-tabelle-web-2}
@@ -132,35 +132,35 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 	\centering
 	\begin{tabularx}{\textwidth}{ X | X }
 		\textbf{Anwendungsfall ID} & WEB-3 \\ \hline
-		\textbf{Anwendungsfallname} & Dienst bearbeiten. \\ \hline
+		\textbf{Anwendungsfallname} & Dienst bearbeiten \\ \hline
 		\textbf{Initiierender Akteur} & AdministratorIn \\ \hline
 		\textbf{Weitere Akteure} & - \\ \hline
-		\textbf{Kurzbeschreibung} & Felder eines existierenden Dienstes werden bearbeitet \\ \hline
-		\textbf{Vorbedingungen} & AdministratorIn ist eingeloggt und befindet sich auf Administrationsseite \\ \hline
-		\textbf{Nachbedingungen} & Vorgenommende Änderungen am Dienst wurden in Datenbank übernommen \\ \hline
+		\textbf{Kurzbeschreibung} & Felder eines existierenden Dienstes werden bearbeitet. \\ \hline
+		\textbf{Vorbedingungen} & AdministratorIn ist eingeloggt und befindet sich auf Administrationsseite. \\ \hline
+		\textbf{Nachbedingungen} & Vorgenommene Änderungen am Dienst wurden in Datenbank übernommen. \\ \hline
 		\textbf{Ablauf} &
 		\begin{enumerate}
 			\item [1.] [Use-Case: Authentifizieren]
 			\item [2.] AdministratorIn wählt Dienst aus Liste von vorhandenen Diensten aus.
-			\item [3.] AdministratorIn drückt auf bearbeiten.
+			\item [3.] AdministratorIn wählt ``Bearbeiten''.
 			\item [4.] AdministratorIn führt Änderungen in Eingabemaske durch.
-			\item [5.] AdministratorIn bestätigt seine Eingabe.
-			\item [6.] System akzeptiert änderung und speichert diese in der Datenbank.
+			\item [5.] AdministratorIn bestätigt die Eingabe.
+			\item [6.] System akzeptiert die Änderung und speichert diese in der Datenbank.
 		\end{enumerate} \\ \hline
 		\textbf{Alternative} & - \\ \hline
 		\textbf{Ausnahme} &
 		\begin{enumerate}
 			\item [1.] [Use-Case: Authentifizieren]
 			\item [2.] AdministratorIn wählt Dienst aus Liste von vorhandenen Diensten aus.
-			\item [3.] AdministratorIn drückt auf bearbeiten.
+			\item [3.] AdministratorIn wählt ``Bearbeiten''.
 			\item [4.] AdministratorIn tätigt eine invalide Eingabe.
-			\item [5.] AdministratorIn bestätigt seine Eingabe.
-			\item [6.] System erkennt Fehler und zeigt einen Fehler an
-			\item [6.] AdministratorIn bleibt auf der Administrationsseite
+			\item [5.] AdministratorIn bestätigt die Eingabe.
+			\item [6.] System erkennt Fehler und zeigt eine Fehlermeldung an.
+			\item [6.] AdministratorIn bleibt auf der Administrationsseite.
 		\end{enumerate}  \\ \hline
-		\textbf{Benutzte Anwendungsfälle} & - \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & Authentifizieren \\ \hline
 		\textbf{Spezielle Anforderungen} & - \\ \hline
-		\textbf{Annahmen} & -
+		\textbf{Annahmen} & Die Authentifizierung ist erfolgreich.
 	\end{tabularx}
 	\caption{Anwendungsfall WEB-3}
 	\label{fig:anwendungsfall-server-tabelle-web-3}
@@ -179,15 +179,16 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 		\textbf{Ablauf} &
 		\begin{enumerate}
 			\item[1.]  [Use-Case: Authentifizieren]
-			\item[2.]  NutzerIn wählt ``Komposition erstellen'' Option.
+			\item[2.]  NutzerIn wählt ``Komposition erstellen'' aus.
 			\item[3.]  NutzerIn gibt einen Namen für die Komposition an.
 			\item[4.]  NutzerIn wird weitergeleitet zum Bearbeitungsmodus.
+			\item[5.] [Use-Case: Komposition bearbeiten]
 		\end{enumerate} \\ \hline
 		\textbf{Alternative} & - \\ \hline
 		\textbf{Ausnahme} & - \\ \hline
-		\textbf{Benutzte Anwendungsfälle} & WEB-5 \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & WEB-5, Authentifizieren\\ \hline
 		\textbf{Spezielle Anforderungen} & - \\ \hline
-		\textbf{Annahmen} & -
+		\textbf{Annahmen} & Die Authentifizierung ist erfolgreich.
 	\end{tabularx}
 	\caption{Anwendungsfall WEB-5}
 	\label{fig:anwendungsfall-server-tabelle-web-4}
@@ -200,21 +201,21 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 		\textbf{Anwendungsfallname} & Komposition bearbeiten \\ \hline
 		\textbf{Initiierender Akteur} & NutzerIn \\ \hline
 		\textbf{Weitere Akteure} & - \\ \hline
-		\textbf{Kurzbeschreibung} & NutzerIn bearbeitet Komposition \\ \hline
+		\textbf{Kurzbeschreibung} & NutzerIn bearbeitet Komposition. \\ \hline
 		\textbf{Vorbedingungen} & NutzerIn besitzt benötigte Rechte zur Bearbeitung der Komposition und befindet sich auf der Übersichtsseite. \\ \hline
 		\textbf{Nachbedingungen} & NutzerIn befindet sich im Bearbeitungsmodus. \\ \hline
 		\textbf{Ablauf} &
 		\begin{enumerate}
 			\item[1.] [Use-Case: Authentifizieren]
-			\item[2.] NutzerIn drückt Bearbeitungsbutton bei der Komposition.
+			\item[2.] NutzerIn wählt ``Komposition bearbeiten'' aus.
 			\item[3.] NutzerIn wird in den Bearbeitungsmodus versetzt.
 		\end{enumerate} \\ \hline
 		\textbf{Alternative} & - \\ \hline
 		\textbf{Ausnahme} & - \\ \hline
-		\textbf{Benutzte Anwendungsfälle} & - \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & Authentifizieren \\ \hline
 		\textbf{Spezielle Anforderungen} & - \\ \hline
 		\textbf{Annahmen} & Es werden nur Komposition gezeigt für die der NutzerIn die benötigten Rechte besitzt.
-                  Der Bearbeitungsbutton ist ausgegraut falls die Bearbeitungsrechte nicht vorhanden sind.
+                  Der Bearbeitungsbutton ist ausgegraut, falls die Bearbeitungsrechte nicht vorhanden sind. Die Authentifizierung war erfolgreich.
 	\end{tabularx}
 	\caption{Anwendungsfall WEB-5}
 	\label{fig:anwendungsfall-server-tabelle-web-5}
@@ -225,22 +226,22 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 	\begin{tabularx}{\textwidth}{ X | X }
 		\textbf{Anwendungsfall ID} & WEB-6 \\ \hline
 		\textbf{Anwendungsfallname} & Einsehbare Komposition anzeigen \\ \hline
-		\textbf{Initiierender Akteur} & unregistrierteR NutzerIn oder NutzerIn \\ \hline
+		\textbf{Initiierender Akteur} & unregistrierteR NutzerIn oder NutzerIn\\ \hline
 		\textbf{Weitere Akteure} & - \\ \hline
-		\textbf{Kurzbeschreibung} & unregistrierteR NutzerIn oder NutzerIn lässt sich eine Komposition anzeigen. \\ \hline
-		\textbf{Vorbedingungen} & unregistrierteR NutzerIn oder NutzerIn befindet sich auf der Übersichtsseite. \\ \hline
-		\textbf{Nachbedingungen} & unregistrierteR NutzerIn oder NutzerIn wird Komposition angezeigt. \\ \hline
+		\textbf{Kurzbeschreibung} & (UnregistrierteR) NutzerIn  lässt sich eine Komposition anzeigen. \\ \hline
+		\textbf{Vorbedingungen} & (UnregistrierteR) NutzerIn befindet sich auf der Übersichtsseite. \\ \hline
+		\textbf{Nachbedingungen} & (UregistrierteR) NutzerIn wird die Komposition angezeigt. \\ \hline
 		\textbf{Ablauf} &
 		\begin{enumerate}
 			\item[1.] [Use-Case: Authentifizieren]
-			\item[2.] unregistrierteR NutzerIn oder NutzerIn drückt auf die anzuzeigende Komposition.
-			\item[3.] unregistrierteR NutzerIn oder NutzerIn wird die Komposition angezeigt.
+			\item[2.] (UnregistrierteR) NutzerIn wählt die anzuzeigende Komposition aus.
+			\item[3.] (UnregistrierteR) NutzerIn wird die Komposition angezeigt.
 		\end{enumerate} \\ \hline
 		\textbf{Alternative} & - \\ \hline
 		\textbf{Ausnahme} & - \\ \hline
-		\textbf{Benutzte Anwendungsfälle} & - \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & Authentifizieren \\ \hline
 		\textbf{Spezielle Anforderungen} & - \\ \hline
-		\textbf{Annahmen} & Es werden nur Kompositionen gezeigt für die der unregistrierteR NutzerIn oder NutzerIn die benötigten Rechte besitzt.
+		\textbf{Annahmen} & Es werden nur Kompositionen gezeigt, für die der (unregistrierteR) NutzerIn die benötigten Rechte besitzt. Die Authentifizierung war erfolgreich.
 	\end{tabularx}
 	\caption{Anwendungsfall WEB-6}
 	\label{fig:anwendungsfall-server-tabelle-web-6}
