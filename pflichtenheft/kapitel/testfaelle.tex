@@ -6,7 +6,7 @@ In Tabelle \ref{fig:testfaelle-androidapp} wird das Verhalten der Android-App de
 	\begin{center}
 		\begin{tabularx}{\textwidth}{ p{.05\textwidth} | p{.25\textwidth} | p{.2\textwidth} | X }
 			\textbf{Nr.} & \textbf{Anwendungsfall ID} & \textbf{Szenario} & \textbf{Erwartetes Verhalten} \\ \hline
-			1 & App-1 & Die App wird gestartet. & Es erscheint eine Listenansicht der öffentlichen Kompositionen und eine Loginmaske wird angezeigt.
+			1 & App-1 & Die App wird gestartet. & Es erscheint eine Listenansicht der öffentlichen Kompositionen und eine Loginmaske wird angezeigt. \\ \hline
 			2 & App-1 & Beim Einloggen wird ein nicht registrierter Nutzername eingegeben.& Es wird eine passende Fehlermeldung angezeigt, ein Login kann erneut versucht werden.\\ \hline
 			3 & App-1 & Das zu einem registrierten Nutzernamen eingegebene Passwort ist nicht korrekt.& Es wird eine passende Fehlermeldung angezeigt, ein Login kann erneut versucht werden.\\ \hline
 			4 & App-1 & Während des Loginvorgangs ist der Server nicht mehr erreichbar. & Eine passende Fehlermeldung wird angezeigt.\\ \hline
@@ -17,7 +17,7 @@ In Tabelle \ref{fig:testfaelle-androidapp} wird das Verhalten der Android-App de
 			\\ \hline
 			8 & App-3 & Es wird die Detailansicht einer Komposition angefordert. & Die Komposition wird mit den Kompatibilitätshinweisen zwischen den einzelnen Diensten graphisch angezeigt.\\ \hline
 			9 & App-4 & Das Versenden einer Komposition als pdf schlägt fehl. & Es wird eine passende Fehlermeldung angezeigt.\\ \hline
-			10 & App-4 & Das Versenden einer Komposition als pdf war erfolgreich. & Es wird eine Bestätigung angezeigt.
+			10 & App-4 & Das Versenden einer Komposition als pdf war erfolgreich. & Es wird eine Bestätigung angezeigt. \\ \hline
 		\end{tabularx}	
 	\end{center}
 	
@@ -36,7 +36,7 @@ In Tabelle \ref{fig:testfaelle-androidapp} wird das Verhalten der Android-App de
 			1 & Web-1/2 & EinE NutzerIn ohne Administrator-Rechte versucht, einen Dienst einzufügen. & Die Aktion wird verweigert und es wird eine passende Fehlermeldung angezeigt.\\ \hline
 			2 & Web-1 & EinE NutzerIn mit Administrator-Rechten wählt aus, einen Dienst manuell einzufügen. & Es wird das Eingabeformular für Dienste angezeigt. \\ \hline
 			3 & Web-1 & Das Eingabeformular wird syntaktisch korrekt ausgefüllt. & Der neue Dienst wird in die Datenbank einfügt. \\ \hline
-			4 & Web-1 & Beim Eingabeformular wird das Schlagwortfeld ausgewählt. & Es werden zur Verfügung stehende Schlagwörter angezeigt.
+			4 & Web-1 & Beim Eingabeformular wird das Schlagwortfeld ausgewählt. & Es werden zur Verfügung stehende Schlagwörter angezeigt. \\ \hline
 			5 & Web-1 & Das Eingabeformular wird nicht syntaktisch korrekt ausgefüllt. & Es wird ein Hinweis angezeigt.\\ \hline
 			6 & Web-2 & Eine Datei im passenden JSON-Format wird eingelesen. & Die Dienste der Datei werden in die Datenbank aufgenommen und es wird eine Erfolgsmeldung angezeigt.\\ \hline
 			7 & Web-2 & Eine Datei in syntaktisch nicht passenden JSON-Format wird eingelesen. & Es wird eine entsprechende Fehlermeldung angezeigt.\\ \hline
@@ -50,7 +50,7 @@ In Tabelle \ref{fig:testfaelle-androidapp} wird das Verhalten der Android-App de
 			15 & Web-5 & Eine Person mit ausreichenden Rechten möchte eine Komposition bearbeiten. & Die Weboberfläche zum Bearbeiten einer Komposition wird angezeigt. \\ \hline
 			16 & Web-5 & Eine bearbeitete Komposition soll gespeichert werden. & Die Änderungen werden in die Datenbank übernommen. \\ \hline
 			17 & Web-6 & Eine Person möchte eine für sie nicht einsehbare Komposition einsehen. & Es wird eine entsprechende Fehlermeldung angezeigt und die Aktion verweigert. \\ \hline
-			18 & Web-6 & Eine Person möchte eine für sie einsehbare Komposition einsehen. & Die gewählte Komposition wird visuell dargestellt.
+			18 & Web-6 & Eine Person möchte eine für sie einsehbare Komposition einsehen. & Die gewählte Komposition wird visuell dargestellt. \\ \hline
 			
 		\end{tabularx}	
 	\end{center}
