@@ -52,13 +52,13 @@
 %%%%% Ausfüllen %%%%%
 
 % Gruppenname
-\newcommand{\gruppenname}{Gruppe X}
+\newcommand{\gruppenname}{Gruppe HRS 3 105b}
 
 % Projektname
-\newcommand{\projektname}{Projektname}
+\newcommand{\projektname}{SWARM Composer}
 
 % Semester
-\newcommand{\semester}{SoSe17}
+\newcommand{\semester}{SoSe18}
 
 
 
@@ -73,19 +73,19 @@
 	Softwareprojekt \semester\\
 	\gruppenname\\
 	\vspace*{5mm}
-	\includegraphics[width=\textwidth]{img/logo}
+	\includegraphics[width=\textwidth]{Logo/logo}
 }
 
 \author{
 	\begin{tabular}{r l@{\hspace{8\tabcolsep}} r} 
-		Vorname1 & Nachname1 & \multirow{8}{*}{ \includegraphics{img/se-logo} } \\
-		Vorname2 & Nachname2 \\
-		Vorname3 & Nachname3 \\
-		Vorname4 & Nachname4 \\
-		Vorname5 & Nachname5 \\
-		Vorname6 & Nachname6 \\
-		Vorname7 & Nachname7 \\
-		Vorname8 & Nachname8 \\
+		Jeremia & Böhmig & \multirow{8}{*}{ \includegraphics{img/se-logo} } \\
+		Felix & Gröner \\
+		Janek & Haberer \\
+		Robert & Köhler \\
+		Johanna & Menzel \\
+		Jette & Petzold \\
+		Christian & Richter \\
+		Connor & Schönberner \\
 	\end{tabular}
 }
 
@@ -103,47 +103,27 @@
 	%%%% Bitte löschen oder auskommentieren %%%%
 	%%%%%%%%% Dient nur als Hilfe %%%%%%%%%%
 	
-	\chapter*{Tipps und Hilfen}\label{chp:tipps}
-	\vspace*{-1cm}
-	\begin{tcolorbox}
-		\textbf{Information:} Dieses Kapitel und alle folgenden grauen Boxen dienen als Hilfestellungen und sollen im fertigen Dokument nicht enthalten sein. 
-		%
-		\\\\
-		%
-		Zur Versionsverwaltung während des Softwareprojekts muss \textit{Git} genutzt werden.
-		Git führt Textdokumente mit unterschiedlichen Zeilenbearbeitungen automatisch zusammen.
-		Wir empfehlen den Einsatz von \LaTeX~für alle Textdokumente.
-		Um das Auto-Merging zu unterstützen, sollte nach jedem Satzende eine neue Zeile im Quelltext begonnen werden.
-		Die .tex-Datei dieser PDF verdeutlicht dies.
-		Erkennt Git, dass eine gleiche Zeile bearbeitet wurde, wird ein Konflikt auftreten.
-		Dieser kann in der entsprechenden Datei von Hand mittels eines Texteditors behoben werden.
-		%
-		\\\\
-		%
-		Fußnoten\footnote{\url{https://www.se.informatik.uni-kiel.de/en}} werden für Homepages genutzt.
-		Zitierungen können mittels eines \textit{cite}-Befehls gesetzt, z.B. \textit{citep}~\citep{Shaw2003WritingGoodSoftwareEngineeringesearchPapersMinitutorial}.
-		%
-		\\\\
-		%
-		Tipps zur UML-Modellierung können im SE-Wiki\footnote{\url{https://git.informatik.uni-kiel.de/ag-se/teaching-public/wikis/home}} nachgelesen werden.
-		Achtet darauf, dass eure Diagramme stets lesbar (Vektor-Grafiken!) und gut strukturiert sind.
-		Oftmals ist es sinnvoll ein bis zwei Sätze zusätzlich für Diagrammelemente zu formulieren.
-		So können Missverständnisse ausgeschlossen werden, was einen Einfluss auf die Korrektur haben kann.
-		Diagramme für unwichtige Tätigkeiten (z.B. Login / Logout, User erstellen / löschen, Passwort ändern etc.) sind nicht erforderlich.	
-	\end{tcolorbox}
 	
-	\todo[inline]{So kann eine TODO-Notiz erzeugt werden}
-	
-	\begin{figure}[h]
-		\centering
-		\missingfigure{So kann eine Placeholder-Grafik beispielsweise in den Text eingefügt werden.}		
-		\caption{Beschreibung}
-		\label{fig:x}
-	\end{figure}
 		
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 	\tableofcontents
+	
+	\chapter*{Einleitung}
+	Dies ist das Pflichtenheft des SWARM Composers. Diese Software ist Teil des Forschungsprojektes SWARM des Unternehmens adesso.
+	Der SWARM Composer dient dazu, unterschiedliche Software für Bauprojekte in Bezug auf ihre Kompatibilität bezüglich der Ein- und Ausgabeformate zu überprüfen.
+	Der SWARM Composer besteht aus zwei Teilen: einem Webserver und einer App. Auf dem Webserver können Benutzer Dienste zu Kompositionen zusammenfassen und auf Kompatibilität überprüfen. Neue Dienste können dabei manuell eingegeben oder über eine REST-Schnittstelle eingelesen werden. Dies ist aber nur mit Administratorrechten möglich. In der App können Kompositionen grafisch präsentiert und per E-Mail verschickt werden.
+	
+	\noindent Unter einem \textbf{Dienst} wird ein Programm verstanden, dass Daten in einem bestimmten Format einliest, diese verarbeitet und Daten in einem eventuell anderen Format ausgibt.
+	
+	\noindent Eine \textbf{Komposition} ist Zusammenfassung von Diensten mit der Information, welcher Dienst welchem anderen welche Daten sendet, und deren Kompatibilitätsbeziehungen.
+	
+	\noindent Zwei Dienste sind \textbf{kompatibel}, wenn das Eingabeformat des empfangenden Dienstes mit dem Ausgabeformat des sendenden Dienstes übereinstimmt.
+	
+	
+	
+	
+		
 	
 	\chapter{Lizenz}\label{chp:lizenz}
 	\pagenumbering{arabic} % Nummerierung starten
