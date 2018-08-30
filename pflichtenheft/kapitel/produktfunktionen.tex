@@ -10,12 +10,13 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 
 \begin{figure}[h]
 	\centering
-	
+
 	\begin{tabularx}{\textwidth}{ p{.2\textwidth} | p{.2\textwidth} | X }
 		\textbf{Akteur} & \textbf{Beschreibung} & \textbf{Verwendet in Anwendungsszenario} \\ \hline
-		Informatiker & Programmiert tolle Sachen & Programmieren, Kaffee trinken, Schlafen
+		Informatiker & Programmiert tolle Sachen & Programmieren, Kaffee trinken, Schlafen \\ \hline
+		NutzerIn & Anwender der web Applikation & Komposition-\{bearbeiten, erstellen, darstellen \}, Dienst einfügen
 	\end{tabularx}
-	
+
 	\caption{Beschreibung der Akteure}
 	\label{fig:akteur-tabelle}
 \end{figure}
@@ -29,7 +30,7 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 
 \begin{figure}[h]
 	\centering
-	\missingfigure{Anwendungsfalldiagramm - App}		
+	\missingfigure{Anwendungsfalldiagramm - App}
 	\caption{Anwendungsfalldiagramm - App}
 	\label{fig:anwendungsfalldiagramm-app}
 \end{figure}
@@ -92,37 +93,110 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 	\begin{tabularx}{\textwidth}{ X | X }
 		\textbf{Anwendungsfall ID} & WEB-1 \\ \hline
 		\textbf{Anwendungsfallname} & Dienst einfügen. \\ \hline
-		\textbf{Initiierender Akteur} & Administrator \\ \hline
+		\textbf{Initiierender Akteur} & NutzerIn \\ \hline
 		\textbf{Weitere Akteure} & - \\ \hline
 		\textbf{Kurzbeschreibung} & Ein neuer Dienst wird in die Datenbank eingefügt \\ \hline
-		\textbf{Vorbedingungen} & Nutzer hat sich eingeloggt  \\ \hline
+		\textbf{Vorbedingungen} &   NutzerIn besitzt nötige Rechte und befindet sich auf Startseite \\ \hline
 		\textbf{Nachbedingungen} & Neuer Dienst wurde in Datenbank gespeichert \\ \hline
 		\textbf{Ablauf} &
 		\begin{enumerate}
-			\item  Administrator öffnet Dienst einfügen Seite.
-			\item  Administrator gibt Dienstdetails in Eingabemaske ein.
-			\item  Administrator bestätigt seine Eingabe.
+			\item  NutzerIn öffnet Dienst einfügen Seite.
+			\item  NutzerIn gibt Dienstdetails in Eingabemaske ein.
+			\item  NutzerIn bestätigt seine Eingabe.
 			\item  System akzeptiert Eingabe und speichert in Datenbank.
 			\item  Weiterleitung zur Hauptseite.
 		\end{enumerate} \\ \hline
-		\textbf{Alternative} &
-		\begin{enumerate}
-			\item Erster ganzer Satz.
-			\item Zweiter ganzer Satz.
-		\end{enumerate}  \\ \hline
+		\textbf{Alternative} & - \\ \hline
 		\textbf{Ausnahme} &
 		\begin{enumerate}
-			\item  Administrator öffnet Dienst einfügen Seite.
-			\item  Administrator gibt Dienstdetails in Eingabemaske ein.
-			\item  Administrator bestätigt seine Eingabe.
+			\item  NutzerIn öffnet Dienst einfügen Seite.
+			\item  NutzerIn gibt Dienstdetails in Eingabemaske ein.
+			\item  NutzerIn bestätigt seine Eingabe.
 			\item  System akzeptiert Eingabe nicht, da unvollständige Eingabe.
 			\item  System zeigt Fehler und markiert fehlende Felder.
 			\item  bleibe in der Eingabemaske.
 		\end{enumerate}  \\ \hline
-		\textbf{Benutzte Anwendungsfälle} & WEB-2 \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & - \\ \hline
 		\textbf{Spezielle Anforderungen} & - \\ \hline
-		\textbf{Annahmen} & -
+		\textbf{Annahmen} & Dienst erstellen Button wird nur gezeigt, falls nötige Rechte vorhanden sind.
 	\end{tabularx}
 	\caption{Anwendungsfall WEB-1}
 	\label{fig:anwendungsfall-server-tabelle-web-1}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\begin{tabularx}{\textwidth}{ X | X }
+		\textbf{Anwendungsfall ID} & WEB-2 \\ \hline
+		\textbf{Anwendungsfallname} & Neue Komposition erstellen. \\ \hline
+		\textbf{Initiierender Akteur} & NutzerIn \\ \hline
+		\textbf{Weitere Akteure} & - \\ \hline
+		\textbf{Kurzbeschreibung} & Ein neuer Dienst wird in die Datenbank eingefügt \\ \hline
+		\textbf{Vorbedingungen} & NutzerIn befindet sich auf der Startseite  \\ \hline
+		\textbf{Nachbedingungen} & NutzerIn befindet sich im Bearbeitungsmodus \\ \hline
+		\textbf{Ablauf} &
+		\begin{enumerate}
+			\item  NutzerIn wählt "Komposition erstellen" Option.
+			\item  NutzerIn gibt einen Namen ein.
+			\item  NutzerIn wird weitergeleitet zu "Komposition bearbeiten".
+		\end{enumerate} \\ \hline
+		\textbf{Alternative} & - \\ \hline
+		\textbf{Ausnahme} & - \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & WEB-3 \\ \hline
+		\textbf{Spezielle Anforderungen} & - \\ \hline
+		\textbf{Annahmen} & -
+	\end{tabularx}
+	\caption{Anwendungsfall WEB-2}
+	\label{fig:anwendungsfall-server-tabelle-web-2}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\begin{tabularx}{\textwidth}{ X | X }
+		\textbf{Anwendungsfall ID} & WEB-3 \\ \hline
+		\textbf{Anwendungsfallname} & Komposition bearbeiten. \\ \hline
+		\textbf{Initiierender Akteur} & NutzerIn \\ \hline
+		\textbf{Weitere Akteure} & - \\ \hline
+		\textbf{Kurzbeschreibung} & NutzerIn bearbeitet Komposition \\ \hline
+		\textbf{Vorbedingungen} & NutzerIn besitzt nötige Rechte zur Bearbeitung der Komposition und befindet sich auf der Startseite \\ \hline
+		\textbf{Nachbedingungen} & NutzerIn befindet sich im Bearbeitungsmodus \\ \hline
+		\textbf{Ablauf} &
+		\begin{enumerate}
+			\item  NutzerIn drückt Bearbeitungsbutton der Komposition.
+			\item  NutzerIn wird in den Bearbeitungsmodus versetzt.
+		\end{enumerate} \\ \hline
+		\textbf{Alternative} & - \\ \hline
+		\textbf{Ausnahme} & - \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & - \\ \hline
+		\textbf{Spezielle Anforderungen} & - \\ \hline
+		\textbf{Annahmen} & Es werden nur Komposition gezeigt für die der NutzerIn die benötigten Rechte besitzt.
+                  Der Bearbeitungsbutton ist ausgegraut falls die Bearbeitungsrechte nicht vorhanden sind.
+	\end{tabularx}
+	\caption{Anwendungsfall WEB-3}
+	\label{fig:anwendungsfall-server-tabelle-web-3}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\begin{tabularx}{\textwidth}{ X | X }
+		\textbf{Anwendungsfall ID} & WEB-4 \\ \hline
+		\textbf{Anwendungsfallname} & Komposition darstellen. \\ \hline
+		\textbf{Initiierender Akteur} & NutzerIn \\ \hline
+		\textbf{Weitere Akteure} & - \\ \hline
+		\textbf{Kurzbeschreibung} & NutzerIn lässt sich Komposition anzeigen \\ \hline
+		\textbf{Vorbedingungen} & NutzerIn besitzt nötige Rechte zur Darstellung der Komposition und befindet sich auf der Startseite \\ \hline
+		\textbf{Nachbedingungen} & NutzerIn wird Komposition dargestellt \\ \hline
+		\textbf{Ablauf} &
+		\begin{enumerate}
+			\item  NutzerIn drückt auf die anzuzeigende Komposition.
+			\item  NutzerIn wird die Komposition angezeigt.
+		\end{enumerate} \\ \hline
+		\textbf{Alternative} & - \\ \hline
+		\textbf{Ausnahme} & - \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & - \\ \hline
+		\textbf{Spezielle Anforderungen} & - \\ \hline
+		\textbf{Annahmen} & Es werden nur Komposition gezeigt für die der Nutzer die benötigten Rechte besitzt.
+	\end{tabularx}
+	\caption{Anwendungsfall WEB-4}
+	\label{fig:anwendungsfall-server-tabelle-web-4}
 \end{figure}
