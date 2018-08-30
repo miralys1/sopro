@@ -129,38 +129,11 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 \begin{figure}[h]
 	\centering
 	\begin{tabularx}{\textwidth}{ X | X }
-		\textbf{Anwendungsfall ID} & WEB-2 \\ \hline
-		\textbf{Anwendungsfallname} & Dienste einlesen. \\ \hline
-		\textbf{Initiierender Akteur} & AdministratorIn \\ \hline
-		\textbf{Weitere Akteure} & - \\ \hline
-		\textbf{Kurzbeschreibung} & Ein oder mehrere Dienste werden über eine Nutzerrechner lokal befindliche JSON Datei eingelesen \\ \hline
-		\textbf{Vorbedingungen} & AdministratorIn ist eingeloggt und befindet sich auf Administrationsseite \\ \hline
-		\textbf{Nachbedingungen} & Neue Dienst(e) wurden der Datenbank hinzugefügt \\ \hline
-		\textbf{Ablauf} &
-		\begin{enumerate}
-			\item [1.] [Use-Case: Authentifizieren]
-			\item [2.] AdministratorIn wählt "Dienste einlesen"-Button aus.
-			\item [3.] AdministratorIn wählt hochzuladene JSON Datei aus sich öffnenden Dateibrowser von seinem Rechner aus.
-			\item [4.] Eingelesende Daten werden vom System akzeptiert und aufgelistet.
-			\item [5.] AdministratorIn drückt Speichern
-			\item [6.] Dienste werden in Datenbank gespeichert
-			\item [7.] Zurück zur Administrationsseite.
-		\end{enumerate} \\ \hline
-		\textbf{Alternative} & - \\ \hline
-		\textbf{Ausnahme} &
-		\begin{enumerate}
-			\item [1.]  [Use-Case: Authentifizieren]
-			\item [2.]  AdministratorIn wählt "Dienste einlesen"-Button aus.
-			\item [3.]  AdministratorIn wählt hochzuladene JSON Datei aus sich öffnenden Dateibrowser von seinem Rechner aus.
-			\item [4.]  System erkennt Fehler in der JSON Datei und gibt einen Fehler aus.
-			\item [5.]  Administrator bleibt auf der Administrationseite
-		\end{enumerate}  \\ \hline
-		\textbf{Benutzte Anwendungsfälle} & - \\ \hline
 		\textbf{Spezielle Anforderungen} & - \\ \hline
 		\textbf{Annahmen} & -
 	\end{tabularx}
-	\caption{Anwendungsfall WEB-2}
-	\label{fig:anwendungsfall-server-tabelle-web-2}
+	\caption{Anwendungsfall WEB-5}
+	\label{fig:anwendungsfall-server-tabelle-web-4}
 \end{figure}
 
 \begin{figure}[h]
@@ -199,4 +172,84 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 	\end{tabularx}
 	\caption{Anwendungsfall WEB-3}
 	\label{fig:anwendungsfall-server-tabelle-web-3}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\begin{tabularx}{\textwidth}{ X | X }
+		\textbf{Anwendungsfall ID} & WEB-4 \\ \hline
+		\textbf{Anwendungsfallname} & Komposition erstellen \\ \hline
+		\textbf{Initiierender Akteur} & NutzerIn \\ \hline
+		\textbf{Weitere Akteure} & - \\ \hline
+		\textbf{Kurzbeschreibung} & Eine neue Komposition wird zum System hinzugefügt. \\ \hline
+		\textbf{Vorbedingungen} & NutzerIn befindet sich auf der Übersichtsseite und ist eingeloggt.  \\ \hline
+		\textbf{Nachbedingungen} & Komposition ist erstellt und NutzerIn befindet sich im Bearbeitungsmodus. \\ \hline
+		\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[1.]  [Use-Case: Authentifizieren]
+			\item[2.]  NutzerIn wählt ``Komposition erstellen'' Option.
+			\item[3.]  NutzerIn gibt einen Namen für die Komposition an.
+			\item[4.]  NutzerIn wird weitergeleitet zum Bearbeitungsmodus.
+		\end{enumerate} \\ \hline
+		\textbf{Alternative} & - \\ \hline
+		\textbf{Ausnahme} & - \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & WEB-5 \\ \hline
+		\textbf{Spezielle Anforderungen} & - \\ \hline
+		\textbf{Annahmen} & -
+	\end{tabularx}
+	\caption{Anwendungsfall WEB-5}
+	\label{fig:anwendungsfall-server-tabelle-web-4}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\begin{tabularx}{\textwidth}{ X | X }
+		\textbf{Anwendungsfall ID} & WEB-5 \\ \hline
+		\textbf{Anwendungsfallname} & Komposition bearbeiten \\ \hline
+		\textbf{Initiierender Akteur} & NutzerIn \\ \hline
+		\textbf{Weitere Akteure} & - \\ \hline
+		\textbf{Kurzbeschreibung} & NutzerIn bearbeitet Komposition \\ \hline
+		\textbf{Vorbedingungen} & NutzerIn besitzt benötigte Rechte zur Bearbeitung der Komposition und befindet sich auf der Übersichtsseite. \\ \hline
+		\textbf{Nachbedingungen} & NutzerIn befindet sich im Bearbeitungsmodus. \\ \hline
+		\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[1.] [Use-Case: Authentifizieren]
+			\item[2.] NutzerIn drückt Bearbeitungsbutton bei der Komposition.
+			\item[3.] NutzerIn wird in den Bearbeitungsmodus versetzt.
+		\end{enumerate} \\ \hline
+		\textbf{Alternative} & - \\ \hline
+		\textbf{Ausnahme} & - \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & - \\ \hline
+		\textbf{Spezielle Anforderungen} & - \\ \hline
+		\textbf{Annahmen} & Es werden nur Komposition gezeigt für die der NutzerIn die benötigten Rechte besitzt.
+                  Der Bearbeitungsbutton ist ausgegraut falls die Bearbeitungsrechte nicht vorhanden sind.
+	\end{tabularx}
+	\caption{Anwendungsfall WEB-5}
+	\label{fig:anwendungsfall-server-tabelle-web-5}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\begin{tabularx}{\textwidth}{ X | X }
+		\textbf{Anwendungsfall ID} & WEB-6 \\ \hline
+		\textbf{Anwendungsfallname} & Einsehbare Komposition anzeigen \\ \hline
+		\textbf{Initiierender Akteur} & unregistrierteR NutzerIn oder NutzerIn \\ \hline
+		\textbf{Weitere Akteure} & - \\ \hline
+		\textbf{Kurzbeschreibung} & unregistrierteR NutzerIn oder NutzerIn lässt sich eine Komposition anzeigen. \\ \hline
+		\textbf{Vorbedingungen} & unregistrierteR NutzerIn oder NutzerIn befindet sich auf der Übersichtsseite. \\ \hline
+		\textbf{Nachbedingungen} & unregistrierteR NutzerIn oder NutzerIn wird Komposition angezeigt. \\ \hline
+		\textbf{Ablauf} &
+		\begin{enumerate}
+			\item[1.] [Use-Case: Authentifizieren]
+			\item[2.] unregistrierteR NutzerIn oder NutzerIn drückt auf die anzuzeigende Komposition.
+			\item[3.] unregistrierteR NutzerIn oder NutzerIn wird die Komposition angezeigt.
+		\end{enumerate} \\ \hline
+		\textbf{Alternative} & - \\ \hline
+		\textbf{Ausnahme} & - \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & - \\ \hline
+		\textbf{Spezielle Anforderungen} & - \\ \hline
+		\textbf{Annahmen} & Es werden nur Kompositionen gezeigt für die der unregistrierteR NutzerIn oder NutzerIn die benötigten Rechte besitzt.
+	\end{tabularx}
+	\caption{Anwendungsfall WEB-6}
+	\label{fig:anwendungsfall-server-tabelle-web-6}
 \end{figure}
