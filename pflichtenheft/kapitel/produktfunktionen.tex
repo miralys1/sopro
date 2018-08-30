@@ -127,43 +127,45 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 \begin{figure}[h]
 	\centering
 	\begin{tabularx}{\textwidth}{ X | X }
-		\textbf{Anwendungsfall ID} & WEB-2 \\ \hline
-		\textbf{Anwendungsfallname} & Neue Komposition erstellen. \\ \hline
+		\textbf{Anwendungsfall ID} & WEB-4 \\ \hline
+		\textbf{Anwendungsfallname} & Komposition erstellen \\ \hline
 		\textbf{Initiierender Akteur} & NutzerIn \\ \hline
 		\textbf{Weitere Akteure} & - \\ \hline
-		\textbf{Kurzbeschreibung} & Ein neuer Dienst wird in die Datenbank eingefügt \\ \hline
-		\textbf{Vorbedingungen} & NutzerIn befindet sich auf der Startseite  \\ \hline
-		\textbf{Nachbedingungen} & NutzerIn befindet sich im Bearbeitungsmodus \\ \hline
+		\textbf{Kurzbeschreibung} & Eine neue Komposition wird zum System hinzugefügt. \\ \hline
+		\textbf{Vorbedingungen} & NutzerIn befindet sich auf der Übersichtsseite und ist eingeloggt.  \\ \hline
+		\textbf{Nachbedingungen} & Komposition ist erstellt und NutzerIn befindet sich im Bearbeitungsmodus. \\ \hline
 		\textbf{Ablauf} &
 		\begin{enumerate}
-			\item  NutzerIn wählt "Komposition erstellen" Option.
-			\item  NutzerIn gibt einen Namen ein.
-			\item  NutzerIn wird weitergeleitet zu "Komposition bearbeiten".
+			\item[1.]  [Use-Case: Authentifizieren]
+			\item[2.]  NutzerIn wählt ``Komposition erstellen'' Option.
+			\item[3.]  NutzerIn gibt einen Namen für die Komposition an.
+			\item[4.]  NutzerIn wird weitergeleitet zum Bearbeitungsmodus.
 		\end{enumerate} \\ \hline
 		\textbf{Alternative} & - \\ \hline
 		\textbf{Ausnahme} & - \\ \hline
-		\textbf{Benutzte Anwendungsfälle} & WEB-3 \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & WEB-5 \\ \hline
 		\textbf{Spezielle Anforderungen} & - \\ \hline
 		\textbf{Annahmen} & -
 	\end{tabularx}
-	\caption{Anwendungsfall WEB-2}
-	\label{fig:anwendungsfall-server-tabelle-web-2}
+	\caption{Anwendungsfall WEB-5}
+	\label{fig:anwendungsfall-server-tabelle-web-4}
 \end{figure}
 
 \begin{figure}[h]
 	\centering
 	\begin{tabularx}{\textwidth}{ X | X }
-		\textbf{Anwendungsfall ID} & WEB-3 \\ \hline
-		\textbf{Anwendungsfallname} & Komposition bearbeiten. \\ \hline
+		\textbf{Anwendungsfall ID} & WEB-5 \\ \hline
+		\textbf{Anwendungsfallname} & Komposition bearbeiten \\ \hline
 		\textbf{Initiierender Akteur} & NutzerIn \\ \hline
 		\textbf{Weitere Akteure} & - \\ \hline
 		\textbf{Kurzbeschreibung} & NutzerIn bearbeitet Komposition \\ \hline
-		\textbf{Vorbedingungen} & NutzerIn besitzt nötige Rechte zur Bearbeitung der Komposition und befindet sich auf der Startseite \\ \hline
-		\textbf{Nachbedingungen} & NutzerIn befindet sich im Bearbeitungsmodus \\ \hline
+		\textbf{Vorbedingungen} & NutzerIn besitzt benötigte Rechte zur Bearbeitung der Komposition und befindet sich auf der Übersichtsseite. \\ \hline
+		\textbf{Nachbedingungen} & NutzerIn befindet sich im Bearbeitungsmodus. \\ \hline
 		\textbf{Ablauf} &
 		\begin{enumerate}
-			\item  NutzerIn drückt Bearbeitungsbutton der Komposition.
-			\item  NutzerIn wird in den Bearbeitungsmodus versetzt.
+			\item[1.] [Use-Case: Authentifizieren]
+			\item[2.] NutzerIn drückt Bearbeitungsbutton bei der Komposition.
+			\item[3.] NutzerIn wird in den Bearbeitungsmodus versetzt.
 		\end{enumerate} \\ \hline
 		\textbf{Alternative} & - \\ \hline
 		\textbf{Ausnahme} & - \\ \hline
@@ -172,31 +174,32 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 		\textbf{Annahmen} & Es werden nur Komposition gezeigt für die der NutzerIn die benötigten Rechte besitzt.
                   Der Bearbeitungsbutton ist ausgegraut falls die Bearbeitungsrechte nicht vorhanden sind.
 	\end{tabularx}
-	\caption{Anwendungsfall WEB-3}
-	\label{fig:anwendungsfall-server-tabelle-web-3}
+	\caption{Anwendungsfall WEB-5}
+	\label{fig:anwendungsfall-server-tabelle-web-5}
 \end{figure}
 
 \begin{figure}[h]
 	\centering
 	\begin{tabularx}{\textwidth}{ X | X }
-		\textbf{Anwendungsfall ID} & WEB-4 \\ \hline
-		\textbf{Anwendungsfallname} & Komposition darstellen. \\ \hline
-		\textbf{Initiierender Akteur} & NutzerIn \\ \hline
+		\textbf{Anwendungsfall ID} & WEB-6 \\ \hline
+		\textbf{Anwendungsfallname} & Einsehbare Komposition anzeigen \\ \hline
+		\textbf{Initiierender Akteur} & unregistrierteR NutzerIn oder NutzerIn \\ \hline
 		\textbf{Weitere Akteure} & - \\ \hline
-		\textbf{Kurzbeschreibung} & NutzerIn lässt sich Komposition anzeigen \\ \hline
-		\textbf{Vorbedingungen} & NutzerIn besitzt nötige Rechte zur Darstellung der Komposition und befindet sich auf der Startseite \\ \hline
-		\textbf{Nachbedingungen} & NutzerIn wird Komposition dargestellt \\ \hline
+		\textbf{Kurzbeschreibung} & unregistrierteR NutzerIn oder NutzerIn lässt sich eine Komposition anzeigen. \\ \hline
+		\textbf{Vorbedingungen} & unregistrierteR NutzerIn oder NutzerIn befindet sich auf der Übersichtsseite. \\ \hline
+		\textbf{Nachbedingungen} & unregistrierteR NutzerIn oder NutzerIn wird Komposition angezeigt. \\ \hline
 		\textbf{Ablauf} &
 		\begin{enumerate}
-			\item  NutzerIn drückt auf die anzuzeigende Komposition.
-			\item  NutzerIn wird die Komposition angezeigt.
+			\item[1.] [Use-Case: Authentifizieren]
+			\item[2.] unregistrierteR NutzerIn oder NutzerIn drückt auf die anzuzeigende Komposition.
+			\item[3.] unregistrierteR NutzerIn oder NutzerIn wird die Komposition angezeigt.
 		\end{enumerate} \\ \hline
 		\textbf{Alternative} & - \\ \hline
 		\textbf{Ausnahme} & - \\ \hline
 		\textbf{Benutzte Anwendungsfälle} & - \\ \hline
 		\textbf{Spezielle Anforderungen} & - \\ \hline
-		\textbf{Annahmen} & Es werden nur Komposition gezeigt für die der Nutzer die benötigten Rechte besitzt.
+		\textbf{Annahmen} & Es werden nur Kompositionen gezeigt für die der unregistrierteR NutzerIn oder NutzerIn die benötigten Rechte besitzt.
 	\end{tabularx}
-	\caption{Anwendungsfall WEB-4}
-	\label{fig:anwendungsfall-server-tabelle-web-4}
+	\caption{Anwendungsfall WEB-6}
+	\label{fig:anwendungsfall-server-tabelle-web-6}
 \end{figure}
