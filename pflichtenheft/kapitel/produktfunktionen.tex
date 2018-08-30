@@ -8,8 +8,8 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 	
 	\begin{tabularx}{\textwidth}{ p{.1\textwidth} | p{.4\textwidth} | X }
 		\textbf{Akteur} & \textbf{Beschreibung} & \textbf{Verwendet in Anwendungsszenario} \\ \hline
-		Nutzer & Nutzt den SWARM Composer & APP-1, APP-2, APP-3, APP-4
-		\\ \hline Admin & Nutzt und verwaltet den SWARM-Composer & APP-1, APP-2, APP-3, APP-4
+		NutzerIn & Nutzt den SWARM Composer & APP-1, APP-2, APP-3, APP-4
+		\\ \hline AdministratorIn & Nutzt und verwaltet den SWARM-Composer & APP-1, APP-2, APP-3, APP-4
 	\end{tabularx}
 	
 	\caption{Beschreibung der Akteure}
@@ -38,24 +38,22 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 	\begin{tabularx}{\textwidth}{ X | X }
 		\textbf{Anwendungsfall ID} & APP-1 \\ \hline
 		\textbf{Anwendungsfallname} & Einloggen \\ \hline
-		\textbf{Initiierender Akteur} & Nutzer \\ \hline
+		\textbf{Initiierender Akteur} & NutzerIn \\ \hline
 		\textbf{Weitere Akteure} & -  \\ \hline
 		\textbf{Kurzbeschreibung} & Der Nutzer loggt sich ein.  \\ \hline
 		\textbf{Vorbedingungen} & Die Android-App ist geöffnet. Der Nutzer ist nicht eingeloggt.  \\ \hline
 		\textbf{Nachbedingungen} & Der Nutzer ist eingeloggt.  \\ \hline
 		\textbf{Ablauf} &
 			\begin{enumerate}
-				\item Der Nutzer gibt Web-Adresse ein.
 				\item Der Nutzer gibt seinen Benutzernamen ein.
 				\item Der Nutzer gibt sein Passwort ein.
 				\item Der Nutzer tippt auf den Login-Button.
-				\item Der Nutzer wird zur Listenansicht weitergeleitet.
+				\item Eine Bestätigung der erfolgreichen Anmeldung wird angezeigt.
 			\end{enumerate} \\ \hline
 		\textbf{Alternative} &
 				- \\ \hline
 		\textbf{Ausnahme} &
 				\begin{enumerate}
-					\item Der Nutzer gibt Web-Adresse ein.
 					\item Der Nutzer gibt seinen Benutzernamen ein.
 					\item Der Nutzer gibt sein Passwort ein.
 					\item Der Nutzer tippt auf den Login-Button.
@@ -76,20 +74,20 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 	\begin{tabularx}{\textwidth}{ X | X }
 		\textbf{Anwendungsfall ID} & APP-2 \\ \hline
 		\textbf{Anwendungsfallname} & Listenansicht aufrufen \\ \hline
-		\textbf{Initiierender Akteur} & Nutzer \\ \hline
+		\textbf{Initiierender Akteur} & NutzerIn \\ \hline
 		\textbf{Weitere Akteure} & -  \\ \hline
 		\textbf{Kurzbeschreibung} & Dem Nutzer wird eine Liste von vorhandenen Kompositionen angezeigt.  \\ \hline
-		\textbf{Vorbedingungen} & Der Nutzer ist eingeloggt.  \\ \hline
+		\textbf{Vorbedingungen} & Die App ist geöffnet.  \\ \hline
 		\textbf{Nachbedingungen} & Dem Nutzer wird eine Liste von vorhandenen Kompositionen angezeigt.  \\ \hline
 		\textbf{Ablauf} &
 		\begin{enumerate}
-			\item Die Übersichtsdaten werden vom Server abgerufen.
+			\item Die für den Nutzer sichtbaren Kompositionen werden vom Server abgerufen.
 			\item Die Daten werden als Liste angezeigt.
 		\end{enumerate} \\ \hline
 		\textbf{Alternative} &
 		\begin{enumerate}
-			\item Der Nutzer kehrt von einer Detailansicht zur Listenansicht zurück.
-			\item Ihm wird eine Liste der Kompositionen angezeigt.
+			\item Der Nutzer kehrt zur Listenansicht zurück.
+			\item Ihm wird eine Liste der für ihn sichtbaren Kompositionen angezeigt.
 		\end{enumerate}  \\ \hline
 		\textbf{Ausnahme} &
 		-  \\ \hline
@@ -108,7 +106,7 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 	\begin{tabularx}{\textwidth}{ X | X }
 		\textbf{Anwendungsfall ID} & APP-3 \\ \hline
 		\textbf{Anwendungsfallname} & Detailansicht aufrufen \\ \hline
-		\textbf{Initiierender Akteur} & Nutzer \\ \hline
+		\textbf{Initiierender Akteur} & NutzerIn \\ \hline
 		\textbf{Weitere Akteure} & -  \\ \hline
 		\textbf{Kurzbeschreibung} & Der Nutzer ruft die Detailansicht einer Komposition auf.  \\ \hline
 		\textbf{Vorbedingungen} & Der Nutzer hat die Listenansicht aufgerufen.  \\ \hline
@@ -146,8 +144,7 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 		\begin{enumerate}
 			\item Dem Nutzer wird eine Komposition in der Detailansicht angezeigt.
 			\item Der Nutzer tippt auf den Verschicken-Button.
-			\item Dem Nutzer werden Versandoptionen angezeigt.
-			\item Der Nutzer wählt die gewünschten Optionen aus.
+			\item Eine Datei im PDF-Format wird erstellt.
 			\item Der Nutzer bestätigt den Versand.
 		\end{enumerate} \\ \hline
 		\textbf{Alternative} &
