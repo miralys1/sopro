@@ -1,27 +1,21 @@
-\begin{tcolorbox}
-Je nach Projekt und Produkt sind bestimmte Eigenschaften der zu entwickelnden Software wichtiger als andere.
-Diese einzelnen Kriterien werden üblicherweise mittels einer Tabelle, wie z.B. in~\autoref{tabelle:qualitaetsanforderungen} zu sehen, notiert.
-Sie dienen u.a. dazu dem gegenüber Kunden einen hohen Aufwand für ein bestimmtes Kriterium deutlich zu machen.
-\end{tcolorbox}
-
 \begin{table}[h]
 	\centering
 	\begin{tabularx}{\textwidth}{l c c c c}
 		\rowcolor[HTML]{C0C0C0} 
 		& \textbf{sehr wichtig} & \textbf{wichtig} & \textbf{weniger wichtig} & \textbf{unwichtig} \\
-		Robustheit &  &  &  & x \\
+		Robustheit &  &  & x &  \\
 		\rowcolor[HTML]{E7E7E7} 
-		Zuverlässigkeit &  &  &  & x \\
-		Wartbarkeit &  &  &  & x \\
+		Zuverlässigkeit & x &  &  &  \\
+		Wartbarkeit &  & x &  &  \\
 		\rowcolor[HTML]{E7E7E7} 
-		Erweiterbarkeit &  &  &  & x \\
-		Benutzerfreundlichkeit &  &  &  & x \\
+		Erweiterbarkeit &  & x &  &  \\
+		Benutzerfreundlichkeit & x &  &  &  \\
 		\rowcolor[HTML]{E7E7E7} 
-		Effizienz &  &  &  & x \\
-		Anpassbarkeit &  &  &  & x \\
+		Effizienz &  &  & x &  \\
+		Anpassbarkeit &  &  & x &  \\
 		\rowcolor[HTML]{E7E7E7} 
-		Kompatibilität &  &  &  & x \\
-		Sicherheit &  &  &  & x
+		Kompatibilität &  &  & x &  \\
+		Sicherheit &  & x &  & 
 	\end{tabularx}
 	\caption{Qualitätsanforderungen}
 	\label{tabelle:qualitaetsanforderungen}
