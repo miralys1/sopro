@@ -11,10 +11,11 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 \begin{figure}[h]
 	\centering
 
-	\begin{tabularx}{\textwidth}{ p{.2\textwidth} | p{.2\textwidth} | X }
+	\begin{tabularx}{\textwidth}{ p{.2\textwidth} | p{.4\textwidth} | X }
 		\textbf{Akteur} & \textbf{Beschreibung} & \textbf{Verwendet in Anwendungsszenario} \\ \hline
-		Informatiker & Programmiert tolle Sachen & Programmieren, Kaffee trinken, Schlafen \\ \hline
-		AdministratorIn & Anwender der web Applikation & Komposition-\{bearbeiten, erstellen, darstellen \}, Dienst einfügen
+		unregistrierteR NutzerIn & Kann Kompositionen einsehen & APP-2, APP-3, WEB-6
+		\\ \hline NutzerIn & Nutzt den SWARM Composer & APP-1, APP-2, APP-3, APP-4, WEB-4, WEB-5, WEB-6
+		\\ \hline AdministratorIn & Nutzt und verwaltet den SWARM-Composer & APP-1, APP-2, APP-3, APP-4, WEB-1, WEB-2, WEB-3, WEB-4, WEB-5, WEB-6
 	\end{tabularx}
 
 	\caption{Beschreibung der Akteure}
@@ -139,9 +140,9 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 		\textbf{Ablauf} &
 		\begin{enumerate}
 			\item [1.] [Use-Case: Authentifizieren]
-			\item [2.] AdministratorIn wählt "Dienste einlesen"-Button aus.
+			\item [2.] AdministratorIn wählt ``Dienste einlesen''-Button aus.
 			\item [3.] AdministratorIn wählt hochzuladene JSON Datei aus sich öffnenden Dateibrowser von seinem Rechner aus.
-			\item [4.] Eingelesende Daten werden vom System akzeptiert und aufgelistet.
+			\item [4.] Eingelesene Daten werden vom System akzeptiert und aufgelistet.
 			\item [5.] AdministratorIn drückt Speichern
 			\item [6.] Dienste werden in Datenbank gespeichert
 			\item [7.] Zurück zur Administrationsseite.
@@ -150,7 +151,7 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 		\textbf{Ausnahme} &
 		\begin{enumerate}
 			\item [1.]  [Use-Case: Authentifizieren]
-			\item [2.]  AdministratorIn wählt "Dienste einlesen"-Button aus.
+			\item [2.]  AdministratorIn wählt ``Dienste einlesen''-Button aus.
 			\item [3.]  AdministratorIn wählt hochzuladene JSON Datei aus sich öffnenden Dateibrowser von seinem Rechner aus.
 			\item [4.]  System erkennt Fehler in der JSON Datei und gibt einen Fehler aus.
 			\item [5.]  Administrator bleibt auf der Administrationseite
