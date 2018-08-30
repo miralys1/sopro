@@ -129,11 +129,38 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 \begin{figure}[h]
 	\centering
 	\begin{tabularx}{\textwidth}{ X | X }
+		\textbf{Anwendungsfall ID} & WEB-2 \\ \hline
+		\textbf{Anwendungsfallname} & Dienste einlesen. \\ \hline
+		\textbf{Initiierender Akteur} & AdministratorIn \\ \hline
+		\textbf{Weitere Akteure} & - \\ \hline
+		\textbf{Kurzbeschreibung} & Ein oder mehrere Dienste werden über eine Nutzerrechner lokal befindliche JSON Datei eingelesen \\ \hline
+		\textbf{Vorbedingungen} & AdministratorIn ist eingeloggt und befindet sich auf Administrationsseite \\ \hline
+		\textbf{Nachbedingungen} & Neue Dienst(e) wurden der Datenbank hinzugefügt \\ \hline
+		\textbf{Ablauf} &
+		\begin{enumerate}
+			\item [1.] [Use-Case: Authentifizieren]
+			\item [2.] AdministratorIn wählt "Dienste einlesen"-Button aus.
+			\item [3.] AdministratorIn wählt hochzuladene JSON Datei aus sich öffnenden Dateibrowser von seinem Rechner aus.
+			\item [4.] Eingelesende Daten werden vom System akzeptiert und aufgelistet.
+			\item [5.] AdministratorIn drückt Speichern
+			\item [6.] Dienste werden in Datenbank gespeichert
+			\item [7.] Zurück zur Administrationsseite.
+		\end{enumerate} \\ \hline
+		\textbf{Alternative} & - \\ \hline
+		\textbf{Ausnahme} &
+		\begin{enumerate}
+			\item [1.]  [Use-Case: Authentifizieren]
+			\item [2.]  AdministratorIn wählt "Dienste einlesen"-Button aus.
+			\item [3.]  AdministratorIn wählt hochzuladene JSON Datei aus sich öffnenden Dateibrowser von seinem Rechner aus.
+			\item [4.]  System erkennt Fehler in der JSON Datei und gibt einen Fehler aus.
+			\item [5.]  Administrator bleibt auf der Administrationseite
+		\end{enumerate}  \\ \hline
+		\textbf{Benutzte Anwendungsfälle} & - \\ \hline
 		\textbf{Spezielle Anforderungen} & - \\ \hline
 		\textbf{Annahmen} & -
 	\end{tabularx}
-	\caption{Anwendungsfall WEB-5}
-	\label{fig:anwendungsfall-server-tabelle-web-4}
+	\caption{Anwendungsfall WEB-2}
+	\label{fig:anwendungsfall-server-tabelle-web-2}
 \end{figure}
 
 \begin{figure}[h]
