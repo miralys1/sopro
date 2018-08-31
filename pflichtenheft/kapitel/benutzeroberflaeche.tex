@@ -1,19 +1,29 @@
-\begin{tcolorbox}
-In diesem Kapitel werden erste Skizzen (Mockups) der Benutzeroberflächen dargestellt.
-Diese sollen in erster Linie dazu dienen, dem Kunden einen Überblick über die zu erstellenden UIs zu geben und ggf. Änderungen frühzeitig durchführen zu können.
-Dafür eignen sich spezielle Tools, wie z.B. Balsamiq Mockups\footnote{\url{https://balsamiq.com/products/mockups}}.
-\end{tcolorbox}
+In diesem Kapitel werden erste Entwürfe der Benutzeroberflächen dargestellt. Dabei sind weder die ästhetischen Aspekte noch die Anordnung der Inhalte in ihrer finalen Version. 
 
 \begin{figure}[h]
 	\centering
-	\missingfigure{Startbildschirm}		
-	\caption{Startbildschirm}
-	\label{fig:mock-start}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\missingfigure{Passwort ändern}		
-	\caption{Passwort ändern}
-	\label{fig:mock-pw}
+	
+	\begin{tabularx}{\textwidth}{ p{.5\textwidth} | X }
+		\textbf{Skizze} & \textbf{Beschreibung} 
+		
+		\\ \hline \\
+		
+		\raisebox{-.9\height}[0pt][0pt]{\includegraphics[width=.5\textwidth]{img/mockup_list}}
+		%\caption{Listenansicht in der Android-App}
+		\label{fig:mock-list} 
+		
+		&In der Listenansicht werden dem Nutzer alle für ihn sichtbaren Kompositionen mit einigen Informationen (Ersteller, Erstellungsdatum, ...) angezeigt. Falls er nicht eingeloggt ist, sieht er nur die öffentlichen Kompositionen. Durch ein Tippen auf das Lupen-Symbol besteht die Möglichkeit, die Liste zu filtern. Durch das Antippen des Zahnrad-Symbols gelangt der Nutzer in ein Menü, in dem er sich unter anderem ein- und ausloggen kann.
+				
+		\\ \hline \\
+		\raisebox{-.9\height}[0pt][0pt]{\includegraphics[width=.5\textwidth]{img/mockup_detail}}
+		%\caption{Detailansicht in der Android-App}
+		\label{fig:mock-detail} 
+		
+		& 
+		Durch das Antippen einer Komposition aus der Listenansicht wird die Detailansicht geöffnet. Hier wird die Komposition als Graph dargestellt. (Fehlende) Kompatibilität wird an den Verbindungen gekennzeichnet. Mit dem Brief-Symbol kann die angezeigte Komposition verschickt werden.  Dabei wird ein PDF erstellt, das sowohl den Graphen als auch einige Details in textueller Form enthält. 
+		
+	\end{tabularx}
+	
+	\caption{Mockup der Android-App}
+	\label{fig:app-mockup}
 \end{figure}
