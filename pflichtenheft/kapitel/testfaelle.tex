@@ -3,21 +3,37 @@ In Tabelle \ref{fig:testfaelle-androidapp} wird das Verhalten der Android-App de
 
 
 \begin{figure}[!h]
+	\newcounter{test}
 	\begin{center}
-		\begin{tabularx}{\textwidth}{ p{.05\textwidth} | p{.25\textwidth} | p{.2\textwidth} | X }
-			\textbf{Nr.} & \textbf{Anwendungsfall ID} & \textbf{Szenario} & \textbf{Erwartetes Verhalten} \\ \hline
-			1 & App-1 & Die App wird gestartet. & Es erscheint eine Listenansicht der öffentlichen Kompositionen und eine Loginmaske wird angezeigt. \\ \hline
-			2 & App-1 & Beim Einloggen wird ein nicht registrierter Nutzername eingegeben.& Es wird eine passende Fehlermeldung angezeigt, ein Login kann erneut versucht werden.\\ \hline
-			3 & App-1 & Das zu einem registrierten Nutzernamen eingegebene Passwort ist nicht korrekt.& Es wird eine passende Fehlermeldung angezeigt, ein Login kann erneut versucht werden.\\ \hline
-			4 & App-1 & Während des Loginvorgangs ist der Server nicht mehr erreichbar. & Eine passende Fehlermeldung wird angezeigt.\\ \hline
-			5 & App-1 & Ein registrierter Nutzername und ein dazu passendes Passwort wird eingegeben.& Der Login ist erfolgreich und es wird die erweiterte Listenansicht der Kompositionen angezeigt.\\ \hline
-			6 & App-2 & Die Listenansicht wird von einer eingeloggten Person angefordert. &
-			Eine Liste der, für diese Person einsehbaren, Kompositionen wird angezeigt.\\ \hline
-			7 & App-2 & Die Listenansicht wird von einer nicht eingeloggten Person angefordert. & Es erscheint eine Listenansicht der öffentlichen Kompositionen.
+		\begin{tabularx}{\textwidth}{ p{.05\textwidth} | p{.2\textwidth} | X | X }
+			\textbf{Nr.} & \textbf{Anwendungsfall ID} & \textbf{Szenario} & \textbf{Erwartetes Verhalten} 
 			\\ \hline
-			8 & App-3 & Es wird die Detailansicht einer Komposition angefordert. & Die Komposition wird mit den Kompatibilitätshinweisen zwischen den einzelnen Diensten graphisch angezeigt.\\ \hline
-			9 & App-4 & Das Versenden einer Komposition als pdf schlägt fehl. & Es wird eine passende Fehlermeldung angezeigt.\\ \hline
-			10 & App-4 & Das Versenden einer Komposition als pdf war erfolgreich. & Es wird eine Bestätigung angezeigt. \\ \hline
+			\stepcounter{test}\arabic{test}& App-1 & 
+			Beim Einloggen wird ein nicht registrierter Nutzername eingegeben.& Es wird eine passende Fehlermeldung angezeigt, ein Login kann erneut versucht werden.
+			\\ \hline
+			\stepcounter{test}\arabic{test} & App-1 & 
+			Das zu einem registrierten Nutzernamen eingegebene Passwort ist nicht korrekt.& Es wird eine passende Fehlermeldung angezeigt, ein Login kann erneut versucht werden.
+			\\ \hline
+			\stepcounter{test}\arabic{test} & App-1 & 
+			Während des Loginvorgangs ist der Server nicht mehr erreichbar. & Eine passende Fehlermeldung wird angezeigt.\\ \hline
+			\stepcounter{test}\arabic{test} & App-1 & 
+			Ein registrierter Nutzername und das dazu passendes Passwort werden eingegeben.& Der Login ist erfolgreich und es wird die erweiterte Listenansicht der Kompositionen angezeigt.
+			\\ \hline
+			\stepcounter{test}\arabic{test} & App-2 & 
+			Die Listenansicht wird von einer eingeloggten Person angefordert. & Eine Liste der, für diese Person einsehbaren, Kompositionen wird angezeigt.
+			\\ \hline
+			\stepcounter{test}\arabic{test} & App-2 & 
+			Die Listenansicht wird von einer nicht eingeloggten Person angefordert. & Es erscheint eine Listenansicht der öffentlichen Kompositionen.
+			\\ \hline
+			\stepcounter{test}\arabic{test} & App-3 & 
+			Es wird die Detailansicht einer Komposition angefordert. & Die Komposition wird mit den Kompatibilitätshinweisen zwischen den einzelnen Diensten graphisch angezeigt.
+			\\ \hline
+			\stepcounter{test}\arabic{test} & App-4 & 
+			Das Versenden einer Komposition als pdf schlägt fehl. & Es wird eine passende Fehlermeldung angezeigt.
+			\\ \hline
+			\stepcounter{test}\arabic{test} & App-4 & 
+			Das Versenden einer Komposition als pdf war erfolgreich. & Es wird eine Bestätigung angezeigt. 
+			\\ \hline
 		\end{tabularx}	
 	\end{center}
 	
@@ -31,7 +47,7 @@ In Tabelle \ref{fig:testfaelle-androidapp} wird das Verhalten der Android-App de
 
 \begin{figure}[!h]
 	\begin{center}
-		\begin{tabularx}{\textwidth}{ p{.05\textwidth} | p{.25\textwidth} | p{.2\textwidth} | X }
+		\begin{tabularx}{\textwidth}{ p{.05\textwidth} | p{.2\textwidth} | X | X }
 			\textbf{Nr.} & \textbf{Anwendungsfall ID} & \textbf{Szenario} & \textbf{Erwartetes Verhalten} \\ \hline
 			1 & Web-1/2 & EinE NutzerIn ohne Administrator-Rechte versucht, einen Dienst einzufügen. & Die Aktion wird verweigert und es wird eine passende Fehlermeldung angezeigt.\\ \hline
 			2 & Web-1 & EinE NutzerIn mit Administrator-Rechten wählt aus, einen Dienst manuell einzufügen. & Es wird das Eingabeformular für Dienste angezeigt. \\ \hline
