@@ -1,6 +1,9 @@
+Um die Software fehlerfrei und korrekt zu nutzen, müssen bestimmte technische Bedingungen erfüllt sein, die hier aufgeführt werden.
+
 \section{Software}
 
-Die Clients benötigen lediglich einen Webbrowser, um das Webinterface zu benutzen. Um die App zu benutzen, wird Android 6.0 oder neuer vorausgesetzt.
+Für das Webinterface dient ein einfacher Webbrowser als Client.
+Um die App zu benutzen, wird Android 6.0 oder neuer vorausgesetzt.
 \newline
 \newline
 Auf dem Server muss eine Linux-Distribution mit Docker und Jenkins installiert sein.
@@ -15,9 +18,9 @@ Webservices müssen auf dem Server laufen können.
 
 \section{Orgware}
 
-Sowohl Server als auch die Geräte der Clients müssen netzwerkfähig sein.
+Sowohl Server als auch die Clients müssen netzwerkfähig sein.
 
 
 \section{Produktschnittstelle}
 
-Die Kommunikation zwischen Server und Client findet bei dem Webinterface über HTTPS und bei der App über die REST-Schnittstelle statt. Für das Verschicken von Emails wird die Standard Android API verwendet. Weiterhin wird zum Einlesen von Dateien mit Diensten auch eine REST-Schnittstelle benutzt.
+Die Kommunikation zwischen Server und Client findet bei dem Webinterface über HTTPS und bei der App über eine REST-Schnittstelle statt. Für das Verschicken von exportierten Pdfs wird die Standard Android API verwendet.
