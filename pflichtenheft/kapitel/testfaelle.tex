@@ -62,6 +62,20 @@ In Tabelle \ref{fig:testfaelle-androidapp} wird das Verhalten der Android-App de
 			11 & Web-4 & Eine unregistrierte Person möchte eine Komposition erstellen. & Die Aktion wird mit Fehlermeldung verweigert.\\ \hline
 			12 & Web-4 & Eine registrierte Person möchte eine Komposition erstellen. & Es wird die Weboberfläche zum Bearbeiten einer Komposition angezeigt.\\ \hline
 			13 & Web-4 & Eine erstellte Komposition soll gespeichert werden. & Die Komposition wird mit den angegebenen Einstellungen in die Datenbank übernommen.\\ \hline
+	\end{tabularx}
+
+	\end{center}
+
+	\caption{Beschreibung der Testfälle für die Web-App}
+	\label{fig:testfaelle-webapp}
+\end{figure}
+\newpage
+\begin{figure}[!h]
+	\begin{center}
+	\begin{tabularx}{\textwidth}{ p{.05\textwidth} | p{.2\textwidth} | X | X }
+		\textbf{Nr.} & \textbf{Anwendungsfall ID} & \textbf{Szenario} & \textbf{Erwartetes Verhalten} \\ \hline
+
+
 			14 & Web-5 & Eine Person mit nicht ausreichenden Rechten versucht, eine Komposition zu bearbeiten. & Die Aktion wird verweigert und es wird eine passende Fehlermeldung ausgegeben. \\ \hline
 			15 & Web-5 & Eine Person mit ausreichenden Rechten möchte eine Komposition bearbeiten. & Die Weboberfläche zum Bearbeiten einer Komposition wird angezeigt. \\ \hline
 			16 & Web-5 & Eine bearbeitete Komposition soll gespeichert werden. & Die Änderungen werden in die Datenbank übernommen. \\ \hline
@@ -69,11 +83,10 @@ In Tabelle \ref{fig:testfaelle-androidapp} wird das Verhalten der Android-App de
 			18 & Web-6 & Eine Person möchte eine für sie einsehbare Komposition einsehen. & Die gewählte Komposition wird visuell dargestellt. \\ \hline
 			
 		\end{tabularx}	
+
 	\end{center}
 	
-	
-	
-	
+
 	\caption{Beschreibung der Testfälle für die Web-App}
 	\label{fig:testfaelle-webapp}
 \end{figure}
