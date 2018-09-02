@@ -8,9 +8,9 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 
 	\begin{tabularx}{\textwidth}{ p{.2\textwidth} | p{.4\textwidth} | X }
 		\textbf{Akteur} & \textbf{Beschreibung} & \textbf{Verwendet in Anwendungsszenario} \\ \hline
-		unregistriertr Nutzer & Nicht angemeldete Nutzer: Kann nur Kompositionen einsehen & APP-2, APP-3, WEB-6
+		unregistrierter Nutzer & Nicht angemeldeter Nutzer: Kann nur Kompositionen einsehen & APP-2, APP-3, WEB-6
 		\\ \hline Nutzer & Angemeldeter Nutzer: Nutzt den SWARM Composer & APP-1, APP-2, APP-3, APP-4, WEB-4, WEB-5, WEB-6
-		\\ \hline Administrator & Nutzt und verwaltet den SWARM-Composer & APP-1, APP-2, APP-3, APP-4, WEB-1, WEB-2, WEB-3, WEB-4, WEB-5, WEB-6
+		\\ \hline Administrator & Nutzt und verwaltet den SWARM Composer & APP-1, APP-2, APP-3, APP-4, WEB-1, WEB-2, WEB-3, WEB-4, WEB-5, WEB-6
 	\end{tabularx}
 
 	\caption{Beschreibung der Akteure}
@@ -39,7 +39,7 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 	\begin{tabularx}{\textwidth}{ X | X }
 		\textbf{Anwendungsfall ID} & APP-1 \\ \hline
 		\textbf{Anwendungsfallname} & Einloggen \\ \hline
-		\textbf{Initiierender Akteur} & Ein Nutzer \\ \hline
+		\textbf{Initiierender Akteur} & Nutzer \\ \hline
 		\textbf{Weitere Akteure} & -  \\ \hline
 		\textbf{Kurzbeschreibung} & Ein Nutzer loggt sich ein. \\ \hline
 		\textbf{Vorbedingungen} & Android-App ist geöffnet, der Nutzende ist nicht eingeloggt. \\ \hline
@@ -136,7 +136,7 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 	\begin{tabularx}{\textwidth}{ X | X }
 		\textbf{Anwendungsfall ID} & APP-4 \\ \hline
 		\textbf{Anwendungsfallname} & Komposition verschicken \\ \hline
-		\textbf{Initiierender Akteur} & Nutzender
+		\textbf{Initiierender Akteur} & Nutzer
 		 \\ \hline
 		\textbf{Weitere Akteure} & -  \\ \hline
 		\textbf{Kurzbeschreibung} & Nutzer verschickt eine Komposition.  \\ \hline
@@ -307,8 +307,8 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 			\item[1.]  [Use-Case: Authentifizieren]
 			\item[2.]  Nutzer wählt ``Komposition erstellen'' aus
 			\item[3.]  Nutzer gibt einen Namen für die Komposition an
-			\item[4.]  Nutzer wird zum Bearbeitungsmodus weitergeleitet
-			\item[5.] [Use-Case: Komposition bearbeiten]
+			\item[4.]  Nutzer wird zur Bearbeitungsseite weitergeleitet
+			\item[5.]  [Use-Case: Komposition bearbeiten]
 		\end{enumerate} \\ \hline
 		\textbf{Alternative} & - \\ \hline
 		\textbf{Ausnahme} & - \\ \hline
@@ -316,7 +316,7 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 		\textbf{Spezielle Anforderungen} & - \\ \hline
 		\textbf{Annahmen} & Authentifizierung ist erfolgreich
 	\end{tabularx}
-	\caption{Anwendungsfall WEB-5}
+	\caption{Anwendungsfall WEB-4}
 	\label{fig:anwendungsfall-server-tabelle-web-4}
 \end{figure}
 
@@ -335,6 +335,7 @@ In  Tabelle~\autoref{fig:akteur-tabelle} werden alle auftretenden Akteure beschr
 			\item[1.] [Use-Case: Authentifizieren]
 			\item[2.] Nutzer wählt ``Komposition bearbeiten'' aus
 			\item[3.] Nutzer wird zur Bearbeitungsseite weitergeleitet
+			\item[4.] Nutzer wird in den Bearbeitungsmodus versetzt
 		\end{enumerate} \\ \hline
 		\textbf{Alternative} & - \\ \hline
 		\textbf{Ausnahme} & - \\ \hline
