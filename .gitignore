@@ -1,7 +1,7 @@
 *.aux
 /pflichentheft/pflichtenheft.pdf
-.log
-.out
+*.log
+*.out
 
 pflichtenheft/pflichtenheft\.log
 
@@ -16,3 +16,6 @@ pflichtenheft/pflichtenheft\.blg
 pflichtenheft/pflichtenheft\.out
 
 pflichtenheft/pflichtenheft\.toc
+
+*.fls
+*.fdb_latexmk
