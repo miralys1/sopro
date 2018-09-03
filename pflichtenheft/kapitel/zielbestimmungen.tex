@@ -3,9 +3,9 @@ Im Folgenden ist der Funktionsumfang des SWARM Composers, insbesondere der Web-A
 \begin{itemize}[leftmargin=4pc]
 	\item Musskriterien umfassen alle Ziele und Funktionalitäten, die für einen Einsatz des entwickelten Produktes unabdingbar sind.
 	Sie müssen daher ohne Kompromisse implementiert werden. Ein Wegfall eines einzelnen Musskriteriums würde das Produkt außer Betrieb setzen.
-	\item Sollkriterien sind gewünschte Funktionen, die ebenfalls implementiert werden müssen, deren Wegfall auf Grund von unüblichen Umständen aber nicht den Einsatz des Produkts verhindern würde.
+	\item Sollkriterien sind gewünschte Funktionen, die ebenfalls implementiert werden müssen, deren Wegfall auf Grund von unüblichen Umständen jedoch nicht den Einsatz des Produkts verhindern würde.
 	\item Kannkriterien sind alle Ziele, die wünschenswert sind, aber nicht zwingend notwendige Funktionen darstellen. 
-	\item Abgrenzungskriterien zeigen, was explizit \textbf{nicht} umgesetzt wird. Sie dienen dazu die Grenzen des Produkts zu definieren.
+	\item Abgrenzungskriterien zeigen, was explizit \textbf{nicht} umgesetzt wird. Sie dienen dazu, die Grenzen des Produkts zu definieren.
 	\\\\
 \end{itemize}
 %
@@ -13,39 +13,39 @@ Im Folgenden ist der Funktionsumfang des SWARM Composers, insbesondere der Web-A
 \textbf{Funktionale Zielbestimmungen}\newline
 %
 
-\textit{Musskriterium}
+\textit{Musskriterien}
 
 \begin{itemize}[leftmargin=4pc]
 	\item Der SWARM Composer muss über eine native Android-App erreichbar sein.
 	\item Der SWARM Composer muss über eine Website erreichbar sein.
-	\item Neue BenutzerInnen des SWARM Composers müssen sich über die Website registrieren können.
-	\item Registrierte BenutzerInnen des SWARM Composers müssen sich anmelden können, unabhängig davon, ob sie über die Website oder die Android-App zugreifen.
-	\item EinE AdministratorIn muss eine JSON-Datei hochladen können, um neue Dienste zu erstellen.
-	\item EinE AdministratorIn muss über eine Webmaske neue Dienste hinzufügen können.
-	\item Beim manuellen Erstellen von Diensten, über eine Webmaske, muss das Format syntaktisch überprüft werden.
-	\item AdministratorInnen müssen die Möglichkeit haben Dienste zu überarbeiten und zu löschen.
+	\item Neue Benutzende des SWARM Composers müssen sich über die Website registrieren können.
+	\item Registrierte Benutzende des SWARM Composers müssen sich anmelden können, unabhängig davon, ob sie über die Website oder die Android-App zugreifen.
+	\item Administrierende müssen eine JSON-Datei hochladen können, um neue Dienste zu erstellen.
+	\item Administrierende müssen über eine Webmaske neue Dienste hinzufügen können.
+	\item Beim manuellen Erstellen von Diensten über eine Webmaske muss das Format syntaktisch überprüft werden.
+	\item Administrierende müssen die Möglichkeit haben, Dienste zu überarbeiten und zu löschen.
 	\item Auf der Website muss die Möglichkeit bestehen, Kompositionen zu erstellen.
 	\item Der SWARM Composer muss eine Kompatibilitätsprüfung für Kompositionen durchführen.
-	\item Es muss eine grafische Rückmeldung über die Kompatibilität von Diensten geben.
+	\item Es muss eine grafische Rückmeldung über die Kompatibilität von Diensten erfolgen.
 	\item Die Speicherung von erstellten Kompositionen muss möglich sein.
 	\item Die Android-App muss erstellte Kompositionen anzeigen können.
 \end{itemize}
 
-\textit{Sollkriterium}
+\textit{Sollkriterien}
 
 \begin{itemize}[leftmargin=4pc]
-	\item Unter allen NutzerInnen soll zwischen zwei Rollen, normaler NutzerIn und AdministratorIn, unterschieden werden, wobei letztereR mehr Nutzungsrechte hat.
+	\item Unter allen Nutzenden soll zwischen den zwei Rollen normalem Nutzenden und Administrierenden unterschieden werden, wobei Letztere über mehr Nutzungsrechte verfügt.
 	\item Bestehende Kompositionen sollen bearbeitet werden können.
-	\item ErstellerIn einer Komposition soll festlegen können, welche anderen BenutzerInnen diese sehen können.
+	\item Der Erstellende einer Komposition soll festlegen können, welche Nutzenden diese einsehen dürfen.
 	\item Öffentliche Kompositionen sollen auch ohne Benutzerkonto sichtbar sein.
-	\item ErstellerIn einer Komposition soll festlegen können, welche anderen BenutzerInnen diese verändern können.
-	\item In der Android-App soll die Möglichkeit bestehen, Kompositionen als pdf zu teilen.
+	\item Wer eine Komposition erstellt, soll festlegen können, welche Nutzenden diese verändern können.
+	\item In der Android-App soll die Möglichkeit bestehen, Kompositionen als PDF zu teilen.
 	\item Es sollen Konverter angezeigt werden, wenn Dienste nicht kompatibel sind.
 	\item Bei der manuellen Eingabe von Diensten sollen Schlagwörter vorgeschlagen werden.
 	\item Beim Erstellen von Kompositionen können Dienste nach Namen und Schlagwörter gefiltert werden.
 \end{itemize}
 
-\textit{Kannkriterium}
+\textit{Kannkriterien}
 
 \begin{itemize}[leftmargin=4pc]
 	\item Die Android-App kann zu einzelnen Diensten die gespeicherten Informationen detailliert anzeigen.
@@ -53,21 +53,21 @@ Im Folgenden ist der Funktionsumfang des SWARM Composers, insbesondere der Web-A
 	\item Auf der Website können Kompositionen verschickt werden.
 \end{itemize}
 
-\textit{Abgrenzungskriterium}
+\textit{Abgrenzungskriterien}
 
 \begin{itemize}[leftmargin=4pc]
 	\item In der Android-App können keine Kompositionen erstellt werden.
 	\item In der Android-App können keine Dienste erstellt werden.
-	\item In der Android-App können keine Benutzer registriert werden.
+	\item In der Android-App können keine Benutzenden registriert werden.
 	\item Beim manuellen Erstellen von Diensten wird nicht geprüft, ob der Inhalt korrekt ist.
 	\item Es gibt keine benutzerspezifischen Einschränkungen bei der Sichtbarkeit einzelner Dienste.
 	\item Kompositionen können nicht aus Kompositionen zusammengesetzt werden
 \end{itemize}
 
 
-\textbf{nicht funktionale Zielbestimmungen}\newline
+\textbf{Nicht funktionale Zielbestimmungen}\newline
 
-\textit{Musskriterium}
+\textit{Musskriterien}
 
 \begin{itemize}[leftmargin=4pc]
 	\item Die Web-Applikation muss mit Java-Spring erstellt werden.
@@ -75,11 +75,11 @@ Im Folgenden ist der Funktionsumfang des SWARM Composers, insbesondere der Web-A
 	\item Die verwendeten URLs müssen zur Laufzeit änderbar sein.
 \end{itemize}
 
-\textit{Sollkriterium}
+\textit{Sollkriterien}
 
 \begin{itemize}[leftmargin=4pc]
 	\item Die Kommunikation zwischen Web-App und Android-App soll verschlüsselt sein.
-	\item Es soll eine Drag and Drop Benutzeroberfläche auf der Website geben.
+	\item Es soll eine Drag-and-Drop-Benutzeroberfläche auf der Website geben.
 	\item Die Benutzeroberfläche soll einfach und intuitiv gestaltet sein.
 	\item Der Quellcode des SWARM Composers soll unter eine geeignete Lizenz gestellt werden.
 \end{itemize}

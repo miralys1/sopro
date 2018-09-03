@@ -1,13 +1,13 @@
-Zu den BenutzerInnen werden folgende Daten gespeichert:
+Um die Funktionsweise des Dienstes zu realisieren, ist es notwendig, die hier genannten Daten zu speichern.\\
+Zu den Benutzenden werden folgende Daten gespeichert:
 \begin{itemize}
 	\item Anrede
 	\item Name
 	\item E-Mail-Adresse
 	\item Passwort
 	\item Erstellte Kompositionen
-	\item Kompositionen, die er oder sie zusätzlich zu den öffentlichen Kompositionen einsehen darf
-	\item Kompositionen, die er oder sie ändern darf
-	\item Benutzergruppe (Administrator?)
+	\item Kompositionen, die eingesehen oder geändert werden dürfen
+	\item vorhandene Administratorrechte
 \end{itemize}
 Zu den Diensten werden folgende Daten gespeichert:
 \begin{itemize}
@@ -15,8 +15,8 @@ Zu den Diensten werden folgende Daten gespeichert:
 	\item Organisation
 	\item Version
 	\item Schlagworte
-	\item gültige Eingabeformate (ggf. auch keines)
-	\item gültige Ausgabeformate (ggf. auch keines)
+	\item gültige Eingabeformate (ggf. auch keine)
+	\item gültige Ausgabeformate (ggf. auch keine)
 \end{itemize}
 Zu den Kompositionen werden folgende Daten gespeichert:
 \begin{itemize}
@@ -24,7 +24,7 @@ Zu den Kompositionen werden folgende Daten gespeichert:
 	\item Enthaltene Dienste
 	\item Kompatibilitätsbeziehungen der Dienste
 	\item Sichtbarkeit (öffentlich, nur bestimmte Benutzer)
-	\item Zum Ändern berechtigte BenutzerInnen
+	\item Zum Ändern berechtigte Benutzende
 \end{itemize}
 
 Zu den Ein- und Ausgabeformaten werden folgende Daten gespeichert:
@@ -33,4 +33,4 @@ Zu den Ein- und Ausgabeformaten werden folgende Daten gespeichert:
 	\item Version
 	\item Abwärtskompatibilität\\
 \end{itemize}
-Bei der Abwärtskompatibilität wird zwischen \textit{strict} und \textit{flexible} unterschieden. Mit \textit{flexible} markierte Formate sind abwärtskompatibel, mit \textit{strict} gekennzeichnete hingegen nicht.
+Bei der Abwärtskompatibilität wird zwischen \textit{strict} und \textit{flexible} unterschieden: Mit \textit{flexible} markierte Formate sind abwärtskompatibel, mit \textit{strict} gekennzeichnete sind dies hingegen nicht.

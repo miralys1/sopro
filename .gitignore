@@ -17,6 +17,8 @@ pflichtenheft/pflichtenheft\.out
 
 pflichtenheft/pflichtenheft\.toc
 
+*.fls
+*.fdb_latexmk
 *.toc
 *.bbl
 *.blg
