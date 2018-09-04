@@ -23,3 +23,14 @@ pflichtenheft/pflichtenheft\.toc
 *.bbl
 *.blg
 *.syntex.gz
+entwurfsdoku/entwurfsdoku\.pdf
+
+entwurfsdoku/entwurfsdoku\.synctex\.gz
+
+entwurfsdoku/Klassendiagramme/Model/KlassendiagrammBenutzerverwaltung\.vpp\.bak_000f
+
+entwurfsdoku/Klassendiagramme/Model/KlassendiagrammBenutzerverwaltung\.vpp\.bak_001d
+
+entwurfsdoku/Klassendiagramme/Server/Controller\.vpp\.bak_001d
+
+entwurfsdoku/Klassendiagramme/Server/Controller\.vpp\.vbak
