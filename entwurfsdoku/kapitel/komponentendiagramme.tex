@@ -4,21 +4,21 @@
 	\caption{Komponentendiagramm - A}
 	\label{fig:komponentendiagramm-a}
 \end{figure}
-
+\\
 Die Serverkomponente bzw. das Backend beschreibt die internen Vorgänge der Software.
 Diese Komponente ist über drei verschiedene Schnittstellen, die die unterschiedlichen
 Benutzerrechte repräsentieren erreichber.
 In der Komponente Benutzerverwaltung werden die Daten der Benutzer aus der Datenbank ausgelesen und verarbeitet.
 Dadurch kann die Benutzerverwaltung eine Authentifizierungsschnittstelle für die anderen Subkomponenten bereit stellen.
-Zudem kann die Rechteverwaltung manipuliert werden, falls über die Verwalten-Schnittstelle zugegriffen wird.
+Zudem kann die Rechteverwaltung manipuliert werden, falls über die \textit{Verwalten}-Schnittstelle zugegriffen wird.
 Die Komponente Diensteverwaltung liest die Daten der Dienste aus der Datenbank aus und verarbeitet diese.
-Von außen kann auf die Diensteverwaltung durch die Schnittstellen Bearbeiten und Einsehen zugegriffen werden.
-Die Schnittstelle bearbeiten ist nur für Administratoren über die Schnittstelle Verwalten zugänglich.
-Es bei jedem Zugriff die Rechte des zugreifenden Benutzers durch die Schnittstelle Auth der Benutzerverwaltung überprüft.
+Von außen kann auf die Diensteverwaltung durch die Schnittstellen \textit{Bearbeiten} und \textit{Einsehen} zugegriffen werden.
+Die Schnittstelle \textit{Bearbeiten} ist nur für Administratoren über die Schnittstelle \textit{Verwalten} zugänglich.
+Es bei jedem Zugriff die Rechte des zugreifenden Benutzers durch die Schnittstelle \textit{Auth} der Benutzerverwaltung überprüft.
 Die Komponente Kompositionsverwaltung stellt die benötigten Funktionen für das Bearbeiten und Einsehen von Kompositionen zur Verfügung und bekommt die Daten dafür von den Komponenten Datenbank und Diensteverwaltung.
-Das Bearbeiten von Kompositionen ist nur über die Schnittstellen Bearbeiten und Verwalten möglich, das Einsehen auch über das Einsehen-Interface.
+Das Bearbeiten von Kompositionen ist nur über die Schnittstellen \textit{Bearbeiten} und \textit{Verwalten} möglich, das Einsehen auch über das \textit{Einsehen}-Interface.
 Die Komponente Datenbank speichert alle nötigen Daten für die Komponenten Benutzer-, Dienste- und Kompositionsverwaltung und stellt diese bei Bedarf zur Verfügung.
-Zusätzlich kann man über die Einsehen-Schnittstelle auch direkt auf die Authentifizierung zugreifen um ein initiales regestrieren und den Login zu ermöglichen.
+Zusätzlich kann man über die \textit{Einsehen}-Schnittstelle auch direkt auf die Authentifizierung zugreifen um ein initiales registrieren und den Login zu ermöglichen.
 
 Die Komponente Web mit der Subkomponente View Verwaltung ist für die Darstellung in der Webapplikation zuständig.
 Da über die Weboberfläche sowohl verwaltet, bearbeitet und eigesehen werden können soll, ist die Web-Komponete auch mit all diesen Schnittstellen verbunden.
