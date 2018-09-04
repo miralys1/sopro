@@ -6,23 +6,64 @@
 \end{figure}
 
 \begin{table}[h]
-	\centering
+	\centering	
 	\begin{tabularx}{\textwidth}{X X}
 		\rowcolor[HTML]{C0C0C0} 
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
-		Klasse A & Aufgabe A \\
+		User & \begin{itemize}
+			\item Speicherung der Nutzerdaten, sowie einer künstlichen Datenbank-ID
+		\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7} 
-		Klasse B & Aufgabe B \\
-		Klasse C & Aufgabe C \\
+		Composition & \begin{itemize}
+			\item Speicherung der Kompositionen als Graphen, durch Speicherung der Knoten und Kanten
+			\item Speicherung des Urhebers und der Nutzenden mit Zugriffs- bzw. Bearbeitungsrechten 
+			\item Konvertermethode, zum Erstellen eines reduzierten Objektes
+		\end{itemize} \\
+		CompositionNode & \begin{itemize}
+			\item Speicherung eines Dienstes, für dessen Verwendung im Kompositionsgraphen
+			\item Dazu Speicherung einer Position und Aunsdehnung des Knotens
+			\item Konvertermethode, zum Erstellen eines reduzierten Objektes
+		\end{itemize} \\
 		\rowcolor[HTML]{E7E7E7} 
-		Klasse D & Aufgabe D \\
-		Klasse E & Aufgabe E \\
+		CompositionEdge & \begin{itemize}
+			\item Speicherung einer gerichteten Kompositionskante als Paar von Kompositionskonten
+			\item Bestimmung der Kompatibilität der, an der Kante beteiligten Knoten
+			\item Konvertermethode, zum Erstellen eines reduzierten Objektes
+		\end{itemize} \\
+		Service & \begin{itemize}
+			\item Speicherung der Dienst-Eigenschaften 
+			\item Speicherung der zum Dienst gelisteten Tags
+			\item Speicherung je einer Liste der passenden Ein- bzw- Ausgabeformate 
+		\end{itemize} \\
 		\rowcolor[HTML]{E7E7E7} 
-		Klasse F & Aufgabe F \\
-		Klasse G & Aufgabe G
+		Format & \begin{itemize}
+			\item Speicherung von Name, Version und Kompatibilitätsgrad
+		\end{itemize} \\
 	\end{tabularx}
-	\caption{Klassenbeschreibung - A}
+	\caption{Klassen des Models}
 	\label{table:klassenbeschreibung-a}
+\end{table}
+
+\begin{table}
+	\begin{tabularx}{\textwidth}{X X}
+		\rowcolor[HTML]{C0C0C0} 
+		\textbf{Klassenname} & \textbf{Aufgabe} \\
+		SendComp & \begin{itemize}
+			\item Speicherung der wichtigsten Daten mit möglichst wenig Referenzen zum Verschicken der Objekte als JSON über REST
+		\end{itemize}\\
+		\rowcolor[HTML]{E7E7E7}
+		ReducedEdge & \begin{itemize}
+			\item Speicherung der wichtigsten Daten mit möglichst wenig Referenzen zum Verschicken der Objekte als JSON über REST
+		\end{itemize}\\
+		ReducedNode & \begin{itemize}
+			\item Speicherung der wichtigsten Daten mit möglichst wenig Referenzen zum Verschicken der Objekte als JSON über REST
+		\end{itemize}\\
+		\rowcolor[HTML]{E7E7E7}
+		ListComp & \begin{itemize}
+			\item Speicherung der elementarsten Daten für die Listenansicht aller Kompositionen
+		\end{itemize}\\
+	\end{tabularx}
+	\caption{Klassen des Models \textit{Fortsetzung}}
 \end{table}
 
 \begin{tcolorbox}
