@@ -1,33 +1,33 @@
 /services
 
-/search
+/search - POST
 String -> Liste der Services mit dem String in Tag oder Name
 
-/create
+/create - POST
 Liste von Services -> Services einspeichern
 
-/edit
+/edit - POST
 Id (Name) + Service (nullable) -> Service mit Id löschen, neuen Service löschen
 
 
 /compositions
 
-/list
+/list - GET
 -> Liste der Kompositionen des users oder nur öffentliche
 
-/detail/id
+/detail/id - GET
 -> Detailansicht der Komposition
 
-/edit
+/edit - POST
 id + Komposition in JSON -> Komposition mit id überarbeiten
 
-/create
+/create - POST
 Komposition in JSON -> Komposition wird gespeichert
 
-/users/id
+/users/id - GET
 -> gibt Liste mit Usern, die Bearbeiten und Liste mit Usern die einsehen dürfen
 
-/editUsers/id
+/editUsers/id - POST
 Liste von Usern zum Bearbeiten und Liste mit Usern zum Einsehen 
 
 
