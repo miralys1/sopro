@@ -12,34 +12,31 @@
       ><path d="M0 0 L0 614 L857 614 L857 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath3"
-      ><path d="M-7 -7 L268 -7 L268 128 L-7 128 L-7 -7 Z"
+      ><path d="M-7 -7 L265 -7 L265 128 L-7 128 L-7 -7 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath4"
-      ><path d="M0 0 L0 103 L257 103 L257 0 Z"
+      ><path d="M0 0 L0 103 L254 103 L254 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath5"
-      ><path d="M0 0 L0 14 L257 14 L257 0 Z"
+      ><path d="M0 0 L0 14 L254 14 L254 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath6"
-      ><path d="M-7 -7 L233 -7 L233 128 L-7 128 L-7 -7 Z"
-      /></clipPath
-      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath7"
-      ><path d="M0 0 L0 103 L222 103 L222 0 Z"
-      /></clipPath
-      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath8"
-      ><path d="M0 0 L0 14 L222 14 L222 0 Z"
-      /></clipPath
-      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath9"
       ><path d="M-7 -7 L268 -7 L268 185 L-7 185 L-7 -7 Z"
       /></clipPath
-      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath10"
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath7"
       ><path d="M0 0 L0 160 L257 160 L257 0 Z"
       /></clipPath
-      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath11"
-      ><path d="M-7 -7 L233 -7 L233 185 L-7 185 L-7 -7 Z"
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath8"
+      ><path d="M0 0 L0 14 L257 14 L257 0 Z"
       /></clipPath
-      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath12"
-      ><path d="M0 0 L0 160 L222 160 L222 0 Z"
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath9"
+      ><path d="M-7 -7 L239 -7 L239 128 L-7 128 L-7 -7 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath10"
+      ><path d="M0 0 L0 103 L228 103 L228 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath11"
+      ><path d="M0 0 L0 14 L228 14 L228 0 Z"
       /></clipPath
     ></defs
     ><g fill="white" text-rendering="geometricPrecision" fill-opacity="1" stroke-opacity="1" stroke="white"
@@ -56,100 +53,85 @@
     ><text x="404" xml:space="preserve" y="12" clip-path="url(#clipPath2)" stroke="none"
       >Controller</text
     ></g
-    ><g font-size="11px" transform="translate(55,60)" fill-opacity="1" fill="rgb(122,207,245)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="rgb(122,207,245)" font-weight="bold" stroke-opacity="1"
-    ><rect x="0" width="257" height="117" y="0" clip-path="url(#clipPath3)" stroke="none"
+    ><g font-size="11px" transform="translate(64,117)" fill-opacity="1" fill="rgb(122,207,245)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="rgb(122,207,245)" font-weight="bold" stroke-opacity="1"
+    ><rect x="0" width="254" height="117" y="0" clip-path="url(#clipPath3)" stroke="none"
     /></g
-    ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(55,60)" stroke-miterlimit="0" stroke-opacity="1" fill="black" font-weight="bold" font-family="sans-serif" stroke-linejoin="round" font-size="11px" image-rendering="optimizeQuality"
-    ><rect fill="none" x="0" width="257" height="117" y="0" clip-path="url(#clipPath3)"
-      /><line y2="14" fill="none" x1="0" clip-path="url(#clipPath3)" x2="257" y1="14"
+    ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(64,117)" stroke-miterlimit="0" stroke-opacity="1" fill="black" font-weight="bold" font-family="sans-serif" stroke-linejoin="round" font-size="11px" image-rendering="optimizeQuality"
+    ><rect fill="none" x="0" width="254" height="117" y="0" clip-path="url(#clipPath3)"
+      /><line y2="14" fill="none" x1="0" clip-path="url(#clipPath3)" x2="254" y1="14"
     /></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,55,74)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><g font-size="11px" transform="matrix(1,0,0,1,64,131)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="2" xml:space="preserve" y="14" clip-path="url(#clipPath4)" stroke="none"
-      >+login()</text
+      >+list() : List&lt;ReducedComp&gt;</text
     ></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,55,74)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><g font-size="11px" transform="matrix(1,0,0,1,64,131)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="2" xml:space="preserve" y="29" clip-path="url(#clipPath4)" stroke="none"
-      >+logout()</text
+      >+detail() : ViewComp</text
     ></g
-    ><g font-size="11px" transform="translate(55,60)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" font-weight="bold" stroke-opacity="1"
-    ><text x="86" xml:space="preserve" y="12" clip-path="url(#clipPath5)" stroke="none"
-      >LoginController</text
+    ><g font-size="11px" transform="matrix(1,0,0,1,64,131)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="2" xml:space="preserve" y="44" clip-path="url(#clipPath4)" stroke="none"
+      >+edit(iId : String, comp : Composition) : void</text
     ></g
-    ><g font-size="11px" transform="translate(401,60)" fill-opacity="1" fill="rgb(122,207,245)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="rgb(122,207,245)" font-weight="bold" stroke-opacity="1"
-    ><rect x="0" width="222" height="117" y="0" clip-path="url(#clipPath6)" stroke="none"
-    /></g
-    ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(401,60)" stroke-miterlimit="0" stroke-opacity="1" fill="black" font-weight="bold" font-family="sans-serif" stroke-linejoin="round" font-size="11px" image-rendering="optimizeQuality"
-    ><rect fill="none" x="0" width="222" height="117" y="0" clip-path="url(#clipPath6)"
-      /><line y2="14" fill="none" x1="0" clip-path="url(#clipPath6)" x2="222" y1="14"
-    /></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,401,74)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="2" xml:space="preserve" y="14" clip-path="url(#clipPath7)" stroke="none"
-      >+saveComp()</text
+    ><g font-size="11px" transform="matrix(1,0,0,1,64,131)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="2" xml:space="preserve" y="59" clip-path="url(#clipPath4)" stroke="none"
+      >+create(comp : ViewComposition) : void</text
     ></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,401,74)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="2" xml:space="preserve" y="29" clip-path="url(#clipPath7)" stroke="none"
-      >+showComp()</text
+    ><g font-size="11px" transform="matrix(1,0,0,1,64,131)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="2" xml:space="preserve" y="74" clip-path="url(#clipPath4)" stroke="none"
+      >+users() : List&lt;User&gt;</text
     ></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,401,74)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="2" xml:space="preserve" y="44" clip-path="url(#clipPath7)" stroke="none"
-      >+compability()</text
+    ><g font-size="11px" transform="matrix(1,0,0,1,64,131)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="2" xml:space="preserve" y="89" clip-path="url(#clipPath4)" stroke="none"
+      >+edit(user : List&lt;User&gt;) : void</text
     ></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,401,74)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="2" xml:space="preserve" y="59" clip-path="url(#clipPath7)" stroke="none"
-      >-searchForAlternatives()</text
-    ></g
-    ><g font-size="11px" transform="translate(401,60)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" font-weight="bold" stroke-opacity="1"
-    ><text x="51" xml:space="preserve" y="12" clip-path="url(#clipPath8)" stroke="none"
+    ><g font-size="11px" transform="translate(64,117)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" font-weight="bold" stroke-opacity="1"
+    ><text x="67" xml:space="preserve" y="12" clip-path="url(#clipPath5)" stroke="none"
       >CompositionController</text
     ></g
-    ><g font-size="11px" transform="translate(55,313)" fill-opacity="1" fill="rgb(122,207,245)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="rgb(122,207,245)" font-weight="bold" stroke-opacity="1"
-    ><rect x="0" width="257" height="174" y="0" clip-path="url(#clipPath9)" stroke="none"
+    ><g font-size="11px" transform="translate(286,343)" fill-opacity="1" fill="rgb(122,207,245)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="rgb(122,207,245)" font-weight="bold" stroke-opacity="1"
+    ><rect x="0" width="257" height="174" y="0" clip-path="url(#clipPath6)" stroke="none"
     /></g
-    ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(55,313)" stroke-miterlimit="0" stroke-opacity="1" fill="black" font-weight="bold" font-family="sans-serif" stroke-linejoin="round" font-size="11px" image-rendering="optimizeQuality"
-    ><rect fill="none" x="0" width="257" height="174" y="0" clip-path="url(#clipPath9)"
-      /><line y2="14" fill="none" x1="0" clip-path="url(#clipPath9)" x2="257" y1="14"
+    ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(286,343)" stroke-miterlimit="0" stroke-opacity="1" fill="black" font-weight="bold" font-family="sans-serif" stroke-linejoin="round" font-size="11px" image-rendering="optimizeQuality"
+    ><rect fill="none" x="0" width="257" height="174" y="0" clip-path="url(#clipPath6)"
+      /><line y2="14" fill="none" x1="0" clip-path="url(#clipPath6)" x2="257" y1="14"
     /></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,55,327)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="2" xml:space="preserve" y="14" clip-path="url(#clipPath10)" stroke="none"
-      >+showUser()</text
+    ><g font-size="11px" transform="matrix(1,0,0,1,286,357)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="2" xml:space="preserve" y="14" clip-path="url(#clipPath7)" stroke="none"
+      >+search(name : Search) : List&lt;User&gt;</text
     ></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,55,327)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="2" xml:space="preserve" y="29" clip-path="url(#clipPath10)" stroke="none"
-      >+saveUser()</text
+    ><g font-size="11px" transform="matrix(1,0,0,1,286,357)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="2" xml:space="preserve" y="29" clip-path="url(#clipPath7)" stroke="none"
+      >+edit(username : String, user : User) : void</text
     ></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,55,327)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="2" xml:space="preserve" y="44" clip-path="url(#clipPath10)" stroke="none"
-      >+compList()</text
+    ><g font-size="11px" transform="matrix(1,0,0,1,286,357)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="2" xml:space="preserve" y="44" clip-path="url(#clipPath7)" stroke="none"
+      >+register(serData) : void</text
     ></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,55,327)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="2" xml:space="preserve" y="59" clip-path="url(#clipPath10)" stroke="none"
-      >+registerUser()</text
-    ></g
-    ><g font-size="11px" transform="translate(55,313)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" font-weight="bold" stroke-opacity="1"
-    ><text x="89" xml:space="preserve" y="12" clip-path="url(#clipPath5)" stroke="none"
+    ><g font-size="11px" transform="translate(286,343)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" font-weight="bold" stroke-opacity="1"
+    ><text x="89" xml:space="preserve" y="12" clip-path="url(#clipPath8)" stroke="none"
       >UserController</text
     ></g
-    ><g font-size="11px" transform="translate(401,313)" fill-opacity="1" fill="rgb(122,207,245)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="rgb(122,207,245)" font-weight="bold" stroke-opacity="1"
-    ><rect x="0" width="222" height="174" y="0" clip-path="url(#clipPath11)" stroke="none"
+    ><g font-size="11px" transform="translate(543,117)" fill-opacity="1" fill="rgb(122,207,245)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="rgb(122,207,245)" font-weight="bold" stroke-opacity="1"
+    ><rect x="0" width="228" height="117" y="0" clip-path="url(#clipPath9)" stroke="none"
     /></g
-    ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(401,313)" stroke-miterlimit="0" stroke-opacity="1" fill="black" font-weight="bold" font-family="sans-serif" stroke-linejoin="round" font-size="11px" image-rendering="optimizeQuality"
-    ><rect fill="none" x="0" width="222" height="174" y="0" clip-path="url(#clipPath11)"
-      /><line y2="14" fill="none" x1="0" clip-path="url(#clipPath11)" x2="222" y1="14"
+    ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(543,117)" stroke-miterlimit="0" stroke-opacity="1" fill="black" font-weight="bold" font-family="sans-serif" stroke-linejoin="round" font-size="11px" image-rendering="optimizeQuality"
+    ><rect fill="none" x="0" width="228" height="117" y="0" clip-path="url(#clipPath9)"
+      /><line y2="14" fill="none" x1="0" clip-path="url(#clipPath9)" x2="228" y1="14"
     /></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,401,327)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="2" xml:space="preserve" y="14" clip-path="url(#clipPath12)" stroke="none"
-      >+saveService()</text
+    ><g font-size="11px" transform="matrix(1,0,0,1,543,131)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="2" xml:space="preserve" y="14" clip-path="url(#clipPath10)" stroke="none"
+      >+search(name : String) : List&lt;Service&gt;</text
     ></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,401,327)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="2" xml:space="preserve" y="29" clip-path="url(#clipPath12)" stroke="none"
-      >+serviceList()</text
+    ><g font-size="11px" transform="matrix(1,0,0,1,543,131)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="2" xml:space="preserve" y="29" clip-path="url(#clipPath10)" stroke="none"
+      >+create(services : List&lt;Service&gt;) : void</text
     ></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,401,327)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="2" xml:space="preserve" y="44" clip-path="url(#clipPath12)" stroke="none"
-      >+searchService()</text
+    ><g font-size="11px" transform="matrix(1,0,0,1,543,131)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="2" xml:space="preserve" y="44" clip-path="url(#clipPath10)" stroke="none"
+      >+edit(name : String, service : Service)</text
     ></g
-    ><g font-size="11px" transform="translate(401,313)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" font-weight="bold" stroke-opacity="1"
-    ><text x="65" xml:space="preserve" y="12" clip-path="url(#clipPath8)" stroke="none"
+    ><g font-size="11px" transform="translate(543,117)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" font-weight="bold" stroke-opacity="1"
+    ><text x="68" xml:space="preserve" y="12" clip-path="url(#clipPath11)" stroke="none"
       >ServiceController</text
     ></g
     ><g font-size="8px" fill-opacity="1" fill="rgb(120,120,120)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" stroke="rgb(120,120,120)" stroke-opacity="1"
