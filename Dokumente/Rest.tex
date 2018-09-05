@@ -1,4 +1,4 @@
-% Created 2018-09-05 Wed 12:29
+% Created 2018-09-05 Wed 12:32
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -27,10 +27,11 @@
 \begin{document}
 
 \section{REST Interface}
-\label{sec:orgfae1a5d}
+\label{sec:org160f8fd}
 \begin{center}
 \begin{tabular}{lllllll}
 Action & HTTP Method & Endpoint & Request & Response & Authorized & Note\\
+\hline
 createService(s) & POST & /services & List of services & 201 - CREATED & Admin & \\
 editService & PUT & /services/\{id\} & single service & 200 - OK & Admin & \\
 getServices & GET & /services & optional: tags & 200 - OK + \texttt{List} of \texttt{Service} &  & \\
