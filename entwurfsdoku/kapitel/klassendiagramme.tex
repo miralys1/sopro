@@ -1,41 +1,43 @@
 \begin{figure}[h]
 	\centering
-	\missingfigure{Klassendiagramm}		
+	\missingfigure{Klassendiagramm}
 	\caption{Klassendiagramm - A}
 	\label{fig:klassendiagramm-a}
 \end{figure}
 
 \begin{table}[h]
-	\centering	
-	\begin{tabularx}{\textwidth}{X X}
-		\rowcolor[HTML]{C0C0C0} 
+	\centering
+	\begin{tabularx}{\textwidth}{p{.2\textwidth} | X}
+		\rowcolor[HTML]{C0C0C0}
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
 		User & \begin{itemize}
 			\item Speicherung der Nutzerdaten, sowie einer künstlichen Datenbank-ID
+			\item Eine Flag, die den Adminstatus festlegt
+			\item Listen von erstellten, einsehbaren und veränderbaren Kompositionen
 		\end{itemize}\\
-		\rowcolor[HTML]{E7E7E7} 
+		\rowcolor[HTML]{E7E7E7}
 		Composition & \begin{itemize}
+		  \item Speicherung einer künstlichen ID
 			\item Speicherung der Kompositionen als Graphen, durch Speicherung der Knoten und Kanten
-			\item Speicherung des Urhebers und der Nutzenden mit Zugriffs- bzw. Bearbeitungsrechten 
-			\item Konvertermethode, zum Erstellen eines reduzierten Objektes
+			\item Speicherung des Urhebers und der Nutzenden mit Zugriffs- bzw. Bearbeitungsrechten
+			\item Konvertermethode, zum Erstellen eines detaillierten, versendbaren Objektes
 		\end{itemize} \\
 		CompositionNode & \begin{itemize}
 			\item Speicherung eines Dienstes, für dessen Verwendung im Kompositionsgraphen
-			\item Dazu Speicherung einer Position und Aunsdehnung des Knotens
-			\item Konvertermethode, zum Erstellen eines reduzierten Objektes
+			\item Konvertermethode, zum Erstellen eines detaillierten, versendbaren Objektes
 		\end{itemize} \\
-		\rowcolor[HTML]{E7E7E7} 
+		\rowcolor[HTML]{E7E7E7}
 		CompositionEdge & \begin{itemize}
 			\item Speicherung einer gerichteten Kompositionskante als Paar von Kompositionsknoten
 			\item Bestimmung der Kompatibilität der, an der Kante beteiligten Knoten
-			\item Konvertermethode, zum Erstellen eines reduzierten Objektes
+			\item Konvertermethode, zum Erstellen eines detaillierten, versendbaren Objektes
 		\end{itemize} \\
 		Service & \begin{itemize}
-			\item Speicherung der Dienst-Eigenschaften 
+			\item Speicherung der Dienst-Eigenschaften
 			\item Speicherung der zum Dienst gelisteten Tags
-			\item Speicherung je einer Liste der passenden Ein- bzw- Ausgabeformate 
+			\item Speicherung je einer Liste der passenden Ein- bzw. Ausgabeformate
 		\end{itemize} \\
-		\rowcolor[HTML]{E7E7E7} 
+		\rowcolor[HTML]{E7E7E7}
 		Format & \begin{itemize}
 			\item Speicherung von Name, Version und Kompatibilitätsgrad
 		\end{itemize} \\
@@ -45,22 +47,48 @@
 \end{table}
 
 \begin{table}
-	\begin{tabularx}{\textwidth}{X X}
-		\rowcolor[HTML]{C0C0C0} 
+	\begin{tabularx}{\textwidth}{p{.2\textwidth} | X}
+		\rowcolor[HTML]{C0C0C0}
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
-		SendComp & \begin{itemize}
-			\item Speicherung der wichtigsten Daten mit möglichst wenig Referenzen zum Verschicken der Objekte als JSON über REST
+		DetailComp & \begin{itemize}
+			\item Speicherung der Node- und Edgeobjekte ohne Verweise auf die Serviceobjekte
+			\item Eine Flag, die Auskunft über die Bearbeitungsrechte des anfragenden Users gibt
+			\item Listen der User (als SimpleUser) mit Bearbeitungs- bzw Einsichtrecht
+			\item Liste der Autoren
 		\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7}
-		ReducedEdge & \begin{itemize}
-			\item Speicherung der wichtigsten Daten mit möglichst wenig Referenzen zum Verschicken der Objekte als JSON über REST
+		Edge & \begin{itemize}
+		  \item Besteht aus einem geordneten Paar von Nodeobjekten, dem Eingang- und Ausgangsknoten.
+			\item Speicherung einer Liste von Alternativen (Konvertern), die bei Inkompatibilität genutzt werden können.
+			\item Speicherung einer Liste der Formate, die die an der Kante beteiligten Dienste kompatibel machen
 		\end{itemize}\\
-		ReducedNode & \begin{itemize}
-			\item Speicherung der wichtigsten Daten mit möglichst wenig Referenzen zum Verschicken der Objekte als JSON über REST
+		Node & \begin{itemize}
+			\item Speicherung der wichtigsten Daten ohne Referenzen zum Verschicken der Objekte
+			\item Speicherung einer künstlichen ID
 		\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7}
-		ListComp & \begin{itemize}
+		SimpleComp & \begin{itemize}
 			\item Speicherung der elementarsten Daten für die Listenansicht aller Kompositionen
+		\end{itemize}\\
+		SimpleUser  & \begin{itemize}
+			\item Speicherung der elementarsten Daten (ID und Name)
+		\end{itemize}\\
+		\rowcolor[HTML]{E7E7E7}
+		DetailUser & \begin{itemize}
+			\item Dient der Bearbeitung der User
+			\item Flag um User als Administratoren zu markieren
+			\item Flag um Viewer als Administrator zu markieren, um ihm mehr Optionen anzuzueigen
+			\item Keine Passwortvermerk
+		\end{itemize}\\
+		Alternative & \begin{itemize}
+			\item Speicherung der möglichen Konverter eventuell Konverterketten (Name, Versionsnummer, ID) um Kompatibilität zu erzeugen
+		\end{itemize}\\
+		\rowcolor[HTML]{E7E7E7}
+		CompatibillityAnswer & \begin{itemize}
+			\item Speicherung der Kompatibilität zwischen zwei Diensten
+			\item Speicherung der effektiv kompatiblen Formate
+			\item Listen von Alternativen
+			\item zum antworten auf Einzelanfragen für zwei Dienst
 		\end{itemize}\\
 	\end{tabularx}
 	\caption{Klassen des Models \textit{Fortsetzung}}
