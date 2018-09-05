@@ -26,3 +26,5 @@ pflichtenheft/pflichtenheft\.toc
 entwurfsdoku/entwurfsdoku\.pdf
 
 entwurfsdoku/entwurfsdoku\.synctex\.gz
+*.vpp.bak_*
+*.vpp.ick
