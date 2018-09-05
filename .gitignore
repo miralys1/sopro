@@ -23,16 +23,11 @@ pflichtenheft/pflichtenheft\.toc
 *.bbl
 *.blg
 *.syntex.gz
-entwurfsdoku/APP_Sequenzdiagramm/\.sopro_sqnc_list\.vpp\.lck
+entwurfsdoku/entwurfsdoku\.pdf
 
-entwurfsdoku/APP_Sequenzdiagramm/sopro_sqnc_list\.vpp\.bak_002d
+entwurfsdoku/entwurfsdoku\.synctex\.gz
+*.vpp.bak_*
+*.vpp.ick
+entwurfsdoku/entwurfsdoku\.pdf
 
-entwurfsdoku/APP_Sequenzdiagramm/sopro_sqnc_list\.vpp\.bak_003d
-
-entwurfsdoku/APP_Sequenzdiagramm/sopro_sqnc_list\.vpp\.bak_004d
-
-entwurfsdoku/APP_Sequenzdiagramm/sopro_sqnc_list\.vpp\.bak_005d
-
-entwurfsdoku/APP_Sequenzdiagramm/sopro_sqnc_list\.vpp\.bak_006d
-
-entwurfsdoku/APP_Sequenzdiagramm/sopro_sqnc_list\.vpp\.bak_007d
+entwurfsdoku/entwurfsdoku\.synctex\.gz

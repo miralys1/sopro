@@ -1,20 +1,24 @@
 \section{Dokumentaufbau}\label{sec:dokumentaufbau}
-\begin{tcolorbox}
-	Inhalt und Struktur des vorliegenden Dokuments skizzieren (Fließtext).
-\end{tcolorbox}
+\subsection{Ziel des Dokuments}
+Ziel des Dokuments ist die Dokumentation der Entwicklung des SWARM Composers. 
+Mit den hier aufgeführten Diagrammen und Erklärungen soll neuen Teammitgliedern der Einstieg in das Projekt und zukünftigen Entwicklern die Einarbeitung in die Software erleichtert werden.
+Die frühzeitige Planung der Struktur der Software führt zu einem reibungsloseren Entwicklungsprozess. 
+Außerdem finden sich hier konkrete Absprachen der kleineren Teilprojekte, um die Entwicklung entkoppelter Komponenten zu ermöglichen.
+\subsection{Aufbau}
+In den Kapiteln 2 und 3 wird je ein plattformübergreifendes Komponenten- bzw. Verteilungsdiagramm dargestellt. 
+Darauf folgt in Kapitel 4 eine Sammlung von Klassendiagrammen, die die Code-Struktur auf den jeweiligen Plattformen erklären.
+In Kapitel 5 werden die wichtigsten Methodenaufrufe und Abläufe, die in den Klassendiagrammen zu finden sind, als Sequenzdiagramme modelliert.
+
 
 \section{Zweckbestimmung}\label{sec:zweckbestimmung}
-\begin{tcolorbox}
-	Zweck des ganzen Systems beschreiben (Fließtext).
-\end{tcolorbox}
-
+Der SWARM Composer dient dazu, unterschiedliche Software für Bauprojekte in Bezug auf ihre Kompatibilität bezüglich der Ein- und Ausgabeformate zu überprüfen. 
+Die Software ist Teil des Forschungsprojektes SWARM des Unternehmens adesso. 
+Der SWARM Composer besteht aus zwei Teilen: einem Webserver und einer App. 
+Auf dem Webserver können Benutzer und Benutzerinnen Dienste zu Kompositionen zusammenfassen und auf Kompatibilität überprüfen.
+In der App können Kompositionen grafisch präsentiert und per PDF verschickt werden.
 \section{Entwicklungsumgebung}\label{sec:entwicklungsumgebung}
-\begin{tcolorbox}
-	Oftmals treten neue Entwickler einem Projekt bei oder ein Entwicklungs-Rechner muss ersetzt werden.
-	Daher sollen hier nennenswerte und grundlegende Frameworks, Bibliotheken, Tools und Sprachen notiert werden.
-	Tabelle X stellt eine beispielhafte Umsetzung dar.
-	Eine Unterteilung in Komponenten ist sinnvoll.
-\end{tcolorbox}
+In der untenstehenden Tabelle finden sich grundlegende Frameworks, Bibliotheken, Tools und Sprachen, die für die Entwicklung im Rahmen dieses Projektes erforderlich sind.
+
 
 \begin{table}[h]
 	\centering
@@ -23,14 +27,31 @@
 		\textbf{Software} & \textbf{Version} & \textbf{URL} \\
 		Java Development Kit & 8u144 & \url{http://www.oracle.com/technetwork/java/javase/downloads/index.html} \\
 		\rowcolor[HTML]{E7E7E7} 
-		Software X & Version X & URL X \\
-		Software X & Version X & URL X \\
+		Maven & 4.0.0 & \url{maven.apache.org/POM/4.0.0} \\
+		Spring & 2.0.4 & - \\
 		\rowcolor[HTML]{E7E7E7} 
-		Software X & Version X & URL X \\
-		Software X & Version X & URL X \\
+		Jenkins & 2.121.3 & - \\
+		Docker & 18.06.1 & \url{http://www.docker.com} \\
 		\rowcolor[HTML]{E7E7E7} 
-		Software X & Version X & URL X \\
-		Software X & Version X & URL X \\
+		Android Studio & 3.1.4 & \url{https://developer.android.com/studio/}\\
+		Tomcat & 8.0.53 & - \\
+		\rowcolor[HTML]{E7E7E7} 
+		ssh-client & Version X & - \\
+		git & 2.17.1 & - \\
+		\rowcolor[HTML]{E7E7E7} 
+		gitlab & - & - \\
+		node.js & 6.0.0 & - \\
+		\rowcolor[HTML]{E7E7E7} 
+		Visual Paradigm & 15.1 & \url{https://www.visual-paradigm.com/download/}\\
+		LaTeX & - & - \\
+		\rowcolor[HTML]{E7E7E7} 
+		Javascript & ES6 & -\\
+		Thymeleaf & 3.9.9 & \url{http://www.thymeleaf.org/download.html} \\
+		\rowcolor[HTML]{E7E7E7} 
+		vue.js & 2.5.2 & - \\
+		Bootstrap & 4.1.1 & -\\
+		\rowcolor[HTML]{E7E7E7} 
+		Jira & 7.7.1 & \url{maui.se.informatik.uni-kiel.de} \\
 	\end{tabularx}
 	\caption{Enwicklungsumgebung}
 	\label{table:entwicklungsumgebung}
