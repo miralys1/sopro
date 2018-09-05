@@ -1,18 +1,20 @@
+	Das dynamische Verhalten des Systems wird mittels Sequenzdiagrammen modelliert.
+	Hier wird zunächst ein grobes geräteübergreifendes Diagramm vorgestellt.
+	Die restlichen Sequenzdiagramme beziehen sich nur auf wichtige Methoden in den gekapselten Ökosystemen APP, Website und Backend. Deswegen werden Lost und Found Messages verwendet, um die Kommunikation mit dem Server darzustellen. 
+	
+
+\subsection*{Sequenzdiagramm: Öffnen der ListActivity}
+
 \begin{figure}[h]
 	\centering
-	\missingfigure{Sequenzdiagramm}		
-	\caption{Sequenzdiagramm - A}
+%\includegraphics[width= \linewidth ]{img/SDListAct.svg}
+	\missingfigure{Sequenzdiagramm}			
+	\caption{Sequenzdiagramm - Öffnen der ListActivity}
 	\label{fig:sequenz-a}
 \end{figure}
-
-
-\begin{tcolorbox}
-Das dynamische Verhalten des Systems wird mittels Sequenzdiagrammen modelliert.
-Hier müssen wahrscheinlich geräteübergreifende Aufrufe modelliert werden.
-Findet dafür eine geeignete Notation und nutzt diese durchgehend! 
-Achtet weiterhin darauf, dass die anderen Methoden im Klassendiagramm zu finden sind.
-Manche Sequenzen erfordern sicherlich eine kurze schriftliche Beschreibung.
-\end{tcolorbox}
+\noindent
+Dieses Sequenzdiagramm zeigt den Vorgang, der abläuft, wenn die ListActivity initial gestartet wird und mit einer Liste aus Kompositionseinträgen zu füllen ist.
+Da der Nutzer noch nicht eingeloggt ist, wird eine requestList()-Anfrage ohne Token gestartet. Diese wird in einem eigenen Thread ausgeführt, damit der UI-Thread nicht blockiert. Die Methode requestList() führt einen HTTPS-Request an das Backend aus. In der Zeit, in der die ListActivity die Antwort noch nicht erhalten hat, zeigt sie mithilfe von showLoading() eine Ladeanimation an.
 
 \section*{Sequenzdiagramme der App}
 \subsection*{Sequenzdiagramm: Klicken auf Kompositionseintrag}
@@ -25,31 +27,14 @@ Manche Sequenzen erfordern sicherlich eine kurze schriftliche Beschreibung.
 	\label{fig:sequenz-a}
 \end{figure}
 
-Dieses Sequenzdiagramm steigt mit dem Start der ListActivity ein. Dies geschieht über die beispielhafte Methode startDetailActivity, praktisch wird dieser Vorgang über einen Intent durchgeführt, dem die ID der anzuzeigenden Composition mitgegeben wird.
+Dieses Sequenzdiagramm beginnt damit, dass der Nutzer auf ein Listenelement tippt, um die Detailansicht aufzurufen. 
+Dadruch wird die Methode startDetailActivity() aufgerufen, die die Klasse ServerCommunication veranlasst, im LokalCache nach der gewünschten Komposition zu suchen.
+Falls diese noch nicht im Cache ist, wird ein HTTPS-Request an den Server gesendet.
+In der Antwort sind dann alle nötigen Details der Komposition enthalten.
+Diese werden dann im LokalCache abgelegt und an die ListActivity zurückgegeben.
+Damit wird dann ein Intent erstellt und die DetailActivity gestartet.
+\\
+Da LocalCache ein Singleton ist, muss zu Beginn die Instanz abgerufen werden. Wir planen die Instanz vorzudefinieren (eager instantiation), wodurch der Fall, dass die Instanz erst erzeugt werden muss, nie eintritt.
+\\
+Die Methode httpsRequest() wird nicht implementiert, sondern dient hier zur Abstraktion. In der Implementation wird diese Abfrage asynchron ablaufen und in einem anderen Thread laufen, so dass der UI-Thread nicht blockiert wird. 
 
-Wird ein Listelement angeklickt, ruft Android "automatisch" onListElementClicked(). Diese wird in unserer Implementierung überschrieben und ruft requestDetail() aus ServerCommunication. 
-
-Da LocalCache ein Singleton ist, beginnt der folgende Vorgang mit der Abfrage der Instanz des Singleton. Wir planen die Instanz vorzudefinieren, wodurch der Fall, dass die Instanz erst erzeugt werden muss, nie eintritt.
-
-Daraufhin checkt requestDetail(), ob die anzufragende Komposition bereits angefragt wurde und lädt in diesem Fall die Daten der Komposition aus dem Cache.
-
-Sonst startet ServerCommunication einen HTTPSRequest an das Backend unseres Servers. Wir symbolisieren einen HTTPS-Request, der die Grenze unseres Diagramms überschreitet, durch Lost Message und FoundMessage-Pfeile. Die Methode httpsRequest wird nicht implementiert, sondern dient hier zur Abstraktion. In der Implementation wird diese Abfrage asynchron ablaufen und in einem anderen Thread laufen, so dass der UI Thread nicht blockiert wird. 
-
-In beiden Fällen wird die Komposition einem Intent mitgegeben, mit dem die DetailActivity über 1.3 startActivity gerufen wird.
-
-
-\subsection*{Sequenzdiagramm: Öffnen der ListActivity}
-
-\begin{figure}[h]
-	\centering
-%\includegraphics[width= \linewidth ]{img/SDListAct.svg}
-	\missingfigure{Sequenzdiagramm}			
-	\caption{Sequenzdiagramm - Öffnen der ListActivity}
-	\label{fig:sequenz-a}
-\end{figure}
-
-Ebendieses Sequenzdiagramm zeigt den Vorgang, der abläuft, wenn die ListActivity initial gestartet wird und mit einer Liste aus Kompositionseinträgen zu füllen ist.
-
-Ist der User nicht eingeloggt, wird eine requestList()-Anfrage ohne Token gestartet. Diese wird in einem eigenen Thread ausgeführt, damit der UI-Thread nicht blockiert. requestList() führt einen HTTPS-Request ans Backend aus. In der Zeit, in der die ListActivity die Antwort noch nicht erhalten hat, zeigt sie mithilfe von showLoading() eine in Dauerschleife laufende Animation an, die das Laden symbolisiert.
-
-Ist der User eingeloggt, wird eine requestList()-Anfrage mit Token gestartet, die ansonsten analog zu der Obigen funktioniert.
