@@ -39,6 +39,7 @@
 		Service & \compress \begin{itemize}
 			\item Speicherung der Dienst-Eigenschaften
 			\item Speicherung der zum Dienst gelisteten Tags
+			\item Speicherung einer künstlichen ID
 			\item Speicherung je einer Liste der passenden Ein- bzw. Ausgabeformate
 		\end{itemize} \\
 		\rowcolor[HTML]{E7E7E7}
@@ -73,7 +74,8 @@
 			\item Speicherung einer Liste der Formate, die die an der Kante beteiligten Dienste kompatibel machen
 		\end{itemize}\\
 		Node & \compress \begin{itemize}
-			\item Speicherung der wichtigsten Daten ohne Referenzen zum Verschicken der Objekte
+			\item Speicherung der wichtigsten Daten einschließlich Referenz zum repräsentierten Service 
+			\item Zum Verschicken der Objekte
 			\item Speicherung einer künstlichen ID
 		\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7}
