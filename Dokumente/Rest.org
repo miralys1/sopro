@@ -1,0 +1,22 @@
+**  REST Interface
+ | Action               | HTTP Method | Endpoint                | Request            | Response                          | Authorized                           | Note                                   |
+ |----------------------+-------------+-------------------------+--------------------+-----------------------------------+--------------------------------------+----------------------------------------|
+ | createService(s)     | POST        | /services               | List of services   | 201 - CREATED                     | Admin                                | -                                      |
+ | editService          | PUT         | /services/{id}          | single service     | 200 - OK                          | Admin                                | -                                      |
+ | getServices          | GET         | /services               | optional: tags     | 200 - OK + ~List~ of ~Service~    | -                                    | -                                      |
+ | getServiceDetails    | GET         | /services/{id}          | -                  | 200 - OK + ~Service~              | -                                    | *OPTIONAL*                             |
+ | deleteService        | DELETE      | /services/{id}          | -                  | 200 - OK                          | Admin                                | -                                      |
+ |----------------------+-------------+-------------------------+--------------------+-----------------------------------+--------------------------------------+----------------------------------------|
+ | checkCompatibility   | GET         | /services/{id_1}/{id_2} | -                  | 200 - OK + ~CompatibilityAnswer~  | -                                    | -                                      |
+ |----------------------+-------------+-------------------------+--------------------+-----------------------------------+--------------------------------------+----------------------------------------|
+ | getCompositions      | GET         | /compositions           | -                  | 200 - OK + ~List~ of ~SimpleComp~ | -                                    | -                                      |
+ | getCompositionDetail | GET         | /compositions/{id}      | -                  | 200 - OK + ~DetailComp~           | Owner + Authorized Users (Or public) | -                                      |
+ | createComposition    | POST        | /compositions           | single composition | 201 - CREATED                     | User                                 | -                                      |
+ | editComposition      | PUT         | /compositions/{id}      | single composition | 200 - OK                          | Owner + Authorized Users             | Only Owner can change Authorized Users |
+ |----------------------+-------------+-------------------------+--------------------+-----------------------------------+--------------------------------------+----------------------------------------|
+ | getUsers             | GET         | /users                  | -                  | 200 - OK + ~List~ of ~SimpleUser~ | -                                    | -                                      |
+ | getUserDetails       | GET         | /users/{id}             | -                  | 200 - OK + ~DetailUser~           | Owner + Admin                        | -                                      |
+ | editUser             | PUT         | /users/{id}             | single user        | 200 - OK                          | Owner + Admin                        | -                                      |
+ | register             | POST        | /users                  | single user        | 201 - CREATED                     | -                                    | -                                      |
+ |----------------------+-------------+-------------------------+--------------------+-----------------------------------+--------------------------------------+----------------------------------------|
+
