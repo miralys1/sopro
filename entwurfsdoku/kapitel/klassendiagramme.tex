@@ -30,6 +30,7 @@
 		CompositionNode & \compress \begin{itemize}
 			\item Speicherung eines Dienstes, für dessen Verwendung im Kompositionsgraphen
 			\item Konvertermethode, zum Erstellen eines detaillierten, versendbaren Objektes
+			\item referenz auf CompabilityAnswer um Kompabilität der verbundenen darzustellen. 
 		\end{itemize} \\
 		\rowcolor[HTML]{E7E7E7}
 		CompositionEdge & \compress \begin{itemize}
@@ -60,36 +61,31 @@
 	\begin{tabularx}{\textwidth}{p{.2\textwidth} | X}
 		\rowcolor[HTML]{C0C0C0}
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
-		\rowcolor[HTML]{E7E7E7}
 		DetailComp & \compress \begin{itemize}
-			\item Speicherung der Node- und Edgeobjekte ohne Verweise auf die Serviceobjekte
-			\item Eine Flag, die Auskunft über die Bearbeitungsrechte des anfragenden Users gibt
+			\item Erbt von SimpleComp und speichert damit Metadaten zur Komposition (ob bearbeitbar, Name und id)
 			\item Listen der User (als SimpleUser) mit Bearbeitungs- bzw Einsichtrecht
-			\item Liste der Autoren
+			\item Verweis auf Autor
 		\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7}
 		Edge & \compress \begin{itemize}
 		  \item Besteht aus einem geordneten Paar von Nodeobjekten, dem Eingang- und Ausgangsknoten.
-			\item Speicherung einer Liste von Alternativen (Konvertern), die bei Inkompatibilität genutzt werden können.
-			\item Speicherung einer Liste der Formate, die die an der Kante beteiligten Dienste kompatibel machen
+			\item Speicherung der Kompabilität der Dienste anhand einer CompabilityAnswer
 		\end{itemize}\\
 		Node & \compress \begin{itemize}
-			\item Speicherung der wichtigsten Daten einschließlich Referenz zum repräsentierten Service 
-			\item Zum Verschicken der Objekte
-			\item Speicherung einer künstlichen ID
+			\item Speicherung der Position und Verweis auf den verwendeten Service 
 		\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7}
 		SimpleComp & \compress \begin{itemize}
-			\item Speicherung der elementarsten Daten für die Listenansicht aller Kompositionen
+			\item Speicherung der elementarsten Daten für die Listenansicht der Komposition
 		\end{itemize}\\
 		SimpleUser  & \compress \begin{itemize}
 			\item Speicherung der elementarsten Daten (ID und Name)
 		\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7}
 		DetailUser & \compress \begin{itemize}
+			\item Erbt von SimpleUser
 			\item Dient der Bearbeitung der User
 			\item Flag um User als Administratoren zu markieren
-			\item Flag um Viewer als Administrator zu markieren, um ihm mehr Optionen anzuzueigen
 			\item Keine Passwortvermerk
 		\end{itemize}\\
 		Alternative & \compress \begin{itemize}
@@ -100,7 +96,7 @@
 			\item Speicherung der Kompatibilität zwischen zwei Diensten
 			\item Speicherung der effektiv kompatiblen Formate
 			\item Listen von Alternativen
-			\item zum antworten auf Einzelanfragen für zwei Dienst
+			\item Zum Antworten auf Einzelanfragen zur Kompabilität zweier Dienste
 		\end{itemize}\\
 	\end{tabularx}
 	\caption{Klassen des Models \textit{Fortsetzung}}
