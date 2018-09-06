@@ -26,6 +26,7 @@
 			\item Speicherung des Urhebers und der Nutzenden mit Zugriffs- bzw. Bearbeitungsrechten
 			\item Konvertermethode, zum Erstellen eines detaillierten, versendbaren Objektes
 			\item Konvertermethode, zum Erstellen eines reduzierten Objektes
+			\item Methode zum Erstellen eines UserAuthorizations-Objektes um Nutzerrechte später einzusehen
 		\end{itemize} \\
 		CompositionNode & \compress \begin{itemize}
 			\item Speicherung eines Dienstes, für dessen Verwendung im Kompositionsgraphen
@@ -95,9 +96,11 @@
 		CompatibillityAnswer & \compress \begin{itemize}
 			\item Speicherung der Kompatibilität zwischen zwei Diensten
 			\item Speicherung der effektiv kompatiblen Formate
-			\item Listen von Alternativen
-			\item Zum Antworten auf Einzelanfra
-			gen zur Kompatibilität zweier Dienste
+			\item Liste von Alternativen
+			\item Zum Antworten auf Einzelanfragen zur Kompatibilitätsprüfung zweier Dienste
+		\end{itemize}\\
+		UserAuthorizations & \compress \begin{itemize}
+			\item Speicherung je einer Liste für User mit Einsichts- bzw. Bearbeitungsrecht
 		\end{itemize}\\
 	\end{tabularx}
 	\caption{Klassen des Models \textit{Fortsetzung}}
