@@ -11,7 +11,7 @@
 
 \begin{table}[h]
 	\centering
-	\begin{tabularx}{\textwidth}{p{.2\textwidth} | X} 
+	\begin{tabularx}{\textwidth}{p{.2\textwidth} | X}
 		\rowcolor[HTML]{C0C0C0}
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
 		User & \compress \begin{itemize}
@@ -30,7 +30,7 @@
 		CompositionNode & \compress \begin{itemize}
 			\item Speicherung eines Dienstes, für dessen Verwendung im Kompositionsgraphen
 			\item Konvertermethode, zum Erstellen eines detaillierten, versendbaren Objektes
-			\item referenz auf CompabilityAnswer um Kompabilität der verbundenen darzustellen. 
+			\item Referenz auf CompatibilityAnswer um Kompatibilität der verbundenen Dienste darzustellen
 		\end{itemize} \\
 		\rowcolor[HTML]{E7E7E7}
 		CompositionEdge & \compress \begin{itemize}
@@ -38,7 +38,7 @@
 			\item Konvertermethode, zum Erstellen eines detaillierten, versendbaren Objektes
 		\end{itemize} \\
 		Service & \compress \begin{itemize}
-			\item Speicherung der Dienst-Eigenschaften
+			\item Speicherung der Diensteigenschaften
 			\item Speicherung der zum Dienst gelisteten Tags
 			\item Speicherung einer künstlichen ID
 			\item Speicherung je einer Liste der passenden Ein- bzw. Ausgabeformate
@@ -62,17 +62,17 @@
 		\rowcolor[HTML]{C0C0C0}
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
 		DetailComp & \compress \begin{itemize}
-			\item Erbt von SimpleComp und speichert damit Metadaten zur Komposition (ob bearbeitbar, Name und id)
+			\item Erbt von SimpleComp und speichert damit Metadaten zur Komposition (ob bearbeitbar, Name und ID)
 			\item Listen der User (als SimpleUser) mit Bearbeitungs- bzw Einsichtrecht
 			\item Verweis auf Autor
 		\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7}
 		Edge & \compress \begin{itemize}
 		  \item Besteht aus einem geordneten Paar von Nodeobjekten, dem Eingang- und Ausgangsknoten.
-			\item Speicherung der Kompabilität der Dienste anhand einer CompabilityAnswer
+			\item Speicherung der Kompatibilität der Dienste anhand einer CompatibilityAnswer
 		\end{itemize}\\
 		Node & \compress \begin{itemize}
-			\item Speicherung der Position und Verweis auf den verwendeten Service 
+			\item Speicherung der Position und Verweis auf den verwendeten Service
 		\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7}
 		SimpleComp & \compress \begin{itemize}
@@ -96,16 +96,9 @@
 			\item Speicherung der Kompatibilität zwischen zwei Diensten
 			\item Speicherung der effektiv kompatiblen Formate
 			\item Listen von Alternativen
-			\item Zum Antworten auf Einzelanfragen zur Kompabilität zweier Dienste
+			\item Zum Antworten auf Einzelanfra
+			gen zur Kompatibilität zweier Dienste
 		\end{itemize}\\
 	\end{tabularx}
 	\caption{Klassen des Models \textit{Fortsetzung}}
 \end{table}
-
-\begin{tcolorbox}
-Teilt eure Klassendiagramme bitte auf und baut \textbf{kein} einzelnes riesiges Diagramm.
-Getter und Setter Methoden müssen hier nicht modelliert werden.
-Sie sollten aber der klassischen Namenskonvention folgen, um die Nutzung in Sequenzdiagrammen zu ermöglichen.
-\\\\
-Auf jedes Diagramm folgt eine Tabelle, in der die Aufgabe \textbf{jeder} Klasse beschrieben wird.
-\end{tcolorbox}
