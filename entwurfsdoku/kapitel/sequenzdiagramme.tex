@@ -48,3 +48,26 @@ Damit wird dann ein Intent erstellt und die DetailActivity gestartet.
 Da LocalCache ein Singleton ist, muss zu Beginn die Instanz abgerufen werden. Wir planen die Instanz vorzudefinieren (eager instantiation), wodurch der Fall, dass die Instanz erst erzeugt werden muss, nie eintritt.
 \\
 Die Methode httpsRequest() wird nicht implementiert, sondern dient hier zur Abstraktion. In der Implementation wird diese Abfrage asynchron ablaufen und in einem anderen Thread laufen, so dass der UI-Thread nicht blockiert wird. 
+
+\section*{Sequenzdiagramme des Models}
+
+\begin{figure}[h]
+	\centering
+	%\includegraphics[width= \linewidth ]{img/SDDetail.svg}
+	\missingfigure{Sequenzdiagramm}		
+	\caption{Sequenzdiagramm - Kompositionsanfrage}
+	\label{fig:sequenz-a}
+\end{figure}
+\noindent
+Das Sequenzdiagramm zeigt, wie eine Komposition in Detailansicht angefragt wird. 
+Eine solche Anfrage wird vom CompositionsController entgegengenommen.
+Die angefragte Komposition wird in der Datenbank nachgeschlagen (über das CompositionRepository) und als Composition-Objekt zurückgegeben.
+Anschließend wird eine DetailComp erstellt, welche die benötigten Daten für das Frontend enthält. 
+Um diese zu erstellen, müssen zunächst alle CompositionNodes und danach alle CompositionEdges in versendbare Objekte (Nodes und Edges) umgewandelt werden. 
+Dabei wird für jede Kante noch die Kompatibilität überprüft und mögliche Alternativen werden gesucht und ggf. gespeichert. Zurückgeliefert wird also eine DetailComp, die in allen Kanten eine CompatibilityAnswer enthält.\newline
+\\ \noindent
+Wir haben uns dafür entschieden, eine Util-Klasse zur Berechnung der Compatibility zwischen zwei verschiedenen Diensten (repräsentiert durch ihre IDs) zu benutzen.
+Da auch HTTPS-Requests erwartet werden, die nur zu zwei einzelnen Diensten die Kompatibilität erfahren wollen, wäre eine Implementierung dieser Funktion in der Edge-Klasse unpraktisch.\newline
+\\ \noindent
+Da dieses Sequenzdiagramm das komplexeste ist und sich viele andere Abläufe in ihm widerspiegeln, ist hier nur dieses als Repräsentant der Arbeitsweise unseres Backends aufgeführt.
+
