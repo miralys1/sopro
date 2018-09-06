@@ -67,3 +67,36 @@ Auf jedes Diagramm folgt eine Tabelle, in der die Aufgabe \textbf{jeder} Klasse 
 	\caption{Klassenbeschreibung - App}
 	\label{table:klassenbeschreibung-a}
 \end{table}
+
+\section*{Klassendiagramm zum Web-Frontend}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{Klassendiagramm_WebApp/Klassendiagramm_Web}
+	\caption{Klassendiagramm - Web}
+	\label{fig:klassendiagramm-web}
+\end{figure}
+
+\begin{table}[h]
+	\centering
+	\begin{tabularx}{\textwidth}{X X}
+		\rowcolor[HTML]{C0C0C0} 
+		\textbf{Klassenname} & \textbf{Aufgabe} \\
+		App & Alle Anfragen, die nicht an die REST-Schnittstelle vom Server gehen, werden hierhin zurück geleitet
+		und dann entsprechend geroutet. \\
+		\rowcolor[HTML]{E7E7E7} 
+		AuthenticationPage & Bietet die Möglichkeit über eine Maske sich einzuloggen oder zu registrieren. \\
+		AdminPanel & Bietet die Möglichkeiten, Services zu erstellen, bearbeiten und löschen und Rechte von Nutzern zu bearbeiten. \\
+		\rowcolor[HTML]{E7E7E7} 
+		SidePanel & Ruft Services ab, stellt sie dar und lässt die angezeigten Services mit einer Suche einschränken. \\
+		Workspace & Zeigt eine Liste von allen einsehbaren und bearbeitbaren Kompositionen. \\
+		\rowcolor[HTML]{E7E7E7} 
+		NavBar & Stellt einige Informationen zum Login-Status dar und ermöglicht den logout. \\
+		Editor & Hier wird die Detailansicht einer Komposition angezeigt mit der Möglichkeit, diese durch Hinzufügen und Entfernen von
+		von Diensten und Kanten zu verändern, sofern die nötigen Rechte vorhanden sind. \\
+		\rowcolor[HTML]{E7E7E7} 
+		restlichen Klassen & Dienen zur Modellierung der Objekte, die über die REST-Schnittstelle ausgetauscht werden. 
+	\end{tabularx}
+	\caption{Klassenbeschreibung - Web}
+	\label{table:klassenbeschreibung-web}
+\end{table}
