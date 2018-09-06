@@ -107,13 +107,26 @@
 	\begin{tabularx}{\textwidth}{p{.25\textwidth} | X}
 		\rowcolor[HTML]{C0C0C0}
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
-		CompositionController & In dieser Klasesn werden Anfragen beantwortet um gespeicherte Kompositionen zu erstellen, anzufragen und zu bearbeiten.
-		Die Anfragen werden jeweils mit einer ResponseEntity-Instanz beantwortet, um den jeweiligen HTTP-Code zurückzugeben.\\
+		CompositionController & \begin{itemize}
+		\item Klasse stellt einen REST-Controller dar
+		\item Verschiedene Methoden zum Erstellen, Anfragen und bearbeiten von Compositions aus der Datenbank
+		\item die Autorisierung des Nutzers wird in der Behandlung der Anfragen berücksichtigt
+		\item Rückgabetyp ist stets ResponseEntity, da so ein entsprechender HTTP-Code als Antwort gegeben werden kann.
+		\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7}
-		ServiceController & Analog zum CompositionController werden in dieser Klasse die Anfragen zu den gespeicherten Services verwaltet.\\
-		UserController & In dieser Klasse werden die Anfragen zu User-Objekten, also zu den Nutzern verwaltet.\\
+		ServiceController & \begin{itemize}
+			\item Rest-Controller, analog zu CompositionController
+			\item Verwaltet den Zugriff und Bearbeitung von Servicen.
+		\end{itemize}\\
+		UserController & \begin{itemize}
+			\item REST-Controller, analog zu den anderen Klassen
+			\item Erlaubt es Daten von User zu verändern
+		\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7}
-		UserPermission & Die Zugriffstrechte auf eine Komposition sollen auch bearbeitbar sein und um dies zu gewährleisten dient diese Klasse, die sämtliche Zugriffe auf diese Daten verwaltet.
+		UserPermission & \begin{itemize}
+			\item REST-Controller
+			\item Erlaubt es dem Owner einer Komposition die Zugriffsrechte auf selbige zu verändern.
+		\end{itemize}
 	\end{tabularx}
 	\caption{Klassen des Models \textit{Fortsetzung}}
 \end{figure}
