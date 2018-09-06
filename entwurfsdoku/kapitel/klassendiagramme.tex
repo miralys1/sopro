@@ -5,9 +5,9 @@
 	\label{fig:klassendiagramm-a}
 \end{figure}
 
-\begin{table}[h]
+\begin{figure}[h]
 	\centering
-	\begin{tabularx}{\textwidth}{p{.2\textwidth} | X}
+	\begin{tabularx}{\textwidth}{p{.25\textwidth} | X}
 		\rowcolor[HTML]{C0C0C0}
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
 		User & \begin{itemize}
@@ -44,10 +44,10 @@
 	\end{tabularx}
 	\caption{Klassen des Models}
 	\label{table:klassenbeschreibung-a}
-\end{table}
+\end{figure}
 
-\begin{table}
-	\begin{tabularx}{\textwidth}{p{.2\textwidth} | X}
+\begin{figure}[h]
+	\begin{tabularx}{\textwidth}{p{.25\textwidth} | X}
 		\rowcolor[HTML]{C0C0C0}
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
 		DetailComp & \begin{itemize}
@@ -92,7 +92,31 @@
 		\end{itemize}\\
 	\end{tabularx}
 	\caption{Klassen des Models \textit{Fortsetzung}}
-\end{table}
+\end{figure}
+
+
+
+\begin{figure}[h]
+	\centering
+	\missingfigure{Klassenbeschreibung Controller}
+	\caption{Klassendiagramm des Controllers}
+	\label{fig:klassendiagramm-a}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{tabularx}{\textwidth}{p{.25\textwidth} | X}
+		\rowcolor[HTML]{C0C0C0}
+		\textbf{Klassenname} & \textbf{Aufgabe} \\
+		CompositionController & In dieser Klasesn werden Anfragen beantwortet um gespeicherte Kompositionen zu erstellen, anzufragen und zu bearbeiten.
+		Die Anfragen werden jeweils mit einer ResponseEntity-Instanz beantwortet, um den jeweiligen HTTP-Code zurückzugeben.\\
+		\rowcolor[HTML]{E7E7E7}
+		ServiceController & Analog zum CompositionController werden in dieser Klasse die Anfragen zu den gespeicherten Services verwaltet.\\
+		UserController & In dieser Klasse werden die Anfragen zu User-Objekten, also zu den Nutzern verwaltet.\\
+		\rowcolor[HTML]{E7E7E7}
+		UserPermission & Die Zugriffstrechte auf eine Komposition sollen auch bearbeitbar sein und um dies zu gewährleisten dient diese Klasse, die sämtliche Zugriffe auf diese Daten verwaltet.
+	\end{tabularx}
+	\caption{Klassen des Models \textit{Fortsetzung}}
+\end{figure}
 
 \begin{tcolorbox}
 Teilt eure Klassendiagramme bitte auf und baut \textbf{kein} einzelnes riesiges Diagramm.
@@ -113,7 +137,7 @@ Auf jedes Diagramm folgt eine Tabelle, in der die Aufgabe \textbf{jeder} Klasse 
 
 \begin{table}[h]
 	\centering
-	\begin{tabularx}{\textwidth}{X X}
+	\begin{tabularx}{\textwidth}{p{.25\textwidth} X}
 		\rowcolor[HTML]{C0C0C0} 
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
 		ListActivity & MainActivity und Übersicht über sichtbare Kompositionen  \\
