@@ -38,3 +38,19 @@ Da LocalCache ein Singleton ist, muss zu Beginn die Instanz abgerufen werden. Wi
 \\
 Die Methode httpsRequest() wird nicht implementiert, sondern dient hier zur Abstraktion. In der Implementation wird diese Abfrage asynchron ablaufen und in einem anderen Thread laufen, so dass der UI-Thread nicht blockiert wird. 
 
+\section*{Sequenzdiagramme des Models}
+
+\begin{figure}[h]
+	\centering
+	%\includegraphics[width= \linewidth ]{img/SDDetail.svg}
+	\missingfigure{Sequenzdiagramm}		
+	\caption{Sequenzdiagramm - Kompositionsanfrage}
+	\label{fig:sequenz-a}
+\end{figure}
+
+Das Sequenzdiagramm zeigt wie eine Komposition in Detailansicht angefragt wird. Eine solche Anfrage wird vom CompositionsController entgegen genommen. Die angefragte Komposition wird in der Datenbank nachgeschlagen (über das CompositionRepository). Anschließend wird eine DetailComp erstellt, welche die benötigten Daten für das Frontend enthält. Um diese zu erstellen, müssen zunächst alle Knoten und danach alle Kanten in versendbare Objekte umgewandelt werden. Dabei wird für jede Kante noch die Kompatibillität überprüft und mögliche Alternativen gepseichert. Zurückgeliefert wird also eine DetailComp, die in allen Kanten eine CompatibilityAnswer enthält.\newline
+
+Wir haben uns dafür entschieden eine Util-Class zur Berechnung der Compatibility zwischen zwei verschiedenen Diensten (repräsentiert durch ihre IDs) zu benutzen und dies nicht in der Edge Klasse zu implementieren, da auch https requests erwartet werden, die nur zu zwei einzelnen Diennsten die Kompatibillität erfahren wollen.\newline
+
+Da dieses Sequenzdiagramm das komplexeste ist und sich viele andere Abläufe in ihm wiederspiegeln, ist hier nur dieses als Repräsentant der Arbeitsweise unseres Backends aufgeführt.
+
