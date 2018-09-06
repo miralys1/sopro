@@ -14,7 +14,7 @@ public class CompEdge {
     private List<String> alternativesAsText;
 
     /**
-     * Creates a CompEdge without alternatives
+     * Creates a CompEdge without alternatives.
      * @param source
      * @param target
      * @param isCompatible
