@@ -38,3 +38,14 @@ Da LocalCache ein Singleton ist, muss zu Beginn die Instanz abgerufen werden. Wi
 \\
 Die Methode httpsRequest() wird nicht implementiert, sondern dient hier zur Abstraktion. In der Implementation wird diese Abfrage asynchron ablaufen und in einem anderen Thread laufen, so dass der UI-Thread nicht blockiert wird. 
 
+\section*{geräteübergreifendes Sequenzdiagramm}
+
+\begin{figure}[h]
+	\centering
+	%\includegraphics[width= \linewidth ]{img/SDDetail.svg}
+	\missingfigure{Sequenzdiagramm}		
+	\caption{Sequenzdiagramm}
+	\label{fig:sequenz-a}
+\end{figure}
+
+Der Benutzer öffnet die App, wodurch die Methode onCreate() aufgerufen wird. Zum Start wird ein httpsRequest an den Server gesendet. Der Server fragt die Daten aus der Datenbank ab und erstellt dazu eihn versendbare Objekt in Form einer Liste von SimpleComp. Dies wird im Rahmen der Beantwortung des GET-Requests an die App geschickt. Die App verarbeitet die erhaltenen Daten, sodass sie dem Benutzer angezeigt werden können.
