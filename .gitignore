@@ -23,3 +23,11 @@ pflichtenheft/pflichtenheft\.toc
 *.bbl
 *.blg
 *.syntex.gz
+entwurfsdoku/entwurfsdoku\.pdf
+
+entwurfsdoku/entwurfsdoku\.synctex\.gz
+*.vpp.bak_*
+*.vpp.ick
+entwurfsdoku/entwurfsdoku\.pdf
+
+entwurfsdoku/entwurfsdoku\.synctex\.gz
