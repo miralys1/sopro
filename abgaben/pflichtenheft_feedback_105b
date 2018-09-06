@@ -1,0 +1,93 @@
+Im Folgenden erhaltet ihr ein Feedback zur Abgabe eures Pflichtenheftes.
+Weitere Einzelheiten sind in der kommentierten pdf-Datei zu finden.
+Bei Unklarheiten oder Missverständnissen sprecht uns gerne an.
+
+LIZENZ
+------
+
+* (sae) OK
+
+ZIELBESTIMMUNGEN
+----------------
+
+* (sae) Gute Einleitung und Begriffsdefinition, sowie Klärung der Kriterien
+
+* (sae) Generell gut und angemessen ausführlich, z. T. ist die Einordnung
+  als nicht-funktionale Zielbestimmung diskussionswürdig (z. B. Drag & Drop)
+
+PRODUKTEINSATZ
+--------------
+
+* (sae) Generell OK
+
+PRODUKTUMGEBUNG
+---------------
+
+* (sae) Jenkins ist nur zur Entwicklung nötig, nicht zum Betrieb. Docker ist
+  ebenfalls nicht nötig, relevant sind die Softwarekomponenten, die das Docker-
+  Image bereitsstellt (im Wesentlichen Tomcat + Java).
+
+PRODUKTFUNKTIONEN
+-----------------
+
+* (sae) Akteure OK, Beschreibungen etwas vage (was umfasst "nutzt"?)
+
+  App
+  ---
+
+  * (sae) Generell OK. Anwendungsfälle überwiegend angemessen genau beschrieben.
+  
+  Server
+  ------
+
+  * (sae) Anwendungsfalldiagramm OK und übersichtlich, allerdings unnötiges bzw.
+    widersprüchliches «include»: "Unregistrierter Nutzer" -> "Authentifizieren"
+
+  * (sae) Gute Beschreibung der Anwendungsfälle, nur WEB-5 bleibt unklar (gerade
+    hier wäre der konkrete Ablauf der Bearbeitung von Kompositionen wichtig)
+    
+  * (hs) an einigen Stellen fehlen Details, wie WEB-5, aber auch die Fälle, in denen
+    Dienste hinzugefügt werden: Hier wird nicht klar, was überhaupt konfiguriert
+    werden kan.
+  
+TESTFÄLLE
+---------
+
+* (sae) Beim erwarteten Verhalten solltet ihr euch überlegen, wie dieses konkret
+  abgeprüft werden kann. Das bleibt in den meisten Testfällen eher unklar (z. B.
+  wie prüft man "Die gewählte Komponente wird visuell dargestellt", was bedeutet
+  das konkret)?
+
+* (sae) Auswahl und Umfang der Testfälle sonst gut
+
+PRODUKTDATEN
+------------
+
+* (sae) Bei den Produktdaten kann klarer spezifiziert werden, welche Informationen
+  "gültige Ein-/Ausgabeformate" umfassen (z. B. Versionsnummer)
+
+BENUTZEROBERFLÄCHE
+------------------
+
+* (sae) Gute Darstellung, unterstützt die Beschreibung der Produktfunktionen in
+  Kapitel 5 und ist konsistent mit dem restlichen Dokument
+  
+* (hs) Gute Mockups und Beschreibungen dazu  
+
+QUALITÄTSANFORDERUNGEN
+----------------------
+
+* (sae) Gewichtung der Kriterien scheint sinnvoll, Begründung fehlt allerdings
+
+GLOSSAR
+-------
+
+* (sae) nicht vorhanden
+
+BEWERTUNG ZUSAMMENFASSUNG UND NOTE
+----------------------------------
+
+* (hs) - Die Hauptfunktion (der Bearbeitungsmodus) ist nicht erklärt.
+
+       - In den Testfällen fehlt die eigentliche Kompatibilitätsprüfung.
+
