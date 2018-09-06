@@ -3,9 +3,9 @@ package swarm.swarmcomposerapp.Model;
 import android.media.Image;
 
 /**
- * A CompNode represents a Service within the drawing of a Composition.
+ * A Node represents a Service within the drawing of a Composition.
  */
-public class CompNode {
+public class Node {
 
     private String serviceName;
     private String version;
@@ -16,7 +16,7 @@ public class CompNode {
     private boolean isFlexible;
     private long id;
     /**
-     * Creates a CompNode with all basic information needed for drawing it.
+     * Creates a Node with all basic information needed for drawing it.
      *
      * @param posX - X position in the drawing
      * @param posY - Y position in the drawing
@@ -27,7 +27,7 @@ public class CompNode {
      * @param id - internal id
      * @param isFlexible - is the service flexible or strict
      */
-    public CompNode(int posX, int posY, String organisation, String picture, String serviceName, String version, long id, boolean isFlexible){
+    public Node(int posX, int posY, String organisation, String picture, String serviceName, String version, long id, boolean isFlexible){
         this.posX = posX;
         this.posY = posY;
         this.organisation = organisation;

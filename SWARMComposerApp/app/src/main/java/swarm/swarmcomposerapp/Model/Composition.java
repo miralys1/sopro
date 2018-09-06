@@ -8,8 +8,8 @@ public class Composition {
     private long id;
     private String owner;
     private long lastChange;
-    List<CompNode> compNodeList;
-    List<CompEdge> compEdgeList;
+    List<Node> nodeList;
+    List<Edge> edgeList;
     boolean editable;
 
 
@@ -18,35 +18,35 @@ public class Composition {
      *
      * @param comp
      */
-    public void addComp(CompNode comp) {
-        compNodeList.add(comp);
+    public void addComp(Node comp) {
+        nodeList.add(comp);
     }
 
     /**
-     * Add compNodes to the compNodeList
+     * Add compNodes to the nodeList
      *
      * @param comps
      */
-    public void addComps(List<CompNode> comps) {
-        compNodeList.addAll(comps);
+    public void addComps(List<Node> comps) {
+        nodeList.addAll(comps);
     }
 
 
     /**
-     * Add one compEdge to the compEdgeList.
+     * Add one compEdge to the edgeList.
      *
      * @param edge
      */
-    public void addEdge(CompEdge edge) {
-        compEdgeList.add(edge);
+    public void addEdge(Edge edge) {
+        edgeList.add(edge);
     }
 
     /**
-     *Add compEdges to the compEdgeList.
+     *Add compEdges to the edgeList.
      * @param edges
      */
-    public void addEdges(List<CompEdge> edges) {
-        compEdgeList.addAll(edges);
+    public void addEdges(List<Edge> edges) {
+        edgeList.addAll(edges);
     }
 
 
