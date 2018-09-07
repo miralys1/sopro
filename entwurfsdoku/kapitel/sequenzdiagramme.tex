@@ -1,6 +1,6 @@
 	Das dynamische Verhalten des Systems wird mittels Sequenzdiagrammen modelliert.
-	Hier wird zunächst ein grobes geräteübergreifendes Diagramm vorgestellt.
-	Die restlichen Sequenzdiagramme beziehen sich nur auf wichtige Methoden in den gekapselten Ökosystemen APP, Website und Backend. Deswegen werden Lost und Found Messages verwendet, um die Kommunikation mit dem Server darzustellen. 
+	Hier wird zunächst ein grobes, geräteübergreifendes Diagramm vorgestellt.
+	Die restlichen Sequenzdiagramme beziehen sich nur auf wichtige Methoden in den gekapselten Ökosystemen APP, Website und Backend. Im Weiteren werden Lost und Found Messages verwendet, um die Kommunikation mit dem Server darzustellen. 
 	
 \section*{Geräteübergreifendes Sequenzdiagramm}
 
@@ -11,7 +11,7 @@
 	\label{fig:sequenz-overview}
 \end{figure}
 \noindent
-Der Benutzer öffnet die App, wodurch die Methode onCreate() der ListActivity aufgerufen wird. Zum Start wird ein HTTPS-Request an den Server gesendet. Der Server fragt die Daten aus der Datenbank ab und erstellt dazu ein versendbares Objekt in Form einer Liste von SimpleComp. Dies wird im Rahmen der Beantwortung des GET-Requests an die App geschickt. Die App verarbeitet die erhaltenen Daten, sodass sie dem Benutzer angezeigt werden können.
+Der Benutzer öffnet die App, wodurch die Methode onCreate() der ListActivity aufgerufen wird. Zum Start wird ein HTTPS-Request an den Server gesendet. Der Server fragt die Daten aus der Datenbank ab und erstellt dazu ein versendbares Objekt in Form einer Liste von SimpleComp-Objekten. Diese wird im Rahmen der Antwort auf den GET-Request an die App geschickt. Diese verarbeitet die erhaltenen Daten, sodass sie dem Benutzer angezeigt werden können.
 
 \section*{Sequenzdiagramme der App}
 \subsection*{Sequenzdiagramm: Öffnen der ListActivity}
@@ -38,9 +38,8 @@ Da der Nutzer noch nicht eingeloggt ist, wird eine requestList()-Anfrage ohne To
 Dieses Sequenzdiagramm beginnt damit, dass der Nutzer auf ein Listenelement tippt, um die Detailansicht aufzurufen. 
 Dadruch wird die Methode startDetailActivity() aufgerufen, die die Klasse ServerCommunication veranlasst, im LokalCache nach der gewünschten Komposition zu suchen.
 Falls diese noch nicht im Cache ist, wird ein HTTPS-Request an den Server gesendet.
-In der Antwort sind dann alle nötigen Details der Komposition enthalten.
-Diese werden dann im LokalCache abgelegt und an die ListActivity zurückgegeben.
-Damit wird dann ein Intent erstellt und die DetailActivity gestartet.
+In der Antwort sind alle nötigen Details der Komposition enthalten, wozu unter anderem ihre Nodes zählen.
+Die Details werden in der Komposition gespeichert, die wiederum im LokalCache abgelegt ist und so auch an die ListActivity zurückgegeben. Diese übergibt die nun mit Details ausgestattete Komposition an einen Intent, der zum Starten der DetailsActivity dient.
 \\
 Da LocalCache ein Singleton ist, muss zu Beginn die Instanz abgerufen werden. Wir planen die Instanz vorzudefinieren (eager instantiation), wodurch der Fall, dass die Instanz erst erzeugt werden muss, nie eintritt.
 \\
@@ -80,7 +79,7 @@ Da dieses Sequenzdiagramm das komplexeste ist und sich viele andere Abläufe in 
 \end{figure}
 
 \noindent
-Um eine neue Komposition zu erstellen, werden zunächst die dem Nutzer verfügbaren Kompositionen vom Backend abgefragt und angezeigt. Über ein Eingabefeld kann ein Name für eine neue Komposition festgelegt werden und mit einem Knopf erstellt werden. Die Liste der verfügbaren Kompositionen wird refreshed und durch einen Klick auf die Komposition werden die noch leeren Details vom Backend abgerufen und in der Bearbeitungsansicht angezeigt. Als Autor der Komposition lassen sich nun die Listen mit den Nutzenden, die die Komposition einsehen oder bearbeiten dürfen, einsehen und bearbeiten. Dabei werden alle Informationen immer aus dem Backend angefordert beziehungsweise werden Aktualisierungen vom Nutzenden an das Backend geschickt.
+Um eine neue Komposition zu erstellen, werden zunächst die dem Nutzer verfügbaren Kompositionen vom Backend abgefragt und angezeigt. Über ein Eingabefeld kann ein Name für eine neue Komposition festgelegt und mit einem zusätzlichen Knopf erstellt werden. Die Liste der verfügbaren Kompositionen wird refresht, durch einen Klick auf die Komposition werden die noch leeren Details vom Backend abgerufen und in der Bearbeitungsansicht angezeigt. Als Autor der Komposition lassen sich nun die Listen mit den Nutzenden einsehen und bearbeiten, die diese Komposition einsehen oder bearbeiten dürfen. Dabei werden alle Informationen immer aus dem Backend angefordert, beziehungsweise Aktualisierungen vom Nutzenden an das Backend geschickt.
 
 \newpage
 \subsection*{Sequenzdiagramm: Bearbeiten einer Komposition}
