@@ -1,4 +1,4 @@
-% Created 2018-09-05 Wed 15:42
+% Created 2018-09-07 Fri 13:23
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -27,29 +27,36 @@
 \begin{document}
 
 \section{REST Interface}
-\label{sec:org21e44af}
-\begin{center}
+\label{sec:org5724d34}
+\begin{table}[htbp]
+\caption{objects written in cursive can be found in the class diagram}
+\centering
 \begin{tabular}{lllllll}
 Action & HTTP Method & Endpoint & Request & Response & Authorized & Note\\
 \hline
 createService(s) & POST & /services & List of services & 201 - CREATED & Admin & -\\
-editService & PUT & /services/\{id\} & single service & 200 - OK & Admin & -\\
-getServices & GET & /services & optional: tags & 200 - OK + \texttt{List} of \texttt{Service} & - & -\\
-getServiceDetails & GET & /services/\{id\} & - & 200 - OK + \texttt{Service} & - & \textbf{OPTIONAL}\\
-deleteService & DELETE & /services/\{id\} & - & 200 - OK & Admin & -\\
+editService & PUT & /services/\{service\(_{\text{id}}\)\} & single service & 200 - OK & Admin & -\\
+getServices & GET & /services & query: string & 200 - OK + List of \emph{Service} & - & -\\
+getServiceDetails & GET & /services/\{service\(_{\text{id}}\)\} & - & 200 - OK + \emph{Service} & - & \textbf{OPTIONAL}\\
+deleteService & DELETE & /services/\{service\(_{\text{id}}\)\} & - & 200 - OK & Admin & -\\
 \hline
-checkCompatibility & GET & /services/\{id\(_{\text{1}}\)\}/\{id\(_{\text{2}}\)\} & - & 200 - OK + \texttt{CompatibilityAnswer} & - & -\\
+checkCompatibility & GET & /services/\{user\(_{\text{id}}\)\(_{\text{1}}\)\}/\{user\(_{\text{id}}\)\(_{\text{2}}\)\} & - & 200 - OK + \emph{CompatibilityAnswer} & - & -\\
 \hline
-getCompositions & GET & /compositions & - & 200 - OK + \texttt{List} of \texttt{SimpleComp} & - & -\\
-getCompositionDetail & GET & /compositions/\{id\} & - & 200 - OK + \texttt{DetailComp} & Owner + Authorized Users (Or public) & -\\
-createComposition & POST & /compositions & single composition & 201 - CREATED & User & -\\
-editComposition & PUT & /compositions/\{id\} & single composition & 200 - OK & Owner + Authorized Users & Only Owner can change Authorized Users\\
+getCompositions & GET & /compositions & - & 200 - OK + List of \emph{SimpleComp} & - & -\\
+getCompositionDetail & GET & /compositions/\{comp\(_{\text{id}}\)\} & - & 200 - OK + \emph{DetailComp} & Owner + Authorized Users (Or public) & -\\
+createComposition & POST & /compositions & name: string & 201 - CREATED & User & -\\
+editComposition & PUT & /compositions/\{comp\(_{\text{id}}\)\} & \emph{Composition Object} & 200 - OK & Owner + Authorized Users & Only Owner can change Authorized Users\\
 \hline
-getUsers & GET & /users & - & 200 - OK + \texttt{List} of \texttt{SimpleUser} & - & -\\
-getUserDetails & GET & /users/\{id\} & - & 200 - OK + \texttt{DetailUser} & Owner + Admin & -\\
-editUser & PUT & /users/\{id\} & single user & 200 - OK & Owner + Admin & -\\
-register & POST & /users & single user & 201 - CREATED & - & -\\
+getUserPermissions & GET & /compositions/\{comp\(_{\text{id}}\)\}/users & \emph{userAuthorizations} & 200 - OK + List of \emph{SimpleUser} & Owner & -\\
+createUserPermission & POST & /compositions/\{comp\(_{\text{id}}\)\}/users/\{email\} & \emph{userPermission Object} & 201 - CREATED & Owner & true means can edit, false can only see. If no object exists user can neither.\\
+editUserPermission & PUT & /compositions/\{comp\(_{\text{id}}\)\}/users/\{email\} & \emph{userPermission Object} & 200 - OK & Owner & -\\
+deleteUserPermission & DELETE & /compositions/\{comp\(_{\text{id}}\)\}/users/\{user\(_{\text{id}}\)\} & - & 200 - OK & Owner & -\\
+\hline
+getUsers & GET & /users & query: string & 200 - OK + List of \emph{SimpleUser} & - & -\\
+getUserDetails & GET & /users/\{user\(_{\text{id}}\)\} & - & 200 - OK + \emph{DetailUser} & Owner + Admin & -\\
+editUser & PUT & /users/\{user\(_{\text{id}}\)\} & \emph{Detail User} & 200 - OK & Owner + Admin & -\\
+register & POST & /users & \emph{User} & 201 - CREATED & - & -\\
 \hline
 \end{tabular}
-\end{center}
+\end{table}
 \end{document}
