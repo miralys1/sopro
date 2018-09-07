@@ -38,25 +38,25 @@ public class User {
 
 	// CascadeType.ALL => if you delete an User then all compositions associated
 	// with that User also be deleted
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
-//	private List<Composition> owns;
-//
-//	@ManyToMany(cascade = CascadeType.MERGE)
-//	private List<Composition> viewableComps;
-//
-//	@ManyToMany(cascade = CascadeType.MERGE)
-//	private List<Composition> editableComps;
-//	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+	private List<Composition> ownsComp;
+
+	@ManyToMany(cascade = CascadeType.MERGE)
+	private List<Composition> viewableComps;
+
+	@ManyToMany(cascade = CascadeType.MERGE)
+	private List<Composition> editableComps;
+
 	public User() {
-		
+
 	}
 
 	public User(String firstname, String lastname) {
 		this.firstname = firstname;
 		this.lastname = lastname;
-//		this.owns = new ArrayList<Composition>();
-//		this.viewableComps = new ArrayList<Composition>();
-//		this.editableComps = new ArrayList<Composition>();
+		this.ownsComp = new ArrayList<Composition>();
+		this.viewableComps = new ArrayList<Composition>();
+		this.editableComps = new ArrayList<Composition>();
 	}
 
 	public Long getId() {
@@ -107,29 +107,29 @@ public class User {
 		this.title = title;
 	}
 
-//	public List<Composition> getOwns() {
-//		return owns;
-//	}
-//
-//	public void setOwns(List<Composition> owns) {
-//		this.owns = owns;
-//	}
-//
-//	public List<Composition> getViewable() {
-//		return viewableComps;
-//	}
-//
-//	public void setViewable(List<Composition> viewable) {
-//		this.viewableComps = viewable;
-//	}
-//
-//	public List<Composition> getEditable() {
-//		return editableComps;
-//	}
-//
-//	public void setEditable(List<Composition> editable) {
-//		this.editableComps = editable;
-//	}
+	public List<Composition> getOwnsComp() {
+		return ownsComp;
+	}
+
+	public void setOwnsComp(List<Composition> owns) {
+		this.ownsComp = owns;
+	}
+
+	public List<Composition> getViewable() {
+		return viewableComps;
+	}
+
+	public void setViewable(List<Composition> viewable) {
+		this.viewableComps = viewable;
+	}
+
+	public List<Composition> getEditable() {
+		return editableComps;
+	}
+
+	public void setEditable(List<Composition> editable) {
+		this.editableComps = editable;
+	}
 
 	public String getFullName() {
 		return firstname + " " + lastname;
