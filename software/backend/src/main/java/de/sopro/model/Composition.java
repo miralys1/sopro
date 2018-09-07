@@ -42,25 +42,20 @@ public class Composition {
 
 	// @NotNull
 	// private List<CompositionNode> nodes;
-	//
-	// @NotNull
-	// private List<CompositionEdge> edges;
 
-	public Composition() {
+	@NotNull
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<CompositionEdge> edges;
 
-	}
-
-	public Composition(User owner, String name,
-			boolean isPublic/*
-							 * , List<CompositionNode> nodes, List<CompositionEdge> edges
-							 */) {
+	public Composition(User owner, String name, boolean isPublic/* , List<CompositionNode> nodes */,
+			List<CompositionEdge> edges) {
 		this.owner = owner;
 		this.name = name;
 		this.isPublic = isPublic;
 		this.viewers = new ArrayList<User>();
 		this.editors = new ArrayList<User>();
 		// this.nodes = nodes;
-		// this.edges = edges;
+		this.edges = edges;
 	}
 
 	public Long getId() {
@@ -118,14 +113,14 @@ public class Composition {
 	// public void setNodes(List<CompositionNode> nodes) {
 	// this.nodes = nodes;
 	// }
-	//
-	// public List<CompositionEdge> getEdges() {
-	// return edges;
-	// }
-	//
-	// public void setEdges(List<CompositionEdge> edges) {
-	// this.edges = edges;
-	// }
+
+	public List<CompositionEdge> getEdges() {
+		return edges;
+	}
+
+	public void setEdges(List<CompositionEdge> edges) {
+		this.edges = edges;
+	}
 
 	// TODO
 	// public DetailComp createDetailComp() {
@@ -141,6 +136,6 @@ public class Composition {
 	// }
 
 	public String toString() {
-		return /* owner.getFullName() + */": " + name;
+		return owner.getFullName() + ": " + name;
 	}
 }

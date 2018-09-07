@@ -47,10 +47,6 @@ public class User {
 	@ManyToMany(cascade = CascadeType.MERGE)
 	private List<Composition> editableComps;
 
-	public User() {
-
-	}
-
 	public User(String firstname, String lastname) {
 		this.firstname = firstname;
 		this.lastname = lastname;
