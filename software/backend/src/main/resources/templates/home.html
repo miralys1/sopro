@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
+
+<head>
+	<title>Home</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+
+<body>
+
+	<div th:fragment="content">
+
+	<div class="container">
+		<h2>Welcome</h2>
+		<p class="alert alert-info" th:text="${message}"></p>
+	</div>
+
+	</div>
+
+</body>
+</html>
