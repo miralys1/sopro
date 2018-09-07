@@ -2,10 +2,11 @@ package swarm.swarmcomposerapp.Model;
 
 import java.util.List;
 
+
 /**
  * Model representation of a composition.
  */
-public class Composition {
+public class Composition{
     private long id;
     private SimpleUser owner;
     private long lastChange;
@@ -78,6 +79,5 @@ public class Composition {
     public void addEdges(List<Edge> edges) {
         edgeList.addAll(edges);
     }
-
 
 }

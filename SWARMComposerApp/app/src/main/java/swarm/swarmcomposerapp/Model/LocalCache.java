@@ -2,13 +2,14 @@ package swarm.swarmcomposerapp.Model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-s
+
 import swarm.swarmcomposerapp.Utils.ServerCommunication;
 
 /**
  * LocalCache manages compositions and services and hides its basic structure behind specific methods.
  * It's implemented as an eager singleton.
  */
+
 public class LocalCache {
 
     private static LocalCache instance = new LocalCache();
@@ -19,6 +20,7 @@ public class LocalCache {
      * Tries to receive a service from the LocalCache by its id.
      * It doesn't request it from the backend if its null at the moment!
      * Be careful!
+     *
      * @param id
      * @return
      */
@@ -35,26 +37,29 @@ public class LocalCache {
      */
     private Composition getCompAtPos(int pos) throws IllegalArgumentException {
 
-        if(compositions.size()< pos){
+        if (compositions.size() < pos) {
             throw new IllegalArgumentException("This request would lead to an index out of " +
                     "bounds exception!");
         }
 
-        if(pos < 0){
+        if (pos < 0) {
             throw new IllegalArgumentException("Something went wrong: A list has no positions < 0.");
         }
 
         Composition tempComp = compositions.get(pos);
 
-        if(tempComp == null){
+        if (tempComp == null) {
             throw new CompositionExpectedException("Something went wrong: The element " +
                     "at this position is null.");
         }
 
         if (tempComp.getNodeList().isEmpty()) {
-            ServerCommunication.requestDetail(tempComp.getId());
-        }
+            Composition n = ServerCommunication.requestDetail(tempComp.getId());
 
+            tempComp.addComps(n.getNodeList());
+            tempComp.addEdges(n.getEdgeList());
+        }
+        return tempComp;
     }
 
     /**
@@ -65,10 +70,22 @@ public class LocalCache {
      */
     public ArrayList<Composition> getCompositions() {
         if (compositions.isEmpty()) {
-            this.compositions = ServerCommunication.requestList();
+            hardRefresh();
         }
         return compositions;
     }
+
+    /**
+     * Requests the composition list from the backend and replaces the old list completely
+     * without checking for changes.
+     */
+    public void hardRefresh() {
+        this.compositions = ServerCommunication.requestList();
+
+    }
+
+
+
 
     /**
      * LocalCache is a singleton. Calling the constructor is prohibited.
@@ -78,6 +95,7 @@ public class LocalCache {
 
     /**
      * Returns the instance of the LocalCache.
+     *
      * @returns
      */
     public LocalCache getInstance() {

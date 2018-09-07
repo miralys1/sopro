@@ -46,6 +46,9 @@ public class Service {
     private long date;
     private List<String> tags;
 
+    private List<Service> in;
+    private List<Service> out;
+
     public void setDate(long date) {
         this.date = date;
     }
@@ -124,6 +127,4 @@ public class Service {
         return out;
     }
 
-    private List<Service> in;
-    private List<Service> out;
 }

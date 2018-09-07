@@ -1,4 +1,4 @@
-spackage swarm.swarmcomposerapp.Model;
+package swarm.swarmcomposerapp.Model;
 
 import android.media.Image;
 
