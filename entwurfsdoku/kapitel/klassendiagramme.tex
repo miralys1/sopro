@@ -9,9 +9,9 @@
 	\label{fig:klassendiagramm-a}
 \end{figure}
 
-\begin{table}[h]
+\begin{figure}[h]
 	\centering
-	\begin{tabularx}{\textwidth}{p{.2\textwidth} | X} 
+	\begin{tabularx}{\textwidth}{p{.25\textwidth} | X}
 		\rowcolor[HTML]{C0C0C0}
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
 		User & \compress \begin{itemize}
@@ -26,11 +26,12 @@
 			\item Speicherung des Urhebers und der Nutzenden mit Zugriffs- bzw. Bearbeitungsrechten
 			\item Konvertermethode, zum Erstellen eines detaillierten, versendbaren Objektes
 			\item Konvertermethode, zum Erstellen eines reduzierten Objektes
+			\item Methode zum Erstellen eines UserAuthorizations-Objektes um Nutzerrechte später einzusehen
 		\end{itemize} \\
 		CompositionNode & \compress \begin{itemize}
 			\item Speicherung eines Dienstes, für dessen Verwendung im Kompositionsgraphen
 			\item Konvertermethode, zum Erstellen eines detaillierten, versendbaren Objektes
-			\item referenz auf CompabilityAnswer um Kompabilität der verbundenen darzustellen. 
+			\item Referenz auf CompatibilityAnswer um Kompatibilität der verbundenen Dienste darzustellen
 		\end{itemize} \\
 		\rowcolor[HTML]{E7E7E7}
 		CompositionEdge & \compress \begin{itemize}
@@ -38,7 +39,7 @@
 			\item Konvertermethode, zum Erstellen eines detaillierten, versendbaren Objektes
 		\end{itemize} \\
 		Service & \compress \begin{itemize}
-			\item Speicherung der Dienst-Eigenschaften
+			\item Speicherung der Diensteigenschaften
 			\item Speicherung der zum Dienst gelisteten Tags
 			\item Speicherung einer künstlichen ID
 			\item Speicherung je einer Liste der passenden Ein- bzw. Ausgabeformate
@@ -55,24 +56,24 @@
 	\end{tabularx}
 	\caption{Klassen des Models}
 	\label{table:klassenbeschreibung-a}
-\end{table}
+\end{figure}
 
-\begin{table}
-	\begin{tabularx}{\textwidth}{p{.2\textwidth} | X}
+\begin{figure}[h]
+	\begin{tabularx}{\textwidth}{p{.25\textwidth} | X}
 		\rowcolor[HTML]{C0C0C0}
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
 		DetailComp & \compress \begin{itemize}
-			\item Erbt von SimpleComp und speichert damit Metadaten zur Komposition (ob bearbeitbar, Name und id)
+			\item Erbt von SimpleComp und speichert damit Metadaten zur Komposition (ob bearbeitbar, Name und ID)
 			\item Listen der User (als SimpleUser) mit Bearbeitungs- bzw Einsichtrecht
 			\item Verweis auf Autor
 		\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7}
 		Edge & \compress \begin{itemize}
 		  \item Besteht aus einem geordneten Paar von Nodeobjekten, dem Eingang- und Ausgangsknoten.
-			\item Speicherung der Kompabilität der Dienste anhand einer CompabilityAnswer
+			\item Speicherung der Kompatibilität der Dienste anhand einer CompatibilityAnswer
 		\end{itemize}\\
 		Node & \compress \begin{itemize}
-			\item Speicherung der Position und Verweis auf den verwendeten Service 
+			\item Speicherung der Position und Verweis auf den verwendeten Service
 		\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7}
 		SimpleComp & \compress \begin{itemize}
@@ -86,7 +87,7 @@
 			\item Erbt von SimpleUser
 			\item Dient der Bearbeitung der User
 			\item Flag um User als Administratoren zu markieren
-			\item Keine Passwortvermerk
+			\item Kein Passwortvermerk
 		\end{itemize}\\
 		Alternative & \compress \begin{itemize}
 			\item Speicherung der möglichen Konverter eventuell Konverterketten (Name, Versionsnummer, ID) um Kompatibilität zu erzeugen
@@ -95,12 +96,52 @@
 		CompatibillityAnswer & \compress \begin{itemize}
 			\item Speicherung der Kompatibilität zwischen zwei Diensten
 			\item Speicherung der effektiv kompatiblen Formate
-			\item Listen von Alternativen
-			\item Zum Antworten auf Einzelanfragen zur Kompabilität zweier Dienste
+			\item Liste von Alternativen
+			\item Zum Antworten auf Einzelanfragen zur Kompatibilitätsprüfung zweier Dienste
+		\end{itemize}\\
+		UserAuthorizations & \compress \begin{itemize}
+			\item Speicherung je einer Liste für User mit Einsichts- bzw. Bearbeitungsrecht
 		\end{itemize}\\
 	\end{tabularx}
 	\caption{Klassen des Models \textit{Fortsetzung}}
-\end{table}
+\end{figure}
+
+
+
+\begin{figure}[h]
+	\centering
+	\missingfigure{Klassenbeschreibung Controller}
+	\caption{Klassendiagramm des Controllers}
+	\label{fig:klassendiagramm-a}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{tabularx}{\textwidth}{p{.25\textwidth} | X}
+		\rowcolor[HTML]{C0C0C0}
+		\textbf{Klassenname} & \textbf{Aufgabe} \\
+		CompositionController & \begin{itemize}
+		\item Klasse stellt einen REST-Controller dar
+		\item Verschiedene Methoden zum Erstellen, Anfragen und bearbeiten von Compositions aus der Datenbank
+		\item die Authorisierung des Nutzers wird in der Behandlung der Anfragen berücksichtigt
+		\item Rückgabetyp ist stets ResponseEntity, da so ein entsprechender HTTP-Code als Antwort gegeben werden kann.
+		\end{itemize}\\
+		\rowcolor[HTML]{E7E7E7}
+		ServiceController & \begin{itemize}
+			\item Rest-Controller, analog zu CompositionController
+			\item Verwaltet den Zugriff und Bearbeitung von Servicen.
+		\end{itemize}\\
+		UserController & \begin{itemize}
+			\item REST-Controller, analog zu den anderen Klassen
+			\item Erlaubt es Daten von User zu verändern
+		\end{itemize}\\
+		\rowcolor[HTML]{E7E7E7}
+		UserPermission & \begin{itemize}
+			\item REST-Controller
+			\item Erlaubt es dem Owner einer Komposition die Zugriffsrechte auf selbige zu verändern.
+		\end{itemize}
+	\end{tabularx}
+	\caption{Klassen des Models \textit{Fortsetzung}}
+\end{figure}
 
 \begin{tcolorbox}
 Teilt eure Klassendiagramme bitte auf und baut \textbf{kein} einzelnes riesiges Diagramm.
@@ -121,26 +162,103 @@ Auf jedes Diagramm folgt eine Tabelle, in der die Aufgabe \textbf{jeder} Klasse 
 
 \begin{table}[h]
 	\centering
+	\begin{tabularx}{\textwidth}{p{.25\textwidth} X}
+		\rowcolor[HTML]{C0C0C0} 
+		\textbf{Klassenname} & \textbf{Aufgabe} \\
+		ListActivity & \begin{itemize}
+		
+\item MainActivity und Übersicht über sichtbare Kompositionen \end{itemize} \\
+		\rowcolor[HTML]{E7E7E7} 
+		SettingsActivity & \begin{itemize} \item Activity zum Festlegen von Einstellungen, zum Einloggen und Festlegen der Serveradresse \end{itemize}\\ 
+		DetailActivity & \begin{itemize}\item Detailansicht zur grafischen Darstellung einer Komposition \end{itemize}\\
+		\rowcolor[HTML]{E7E7E7} 
+		Settings & 
+\begin{itemize}		\item Dient zur Kapselung der getroffenen Einstellungen \end{itemize}\\
+		CompositionView & \begin{itemize}
+		
+		\item Eigentliche View, in der das Zeichnen einer Komposition stattfindet. 
+
+\item Jede DetailActivity verfügt über ein CompositionView. 
+\end{itemize}\\
+		\rowcolor[HTML]{E7E7E7} 
+		Composition & \begin{itemize}
+		
+		\item Model-Abstraktion einer Komposition \end{itemize}\\
+		Node & \begin{itemize}
+		
+		\item Interne Model-Abstraktion eines Diensts, der als Knoten in einer Komposition fungiert. 
+		\end{itemize}\\
+		\rowcolor[HTML]{E7E7E7} 
+		Edge & \begin{itemize}
+				 \item Interne Model-Abstraktion einer Kante zwischen zwei Diensten in einer Komposition 
+				 \end{itemize} \\
+		PDFCreator & \begin{itemize}
+\item Helper-Klasse zur Generierung von PDFs, die Kompositionsbilder beinhalten. \end{itemize}\\	\end{tabularx}
+	\caption{Klassenbeschreibung der App}
+	\label{table:klassenbeschreibung-a}
+\end{table}
+
+\begin{table}
+	\begin{tabularx}{\textwidth}{p{.2\textwidth} | X}
+\rowcolor[HTML]{C0C0C0}
+		\textbf{Klassenname} & \textbf{Aufgabe} \\
+		ServerCommunication & \begin{itemize} \item Anlaufpunkt für sämtliche Kommunikation mit dem Backend. 
+\item ServerCommunication übernimmt die Aufgabe, Verbindungen zum Server herzustellen, die Daten zu interpretieren und im richtigen Format weiterzugeben. \end{itemize}\\
+			\rowcolor[HTML]{E7E7E7} 		
+		LocalCache & \begin{itemize} 
+		\item Cache zur Speicherung von durch Anfragen erhaltenden Daten, damit diese nicht erneut angefragt werden müssen. 
+		\end{itemize}\\
+Service & \begin{itemize} \item Interne Abbildung eines Diensts
+\item Kapselt sämtlich relevante Informationen eines Services
+\item Verfügt über Verweis auf In- und Out-Formate
+\end{itemize}\\
+\rowcolor[HTML]{E7E7E7} 
+Format & \begin{itemize}	\item Format eines Services mit Version, Flexible-Flag und Name.
+		\end{itemize}\\
+CompatibilityAnswer & \begin{itemize}
+\item Kapselt die Auswertung, ob ein Dienstpaar beziehungsweise eine Kante kompatibel ist. 
+\item Gleichzeitig speichert es die passenden Formate des Dienstpaars beziehungsweise einer Kante
+\item Gibt es Alternativen, finden sich diese in einer Liste, die als Instanzvariable abgelegt ist.
+\end{itemize}\\		
+\rowcolor[HTML]{E7E7E7} 		
+Alternative & \begin{itemize}
+\item Speichert die Alternativen eines inkompatiblen Dienstpaares.
+\end{itemize}\\		
+	\end{tabularx}
+	\caption{Klassenbeschreibung der App -Fortsetzung}
+	\label{table:klassenbeschreibung-a}
+\end{table}
+
+\section*{Klassendiagramm zum Web-Frontend}
+
+\begin{figure}[h]
+	\centering
+%	\includegraphics[width=\textwidth]{Klassendiagramm_WebApp/Klassendiagramm_Web}
+	\caption{Klassendiagramm - Web}
+	\label{fig:klassendiagramm-web}
+\end{figure}
+
+\begin{table}[h]
+	\centering
 	\begin{tabularx}{\textwidth}{X X}
 		\rowcolor[HTML]{C0C0C0} 
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
-		ListActivity & MainActivity und Übersicht über sichtbare Kompositionen  \\
+		App & Alle Anfragen, die nicht an die REST-Schnittstelle vom Server gehen, werden hierhin zurück geleitet
+		und dann entsprechend von hier aus geroutet. \\
 		\rowcolor[HTML]{E7E7E7} 
-		SettingsActivity & Activity zum Festlegen von Einstellungen, zum Einloggen und Festlegen der Serveradresse \\
-		DetailActivity & Detailansicht zur grafischen Darstellung einer Komposition \\
+		AuthenticationPage & Bietet die Möglichkeit über eine Maske sich einzuloggen oder zu registrieren. \\
+		AdminPanel & Bietet die Möglichkeiten, Services zu erstellen, bearbeiten und löschen und Rechte von Nutzern zu bearbeiten. \\
 		\rowcolor[HTML]{E7E7E7} 
-		Settings & Dient zur Kapselung der getroffenen Einstellungen \\
-		CompositionView & Eigentliche View, in der das Zeichnen einer Komposition stattfindet. Jede DetailActivity verfügt über ein CompositionView. \\
+		SidePanel & Ruft Services ab, stellt sie dar und lässt die angezeigten Services mit einer Suche einschränken. \\
+		Workspace & Zeigt eine Liste von allen einsehbaren und bearbeitbaren Kompositionen. \\
 		\rowcolor[HTML]{E7E7E7} 
-		Composition & Interne Model-Abstraktion einer Komposition \\
-		CompNode & Interne Model-Abstraktion eines Diensts, der als Knoten in einer Komposition fungiert. \\
+		NavBar & Stellt einige Informationen zum Login-Status dar und ermöglicht den logout. \\
+		Editor & Hier wird die Detailansicht einer Komposition angezeigt mit der Möglichkeit, diese durch Hinzufügen und Entfernen von
+		Diensten und Kanten zu verändern, sofern die nötigen Rechte vorhanden sind. Es kann auch vom Autor der Komposition festgelegt
+		werden, welche Nutzer die Komposition einsehen und bearbeiten können. \\
 		\rowcolor[HTML]{E7E7E7} 
-		CompEdge & Interne Model-Abstraktion einer Kante zwischen zwei Diensten in einer Komposition \\
-		PDFCreator & Helper-Klasse zur Generierung von PDFs, die Kompositionsbilder beinhalten. \\
-			\rowcolor[HTML]{E7E7E7} 
-		ServerCommunication & Anlaufpunkt für sämtliche Kommunikation mit dem Backend: ServerCommunication übernimmt daraufhin die Aufgabe, Verbindungen zum Server herzustellen, die Daten zu interpretieren und im richtigen Format weiterzugeben. \\
-		LocalCache & Cache zur Speicherung von durch Anfragen erhaltenden Daten, damit diese nicht erneut angefragt werden müssen. 
+		restlichen Klassen & Dienen zur Modellierung der Objekte, die über die REST-Schnittstelle ausgetauscht werden. 
 	\end{tabularx}
-	\caption{Klassenbeschreibung - App}
-	\label{table:klassenbeschreibung-a}
+	\caption{Klassenbeschreibung - Web}
+	\label{table:klassenbeschreibung-web}
 \end{table}
