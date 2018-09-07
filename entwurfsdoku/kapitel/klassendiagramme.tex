@@ -9,9 +9,9 @@
 	\label{fig:klassendiagramm-a}
 \end{figure}
 
-\begin{table}[h]
+\begin{figure}[h]
 	\centering
-	\begin{tabularx}{\textwidth}{p{.2\textwidth} | X}
+	\begin{tabularx}{\textwidth}{p{.25\textwidth} | X}
 		\rowcolor[HTML]{C0C0C0}
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
 		User & \compress \begin{itemize}
@@ -56,10 +56,10 @@
 	\end{tabularx}
 	\caption{Klassen des Models}
 	\label{table:klassenbeschreibung-a}
-\end{table}
+\end{figure}
 
-\begin{table}
-	\begin{tabularx}{\textwidth}{p{.2\textwidth} | X}
+\begin{figure}[h]
+	\begin{tabularx}{\textwidth}{p{.25\textwidth} | X}
 		\rowcolor[HTML]{C0C0C0}
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
 		DetailComp & \compress \begin{itemize}
@@ -104,7 +104,44 @@
 		\end{itemize}\\
 	\end{tabularx}
 	\caption{Klassen des Models \textit{Fortsetzung}}
-\end{table}
+\end{figure}
+
+
+
+\begin{figure}[h]
+	\centering
+	\missingfigure{Klassenbeschreibung Controller}
+	\caption{Klassendiagramm des Controllers}
+	\label{fig:klassendiagramm-a}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{tabularx}{\textwidth}{p{.25\textwidth} | X}
+		\rowcolor[HTML]{C0C0C0}
+		\textbf{Klassenname} & \textbf{Aufgabe} \\
+		CompositionController & \begin{itemize}
+		\item Klasse stellt einen REST-Controller dar
+		\item Verschiedene Methoden zum Erstellen, Anfragen und bearbeiten von Compositions aus der Datenbank
+		\item die Authorisierung des Nutzers wird in der Behandlung der Anfragen berücksichtigt
+		\item Rückgabetyp ist stets ResponseEntity, da so ein entsprechender HTTP-Code als Antwort gegeben werden kann.
+		\end{itemize}\\
+		\rowcolor[HTML]{E7E7E7}
+		ServiceController & \begin{itemize}
+			\item Rest-Controller, analog zu CompositionController
+			\item Verwaltet den Zugriff und Bearbeitung von Servicen.
+		\end{itemize}\\
+		UserController & \begin{itemize}
+			\item REST-Controller, analog zu den anderen Klassen
+			\item Erlaubt es Daten von User zu verändern
+		\end{itemize}\\
+		\rowcolor[HTML]{E7E7E7}
+		UserPermission & \begin{itemize}
+			\item REST-Controller
+			\item Erlaubt es dem Owner einer Komposition die Zugriffsrechte auf selbige zu verändern.
+		\end{itemize}
+	\end{tabularx}
+	\caption{Klassen des Models \textit{Fortsetzung}}
+\end{figure}
 
 \begin{tcolorbox}
 Teilt eure Klassendiagramme bitte auf und baut \textbf{kein} einzelnes riesiges Diagramm.
@@ -125,7 +162,7 @@ Auf jedes Diagramm folgt eine Tabelle, in der die Aufgabe \textbf{jeder} Klasse 
 
 \begin{table}[h]
 	\centering
-	\begin{tabularx}{\textwidth}{X X}
+	\begin{tabularx}{\textwidth}{p{.25\textwidth} X}
 		\rowcolor[HTML]{C0C0C0} 
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
 		ListActivity & \begin{itemize}
