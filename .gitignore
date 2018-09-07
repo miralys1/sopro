@@ -36,5 +36,5 @@ entwurfsdoku/entwurfsdoku\.synctex\.gz
 *~
 \#*
 target/
-static/
+static/*
 dist/
