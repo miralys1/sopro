@@ -40,26 +40,27 @@ public class Composition {
 	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "editableComps")
 	private List<User> editors;
 
-	// @NotNull
-	// private List<CompositionNode> nodes;
+	@NotNull
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<CompositionNode> nodes;
 
 	@NotNull
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<CompositionEdge> edges;
-	
+
 	// Hibernate requires a no-arg constructor
 	public Composition() {
-		
+
 	}
 
-	public Composition(User owner, String name, boolean isPublic/* , List<CompositionNode> nodes */,
+	public Composition(User owner, String name, boolean isPublic, List<CompositionNode> nodes,
 			List<CompositionEdge> edges) {
 		this.owner = owner;
 		this.name = name;
 		this.isPublic = isPublic;
 		this.viewers = new ArrayList<User>();
 		this.editors = new ArrayList<User>();
-		// this.nodes = nodes;
+		this.nodes = nodes;
 		this.edges = edges;
 	}
 
@@ -111,13 +112,13 @@ public class Composition {
 		this.editors = editors;
 	}
 
-	// public List<CompositionNode> getNodes() {
-	// return nodes;
-	// }
-	//
-	// public void setNodes(List<CompositionNode> nodes) {
-	// this.nodes = nodes;
-	// }
+	public List<CompositionNode> getNodes() {
+		return nodes;
+	}
+
+	public void setNodes(List<CompositionNode> nodes) {
+		this.nodes = nodes;
+	}
 
 	public List<CompositionEdge> getEdges() {
 		return edges;
