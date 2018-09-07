@@ -31,3 +31,10 @@ entwurfsdoku/entwurfsdoku\.synctex\.gz
 entwurfsdoku/entwurfsdoku\.pdf
 
 entwurfsdoku/entwurfsdoku\.synctex\.gz
+
+.meghanada/
+*~
+\#*
+target/
+static/
+dist/
