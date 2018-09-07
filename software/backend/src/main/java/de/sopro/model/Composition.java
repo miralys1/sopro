@@ -46,6 +46,11 @@ public class Composition {
 	@NotNull
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<CompositionEdge> edges;
+	
+	// Hibernate requires a no-arg constructor
+	public Composition() {
+		
+	}
 
 	public Composition(User owner, String name, boolean isPublic/* , List<CompositionNode> nodes */,
 			List<CompositionEdge> edges) {

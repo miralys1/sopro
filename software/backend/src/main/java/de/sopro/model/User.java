@@ -46,6 +46,11 @@ public class User {
 
 	@ManyToMany(cascade = CascadeType.MERGE)
 	private List<Composition> editableComps;
+	
+	// Hibernate requires a no-arg constructor
+	public User() {
+		
+	}
 
 	public User(String firstname, String lastname) {
 		this.firstname = firstname;

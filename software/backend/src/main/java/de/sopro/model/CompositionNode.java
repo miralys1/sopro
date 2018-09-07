@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.persistence.ManyToMany;
@@ -18,52 +17,60 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class CompositionEdge {
+public class CompositionNode {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@NotNull
-	@OneToOne
-	private CompositionNode source;
+	private int x;
+
+	private int y;
 
 	@NotNull
-	@OneToOne
-	private CompositionNode target;
+//	private Service service;
 	
 	// Hibernate requires a no-arg constructor
-	public CompositionEdge() {
+	public CompositionNode() {
 		
 	}
-	
-	public CompositionEdge(CompositionNode source, CompositionNode target) {
-		this.source = source;
-		this.target = target;
+
+	public CompositionNode(int x, int y /*,Service service*/) {
+		this.x = x;
+		this.y = y;
+//		this.service = service;
 	}
 
-	public CompositionNode getSource() {
-		return source;
+	public int getX() {
+		return x;
 	}
 
-	public void setSource(CompositionNode source) {
-		this.source = source;
+	public void setX(int x) {
+		this.x = x;
 	}
 
-	public CompositionNode getTarget() {
-		return target;
+	public int getY() {
+		return y;
 	}
 
-	public void setTarget(CompositionNode target) {
-		this.target = target;
+	public void setY(int y) {
+		this.y = y;
 	}
+
+//	public Service getService() {
+//		return service;
+//	}
+//
+//	public void setService(Service service) {
+//		this.service = service;
+//	}
 
 	// TODO
-	// public Edge createEdge() {
+	// public Node createNode() {
 	//
 	// }
 
 	public String toString() {
-		return source + " -> " + target;
+		return /*service + */" (" + x + "," + y + ")";
 	}
 }
