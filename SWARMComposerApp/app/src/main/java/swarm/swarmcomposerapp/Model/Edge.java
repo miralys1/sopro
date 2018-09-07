@@ -12,7 +12,12 @@ public class Edge {
     private Composition out;
     private CompatibilityAnswer compatibility;
 
+    public CompatibilityAnswer getCompatibility() {
+        return compatibility;
+    }
+
     /**
+
      * Creates a Edge without alternatives.
      * @param in
      * @param out
