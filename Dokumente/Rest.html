@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-09-06 Thu 14:14 -->
+<!-- 2018-09-07 Fri 13:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -229,8 +229,8 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<div id="outline-container-org95f99fd" class="outline-2">
-<h2 id="org95f99fd"><span class="section-number-2">1</span> REST Interface</h2>
+<div id="outline-container-orge2fb76f" class="outline-2">
+<h2 id="orge2fb76f"><span class="section-number-2">1</span> REST Interface</h2>
 <div class="outline-text-2" id="text-1">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 1:</span> objects written in cursive can be found in the class diagram</caption>
@@ -275,7 +275,7 @@ for the JavaScript code in this tag.
 <tr>
 <td class="org-left">editService</td>
 <td class="org-left">PUT</td>
-<td class="org-left">/services/{id}</td>
+<td class="org-left">/services/{service<sub>id</sub>}</td>
 <td class="org-left">single service</td>
 <td class="org-left">200 - OK</td>
 <td class="org-left">Admin</td>
@@ -286,7 +286,7 @@ for the JavaScript code in this tag.
 <td class="org-left">getServices</td>
 <td class="org-left">GET</td>
 <td class="org-left">/services</td>
-<td class="org-left">optional: tags</td>
+<td class="org-left">query: string</td>
 <td class="org-left">200 - OK + List of <i>Service</i></td>
 <td class="org-left">-</td>
 <td class="org-left">-</td>
@@ -295,7 +295,7 @@ for the JavaScript code in this tag.
 <tr>
 <td class="org-left">getServiceDetails</td>
 <td class="org-left">GET</td>
-<td class="org-left">/services/{id}</td>
+<td class="org-left">/services/{service<sub>id</sub>}</td>
 <td class="org-left">-</td>
 <td class="org-left">200 - OK + <i>Service</i></td>
 <td class="org-left">-</td>
@@ -305,7 +305,7 @@ for the JavaScript code in this tag.
 <tr>
 <td class="org-left">deleteService</td>
 <td class="org-left">DELETE</td>
-<td class="org-left">/services/{id}</td>
+<td class="org-left">/services/{service<sub>id</sub>}</td>
 <td class="org-left">-</td>
 <td class="org-left">200 - OK</td>
 <td class="org-left">Admin</td>
@@ -316,7 +316,7 @@ for the JavaScript code in this tag.
 <tr>
 <td class="org-left">checkCompatibility</td>
 <td class="org-left">GET</td>
-<td class="org-left">/services/{id<sub>1</sub>}/{id<sub>2</sub>}</td>
+<td class="org-left">/services/{user<sub>id</sub><sub>1</sub>}/{user<sub>id</sub><sub>2</sub>}</td>
 <td class="org-left">-</td>
 <td class="org-left">200 - OK + <i>CompatibilityAnswer</i></td>
 <td class="org-left">-</td>
@@ -337,7 +337,7 @@ for the JavaScript code in this tag.
 <tr>
 <td class="org-left">getCompositionDetail</td>
 <td class="org-left">GET</td>
-<td class="org-left">/compositions/{id}</td>
+<td class="org-left">/compositions/{comp<sub>id</sub>}</td>
 <td class="org-left">-</td>
 <td class="org-left">200 - OK + <i>DetailComp</i></td>
 <td class="org-left">Owner + Authorized Users (Or public)</td>
@@ -348,7 +348,7 @@ for the JavaScript code in this tag.
 <td class="org-left">createComposition</td>
 <td class="org-left">POST</td>
 <td class="org-left">/compositions</td>
-<td class="org-left"><i>Composition Object</i></td>
+<td class="org-left">name: string</td>
 <td class="org-left">201 - CREATED</td>
 <td class="org-left">User</td>
 <td class="org-left">-</td>
@@ -357,7 +357,7 @@ for the JavaScript code in this tag.
 <tr>
 <td class="org-left">editComposition</td>
 <td class="org-left">PUT</td>
-<td class="org-left">/compositions/{id}</td>
+<td class="org-left">/compositions/{comp<sub>id</sub>}</td>
 <td class="org-left"><i>Composition Object</i></td>
 <td class="org-left">200 - OK</td>
 <td class="org-left">Owner + Authorized Users</td>
@@ -368,7 +368,7 @@ for the JavaScript code in this tag.
 <tr>
 <td class="org-left">getUserPermissions</td>
 <td class="org-left">GET</td>
-<td class="org-left">/compositions/users</td>
+<td class="org-left">/compositions/{comp<sub>id</sub>}/users</td>
 <td class="org-left"><i>userAuthorizations</i></td>
 <td class="org-left">200 - OK + List of <i>SimpleUser</i></td>
 <td class="org-left">Owner</td>
@@ -378,7 +378,7 @@ for the JavaScript code in this tag.
 <tr>
 <td class="org-left">createUserPermission</td>
 <td class="org-left">POST</td>
-<td class="org-left">/compositions/users/{email}</td>
+<td class="org-left">/compositions/{comp<sub>id</sub>}/users/{email}</td>
 <td class="org-left"><i>userPermission Object</i></td>
 <td class="org-left">201 - CREATED</td>
 <td class="org-left">Owner</td>
@@ -386,9 +386,9 @@ for the JavaScript code in this tag.
 </tr>
 
 <tr>
-<td class="org-left">editUserPermissions</td>
+<td class="org-left">editUserPermission</td>
 <td class="org-left">PUT</td>
-<td class="org-left">/compositions/users/{email}</td>
+<td class="org-left">/compositions/{comp<sub>id</sub>}/users/{email}</td>
 <td class="org-left"><i>userPermission Object</i></td>
 <td class="org-left">200 - OK</td>
 <td class="org-left">Owner</td>
@@ -396,9 +396,9 @@ for the JavaScript code in this tag.
 </tr>
 
 <tr>
-<td class="org-left">deleteUserPermissions</td>
+<td class="org-left">deleteUserPermission</td>
 <td class="org-left">DELETE</td>
-<td class="org-left">/compositions/users/{id}</td>
+<td class="org-left">/compositions/{comp<sub>id</sub>}/users/{user<sub>id</sub>}</td>
 <td class="org-left">-</td>
 <td class="org-left">200 - OK</td>
 <td class="org-left">Owner</td>
@@ -410,7 +410,7 @@ for the JavaScript code in this tag.
 <td class="org-left">getUsers</td>
 <td class="org-left">GET</td>
 <td class="org-left">/users</td>
-<td class="org-left">-</td>
+<td class="org-left">query: string</td>
 <td class="org-left">200 - OK + List of <i>SimpleUser</i></td>
 <td class="org-left">-</td>
 <td class="org-left">-</td>
@@ -419,7 +419,7 @@ for the JavaScript code in this tag.
 <tr>
 <td class="org-left">getUserDetails</td>
 <td class="org-left">GET</td>
-<td class="org-left">/users/{id}</td>
+<td class="org-left">/users/{user<sub>id</sub>}</td>
 <td class="org-left">-</td>
 <td class="org-left">200 - OK + <i>DetailUser</i></td>
 <td class="org-left">Owner + Admin</td>
@@ -429,7 +429,7 @@ for the JavaScript code in this tag.
 <tr>
 <td class="org-left">editUser</td>
 <td class="org-left">PUT</td>
-<td class="org-left">/users/{id}</td>
+<td class="org-left">/users/{user<sub>id</sub>}</td>
 <td class="org-left"><i>Detail User</i></td>
 <td class="org-left">200 - OK</td>
 <td class="org-left">Owner + Admin</td>
@@ -452,7 +452,7 @@ for the JavaScript code in this tag.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Christian Richter</p>
-<p class="date">Created: 2018-09-06 Thu 14:14</p>
+<p class="date">Created: 2018-09-07 Fri 13:23</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
