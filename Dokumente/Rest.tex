@@ -1,0 +1,62 @@
+% Created 2018-09-06 Thu 14:23
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\author{Christian Richter}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={Christian Richter},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.1 (Org mode 9.1.9)},
+ pdflang={English}}
+\begin{document}
+
+\section{REST Interface}
+\label{sec:org2f4ad02}
+\begin{table}[htbp]
+\caption{objects written in cursive can be found in the class diagram}
+\centering
+\begin{tabular}{lllllll}
+Action & HTTP Method & Endpoint & Request & Response & Authorized & Note\\
+\hline
+createService(s) & POST & /services & List of services & 201 - CREATED & Admin & -\\
+editService & PUT & /services/\{id\} & single service & 200 - OK & Admin & -\\
+getServices & GET & /services & optional: tags & 200 - OK + List of \emph{Service} & - & -\\
+getServiceDetails & GET & /services/\{id\} & - & 200 - OK + \emph{Service} & - & \textbf{OPTIONAL}\\
+deleteService & DELETE & /services/\{id\} & - & 200 - OK & Admin & -\\
+\hline
+checkCompatibility & GET & /services/\{id\(_{\text{1}}\)\}/\{id\(_{\text{2}}\)\} & - & 200 - OK + \emph{CompatibilityAnswer} & - & -\\
+\hline
+getCompositions & GET & /compositions & - & 200 - OK + List of \emph{SimpleComp} & - & -\\
+getCompositionDetail & GET & /compositions/\{id\} & - & 200 - OK + \emph{DetailComp} & Owner + Authorized Users (Or public) & -\\
+createComposition & POST & /compositions & \emph{Composition Object} & 201 - CREATED & User & -\\
+editComposition & PUT & /compositions/\{id\} & \emph{Composition Object} & 200 - OK & Owner + Authorized Users & Only Owner can change Authorized Users\\
+\hline
+getUserPermissions & GET & /compositions/users & \emph{userAuthorizations} & 200 - OK + List of \emph{SimpleUser} & Owner & -\\
+createUserPermission & POST & /compositions/users/\{email\} & \emph{userPermission Object} & 201 - CREATED & Owner & true means can edit, false can only see. If no object exists user can neither.\\
+editUserPermissions & PUT & /compositions/users/\{email\} & \emph{userPermission Object} & 200 - OK & Owner & -\\
+deleteUserPermissions & DELETE & /compositions/users/\{id\} & - & 200 - OK & Owner & -\\
+\hline
+getUsers & GET & /users & - & 200 - OK + List of \emph{SimpleUser} & - & -\\
+getUserDetails & GET & /users/\{id\} & - & 200 - OK + \emph{DetailUser} & Owner + Admin & -\\
+editUser & PUT & /users/\{id\} & \emph{Detail User} & 200 - OK & Owner + Admin & -\\
+register & POST & /users & \emph{User} & 201 - CREATED & - & -\\
+\hline
+\end{tabular}
+\end{table}
+\end{document}
