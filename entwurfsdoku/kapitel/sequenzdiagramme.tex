@@ -71,3 +71,39 @@ Da auch HTTPS-Requests erwartet werden, die nur zu zwei einzelnen Diensten die K
 \\ \noindent
 Da dieses Sequenzdiagramm das komplexeste ist und sich viele andere Abläufe in ihm widerspiegeln, ist hier nur dieses als Repräsentant der Arbeitsweise unseres Backends aufgeführt.
 
+\section*{Sequenzdiagramme des Web Frontends}
+\subsection*{Sequenzdiagramm: Erstellen einer Komposition}
+
+\begin{figure}[h]
+	\centering
+	%\includegraphics[width= \linewidth ]{img/SDCreateComp.svg}
+	\missingfigure{SequenzdiagrammCreateComposition}			
+	\caption{Sequenzdiagramm - Erstellen einer Komposition}
+	\label{fig:sequenz-createComp}
+\end{figure}
+\noindent
+Um eine neue Komposition zu erstellen, werden zunächst die dem Nutzer verfügbaren Kompositionen vom Backend abgefragt und angezeigt. Über ein Eingabefeld kann ein Name für eine neue Komposition festgelegt werden und mit einem Knopf erstellt werden. Die Liste der verfügbaren Kompositionen wird refreshed und durch einen Klick auf die Komposition werden die noch leeren Details vom Backend abgerufen und in der Bearbeitungsansicht angezeigt. Als Autor der Komposition lassen sich nun die Listen mit den Nutzenden, die die Komposition einsehen oder bearbeiten dürfen, einsehen und bearbeiten. Dabei werden alle Informationen immer aus dem Backend angefordert beziehungsweise werden Aktualisierungen vom Nutzenden an das Backend geschickt.
+
+\subsection*{Sequenzdiagramm: Bearbeiten einer Komposition}
+
+\begin{figure}[h]
+	\centering
+	%\includegraphics[width= \linewidth ]{img/SDEditComp.svg}
+	\missingfigure{SequenzdiagrammEditComposition}			
+	\caption{Sequenzdiagramm - Bearbeiten einer Komposition}
+	\label{fig:sequenz-editComp}
+\end{figure}
+\noindent
+Um eine Komposition zu bearbeiten, werden zunächst wieder die dem Nutzer verfügbaren Kompositionen vom Backend abgefragt und angezeigt. Durch einen Klick auf die Komposition werden die Details und Services vom Backend abgerufen und in der Bearbeitungsansicht angezeigt. Indem ein Service aus dem SidePanel in das Canvas gezogen wird, wird lokal ein Knoten erstellt. Durch das Verbinden von zwei Knoten wird zunächst lokal eine Verbindung erstellt, wobei eine Anfrage an das Backend geht, in der die Kompatibilität überprüft wird. Beim Klicken auf einen Knoten wird eine Detailansicht für den verwendeten Dienst angezeigt. Ein Klick auf Speichern sendet die aktualisierte Komposition an den Server.
+
+\subsection*{Sequenzdiagramm: Bedienung des Adminpanels}
+
+\begin{figure}[h]
+	\centering
+	%\includegraphics[width= \linewidth ]{img/SDAdminPanel.svg}
+	\missingfigure{SequenzdiagrammAdminPanel}			
+	\caption{Sequenzdiagramm - Bedienung des Adminpanels}
+	\label{fig:sequenz-adminPanel}
+\end{figure}
+\noindent
+Aus der Übersicht der Kompositionen wird über einen Knopf das Adminpanel erreicht. Über eine Maske lässt sich eine JSON-Datei mit Services einlesen, die zunächst nur lokal zwischengespeichert werden und dann bei Bestätigung an das Backend übermittelt werden. In einem Suchfeld für Dienste kann eine Suchanfrage an das Backend übermittelt werden, und durch Auswählen eines Listeneintrags lassen sich die Details des Services bearbeiten, die bei Bestätigung der Eingabe an das Backend gesendet werden. Weiterhin lässt sich über eine Suche nach registrierten Nutzenden suchen. Durch Auswahl eines Nutzenden werden die Details vom Backend abgefragt und lassen sich vom Adminstrierenden bearbeiten. Nach Bestätigung werden die angepassten Daten an das Backend geschickt und gespeichert.
