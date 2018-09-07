@@ -6,10 +6,9 @@
 
 \begin{figure}[h]
 	\centering
-	%\includegraphics[width= \linewidth ]{img/SDDetail.svg}
-	\missingfigure{Sequenzdiagramm}		
+	\includegraphics[width=\textwidth]{img/Diagramme/Sequenz/Overview}
 	\caption{Sequenzdiagramm}
-	\label{fig:sequenz-a}
+	\label{fig:sequenz-overview}
 \end{figure}
 \noindent
 Der Benutzer öffnet die App, wodurch die Methode onCreate() der ListActivity aufgerufen wird. Zum Start wird ein HTTPS-Request an den Server gesendet. Der Server fragt die Daten aus der Datenbank ab und erstellt dazu ein versendbares Objekt in Form einer Liste von SimpleComp. Dies wird im Rahmen der Beantwortung des GET-Requests an die App geschickt. Die App verarbeitet die erhaltenen Daten, sodass sie dem Benutzer angezeigt werden können.
@@ -19,10 +18,9 @@ Der Benutzer öffnet die App, wodurch die Methode onCreate() der ListActivity au
 
 \begin{figure}[h]
 	\centering
-%\includegraphics[width= \linewidth ]{img/SDListAct.svg}
-	\missingfigure{Sequenzdiagramm}			
+	\includegraphics[width=\textwidth]{img/Diagramme/Sequenz/App_list}
 	\caption{Sequenzdiagramm - Öffnen der ListActivity}
-	\label{fig:sequenz-a}
+	\label{fig:sequenz-app_list}
 \end{figure}
 \noindent
 Dieses Sequenzdiagramm zeigt den Vorgang, der abläuft, wenn die ListActivity initial gestartet wird und mit einer Liste aus Kompositionseinträgen zu füllen ist.
@@ -32,10 +30,9 @@ Da der Nutzer noch nicht eingeloggt ist, wird eine requestList()-Anfrage ohne To
 
 \begin{figure}[h]
 	\centering
-	%\includegraphics[width= \linewidth ]{img/SDDetail.svg}
-	\missingfigure{Sequenzdiagramm}		
+	\includegraphics[width=\textwidth]{img/Diagramme/Sequenz/App_detail}
 	\caption{Sequenzdiagramm - Klick auf Kompositionseintrag}
-	\label{fig:sequenz-a}
+	\label{fig:sequenz-App_detail}
 \end{figure}
 \noindent
 Dieses Sequenzdiagramm beginnt damit, dass der Nutzer auf ein Listenelement tippt, um die Detailansicht aufzurufen. 
@@ -53,8 +50,7 @@ Die Methode httpsRequest() wird nicht implementiert, sondern dient hier zur Abst
 
 \begin{figure}[h]
 	\centering
-	%\includegraphics[width= \linewidth ]{img/SDDetail.svg}
-	\missingfigure{Sequenzdiagramm}		
+	\includegraphics[width=\textwidth]{img/Diagramme/Sequenz/Controller}	
 	\caption{Sequenzdiagramm - Kompositionsanfrage}
 	\label{fig:sequenz-a}
 \end{figure}
@@ -76,8 +72,8 @@ Da dieses Sequenzdiagramm das komplexeste ist und sich viele andere Abläufe in 
 
 \begin{figure}[h]
 	\centering
-	%\includegraphics[width= \linewidth ]{img/SDCreateComp.svg}
-	\missingfigure{SequenzdiagrammCreateComposition}			
+	\includegraphics[width=.75\textwidth]{img/Diagramme/Sequenz/Frontend_createComp}
+			
 	\caption{Sequenzdiagramm - Erstellen einer Komposition}
 	\label{fig:sequenz-createComp}
 \end{figure}
@@ -88,8 +84,7 @@ Um eine neue Komposition zu erstellen, werden zunächst die dem Nutzer verfügba
 
 \begin{figure}[h]
 	\centering
-	%\includegraphics[width= \linewidth ]{img/SDEditComp.svg}
-	\missingfigure{SequenzdiagrammEditComposition}			
+	\includegraphics[width=.75\textwidth]{img/Diagramme/Sequenz/Frontend_editComp}			
 	\caption{Sequenzdiagramm - Bearbeiten einer Komposition}
 	\label{fig:sequenz-editComp}
 \end{figure}
@@ -100,8 +95,7 @@ Um eine Komposition zu bearbeiten, werden zunächst wieder die dem Nutzer verfü
 
 \begin{figure}[h]
 	\centering
-	%\includegraphics[width= \linewidth ]{img/SDAdminPanel.svg}
-	\missingfigure{SequenzdiagrammAdminPanel}			
+	\includegraphics[width=.75\textwidth]{img/Diagramme/Sequenz/Frontend_admin}			
 	\caption{Sequenzdiagramm - Bedienung des Adminpanels}
 	\label{fig:sequenz-adminPanel}
 \end{figure}

@@ -2,11 +2,13 @@
 \newcommand*{\compress}{\@minipagetrue}
 \makeatother
 
+\section*{Klassendiagramme des Servers}
+
 \begin{figure}[h]
 	\centering
-	\missingfigure{Klassendiagramm}
-	\caption{Klassendiagramm - A}
-	\label{fig:klassendiagramm-a}
+	\includegraphics[width=\textwidth]{img/Diagramme/Klassen/Model}
+	\caption{Klassendiagramm des Models}
+	\label{fig:klassendiagramm-model}
 \end{figure}
 
 \begin{figure}[h]
@@ -52,9 +54,9 @@
 			\item Utilklasse
 			\item Methode zum bestimmen der Kompatibilität zweier Dienst
 			\item Methode soll für Einzelanfragen und Kanten verwendet werden
-		\end{itemize} \\
+		\end{itemize} 
 	\end{tabularx}
-	\caption{Klassen des Models}
+	\caption{Klassen des Models aus Abbildung \ref{fig:klassendiagramm-model}}
 	\label{table:klassenbeschreibung-a}
 \end{figure}
 
@@ -103,61 +105,54 @@
 			\item Speicherung je einer Liste für User mit Einsichts- bzw. Bearbeitungsrecht
 		\end{itemize}\\
 	\end{tabularx}
-	\caption{Klassen des Models \textit{Fortsetzung}}
+	\caption{Klassen des Models aus Abbildung \ref{fig:klassendiagramm-model} \textit{Fortsetzung}}
 \end{figure}
 
 
 
 \begin{figure}[h]
 	\centering
-	\missingfigure{Klassenbeschreibung Controller}
+	\includegraphics[width=\textwidth]{img/Diagramme/Klassen/Controller}
 	\caption{Klassendiagramm des Controllers}
-	\label{fig:klassendiagramm-a}
+	\label{fig:klassendiagramm-controller}
 \end{figure}
 
 \begin{figure}[h]
 	\begin{tabularx}{\textwidth}{p{.25\textwidth} | X}
 		\rowcolor[HTML]{C0C0C0}
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
-		CompositionController & \begin{itemize}
+		CompositionController & \compress \begin{itemize}
 		\item Klasse stellt einen REST-Controller dar
 		\item Verschiedene Methoden zum Erstellen, Anfragen und bearbeiten von Compositions aus der Datenbank
 		\item die Authorisierung des Nutzers wird in der Behandlung der Anfragen berücksichtigt
 		\item Rückgabetyp ist stets ResponseEntity, da so ein entsprechender HTTP-Code als Antwort gegeben werden kann.
 		\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7}
-		ServiceController & \begin{itemize}
+		ServiceController & \compress  \begin{itemize}
 			\item Rest-Controller, analog zu CompositionController
 			\item Verwaltet den Zugriff und Bearbeitung von Servicen.
 		\end{itemize}\\
-		UserController & \begin{itemize}
+		UserController & \compress  \begin{itemize}
 			\item REST-Controller, analog zu den anderen Klassen
 			\item Erlaubt es Daten von User zu verändern
 		\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7}
-		UserPermission & \begin{itemize}
+		UserPermission & \compress  \begin{itemize}
 			\item REST-Controller
 			\item Erlaubt es dem Owner einer Komposition die Zugriffsrechte auf selbige zu verändern.
 		\end{itemize}
 	\end{tabularx}
-	\caption{Klassen des Models \textit{Fortsetzung}}
+	\caption{Klassen des Klassendiagramms zum Controller in Abbildung \ref{fig:klassendiagramm-controller}}
 \end{figure}
 
-\begin{tcolorbox}
-Teilt eure Klassendiagramme bitte auf und baut \textbf{kein} einzelnes riesiges Diagramm.
-Getter und Setter Methoden müssen hier nicht modelliert werden.
-Sie sollten aber der klassischen Namenskonvention folgen, um die Nutzung in Sequenzdiagrammen zu ermöglichen.
-\\\\
-Auf jedes Diagramm folgt eine Tabelle, in der die Aufgabe \textbf{jeder} Klasse beschrieben wird.
-\end{tcolorbox}
-
+\newpage
 \section*{Klassendiagramm zur Android-App}
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=\textwidth]{Klassendiagramm_App/Class_Diagram1}
+	\includegraphics[width=\textwidth]{img/Diagramme/Klassen/App}
 	\caption{Klassendiagramm - App}
-	\label{fig:klassendiagramm-a}
+	\label{fig:klassendiagramm-app}
 \end{figure}
 
 \begin{table}[h]
@@ -165,36 +160,35 @@ Auf jedes Diagramm folgt eine Tabelle, in der die Aufgabe \textbf{jeder} Klasse 
 	\begin{tabularx}{\textwidth}{p{.25\textwidth} X}
 		\rowcolor[HTML]{C0C0C0} 
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
-		ListActivity & \begin{itemize}
+		ListActivity &  \compress \begin{itemize}
 		
 \item MainActivity und Übersicht über sichtbare Kompositionen \end{itemize} \\
 		\rowcolor[HTML]{E7E7E7} 
-		SettingsActivity & \begin{itemize} \item Activity zum Festlegen von Einstellungen, zum Einloggen und Festlegen der Serveradresse \end{itemize}\\ 
-		DetailActivity & \begin{itemize}\item Detailansicht zur grafischen Darstellung einer Komposition \end{itemize}\\
+		SettingsActivity &  \compress \begin{itemize} \item Activity zum Festlegen von Einstellungen, zum Einloggen und Festlegen der Serveradresse \end{itemize}\\ 
+		DetailActivity & \compress \begin{itemize}\item Detailansicht zur grafischen Darstellung einer Komposition \end{itemize}\\
 		\rowcolor[HTML]{E7E7E7} 
-		Settings & 
-\begin{itemize}		\item Dient zur Kapselung der getroffenen Einstellungen \end{itemize}\\
-		CompositionView & \begin{itemize}
+		Settings & \compress \begin{itemize}		\item Dient zur Kapselung der getroffenen Einstellungen \end{itemize}\\
+		CompositionView & \compress \begin{itemize}
 		
 		\item Eigentliche View, in der das Zeichnen einer Komposition stattfindet. 
 
-\item Jede DetailActivity verfügt über ein CompositionView. 
-\end{itemize}\\
+		\item Jede DetailActivity verfügt über ein CompositionView. 
+	\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7} 
-		Composition & \begin{itemize}
+		Composition & \compress \begin{itemize}
 		
 		\item Model-Abstraktion einer Komposition \end{itemize}\\
-		Node & \begin{itemize}
+		Node & \compress  \begin{itemize}
 		
 		\item Interne Model-Abstraktion eines Diensts, der als Knoten in einer Komposition fungiert. 
 		\end{itemize}\\
 		\rowcolor[HTML]{E7E7E7} 
-		Edge & \begin{itemize}
+		Edge & \compress \begin{itemize}
 				 \item Interne Model-Abstraktion einer Kante zwischen zwei Diensten in einer Komposition 
 				 \end{itemize} \\
-		PDFCreator & \begin{itemize}
+		PDFCreator & \compress  \begin{itemize}
 \item Helper-Klasse zur Generierung von PDFs, die Kompositionsbilder beinhalten. \end{itemize}\\	\end{tabularx}
-	\caption{Klassenbeschreibung der App}
+	\caption{Klassenbeschreibung der App aus Abbildung \ref{fig:klassendiagramm-app}}
 	\label{table:klassenbeschreibung-a}
 \end{table}
 
@@ -202,18 +196,18 @@ Auf jedes Diagramm folgt eine Tabelle, in der die Aufgabe \textbf{jeder} Klasse 
 	\begin{tabularx}{\textwidth}{p{.2\textwidth} | X}
 \rowcolor[HTML]{C0C0C0}
 		\textbf{Klassenname} & \textbf{Aufgabe} \\
-		ServerCommunication & \begin{itemize} \item Anlaufpunkt für sämtliche Kommunikation mit dem Backend. 
+		ServerCommunication & \compress \begin{itemize} \item Anlaufpunkt für sämtliche Kommunikation mit dem Backend. 
 \item ServerCommunication übernimmt die Aufgabe, Verbindungen zum Server herzustellen, die Daten zu interpretieren und im richtigen Format weiterzugeben. \end{itemize}\\
 			\rowcolor[HTML]{E7E7E7} 		
-		LocalCache & \begin{itemize} 
+		LocalCache & \compress \begin{itemize} 
 		\item Cache zur Speicherung von durch Anfragen erhaltenden Daten, damit diese nicht erneut angefragt werden müssen. 
 		\end{itemize}\\
-Service & \begin{itemize} \item Interne Abbildung eines Diensts
+Service & \compress \begin{itemize} \item Interne Abbildung eines Diensts
 \item Kapselt sämtlich relevante Informationen eines Services
 \item Verfügt über Verweis auf In- und Out-Formate
 \end{itemize}\\
 \rowcolor[HTML]{E7E7E7} 
-Format & \begin{itemize}	\item Format eines Services mit Version, Flexible-Flag und Name.
+Format & \compress \begin{itemize}	\item Format eines Services mit Version, Flexible-Flag und Name.
 		\end{itemize}\\
 CompatibilityAnswer & \begin{itemize}
 \item Kapselt die Auswertung, ob ein Dienstpaar beziehungsweise eine Kante kompatibel ist. 
@@ -221,19 +215,20 @@ CompatibilityAnswer & \begin{itemize}
 \item Gibt es Alternativen, finden sich diese in einer Liste, die als Instanzvariable abgelegt ist.
 \end{itemize}\\		
 \rowcolor[HTML]{E7E7E7} 		
-Alternative & \begin{itemize}
+Alternative & \compress \begin{itemize}
 \item Speichert die Alternativen eines inkompatiblen Dienstpaares.
 \end{itemize}\\		
 	\end{tabularx}
-	\caption{Klassenbeschreibung der App -Fortsetzung}
+	\caption{Klassenbeschreibung der App aus Abbildung \ref{fig:klassendiagramm-app} -Fortsetzung}
 	\label{table:klassenbeschreibung-a}
 \end{table}
 
+\newpage
 \section*{Klassendiagramm zum Web-Frontend}
 
 \begin{figure}[h]
 	\centering
-%	\includegraphics[width=\textwidth]{Klassendiagramm_WebApp/Klassendiagramm_Web}
+	\includegraphics[width=\textwidth]{img/Diagramme/Klassen/Frontend}
 	\caption{Klassendiagramm - Web}
 	\label{fig:klassendiagramm-web}
 \end{figure}
