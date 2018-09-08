@@ -24,6 +24,7 @@ public class Composition {
 	private Long id;
 
 	@NotNull
+	@JsonIgnore //test
 	@ManyToOne
 	private User owner;
 

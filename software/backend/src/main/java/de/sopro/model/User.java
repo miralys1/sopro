@@ -30,7 +30,6 @@ public class User {
 	private String firstname;
 
 	@NotBlank
-	@JsonIgnore // test
 	private String lastname;
 
 	@NotBlank
@@ -46,15 +45,18 @@ public class User {
 
 	@ManyToMany(cascade = CascadeType.MERGE)
 	private List<Composition> editableComps;
-	
+
 	// Hibernate requires a no-arg constructor
 	public User() {
-		
+
 	}
 
-	public User(String firstname, String lastname) {
+	public User(String firstname, String lastname, String email, String title, boolean isAdmin) {
 		this.firstname = firstname;
 		this.lastname = lastname;
+		this.email = email;
+		this.title = title;
+		this.isAdmin = isAdmin;
 		this.ownsComp = new ArrayList<Composition>();
 		this.viewableComps = new ArrayList<Composition>();
 		this.editableComps = new ArrayList<Composition>();
