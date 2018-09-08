@@ -37,25 +37,29 @@ public class Service {
 	private long date;
 
 	// private String picture; // TODO: fragen ob pictures extra gespeichert werden
-	//
-	// private List<Format> in;
-	//
-	// private List<Format> out;
+
+	@NotNull
+	@ManyToMany
+	private List<Format> in;
+
+	@NotNull
+	@ManyToMany
+	private List<Format> out;
 
 	// Hibernate requires a no-arg constructor
 	public Service() {
 	}
 
-	public Service(String name, String version, List<String> tags, String organisation,
-			long date/* , String picture, List<Format> in, List<Format> out */) {
+	public Service(String name, String version, List<String> tags, String organisation, long date, String picture,
+			List<Format> in, List<Format> out) {
 		this.name = name;
 		this.version = version;
 		// this.tags = tags;
 		this.organisation = organisation;
 		this.date = date;
 		// this.picture=picture;
-		// this.in = in;
-		// this.out=out;
+		this.in = in;
+		this.out = out;
 	}
 
 	public Long getId() {
@@ -113,22 +117,22 @@ public class Service {
 	// public void setPicture(String picture) {
 	// this.picture = picture;
 	// }
-	//
-	// public List<Format> getIn() {
-	// return in;
-	// }
-	//
-	// public void setIn(List<Format> in) {
-	// this.in = in;
-	// }
-	//
-	// public List<Format> getOut() {
-	// return out;
-	// }
-	//
-	// public void setOut(List<Format> out) {
-	// this.out = out;
-	// }
+
+	public List<Format> getIn() {
+		return in;
+	}
+
+	public void setIn(List<Format> in) {
+		this.in = in;
+	}
+
+	public List<Format> getOut() {
+		return out;
+	}
+
+	public void setOut(List<Format> out) {
+		this.out = out;
+	}
 
 	public String toString() {
 		return name;
