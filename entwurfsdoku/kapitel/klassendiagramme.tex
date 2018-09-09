@@ -2,16 +2,17 @@
 
 \section*{Klassendiagramme des Servers}
 
+\subsection*{Klassendiagramme des Models}
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=\textwidth]{img/Diagramme/Klassen/Model}
-	\caption{Klassendiagramm des Models}
+	\includegraphics[width=.75\textwidth]{img/Diagramme/Klassen/PureModel}
+	\caption{Klassendiagramm der Informationen, wie sie gespeichert werden}
 	\label{fig:klassendiagramm-model}
 \end{figure}
 
 \paragraph{User}
 \begin{itemize}
-		\item Speicherung der Nutzerdaten, sowie einer künstlichen Datenbank-ID
+		\item Speicherung der Nutzerdaten sowie einer künstlichen Datenbank-ID
 		\item Eine Flag, die den Adminstatus festlegt
 		\item Listen von erstellten, einsehbaren und veränderbaren Kompositionen
 \end{itemize}
@@ -19,23 +20,23 @@
 \paragraph{Composition}
 \begin{itemize}
 	\item Speicherung einer künstlichen ID
-	\item Speicherung der Kompositionen als Graphen, durch Speicherung der Knoten und Kanten
+	\item Speicherung der Kompositionen als Graphen durch Speicherung der Knoten und Kanten
 	\item Speicherung des Urhebers und der Nutzenden mit Zugriffs- bzw. Bearbeitungsrechten
-	\item Konvertermethode, zum Erstellen eines detaillierten, versendbaren Objektes
-	\item Konvertermethode, zum Erstellen eines reduzierten Objektes
-	\item Methode zum Erstellen eines UserAuthorizations-Objektes um Nutzerrechte später einzusehen
+	\item Konvertermethode zum Erstellen eines detaillierten, versendbaren Objektes
+	\item Konvertermethode zum Erstellen eines reduzierten Objektes
+	\item Methode zum Erstellen eines UserAuthorizations-Objektes, um Nutzerrechte später einzusehen
 \end{itemize} 
 
 \paragraph{CompositionNode}
 \begin{itemize}
 	\item Speicherung eines Dienstes, für dessen Verwendung im Kompositionsgraphen
-	\item Konvertermethode, zum Erstellen eines detaillierten, versendbaren Objektes
-	\item Referenz auf CompatibilityAnswer um Kompatibilität der verbundenen Dienste darzustellen
+	\item Konvertermethode zum Erstellen eines detaillierten, versendbaren Objektes
+	\item Referenz auf CompatibilityAnswer, um Kompatibilität der verbundenen Dienste darzustellen
 \end{itemize} 
 \paragraph{CompositionEdge} 
 \begin{itemize}
 	\item Speicherung einer gerichteten Kompositionskante als Paar von Kompositionsknoten
-	\item Konvertermethode, zum Erstellen eines detaillierten, versendbaren Objektes
+	\item Konvertermethode zum Erstellen eines detaillierten, versendbaren Objektes
 \end{itemize}
 
 \paragraph{Service}
@@ -49,10 +50,20 @@
 \begin{itemize}
 	\item Speicherung von Name, Version und Kompatibilitätsgrad
 \end{itemize} 
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=\textwidth]{img/Diagramme/Klassen/Send}
+	\caption{Klassendiagramm der Informationen, wie sie per JSON verschickt werden}
+	\label{fig:klassendiagramm-model}
+\end{figure}
+
+
+
 \paragraph{Compatibility}
 \begin{itemize}
 	\item Utilklasse
-	\item Methode zum bestimmen der Kompatibilität zweier Dienst
+	\item Methode zum Bestimmen der Kompatibilität zweier Dienste
 	\item Methode soll für Einzelanfragen und Kanten verwendet werden
 \end{itemize} 
 
@@ -90,7 +101,7 @@
 \end{itemize}
 \paragraph{Alternative}
 \begin{itemize}
-	\item Speicherung der möglichen Konverter eventuell Konverterketten (Name, Versionsnummer, ID) um Kompatibilität zu erzeugen
+	\item Speicherung der möglichen Konverter eventuell Konverterketten (Name, Versionsnummer, ID), um Kompatibilität zu erzeugen
 \end{itemize}
 \paragraph{CompatibillityAnswer}
 \begin{itemize}
@@ -104,7 +115,7 @@
 	\item Speicherung je einer Liste für User mit Einsichts- bzw. Bearbeitungsrecht
 \end{itemize}
 
-
+\subsection*{Klassendiagramm des Controllers}
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=\textwidth]{img/Diagramme/Klassen/Controller}
@@ -116,7 +127,7 @@
 \paragraph{CompositionController}
 \begin{itemize}
 	\item Klasse stellt einen REST-Controller dar
-	\item Verschiedene Methoden zum Erstellen, Anfragen und bearbeiten von Compositions aus der Datenbank
+	\item Verschiedene Methoden zum Erstellen, Anfragen und Bearbeiten von Compositions aus der Datenbank
 	\item die Authorisierung des Nutzers wird in der Behandlung der Anfragen berücksichtigt
 	\item Rückgabetyp ist stets ResponseEntity, da so ein entsprechender HTTP-Code als Antwort gegeben werden kann.
 \end{itemize}
@@ -133,7 +144,7 @@
 \paragraph{UserPermission}
 \begin{itemize}
 	\item REST-Controller
-	\item Erlaubt es dem Owner einer Komposition die Zugriffsrechte auf selbige zu verändern.
+	\item Erlaubt es dem Owner, einer Komposition die Zugriffsrechte auf selbige zu verändern.
 \end{itemize}
 
 \newpage
@@ -228,7 +239,7 @@
 Alle Anfragen, die nicht an die REST-Schnittstelle vom Server gehen, werden hierhin zurück geleitet
 und dann entsprechend von hier aus geroutet.
 \paragraph{AuthenticationPage}\mbox{}\\
-Bietet die Möglichkeit über eine Maske sich einzuloggen oder zu registrieren.
+Bietet die Möglichkeit, über eine Maske sich einzuloggen oder zu registrieren.
 \paragraph{AdminPanel}\mbox{}\\
 Bietet die Möglichkeiten, Services zu erstellen, bearbeiten und löschen und Rechte von Nutzern zu bearbeiten. 
 \paragraph{SidePanel}\mbox{}\\
@@ -236,7 +247,7 @@ Ruft Services ab, stellt sie dar und lässt die angezeigten Services mit einer S
 \paragraph{Workspace}\mbox{}\\
 Zeigt eine Liste von allen einsehbaren und bearbeitbaren Kompositionen. 
 \paragraph{NavBar}\mbox{}\\
-Stellt einige Informationen zum Login-Status dar und ermöglicht den logout.
+Stellt einige Informationen zum Login-Status dar und ermöglicht den Logout.
 \paragraph{Editor}\mbox{}\\
 Hier wird die Detailansicht einer Komposition angezeigt mit der Möglichkeit, diese durch Hinzufügen und Entfernen von
 Diensten und Kanten zu verändern, sofern die nötigen Rechte vorhanden sind. Es kann auch vom Autor der Komposition festgelegt

@@ -11,12 +11,12 @@
 	\label{fig:sequenz-overview}
 \end{figure}
 \noindent
-Zusammengefasst beschreibt dieses Diagramm das grobe Verhalten des Systems, das abläuft, wenn man ein Listenelement in der Android-App mit der Absicht antippt, sich eine Komposition detailliert grafisch darstellen zu lassen. Dabei bezieht es die Kommunikation zwischen Android App und Backend mit ein.\newline
+Zusammengefasst beschreibt dieses Diagramm das grobe Verhalten des Systems, das abläuft, wenn ein Nutzer über die App sich die für ihn anzeigbaren Kompositionen auflisten lässt. Dabei bezieht es die Kommunikation zwischen Android App und Backend mit ein.\newline
 
 \noindent Der Benutzer öffnet die App, wodurch die Methode onCreate() der ListActivity aufgerufen wird. Beim Start sendet die App ein HTTPS-Request an den Server. Daraufhin fragt der Server die Daten aus der Datenbank ab und erstellt aus diesen ein versendbares Objekt in Form einer Liste von SimpleComp-Objekten. Diese schickt das Backend im Rahmen der Antwort auf den GET-Request an die App, welche die erhaltenen Daten verarbeitet, worauf sie diese dem Benutzer anzeigen kann.
 
 \section*{Sequenzdiagramme der App}
-\subsection*{Sequenzdiagramm: Öffnen der ListActivity}
+\subsection*{ Öffnen der ListActivity}
 
 \begin{figure}[h]
 	\centering
@@ -29,7 +29,7 @@ Dieses Sequenzdiagramm zeigt den Vorgang, der abläuft, wenn die ListActivity in
 
 \noindent Der Ablauf der Aktivitäten beginnt mit dem Start der ListActivity, bei dem ein Rufen der Standard-Methode onCreate() erfolgt. Da der Nutzer noch nicht eingeloggt ist, startet die App eine requestList()-Anfrage ohne Token. Diese läuft in einem eigenen Thread, damit der UI-Thread nicht blockiert. Die Methode requestList() führt einen HTTPS-Request an das Backend aus. In der Zeit, in der die ListActivity die Antwort noch nicht erhalten hat, zeigt sie mithilfe von showLoading() eine Ladeanimation an.
 \pagebreak
-\subsection*{Sequenzdiagramm: Klicken auf Kompositionseintrag}
+\subsection*{ Klicken auf Kompositionseintrag}
 
 \begin{figure}[h]
 	\centering
@@ -76,7 +76,7 @@ Da es sich bei dem durch dieses Sequenzdiagramm modellierten dynamischen Verhalt
 
 \newpage
 \section*{Sequenzdiagramme des Web Frontends}
-\subsection*{Sequenzdiagramm: Erstellen einer Komposition}
+\subsection*{ Erstellen einer Komposition}
 
 \begin{figure}[!h]
 	\centering
@@ -90,7 +90,7 @@ Da es sich bei dem durch dieses Sequenzdiagramm modellierten dynamischen Verhalt
 Um eine neue Komposition zu erstellen, fragt das Web Frontend zunächst die dem Nutzer verfügbaren Kompositionen vom Backend an und stellt diese bei Erhalt der Antwort dar. Über ein Eingabefeld lässt sich ein Name für eine neue Komposition festlegen und mit einem zusätzlichen Knopf erstellen. Hiernach wird die Liste der verfügbaren Kompositionen aktualisiert. Ein Klick auf die Komposition löst das Abrufen der bisher nicht erhaltenden Kompositionsdetails vom Backend aus. Erhält das Frontend diese, zeigt es sie in der Bearbeitungsansicht an. Als Autor der Komposition lassen sich nun die Listen mit den Nutzenden einsehen und bearbeiten, die diese Komposition betrachten oder bearbeiten dürfen. Hierbei fordert das Web Frontend alle Informationen immer aus dem Backend an, beziehungsweise schickt Aktualisierungen vom Nutzenden an das Backend.
 
 \newpage
-\subsection*{Sequenzdiagramm: Bearbeiten einer Komposition}
+\subsection*{ Bearbeiten einer Komposition}
 
 \begin{figure}[!h]
 	\centering
@@ -102,7 +102,7 @@ Um eine neue Komposition zu erstellen, fragt das Web Frontend zunächst die dem 
 Um eine Komposition zu bearbeiten, fragt das Frontend zunächst wieder die dem Nutzer verfügbaren Kompositionen vom Backend an und stellt diese dar. Ein Klick auf die Komposition lässt die Details sowie Services vom Backend abrufen und in der Bearbeitungsansicht anzeigen. Indem man einen Service aus dem SidePanel in das Canvas zieht, erstellt man lokal einen Knoten. Das Verbinden von zwei Knoten erstellt zunächst lokal eine Verbindung, wobei eine Anfrage an das Backend geht, die das Überprüfen der Kompatibilität überprüfen lässt. Beim Klicken auf einen Knoten wird eine Detailansicht für den verwendeten Dienst angezeigt. Wiederum sendet ein Klick auf Speichern die aktualisierte Komposition an den Server.
 
 \newpage
-\subsection*{Sequenzdiagramm: Bedienung des Adminpanels}
+\subsection*{ Bedienung des Adminpanels}
 
 \begin{figure}[!h]
 	\centering
