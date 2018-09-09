@@ -2,10 +2,11 @@
 
 \section*{Klassendiagramme des Servers}
 
+\subsection*{Klassendiagramme des Models}
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=\textwidth]{img/Diagramme/Klassen/Model}
-	\caption{Klassendiagramm des Models}
+	\includegraphics[width=.75\textwidth]{img/Diagramme/Klassen/PureModel}
+	\caption{Klassendiagramm der Informationen, wie sie gespeichert werden}
 	\label{fig:klassendiagramm-model}
 \end{figure}
 
@@ -49,6 +50,16 @@
 \begin{itemize}
 	\item Speicherung von Name, Version und Kompatibilitätsgrad
 \end{itemize} 
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=\textwidth]{img/Diagramme/Klassen/Send}
+	\caption{Klassendiagramm der Informationen, wie sie per JSON verschickt werden}
+	\label{fig:klassendiagramm-model}
+\end{figure}
+
+
+
 \paragraph{Compatibility}
 \begin{itemize}
 	\item Utilklasse
@@ -104,7 +115,7 @@
 	\item Speicherung je einer Liste für User mit Einsichts- bzw. Bearbeitungsrecht
 \end{itemize}
 
-
+\subsection*{Klassendiagramm des Controllers}
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=\textwidth]{img/Diagramme/Klassen/Controller}
