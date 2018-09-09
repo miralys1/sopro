@@ -1,6 +1,6 @@
 	Das dynamische Verhalten des Systems wird mittels Sequenzdiagrammen modelliert.
 	Hier wird zunächst ein grobes, geräteübergreifendes Diagramm vorgestellt.
-	Die restlichen Sequenzdiagramme beziehen sich nur auf wichtige Methoden in den gekapselten Ökosystemen APP, Website und Backend. Im Weiteren werden Lost und Found Messages verwendet, um die Kommunikation mit dem Server darzustellen. 
+	Die restlichen Sequenzdiagramme beziehen sich nur auf wichtige Methoden in den gekapselten Ökosystemen APP, Website und Backend. Im Weiteren werden Lost und Found Messages verwendet, um die Kommunikation der App und Website mit dem Server zu visualisieren. 
 	
 \section*{Geräteübergreifendes Sequenzdiagramm}
 
@@ -11,7 +11,9 @@
 	\label{fig:sequenz-overview}
 \end{figure}
 \noindent
-Der Benutzer öffnet die App, wodurch die Methode onCreate() der ListActivity aufgerufen wird. Zum Start wird ein HTTPS-Request an den Server gesendet. Der Server fragt die Daten aus der Datenbank ab und erstellt dazu ein versendbares Objekt in Form einer Liste von SimpleComp-Objekten. Diese wird im Rahmen der Antwort auf den GET-Request an die App geschickt. Diese verarbeitet die erhaltenen Daten, sodass sie dem Benutzer angezeigt werden können.
+Zusammengefasst beschreibt dieses Diagramm das grobe Verhalten des Systems, das abläuft, wenn man ein Listenelement in der Android-App mit der Absicht antippt, sich eine Komposition detailliert grafisch darstellen zu lassen. Dabei bezieht es die Kommunikation zwischen Android App und Backend mit ein.\newline
+
+\noindent Der Benutzer öffnet die App, wodurch die Methode onCreate() der ListActivity aufgerufen wird. Zum Start wird ein HTTPS-Request an den Server gesendet. Daraufhin fragt der Server die Daten aus der Datenbank ab und erstellt aus diesen ein versendbares Objekt in Form einer Liste von SimpleComp-Objekten. Diese wird im Rahmen der Antwort auf den GET-Request an die App geschickt, welche die erhaltenen Daten verarbeitet, worauf sie dem Benutzer angezeigt werden können.
 
 \section*{Sequenzdiagramme der App}
 \subsection*{Sequenzdiagramm: Öffnen der ListActivity}
@@ -23,9 +25,10 @@ Der Benutzer öffnet die App, wodurch die Methode onCreate() der ListActivity au
 	\label{fig:sequenz-app_list}
 \end{figure}
 \noindent
-Dieses Sequenzdiagramm zeigt den Vorgang, der abläuft, wenn die ListActivity initial gestartet wird und mit einer Liste aus Kompositionseinträgen zu füllen ist.
-Da der Nutzer noch nicht eingeloggt ist, wird eine requestList()-Anfrage ohne Token gestartet. Diese wird in einem eigenen Thread ausgeführt, damit der UI-Thread nicht blockiert. Die Methode requestList() führt einen HTTPS-Request an das Backend aus. In der Zeit, in der die ListActivity die Antwort noch nicht erhalten hat, zeigt sie mithilfe von showLoading() eine Ladeanimation an.
+Dieses Sequenzdiagramm zeigt den Vorgang, der abläuft, wenn die ListActivity initial gestartet wird und mit einer Liste aus Kompositionseinträgen zu füllen ist.\newline
 
+\noindent Der Ablauf der Aktivitäten beginnt mit dem Start der ListActivity, bei dem Standard-Methode onCreate() gerufen wird. Da der Nutzer noch nicht eingeloggt ist, wird eine requestList()-Anfrage ohne Token gestartet. Diese wird in einem eigenen Thread ausgeführt, damit der UI-Thread nicht blockiert. Die Methode requestList() führt einen HTTPS-Request an das Backend aus. In der Zeit, in der die ListActivity die Antwort noch nicht erhalten hat, zeigt sie mithilfe von showLoading() eine Ladeanimation an.
+\pagebreak
 \subsection*{Sequenzdiagramm: Klicken auf Kompositionseintrag}
 
 \begin{figure}[h]
@@ -34,18 +37,23 @@ Da der Nutzer noch nicht eingeloggt ist, wird eine requestList()-Anfrage ohne To
 	\caption{Sequenzdiagramm - Klick auf Kompositionseintrag}
 	\label{fig:sequenz-App_detail}
 \end{figure}
-\noindent
-Dieses Sequenzdiagramm beginnt damit, dass der Nutzer auf ein Listenelement tippt, um die Detailansicht aufzurufen. 
-Dadruch wird die Methode startDetailActivity() aufgerufen, die die Klasse ServerCommunication veranlasst, im LokalCache nach der gewünschten Komposition zu suchen.
+
+
+\noindent Fortführend schließt sich dieses Sequenzdiagramm an den Usage-Flow des obigen an. Ist die Liste geladen, will der Nutzer sich früher oder später eine der Kompositionen  detailliert als Grafik anzeigen lassen. Hierfür reicht ein Tippen auf das jeweilige Listenelement aus, um die Detailansicht in Form der DetailActivity aufzurufen.\newline
+\\
+Durch die genannte UI-Aktion wird die Methode startDetailActivity() aufgerufen, was die statische Methode requestDetail() veranlasst, im LokalCache nach der gewünschten Komposition zu suchen.
 Falls diese noch nicht im Cache ist, wird ein HTTPS-Request an den Server gesendet.
-In der Antwort sind alle nötigen Details der Komposition enthalten, wozu unter anderem ihre Nodes zählen.
-Die Details werden in der Komposition gespeichert, die wiederum im LokalCache abgelegt ist und so auch an die ListActivity zurückgegeben. Diese übergibt die nun mit Details ausgestattete Komposition an einen Intent, der zum Starten der DetailsActivity dient.
+In der Antwort auf diesen Request sind alle nötigen Details der Komposition enthalten, wozu unter anderem ihre Nodes zählen.
+Die Details werden in der Komposition gespeichert, die wiederum im LokalCache abgelegt ist, und so auch an die ListActivity zurückgegeben. Diese übergibt die nun mit Details ausgestattete Komposition an einen Intent, der zum Starten der DetailsActivity dient.\newline
 \\
-Da LocalCache ein Singleton ist, muss zu Beginn die Instanz abgerufen werden. Wir planen die Instanz vorzudefinieren (eager instantiation), wodurch der Fall, dass die Instanz erst erzeugt werden muss, nie eintritt.
-\\
+Da LocalCache ein Singleton ist, muss zu Beginn die Instanz abgerufen werden. Wir planen die Instanz vorzudefinieren (eager instantiation), wodurch der Fall, dass die Instanz erst erzeugt werden muss, nie eintritt.\newline
+\\ \noindent
 Die Methode httpsRequest() wird nicht implementiert, sondern dient hier zur Abstraktion. In der Implementation wird diese Abfrage asynchron ablaufen und in einem anderen Thread laufen, so dass der UI-Thread nicht blockiert wird. 
 
-\section*{Sequenzdiagramme des Models}
+
+\pagebreak
+\section*{Sequenzdiagramme des Servers}
+
 
 \begin{figure}[h]
 	\centering
@@ -54,17 +62,17 @@ Die Methode httpsRequest() wird nicht implementiert, sondern dient hier zur Abst
 	\label{fig:sequenz-a}
 \end{figure}
 \noindent
-Das Sequenzdiagramm zeigt, wie eine Komposition in Detailansicht angefragt wird. 
-Eine solche Anfrage wird vom CompositionsController entgegengenommen.
+Nach der Betrachtung der Android-App folgt nun eine detailliertere Darstellung, wie sich die Server-Seite verhält, wenn eine Komposition in Detailansicht angefragt wird.\\ \\ 
+\noindent Eine solche Anfrage wird vom CompositionsController entgegengenommen.
 Die angefragte Komposition wird in der Datenbank nachgeschlagen (über das CompositionRepository) und als Composition-Objekt zurückgegeben.
 Anschließend wird eine DetailComp erstellt, welche die benötigten Daten für das Frontend enthält. 
 Um diese zu erstellen, müssen zunächst alle CompositionNodes und danach alle CompositionEdges in versendbare Objekte (Nodes und Edges) umgewandelt werden. 
 Dabei wird für jede Kante noch die Kompatibilität überprüft und mögliche Alternativen werden gesucht und ggf. gespeichert. Zurückgeliefert wird also eine DetailComp, die in allen Kanten eine CompatibilityAnswer enthält.\newline
 \\ \noindent
-Wir haben uns dafür entschieden, eine Util-Klasse zur Berechnung der Compatibility zwischen zwei verschiedenen Diensten (repräsentiert durch ihre IDs) zu benutzen.
-Da auch HTTPS-Requests erwartet werden, die nur zu zwei einzelnen Diensten die Kompatibilität erfahren wollen, wäre eine Implementierung dieser Funktion in der Edge-Klasse unpraktisch.\newline
+Wir haben uns dafür entschieden, eine Util-Klasse zur Berechnung der Compatibility zwischen zwei verschiedenen Diensten (repräsentiert durch ihre IDs) zu verwenden.
+Da auch HTTPS-Requests erwartet werden, die nur zu zwei einzelnen Diensten die Kompatibilität erfahren wollen, wäre eine Implementierung dieser Funktion in der Edge-Klasse nicht praktikabel.\newline
 \\ \noindent
-Da dieses Sequenzdiagramm das komplexeste ist und sich viele andere Abläufe in ihm widerspiegeln, ist hier nur dieses als Repräsentant der Arbeitsweise unseres Backends aufgeführt.
+Da es sich bei dem durch dieses Sequenzdiagramm modellierten dynamischen Verhalten um das komplexeste unseres Backends handelt und sich viele andere Abläufe in ihm widerspiegeln, sei nur dieses als Repräsentant der Arbeitsweise aufgeführt.
 
 \newpage
 \section*{Sequenzdiagramme des Web Frontends}
@@ -79,7 +87,7 @@ Da dieses Sequenzdiagramm das komplexeste ist und sich viele andere Abläufe in 
 \end{figure}
 
 \noindent
-Um eine neue Komposition zu erstellen, werden zunächst die dem Nutzer verfügbaren Kompositionen vom Backend abgefragt und angezeigt. Über ein Eingabefeld kann ein Name für eine neue Komposition festgelegt und mit einem zusätzlichen Knopf erstellt werden. Die Liste der verfügbaren Kompositionen wird refresht, durch einen Klick auf die Komposition werden die noch leeren Details vom Backend abgerufen und in der Bearbeitungsansicht angezeigt. Als Autor der Komposition lassen sich nun die Listen mit den Nutzenden einsehen und bearbeiten, die diese Komposition einsehen oder bearbeiten dürfen. Dabei werden alle Informationen immer aus dem Backend angefordert, beziehungsweise Aktualisierungen vom Nutzenden an das Backend geschickt.
+Um eine neue Komposition zu erstellen, fragt das Web Frontend zunächst die dem Nutzer verfügbaren Kompositionen vom Backend an und stellt diese bei Erhalt der Antwort dar. Über ein Eingabefeld lässt sich ein Name für eine neue Komposition festlegen und mit einem zusätzlichen Knopf erstellen. Hiernach wird die Liste der verfügbaren Kompositionen aktualisiert. Ein Klick auf die Komposition löst das Abrufen der bisher nicht erhaltenden Kompositionsdetails vom Backend aus. Erhält das Frontend diese, zeigt es sie in der Bearbeitungsansicht an. Als Autor der Komposition lassen sich nun die Listen mit den Nutzenden einsehen und bearbeiten, die diese Komposition betrachten oder bearbeiten dürfen. Hierbei fordert das Web Frontend alle Informationen immer aus dem Backend an, beziehungsweise schickt Aktualisierungen vom Nutzenden an das Backend.
 
 \newpage
 \subsection*{Sequenzdiagramm: Bearbeiten einer Komposition}
@@ -91,7 +99,7 @@ Um eine neue Komposition zu erstellen, werden zunächst die dem Nutzer verfügba
 	\label{fig:sequenz-editComp}
 \end{figure}
 \noindent
-Um eine Komposition zu bearbeiten, werden zunächst wieder die dem Nutzer verfügbaren Kompositionen vom Backend abgefragt und angezeigt. Durch einen Klick auf die Komposition werden die Details und Services vom Backend abgerufen und in der Bearbeitungsansicht angezeigt. Indem ein Service aus dem SidePanel in das Canvas gezogen wird, wird lokal ein Knoten erstellt. Durch das Verbinden von zwei Knoten wird zunächst lokal eine Verbindung erstellt, wobei eine Anfrage an das Backend geht, in der die Kompatibilität überprüft wird. Beim Klicken auf einen Knoten wird eine Detailansicht für den verwendeten Dienst angezeigt. Ein Klick auf Speichern sendet die aktualisierte Komposition an den Server.
+Um eine Komposition zu bearbeiten, fragt das Frontend zunächst wieder die dem Nutzer verfügbaren Kompositionen vom Backend an und stellt sie dar. Ein Klick auf die Komposition lässt die Details und Services vom Backend abrufen und in der Bearbeitungsansicht anzeigen. Indem man einen Service aus dem SidePanel in das Canvas zieht, erstellt man lokal einen Knoten. Das Verbinden von zwei Knoten erstellt zunächst lokal eine Verbindung, wobei eine Anfrage an das Backend geht, die das Überprüfen der Kompatibilität überprüfen lässt. Beim Klicken auf einen Knoten wird eine Detailansicht für den verwendeten Dienst angezeigt. Wiederum sendet ein Klick auf Speichern die aktualisierte Komposition an den Server.
 
 \newpage
 \subsection*{Sequenzdiagramm: Bedienung des Adminpanels}
