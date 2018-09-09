@@ -13,7 +13,7 @@
 \noindent
 Zusammengefasst beschreibt dieses Diagramm das grobe Verhalten des Systems, das abläuft, wenn man ein Listenelement in der Android-App mit der Absicht antippt, sich eine Komposition detailliert grafisch darstellen zu lassen. Dabei bezieht es die Kommunikation zwischen Android App und Backend mit ein.\newline
 
-\noindent Der Benutzer öffnet die App, wodurch die Methode onCreate() der ListActivity aufgerufen wird. Zum Start wird ein HTTPS-Request an den Server gesendet. Daraufhin fragt der Server die Daten aus der Datenbank ab und erstellt aus diesen ein versendbares Objekt in Form einer Liste von SimpleComp-Objekten. Diese wird im Rahmen der Antwort auf den GET-Request an die App geschickt, welche die erhaltenen Daten verarbeitet, worauf sie dem Benutzer angezeigt werden können.
+\noindent Der Benutzer öffnet die App, wodurch die Methode onCreate() der ListActivity aufgerufen wird. Beim Start sendet die App ein HTTPS-Request an den Server. Daraufhin fragt der Server die Daten aus der Datenbank ab und erstellt aus diesen ein versendbares Objekt in Form einer Liste von SimpleComp-Objekten. Diese schickt das Backend im Rahmen der Antwort auf den GET-Request an die App, welche die erhaltenen Daten verarbeitet, worauf sie diese dem Benutzer anzeigen kann.
 
 \section*{Sequenzdiagramme der App}
 \subsection*{Sequenzdiagramm: Öffnen der ListActivity}
@@ -27,7 +27,7 @@ Zusammengefasst beschreibt dieses Diagramm das grobe Verhalten des Systems, das 
 \noindent
 Dieses Sequenzdiagramm zeigt den Vorgang, der abläuft, wenn die ListActivity initial gestartet wird und mit einer Liste aus Kompositionseinträgen zu füllen ist.\newline
 
-\noindent Der Ablauf der Aktivitäten beginnt mit dem Start der ListActivity, bei dem Standard-Methode onCreate() gerufen wird. Da der Nutzer noch nicht eingeloggt ist, wird eine requestList()-Anfrage ohne Token gestartet. Diese wird in einem eigenen Thread ausgeführt, damit der UI-Thread nicht blockiert. Die Methode requestList() führt einen HTTPS-Request an das Backend aus. In der Zeit, in der die ListActivity die Antwort noch nicht erhalten hat, zeigt sie mithilfe von showLoading() eine Ladeanimation an.
+\noindent Der Ablauf der Aktivitäten beginnt mit dem Start der ListActivity, bei dem ein Rufen der Standard-Methode onCreate() erfolgt. Da der Nutzer noch nicht eingeloggt ist, startet die App eine requestList()-Anfrage ohne Token. Diese läuft in einem eigenen Thread, damit der UI-Thread nicht blockiert. Die Methode requestList() führt einen HTTPS-Request an das Backend aus. In der Zeit, in der die ListActivity die Antwort noch nicht erhalten hat, zeigt sie mithilfe von showLoading() eine Ladeanimation an.
 \pagebreak
 \subsection*{Sequenzdiagramm: Klicken auf Kompositionseintrag}
 
@@ -42,13 +42,13 @@ Dieses Sequenzdiagramm zeigt den Vorgang, der abläuft, wenn die ListActivity in
 \noindent Fortführend schließt sich dieses Sequenzdiagramm an den Usage-Flow des obigen an. Ist die Liste geladen, will der Nutzer sich früher oder später eine der Kompositionen  detailliert als Grafik anzeigen lassen. Hierfür reicht ein Tippen auf das jeweilige Listenelement aus, um die Detailansicht in Form der DetailActivity aufzurufen.\newline
 \\
 Durch die genannte UI-Aktion wird die Methode startDetailActivity() aufgerufen, was die statische Methode requestDetail() veranlasst, im LokalCache nach der gewünschten Komposition zu suchen.
-Falls diese noch nicht im Cache ist, wird ein HTTPS-Request an den Server gesendet.
+Falls diese noch nicht im Cache ist, sendet die App eine HTTPS-Request an den Server.
 In der Antwort auf diesen Request sind alle nötigen Details der Komposition enthalten, wozu unter anderem ihre Nodes zählen.
 Die Details werden in der Komposition gespeichert, die wiederum im LokalCache abgelegt ist, und so auch an die ListActivity zurückgegeben. Diese übergibt die nun mit Details ausgestattete Komposition an einen Intent, der zum Starten der DetailsActivity dient.\newline
 \\
-Da LocalCache ein Singleton ist, muss zu Beginn die Instanz abgerufen werden. Wir planen die Instanz vorzudefinieren (eager instantiation), wodurch der Fall, dass die Instanz erst erzeugt werden muss, nie eintritt.\newline
+Da LocalCache ein Singleton ist, muss man zu Beginn die Instanz abrufen. Wir planen, die Instanz vorzudefinieren (eager instantiation), wodurch der Fall, dass man die Instanz erst erzeugen müsste, nie eintritt.\newline
 \\ \noindent
-Die Methode httpsRequest() wird nicht implementiert, sondern dient hier zur Abstraktion. In der Implementation wird diese Abfrage asynchron ablaufen und in einem anderen Thread laufen, so dass der UI-Thread nicht blockiert wird. 
+Die Methode httpsRequest() wird nicht implementiert, sondern dient hier zur Abstraktion. In der Implementation wird diese Abfrage asynchron erfolgen und in einem anderen Thread laufen, so dass sie den UI-Thread nicht blockiert. 
 
 
 \pagebreak
@@ -99,7 +99,7 @@ Um eine neue Komposition zu erstellen, fragt das Web Frontend zunächst die dem 
 	\label{fig:sequenz-editComp}
 \end{figure}
 \noindent
-Um eine Komposition zu bearbeiten, fragt das Frontend zunächst wieder die dem Nutzer verfügbaren Kompositionen vom Backend an und stellt sie dar. Ein Klick auf die Komposition lässt die Details und Services vom Backend abrufen und in der Bearbeitungsansicht anzeigen. Indem man einen Service aus dem SidePanel in das Canvas zieht, erstellt man lokal einen Knoten. Das Verbinden von zwei Knoten erstellt zunächst lokal eine Verbindung, wobei eine Anfrage an das Backend geht, die das Überprüfen der Kompatibilität überprüfen lässt. Beim Klicken auf einen Knoten wird eine Detailansicht für den verwendeten Dienst angezeigt. Wiederum sendet ein Klick auf Speichern die aktualisierte Komposition an den Server.
+Um eine Komposition zu bearbeiten, fragt das Frontend zunächst wieder die dem Nutzer verfügbaren Kompositionen vom Backend an und stellt diese dar. Ein Klick auf die Komposition lässt die Details sowie Services vom Backend abrufen und in der Bearbeitungsansicht anzeigen. Indem man einen Service aus dem SidePanel in das Canvas zieht, erstellt man lokal einen Knoten. Das Verbinden von zwei Knoten erstellt zunächst lokal eine Verbindung, wobei eine Anfrage an das Backend geht, die das Überprüfen der Kompatibilität überprüfen lässt. Beim Klicken auf einen Knoten wird eine Detailansicht für den verwendeten Dienst angezeigt. Wiederum sendet ein Klick auf Speichern die aktualisierte Komposition an den Server.
 
 \newpage
 \subsection*{Sequenzdiagramm: Bedienung des Adminpanels}
@@ -111,4 +111,4 @@ Um eine Komposition zu bearbeiten, fragt das Frontend zunächst wieder die dem N
 	\label{fig:sequenz-adminPanel}
 \end{figure}
 \noindent
-Aus der Übersicht der Kompositionen wird über einen Knopf das Adminpanel erreicht. Über eine Maske lässt sich eine JSON-Datei mit Services einlesen, die zunächst nur lokal zwischengespeichert werden und dann bei Bestätigung an das Backend übermittelt werden. In einem Suchfeld für Dienste kann eine Suchanfrage an das Backend übermittelt werden, und durch Auswählen eines Listeneintrags lassen sich die Details des Services bearbeiten, die bei Bestätigung der Eingabe an das Backend gesendet werden. Weiterhin lässt sich über eine Suche nach registrierten Nutzenden suchen. Durch Auswahl eines Nutzenden werden die Details vom Backend abgefragt und lassen sich vom Adminstrierenden bearbeiten. Nach Bestätigung werden die angepassten Daten an das Backend geschickt und gespeichert.
+Das Adminpanel lässt sich aus der Kompositionsübersicht erreichen. Über eine Maske lässt sich eine JSON-Datei mit Services einlesen, die zunächst nur lokal zwischengespeichert und dann bei Bestätigung an das Backend übermittelt werden. Ein Suchfeld für Dienste erlaubt, eine Suchanfrage an das Backend zu schicken und durch Auswählen eines Listeneintrags die Details eines Services zu bearbeiten, die das Frontend bei Bestätigung der Eingabe an das Backend übermittelt. Weiterhin ermöglicht das Frontend die Suche nach registrierten Nutzenden. Wiederum fragt das Auswählen eines Nutzers die Details vom Backend ab, die ein Administrierender bearbeiten kann. Nach Bestätigung der Änderungen sendet das Frontend die angepassten Daten an das Backend, welches sie speichert.
