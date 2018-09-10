@@ -19,6 +19,7 @@ public class Composition{
     public Composition(long id, String name, SimpleUser owner) {
         this.id = id;
         this.owner = owner;
+        this.name = name;
         setLastUpdate();
     }
 
