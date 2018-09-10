@@ -28,7 +28,7 @@ public class CompositionNode {
 
 	private int y;
 
-	//@NotNull
+	// @NotNull
 	@OneToOne
 	private Service service;
 
@@ -73,6 +73,10 @@ public class CompositionNode {
 	// }
 
 	public String toString() {
-		return service + " (" + x + "," + y + ")";
+		if (service != null) {
+			return service + " (" + x + "," + y + ")";
+		} else {
+			return "dummy (" + x + "," + y + ")";
+		}
 	}
 }

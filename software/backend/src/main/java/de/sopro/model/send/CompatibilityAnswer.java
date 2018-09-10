@@ -1,4 +1,4 @@
-package de.sopro.model;
+package de.sopro.model.send;
 
 import java.util.List;
 
