@@ -12,9 +12,8 @@
 
 <style scoped>
   .container {
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 0px 0px;
+    margin: 50px auto;
+    padding: 20px 20px;
     background: #cce6ff;
   }
 </style>

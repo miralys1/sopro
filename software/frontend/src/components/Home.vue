@@ -1,9 +1,7 @@
 <template>
-  <div class="mainlayout round">
+  <div>
     <div>
-      <MainLayout style="text-align: right; ">
-        <NavBar @workspace="show('workspace')" @adminpanel="show('adminpanel')" @login="show('login')" />
-      </MainLayout>
+      <NavBar @workspace="show('workspace')" @adminpanel="show('adminpanel')" @login="show('login')" />
     </div>
     <div style="margin-bottom: 10px">
       <MainLayout v-if="msg == 'workspace'">
