@@ -19,7 +19,7 @@ public class Composition{
     public Composition(long id, String name, SimpleUser owner) {
         this.id = id;
         this.owner = owner;
-        this.lastUpdate = System.currentTimeMillis() / 1000L;
+        setLastUpdate();
     }
 
     public SimpleUser getOwner() {
@@ -44,6 +44,10 @@ public class Composition{
 
     public List<Edge> getEdgeList() {
         return edgeList;
+    }
+
+    public void setLastUpdate(){
+        this.lastUpdate = System.currentTimeMillis() / 1000L;
     }
 
     public boolean isEditable() {

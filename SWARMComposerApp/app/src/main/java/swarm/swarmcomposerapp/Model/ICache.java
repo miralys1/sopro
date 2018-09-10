@@ -14,6 +14,4 @@ public interface ICache {
     ArrayList<Composition> getCompositions();
 
     void hardRefresh();
-
-    LocalCache getInstance();
 }

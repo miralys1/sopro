@@ -17,6 +17,7 @@ public class ServerCommunication {
     }
 
     public static Composition requestDetail(long id){
-        return new Composition(0);
+        //TODO impement
+        return null;
     }
 }

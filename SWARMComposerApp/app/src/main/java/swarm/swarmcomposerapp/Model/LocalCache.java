@@ -98,7 +98,7 @@ public class LocalCache implements ICache {
      *
      * @returns
      */
-    public LocalCache getInstance() {
+    public static LocalCache getInstance() {
         return instance;
     }
 
