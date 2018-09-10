@@ -14,6 +14,9 @@ import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import de.sopro.model.send.DetailUser;
+import de.sopro.model.send.SimpleUser;
+
 @Entity
 public class User {
 
@@ -136,6 +139,14 @@ public class User {
 
 	public String getFullName() {
 		return firstname + " " + lastname;
+	}
+
+	public SimpleUser createSimpleUser() {
+		return new SimpleUser(this.id, this.firstname, this.lastname);
+	}
+
+	public DetailUser createDetailUser() {
+		return new DetailUser(this.email, this.title, this.isAdmin, this.firstname, this.lastname, this.id);
 	}
 
 	public String toString() {
