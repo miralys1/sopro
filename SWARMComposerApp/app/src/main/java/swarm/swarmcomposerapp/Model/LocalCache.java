@@ -10,7 +10,7 @@ import swarm.swarmcomposerapp.Utils.ServerCommunication;
  * It's implemented as an eager singleton.
  */
 
-public class LocalCache {
+public class LocalCache implements ICache {
 
     private static LocalCache instance = new LocalCache();
     private ArrayList<Composition> compositions = new ArrayList();
@@ -24,7 +24,7 @@ public class LocalCache {
      * @param id
      * @return
      */
-    private Service getServiceById(long id) {
+    public Service getServiceById(long id) {
         return serviceLookUp.get(id);
     }
 
@@ -35,7 +35,7 @@ public class LocalCache {
      * @param pos
      * @return
      */
-    private Composition getCompAtPos(int pos) throws IllegalArgumentException {
+    public Composition getCompAtPos(int pos) throws IllegalArgumentException {
 
         if (compositions.size() < pos) {
             throw new IllegalArgumentException("This request would lead to an index out of " +
