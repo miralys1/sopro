@@ -10,7 +10,7 @@ import swarm.swarmcomposerapp.Model.Settings;
 public class RetrofitClients {
 
     private static Retrofit retrofitClient;
-    private static OkHttpClient okHttpClient
+    private static OkHttpClient okHttpClient;
 
     public static Retrofit getRetrofitInstance(){
         if(retrofitClient == null){
