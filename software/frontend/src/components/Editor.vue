@@ -130,7 +130,10 @@ a {
 }
 
 .editor {
+    position:relative;
+    box-sizing: border-box;
     height:90vh;
+    overflow: hidden;
 }
 
 </style>
