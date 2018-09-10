@@ -28,7 +28,7 @@ public class CompositionNode {
 
 	private int y;
 
-	@NotNull
+	//@NotNull
 	@OneToOne
 	private Service service;
 
