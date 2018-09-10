@@ -8,28 +8,34 @@ import java.util.List;
  */
 public class Composition{
     private long id;
+    private String name;
     private SimpleUser owner;
-    private long lastChange;
+    private long lastUpdate;
+    private long dateCreated; //Implementation not planned
     List<Node> nodeList;
     List<Edge> edgeList;
     boolean editable;
 
-    public Composition(long id, SimpleUser owner) {
+    public Composition(long id, String name, SimpleUser owner) {
         this.id = id;
         this.owner = owner;
+        this.lastUpdate = System.currentTimeMillis() / 1000L;
     }
 
-    public Composition(long id) {
-        this.id = id;
+    public SimpleUser getOwner() {
+        return owner;
+    }
 
+    public String getName() {
+        return name;
     }
 
     public long getId() {
         return id;
     }
 
-    public long getLastChange() {
-        return lastChange;
+    public long getLastUpdate() {
+        return lastUpdate;
     }
 
     public List<Node> getNodeList() {
