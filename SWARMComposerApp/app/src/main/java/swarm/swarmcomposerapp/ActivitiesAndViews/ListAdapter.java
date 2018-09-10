@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 import swarm.swarmcomposerapp.Model.Composition;
@@ -43,8 +45,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Composition comp = compList.get(position);
         holder.name.setText(comp.getName());
-        holder.author.setText(comp.getOwner());
-        holder.date.setText(comp.getDate());
+        holder.author.setText(comp.getOwner().getFirstName() + " " + comp.getOwner().getLastName());
+        //TODO Display icon based on whether Composition is Owned, Shared or Public
+        holder.date.setText("Last Updated: "+
+                DateFormat.getInstance().format((new Date(comp.getLastUpdate()*1000))));
     }
 
     @Override
