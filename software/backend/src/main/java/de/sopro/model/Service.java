@@ -1,20 +1,14 @@
 package de.sopro.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Service {
@@ -36,30 +30,30 @@ public class Service {
 
 	private long date;
 
-	private String picturePath;
+	private String logo;
 
 	@NotNull
 	@ManyToMany
-	private List<Format> in;
+	private List<Format> formatIn;
 
 	@NotNull
 	@ManyToMany
-	private List<Format> out;
+	private List<Format> formatOut;
 
 	// Hibernate requires a no-arg constructor
 	public Service() {
 	}
 
-	public Service(String name, String version, List<Tag> tags, String organisation, long date, String picture,
-			List<Format> in, List<Format> out) {
+	public Service(String name, String version, List<Tag> tags, String organisation, long date, String logo,
+			List<Format> formatIn, List<Format> formatOut) {
 		this.name = name;
 		this.version = version;
 		this.tags = tags;
 		this.organisation = organisation;
 		this.date = date;
-		this.picturePath = picture;
-		this.in = in;
-		this.out = out;
+		this.logo = logo;
+		this.formatIn = formatIn;
+		this.formatOut = formatOut;
 	}
 
 	public Long getId() {
@@ -110,28 +104,28 @@ public class Service {
 		this.date = date;
 	}
 
-	 public String getPicturePath() {
-	 return picturePath;
+	 public String getLogo() {
+	 return logo;
 	 }
 	
-	 public void setPicturePath(String picture) {
-	 this.picturePath = picture;
+	 public void setLogo(String logo) {
+	 this.logo = logo;
 	 }
 
-	public List<Format> getIn() {
-		return in;
+	public List<Format> getFormatIn() {
+		return formatIn;
 	}
 
-	public void setIn(List<Format> in) {
-		this.in = in;
+	public void setIn(List<Format> formatIn) {
+		this.formatIn = formatIn;
 	}
 
-	public List<Format> getOut() {
-		return out;
+	public List<Format> getFormatOut() {
+		return formatOut;
 	}
 
-	public void setOut(List<Format> out) {
-		this.out = out;
+	public void setOut(List<Format> formatOut) {
+		this.formatOut = formatOut;
 	}
 
 	public String toString() {
