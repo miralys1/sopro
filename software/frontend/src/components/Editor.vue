@@ -1,6 +1,6 @@
 <template>
 <!-- self prevents that both canvas and nodes are dragged at the same time -->
-<div class="editor" @mousedown.self="mouseDown">
+<div class="editor" @mousedown.self="mouseDown" :style="editorStyle">
     <h6 class="title is-6"></h6>
     <Node :params="nodeParams" :scale="scale">3D Modeller</Node>
     <Node :params="nodeParams" :scale="scale">Converter</Node>
@@ -28,6 +28,16 @@ export default {
             height: (200*this.scale) + 'px',
             left: '100px',
             top: '200px'
+        }
+    },
+    editorStyle: function () {
+        var x = this.originX+100;
+        var y = this.originY+100;
+        return {
+            backgroundSize: 50*this.scale + 'px ' + 50*this.scale + 'px ',
+            backgroundPosition: x + 'px ' + y + 'px'
+
+
         }
     },
     nodeParams: function () {
@@ -134,6 +144,15 @@ a {
     box-sizing: border-box;
     height:90vh;
     overflow: hidden;
+    border-width: 4px;
+    border-color: dimgrey;
+    border-style: solid;
+
+    background-color:white;
+    background-image: linear-gradient(lightgrey 2px, transparent 2px),
+    linear-gradient(90deg, lightgrey 2px, transparent 2px),
+    linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
 }
 
 </style>
