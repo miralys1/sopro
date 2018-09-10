@@ -15,5 +15,4 @@ public interface ICache {
 
     void hardRefresh();
 
-    LocalCache getInstance();
 }

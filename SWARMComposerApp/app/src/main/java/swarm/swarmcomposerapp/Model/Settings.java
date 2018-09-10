@@ -8,7 +8,7 @@ public class Settings {
 
     private String email;
     private String token;
-    private String serverAdress;
+    private String serverAdress = "https://134.245.1240:9060";
 
     public String getToken() {
         return token;

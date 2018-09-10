@@ -1,9 +1,16 @@
 package swarm.swarmcomposerapp.Model;
 
+import android.net.Credentials;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import swarm.swarmcomposerapp.Utils.RetrofitClients;
 import swarm.swarmcomposerapp.Utils.ServerCommunication;
+import okhttp3.Credentials;
 
 /**
  * LocalCache manages compositions and services and hides its basic structure behind specific methods.
@@ -15,6 +22,18 @@ public class LocalCache implements ICache {
     private static LocalCache instance = new LocalCache();
     private ArrayList<Composition> compositions = new ArrayList();
     private HashMap<Long, Service> serviceLookUp = new HashMap<>();
+
+    /**
+     * local reference on the settings instance
+     */
+    private Settings settings = Settings.getInstance();
+
+    /**
+     * ServerCommunication used for http requests :)
+     */
+    private ServerCommunication com = RetrofitClients.getRetrofitInstance().create(ServerCommunication.class);
+
+
 
     /**
      * Tries to receive a service from the LocalCache by its id.
@@ -54,10 +73,31 @@ public class LocalCache implements ICache {
         }
 
         if (tempComp.getNodeList().isEmpty()) {
-            Composition n = ServerCommunication.requestDetail(tempComp.getId());
+            Call<Composition> compDetails;
 
-            tempComp.addComps(n.getNodeList());
-            tempComp.addEdges(n.getEdgeList());
+            if(settings.getToken() != null){
+                compDetails =
+                        com.requestDetail(settings.getToken(), tempComp.getId());
+            }else{
+                compDetails = com.requestDetail(tempComp.getId());
+            }
+            compDetails.enqueue(new Callback<Composition>() {
+                @Override
+                public void onResponse(Call<Composition> call, Response<Composition> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<Composition> call, Throwable t) {
+
+                }
+            });
+
+
+            //Composition n = ServerCommunication.requestDetail(tempComp.getId());
+
+            //tempComp.addComps(n.getNodeList());
+            //tempComp.addEdges(n.getEdgeList());
         }
         return tempComp;
     }
@@ -80,7 +120,7 @@ public class LocalCache implements ICache {
      * without checking for changes.
      */
     public void hardRefresh() {
-        this.compositions = ServerCommunication.requestList();
+       //this.compositions = ServerCommunication.requestList();
 
     }
 
@@ -98,7 +138,7 @@ public class LocalCache implements ICache {
      *
      * @returns
      */
-    public LocalCache getInstance() {
+    public static LocalCache getInstance() {
         return instance;
     }
 
