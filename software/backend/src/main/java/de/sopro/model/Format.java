@@ -41,12 +41,12 @@ public class Format {
 		this.id = id;
 	}
 
-	public String getName() {
+	public String getType() {
 		return type;
 	}
 
-	public void setName(String name) {
-		this.type = name;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getVersion() {
@@ -57,11 +57,11 @@ public class Format {
 		this.version = version;
 	}
 
-	public String isFlexible() {
+	public String getCompatibilityDegree() {
 		return compatibilityDegree;
 	}
 
-	public void setFlexible(String compatibilityDegree) {
+	public void setCompatibilityDegree(String compatibilityDegree) {
 		this.compatibilityDegree = compatibilityDegree;
 	}
 

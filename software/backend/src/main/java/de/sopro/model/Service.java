@@ -104,28 +104,28 @@ public class Service {
 		this.date = date;
 	}
 
-	 public String getPicturePath() {
+	 public String getLogo() {
 	 return logo;
 	 }
 	
-	 public void setPicturePath(String picture) {
-	 this.logo = picture;
+	 public void setLogo(String logo) {
+	 this.logo = logo;
 	 }
 
-	public List<Format> getIn() {
+	public List<Format> getFormatIn() {
 		return formatIn;
 	}
 
-	public void setIn(List<Format> in) {
-		this.formatIn = in;
+	public void setIn(List<Format> formatIn) {
+		this.formatIn = formatIn;
 	}
 
-	public List<Format> getOut() {
+	public List<Format> getFormatOut() {
 		return formatOut;
 	}
 
-	public void setOut(List<Format> out) {
-		this.formatOut = out;
+	public void setOut(List<Format> formatOut) {
+		this.formatOut = formatOut;
 	}
 
 	public String toString() {
