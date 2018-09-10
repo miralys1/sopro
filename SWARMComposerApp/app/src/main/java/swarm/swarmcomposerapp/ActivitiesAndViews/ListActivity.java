@@ -86,8 +86,12 @@ public class ListActivity extends AppCompatActivity {
         compList.add(new Composition(1, "Tolle Komposition", new SimpleUser(1, "Connor", "Tarvos")));
         compList.add(new Composition(2, "Tolle Komposition 2", new SimpleUser(2, "Felix", "Gröner")));
         compList.add(new Composition(3, "Tolle Komposition 3", new SimpleUser(3, "Max", "Mustermann")));
-        compList.add(new Composition(4, "Tolle Komposition 4", new SimpleUser(4, "Mustermann", "Max")));
+        compList.add(new Composition(4, "Tolle Komposition 4", new SimpleUser(4, "Max", "Mustermann")));
 
+    }
+
+    public void reloadList(View v){
+        LocalCache.getInstance().hardRefresh();
     }
 
     public void startSettingsActivity(View v){
