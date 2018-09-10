@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
+import de.sopro.model.send.Edge;
+
 @Entity
 public class CompositionEdge {
 
@@ -21,12 +23,12 @@ public class CompositionEdge {
 	@NotNull
 	@OneToOne
 	private CompositionNode target;
-	
+
 	// Hibernate requires a no-arg constructor
 	public CompositionEdge() {
-		
+
 	}
-	
+
 	public CompositionEdge(CompositionNode source, CompositionNode target) {
 		this.source = source;
 		this.target = target;
@@ -48,10 +50,10 @@ public class CompositionEdge {
 		this.target = target;
 	}
 
-	// TODO
-	// public Edge createEdge() {
-	//
-	// }
+	public Edge createEdge() {
+		return new Edge(this.source, this.target,
+				Compatibility.checkCompatibility(this.source.getService().getId(), this.target.getService().getId()));
+	}
 
 	public String toString() {
 		return source + " -> " + target;
