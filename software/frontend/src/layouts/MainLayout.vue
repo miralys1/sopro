@@ -14,7 +14,7 @@
   .container {
     max-width: 100%;
     margin: 0 auto;
-    padding: 15px 30px;
+    padding: 0px 0px;
     background: #cce6ff;
   }
 </style>

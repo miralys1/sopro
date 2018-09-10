@@ -20,6 +20,9 @@
     "popper.js": "^1.12.9"
   },
   "devDependencies": {
+    "vue-multipane": "^0.9.4",
+    "vuedraggable": "^2.16.0",
+    "vue-resource": "^1.5.1",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-loader": "^7.1.1",

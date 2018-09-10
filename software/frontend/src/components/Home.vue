@@ -5,7 +5,7 @@
         <NavBar @workspace="show('workspace')" @adminpanel="show('adminpanel')" @login="show('login')" />
       </MainLayout>
     </div>
-    <div style="margin-bottom: 50px">
+    <div style="margin-bottom: 10px">
       <MainLayout v-if="msg == 'workspace'">
         <Workspace @openComp="openComp"/>
       </MainLayout>
@@ -15,15 +15,11 @@
       <MainLayout v-else-if="msg == 'login'">
         <Login />
       </MainLayout>
-      <MainLayout v-else-if="msg == 'editor'">
-        <div style="overflow: hidden">
-          <SidePanel style="float: left; width: 15%; border-right-style: solid; padding-right: 10px"/>
-          <Editor :comp-id="id" style="float: right; width: 80%"/>
-        </div>
-      </MainLayout>
-      <MainLayout v-else>
-        That shouldn't have happened.
-      </MainLayout>
+    </div>
+    <div style="height: portrait">
+    <MainLayout v-if="msg == 'editor'">
+        <Editor/>
+    </MainLayout>
     </div>
   </div>
 </template>
@@ -60,18 +56,12 @@ export default {
 </script>
 
 <style>
-  .navbar {
-    margin-top: 6px;
-    margin-right: 6px;
-    text-align: right;
-  }
   .mainlayout {
-    max-width: 90%;
-    margin: 50px auto;
-    padding: 15px 30px;
-    background: #cce6ff;
+    max-width: 100%;
+    margin: 0px auto;
+    padding: 0px 0px;
   }
   .round {
-    border-radius: 10px;
+    border-radius: 4px;
   }
 </style>
