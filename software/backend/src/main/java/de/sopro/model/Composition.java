@@ -16,6 +16,12 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import de.sopro.model.send.DetailComp;
+import de.sopro.model.send.Edge;
+import de.sopro.model.send.SimpleComp;
+import de.sopro.model.send.SimpleUser;
+import de.sopro.model.send.UserAuthorizations;
+
 @Entity
 public class Composition {
 
@@ -24,7 +30,6 @@ public class Composition {
 	private Long id;
 
 	@NotNull
-	@JsonIgnore //test
 	@ManyToOne
 	private User owner;
 
@@ -129,18 +134,43 @@ public class Composition {
 		this.edges = edges;
 	}
 
-	// TODO
-	// public DetailComp createDetailComp() {
-	//
-	// }
-	//
-	// public SimpleComp createSimpleComp() {
-	//
-	// }
-	//
-	// public UserAuthorizations createUserAuths() {
-	//
-	// }
+	// TODO: userID übergeben?
+	public SimpleComp createSimpleComp(long userID) {
+		boolean editable = false;
+		for (User user : editors) {
+			if (user.getId() == userID) {
+				editable = true;
+			}
+		}
+		return new SimpleComp(this.id, this.owner.createSimpleUser(), this.name, editable);
+	}
+
+	// TODO: userID übergeben?
+	public DetailComp createDetailComp(long userID) {
+		boolean editable = false;
+		for (User user : editors) {
+			if (user.getId() == userID) {
+				editable = true;
+			}
+		}
+		List<Edge> edges = new ArrayList<>();
+		for (CompositionEdge edge : this.edges) {
+			edges.add(edge.createEdge());
+		}
+		return new DetailComp(this.id, this.owner.createSimpleUser(), this.name, editable, this.nodes, edges);
+	}
+
+	public UserAuthorizations createUserAuths() {
+		List<SimpleUser> editors = new ArrayList<>();
+		for (User user : this.editors) {
+			editors.add(user.createSimpleUser());
+		}
+		List<SimpleUser> viewers = new ArrayList<>();
+		for (User user : this.viewers) {
+			viewers.add(user.createSimpleUser());
+		}
+		return new UserAuthorizations(editors, viewers);
+	}
 
 	public String toString() {
 		return owner.getFullName() + ": " + name;
