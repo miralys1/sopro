@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.persistence.ManyToMany;
@@ -28,17 +29,18 @@ public class CompositionNode {
 	private int y;
 
 	@NotNull
-//	private Service service;
-	
+	@OneToOne
+	private Service service;
+
 	// Hibernate requires a no-arg constructor
 	public CompositionNode() {
-		
+
 	}
 
-	public CompositionNode(int x, int y /*,Service service*/) {
+	public CompositionNode(int x, int y, Service service) {
 		this.x = x;
 		this.y = y;
-//		this.service = service;
+		this.service = service;
 	}
 
 	public int getX() {
@@ -57,13 +59,13 @@ public class CompositionNode {
 		this.y = y;
 	}
 
-//	public Service getService() {
-//		return service;
-//	}
-//
-//	public void setService(Service service) {
-//		this.service = service;
-//	}
+	public Service getService() {
+		return service;
+	}
+
+	public void setService(Service service) {
+		this.service = service;
+	}
 
 	// TODO
 	// public Node createNode() {
@@ -71,6 +73,6 @@ public class CompositionNode {
 	// }
 
 	public String toString() {
-		return /*service + */" (" + x + "," + y + ")";
+		return service + " (" + x + "," + y + ")";
 	}
 }
