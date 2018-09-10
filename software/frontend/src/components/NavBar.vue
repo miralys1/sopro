@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-navbar toggleable="md" type="light" variant="light" class="round">
+    <b-navbar fixed="true" toggleable="md" type="light" variant="light" class="navbar">
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
@@ -43,8 +43,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .big {
     font-size: 30px;
   }
+  .navbar {
+      fixed: true;
+  }
+
 </style>

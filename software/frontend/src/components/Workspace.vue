@@ -2,7 +2,7 @@
   <div>
     <b-container style="text-align: center">
       <b-row v-for="i in calc(~~(compositions.length/5))" :key="i" class="comprow">
-        <b-col v-for="j in [i, i+1, i+2, i+3, i+4]" :key="j" class="compcol round" md="1.9">
+        <b-col v-for="j in [i, i+1, i+2, i+3, i+4]" :key="j" class="compcol round">
           {{compositions[j].name}} <br />
           ID: {{compositions[j].id}} <br />
           <b-button v-if="compositions[j].isEditable" @click="$emit('openComp', compositions[j].id)">bearbeiten</b-button>
@@ -106,6 +106,21 @@ export default {
         name: 'Komposition 12',
         id: 11,
         isEditable: false
+      },
+      {
+        name: 'Komposition 10',
+        id: 9,
+        isEditable: false
+      },
+      {
+        name: 'Komposition 11',
+        id: 10,
+        isEditable: false
+      },
+      {
+        name: 'Komposition 12',
+        id: 11,
+        isEditable: false
       }
     ]
   }
@@ -116,9 +131,13 @@ export default {
   .compcol {
     background-color: lightblue;
     margin-left: 40px;
-    padding: 10px 20px;
+    padding: 10px 10px;
     text-align: left;
     border: 3px solid black;
+    width: 200px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
   }
   .comprow {
     margin-top: 50px;
