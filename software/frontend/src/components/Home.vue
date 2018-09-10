@@ -17,9 +17,9 @@
       </MainLayout>
     </div>
     <div style="height: portrait">
-    <MainLayout v-if="msg == 'editor'">
+    <div v-if="msg == 'editor'">
         <Editor/>
-    </MainLayout>
+    </div>
     </div>
   </div>
 </template>
