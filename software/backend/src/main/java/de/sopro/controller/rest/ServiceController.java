@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,21 +80,21 @@ public class ServiceController{
      * @return HTTP-response ok, if creation was a success
      */
     @RequestMapping(value="/services", method=RequestMethod.POST)
-    public ResponseEntity<Void> createService(@RequestBody Service service){
-
-        // first save all tags and services, that are referenced
-        // TODO: Search for entries with the same vlaues to prevent duplicates
-        for (Tag t : service.getTags()) {
-            tagRepo.save(t);
+    public ResponseEntity<Void> createServices(@RequestBody List<Service> services){
+        for(Service service: services){
+            // first save all tags and services, that are referenced
+            // TODO: Search for entries with the same vlaues to prevent duplicates
+            for (Tag t : service.getTags()) {
+                tagRepo.save(t);
+            }
+            for (Format f : service.getFormatIn()){
+                formatRepo.save(f);
+            }
+            for (Format f : service.getFormatOut()) {
+                formatRepo.save(f);
+            }
+            serviceRepo.save(service);
         }
-        for (Format f : service.getFormatIn()){
-            formatRepo.save(f);
-        }
-        for (Format f : service.getFormatOut()) {
-            formatRepo.save(f);
-        }
-        serviceRepo.save(service);
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
