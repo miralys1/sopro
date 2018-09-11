@@ -21,15 +21,6 @@ export default {
     Multipane, MultipaneResizer, SidePanel, Node
   },
   computed: {
-    nodeStyle: function () {
-        return {
-            position: 'absolute',
-            width: (100*this.scale) + 'px',
-            height: (200*this.scale) + 'px',
-            left: '100px',
-            top: '200px'
-        }
-    },
     editorStyle: function () {
         var x = this.originX+100;
         var y = this.originY+100;
@@ -63,8 +54,8 @@ export default {
   },
   methods: {
       wheelEvent: function (event) {
-          if(this.scale + 5/event.deltaY >= 0.3
-             && this.scale + 5/event.deltaY <= 5) {
+          if(this.scale + 5/event.deltaY >= 0.05
+             && this.scale + 5/event.deltaY <= 7) {
                 this.scale = this.scale + 5/event.deltaY;
           }
       },
@@ -142,10 +133,10 @@ a {
 .editor {
     position:relative;
     box-sizing: border-box;
-    height:90vh;
+    height:91.8vh;
     overflow: hidden;
-    border-width: 4px;
-    border-color: dimgrey;
+    border-width: 3px 1 1 1;
+    border-color: grey;
     border-style: solid;
 
     background-color:white;

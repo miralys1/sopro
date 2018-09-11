@@ -76,11 +76,11 @@ export default {
   .node {
     border: 2px solid black;
     border-radius: 20px;
-    background: grey;
-    opacity: 0.8;
+    background: lightgrey;
+    opacity: 0.89;
     cursor: grab;
     box-sizing: border-box;
-    box-shadow: 5px 5px 10px grey;
+    box-shadow: 4px 4px 8px #101010;
   }
 
   .node:active {
