@@ -136,7 +136,7 @@ public class Service {
 		for (Tag t : tags) {
 			ts.add(t.getName());
 		}
-		return new SendService(this.name, this.version, ts, this.organisation, this.date, this.logo, this.formatIn,
+		return new SendService(this.id, this.name, this.version, ts, this.organisation, this.date, this.logo, this.formatIn,
 				this.formatOut);
 	}
 

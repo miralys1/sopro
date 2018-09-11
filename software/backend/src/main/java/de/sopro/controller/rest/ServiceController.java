@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import de.sopro.model.Format;
 import de.sopro.model.Service;
 import de.sopro.model.Tag;
+import de.sopro.model.send.SendService;
 import de.sopro.repository.FormatRepository;
 import de.sopro.repository.ServiceRepository;
 import de.sopro.repository.TagRepository;
@@ -38,14 +39,14 @@ public class ServiceController{
      * @return all services with the given string contained in tags or name
      */
     @RequestMapping(value="/services", method=RequestMethod.GET)
-    public ResponseEntity<Iterable<Service>> getServices(@RequestParam(value="search",defaultValue="") String searchString){
-        List<Service> services = new ArrayList<>();
+    public ResponseEntity<Iterable<SendService>> getServices(@RequestParam(value="search",defaultValue="") String searchString){
+        List<SendService> services = new ArrayList<>();
         for (Service s : serviceRepo.findAll()){
             if(searchString.equals("") || (s.getName().contains(searchString) || stringInTags(searchString, s))){
-                services.add(s);
+                services.add(s.createSendService());
             }
         }
-        return new ResponseEntity<Iterable<Service>>(services, HttpStatus.OK);
+        return new ResponseEntity<>(services, HttpStatus.OK);
     }
 
     /**
@@ -54,10 +55,10 @@ public class ServiceController{
      * @return the Details of the Service in form of a HTTP-response
      */
     @RequestMapping(value="/services/{id}", method=RequestMethod.GET)
-    public ResponseEntity<Service> getServiceDetails(@PathVariable long id){
+    public ResponseEntity<SendService> getServiceDetails(@PathVariable long id){
         Optional<Service> service = serviceRepo.findById(id);
         if(service.isPresent()){
-            return new ResponseEntity<>(service.get(), HttpStatus.OK);
+            return new ResponseEntity<>(service.get().createSendService(), HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -82,8 +83,11 @@ public class ServiceController{
      */
     // TODO should only be possible as admin
     @RequestMapping(value="/services", method=RequestMethod.POST)
-    public ResponseEntity<Void> createServices(@RequestBody List<Service> services){
-        for(Service service: services){
+    public ResponseEntity<Void> createServices(@RequestBody List<SendService> services){
+        for(SendService sendService: services){
+
+            Service service = sendService.createService();
+
             // first save all tags and services, that are referenced
             for (Tag t : service.getTags()) {           
                 tagRepo.save(t);
@@ -117,10 +121,9 @@ public class ServiceController{
      */
     // TODO should only be possible as admin
     @RequestMapping(value="/services/{id}", method=RequestMethod.PUT)
-    public ResponseEntity<Void> editService(@PathVariable long id, @RequestBody Service service){
-        System.out.println(service);
-        if(serviceRepo.existsById(id) && service.getId() == id ){
-
+    public ResponseEntity<Void> editService(@PathVariable long id, @RequestBody SendService sendService){
+        if(serviceRepo.existsById(id) && sendService.getId() == id ){
+            Service service = sendService.createService();
             // first save all tags and services, that are referenced
             for (Tag t : service.getTags()) {           
                 tagRepo.save(t);
@@ -149,9 +152,9 @@ public class ServiceController{
     }
 
 
-        ////////////////////
-        // Helper Methods //
-        ////////////////////
+        ////////////////////////////////
+        // Helper Methods and classes //
+        ////////////////////////////////
 
     /**
      * Small method that allows to search for a substring in the tags of a service

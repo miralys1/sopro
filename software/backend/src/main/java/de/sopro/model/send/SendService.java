@@ -27,8 +27,13 @@ public class SendService {
 
 	private List<Format> formatOut;
 
-	public SendService(String name, String version, List<String> tags, String organisation, long date, String logo,
+	public SendService(){
+
+	}
+
+	public SendService(Long id, String name, String version, List<String> tags, String organisation, long date, String logo,
 			List<Format> formatIn, List<Format> formatOut) {
+		this.id = id;
 		this.name = name;
 		this.version = version;
 		this.tags = tags;
@@ -87,27 +92,27 @@ public class SendService {
 		this.date = date;
 	}
 
-	public String getPicturePath() {
+	public String getLogo() {
 		return logo;
 	}
 
-	public void setPicturePath(String picture) {
+	public void setLogo(String picture) {
 		this.logo = picture;
 	}
 
-	public List<Format> getIn() {
+	public List<Format> getFormatIn() {
 		return formatIn;
 	}
 
-	public void setIn(List<Format> in) {
+	public void setFormatIn(List<Format> in) {
 		this.formatIn = in;
 	}
 
-	public List<Format> getOut() {
+	public List<Format> getFormatOut() {
 		return formatOut;
 	}
 
-	public void setOut(List<Format> out) {
+	public void setFormatOut(List<Format> out) {
 		this.formatOut = out;
 	}
 
