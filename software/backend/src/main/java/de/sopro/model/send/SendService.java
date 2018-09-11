@@ -1,8 +1,11 @@
 package de.sopro.model.send;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.sopro.model.Format;
+import de.sopro.model.Service;
+import de.sopro.model.Tag;
 
 public class SendService {
 
@@ -84,13 +87,13 @@ public class SendService {
 		this.date = date;
 	}
 
-	 public String getPicturePath() {
-	 return logo;
-	 }
-	
-	 public void setPicturePath(String picture) {
-	 this.logo = picture;
-	 }
+	public String getPicturePath() {
+		return logo;
+	}
+
+	public void setPicturePath(String picture) {
+		this.logo = picture;
+	}
 
 	public List<Format> getIn() {
 		return formatIn;
@@ -106,6 +109,15 @@ public class SendService {
 
 	public void setOut(List<Format> out) {
 		this.formatOut = out;
+	}
+
+	public Service createService() {
+		List<Tag> tags = new ArrayList<>();
+		for (String tag : this.tags) {
+			tags.add(new Tag(tag));
+		}
+		return new Service(this.name, this.version, tags, this.organisation, this.date, this.logo, this.formatIn,
+				this.formatOut);
 	}
 
 	public String toString() {

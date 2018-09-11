@@ -1,5 +1,6 @@
 package de.sopro.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -9,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import de.sopro.model.send.SendService;
 
 @Entity
 public class Service {
@@ -104,13 +107,13 @@ public class Service {
 		this.date = date;
 	}
 
-	 public String getLogo() {
-	 return logo;
-	 }
-	
-	 public void setLogo(String logo) {
-	 this.logo = logo;
-	 }
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
 
 	public List<Format> getFormatIn() {
 		return formatIn;
@@ -126,6 +129,15 @@ public class Service {
 
 	public void setOut(List<Format> formatOut) {
 		this.formatOut = formatOut;
+	}
+
+	public SendService createSendService() {
+		List<String> ts = new ArrayList<String>(tags.size());
+		for (Tag t : tags) {
+			ts.add(t.getName());
+		}
+		return new SendService(this.name, this.version, ts, this.organisation, this.date, this.logo, this.formatIn,
+				this.formatOut);
 	}
 
 	public String toString() {
