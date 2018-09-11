@@ -1,5 +1,5 @@
 <template>
-  <div class="form">
+  <div class="mainlayout">
     <b-card no-body>
       <b-tabs pills card>
         <b-tab title="Login" active>
@@ -34,7 +34,12 @@
                   </b-form-input>
                 </b-input-group>
               </b-form-group>
-              <b-button class="mt-4" style="float: right" type="submit" variant="primary">Login</b-button>
+              <b-button class="mt-4"
+                        style="float: right"
+                        type="submit"
+                        variant="primary">
+                Login
+              </b-button>
             </b-form>
           </b-card>
         </b-tab>
@@ -121,7 +126,13 @@
                 </b-form-group>
               </b-form-group>
             </b-card>
-            <b-button class="mt-4" style="float:right" type="submit" variant="primary">Register</b-button>
+            <b-button class="mt-4"
+                      style="float:right"
+                      type="submit"
+                      variant="primary"
+                      :to="'/'">
+              Register
+            </b-button>
           </b-form>
         </b-tab>
       </b-tabs>
@@ -130,6 +141,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 
 export default {
     data() {
@@ -153,20 +165,34 @@ export default {
     },
     methods: {
     signin (event) {
-      event.preventDefault();
-      alert(JSON.stringify(this.login));
+      event.preventDefault()
+      Vue.axios.post('/login', {
+        email: this.login.email,
+        password: this.login.password
+      })
+      .then(response => {
+        alert('Login erfolgreich')
+        this.$emit('login')
+      })
+      .catch(error => alert('Login fehlgeschlagen'))
+      this.$emit('login') // muss später raus
+      window.location.replace('/')
     },
     register (event) {
-      event.preventDefault();
-      alert(JSON.stringify(this.form));
+      event.preventDefault()
+      Vue.axios.post('/users', {
+        email: this.login.email,
+        password: this.login.password,
+        title: this.login.title,
+        firstName: this.login.firstName,
+        lastName: this.login.lastName
+      })
+      .then(response => alert('Registrierung erfolgreich'))
+      .catch(error => alert('Registrierung fehlgeschlagen'))
     }
   }
 }
 </script>
 
 <style>
-  .form {
-    max-width: 60%;
-    margin: auto auto;
-  }
 </style>

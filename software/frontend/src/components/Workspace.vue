@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="mainlayout">
     <b-container style="text-align: center">
       <b-row v-for="i in calc(~~(compositions.length/5))" :key="i">
         <b-col v-for="j in [i, i+1, i+2, i+3, i+4]" :key="j" class="compcol round">
           {{compositions[j].name}} <br />
           ID: {{compositions[j].id}} <br />
-          <b-button v-if="compositions[j].isEditable" @click="$emit('openComp', compositions[j].id)">bearbeiten</b-button>
+          <b-button v-if="compositions[j].isEditable"  :to="{ name: 'Editor', params: { compId: compositions[j].id}}">bearbeiten</b-button>
           <span v-else>nicht bearbeitbar</span>
         </b-col>
       </b-row>

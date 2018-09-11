@@ -1,6 +1,7 @@
 import Vue from 'vue'
-import Login from '@/components/Login'
+import Login from '../../../src/components/Login'
 import axios from 'axios'
+import expect from 'expect'
 import MockAdapter from 'axios-mock-adapter'
 
 describe('Login.vue', () => {
@@ -14,15 +15,13 @@ describe('Login.vue', () => {
     const Constructor = Vue.extend(Login)
     const vm = new Constructor().$mount()
 
-    mock.onGet('/users').reply(200, {
-      users: [
-        { id: 1, name: 'John Smith' }
-      ]
-    })
+    mock.onPost('/login').reply(200)
 
-    axios.get('/users')
-      .then(function(response) {
-      console.log(response.data)
-      })
+    vm.$data.login = { email: 'user', password: 'password' }
+    
+    expect(axios.post('/login', vm.$data.login)
+    .then(1)
+    .catch(error => console.log(error))).toBe(1)
   })
+
 })
