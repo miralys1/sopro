@@ -11,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import swarm.swarmcomposerapp.ActivitiesAndViews.IResponse;
+import swarm.swarmcomposerapp.Utils.ActualRequests;
 import swarm.swarmcomposerapp.Utils.RetrofitClients;
 import swarm.swarmcomposerapp.Utils.ServerCommunication;
 
@@ -31,37 +32,16 @@ public class LocalCache implements ICache {
      */
     private Settings settings = Settings.getInstance();
 
-    /**
-     * ServerCommunication used for http requests :)
-     */
-    private ServerCommunication com = refreshServerCommunication();
 
-    public ServerCommunication refreshServerCommunication(){
-        return RetrofitClients.getRetrofitInstance().create(ServerCommunication.class);
-    }
     @Override
     public Service[] getServices(IResponse caller) {
-        if(serviceLookUp.isEmpty()){
-            Call<ArrayList<Service>> servicesRequest = com.requestServices();
-            final IResponse localCaller = caller;
-            servicesRequest.enqueue(new Callback<ArrayList<Service>>() {
-                @Override
-                public void onResponse(Call<ArrayList<Service>> call, Response<ArrayList<Service>> response) {
-                    if(response.isSuccessful()){
-                     for(Service serv : response.body()){
-                         serviceLookUp.put(serv.getId(),serv);
-                     }
-                    localCaller.notify(true);}
-                }
+        if (serviceLookUp.isEmpty()) {
 
-                @Override
-                public void onFailure(Call<ArrayList<Service>> call, Throwable t) {
-                    localCaller.notify(false);
-                }
-            });
-
+            ActualRequests.actualServiceRequest(serviceLookUp, caller);
+            return null;
+        } else {
+            return (Service[]) serviceLookUp.values().toArray();
         }
-        return (Service[])serviceLookUp.values().toArray();
 
     }
 
@@ -103,35 +83,8 @@ public class LocalCache implements ICache {
         }
 
         if (tempComp.getNodeList().isEmpty()) {
-            Call<Composition> compDetails;
-
-            //Depending whether the user is logged in use the specific request method
-            if (settings.getToken() != null) {
-                compDetails =
-                        com.requestDetail(settings.getToken(), tempComp.getId());
-            } else {
-                compDetails = com.requestDetail(tempComp.getId());
-            }
-
-            final IResponse localResponse = caller;
-
-            compDetails.enqueue(new Callback<Composition>() {
-                @Override
-                public void onResponse(Call<Composition> call, Response<Composition> response) {
-                    if (response.isSuccessful()) {
-                        tempComp.addComps(response.body().getNodeList());
-                        tempComp.addEdges(response.body().getEdgeList());
-                        tempComp.setLastUpdate();
-                        localResponse.notify(true);
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Composition> call, Throwable t) {
-
-                    localResponse.notify(false);
-                }
-            });
+            ActualRequests.actualCompDetailsRequest(tempComp,caller);
+            return null;
         }
         return tempComp;
     }
@@ -145,6 +98,7 @@ public class LocalCache implements ICache {
     public ArrayList<Composition> getCompositions(IResponse caller) {
         if (compositions.isEmpty()) {
             hardRefresh(caller);
+            return null;
         }
         return compositions;
     }
@@ -154,30 +108,7 @@ public class LocalCache implements ICache {
      * without checking for changes.
      */
     public void hardRefresh(IResponse caller) {
-        Call<ArrayList<Composition>> compList;
-
-        if(Settings.getInstance().getToken() != null){
-            compList = com.requestListCred(Settings.getInstance().getToken());
-        }else{
-            compList = com.requestList();
-        }
-        final IResponse localCaller = caller;
-        compList.enqueue(new Callback<ArrayList<Composition>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Composition>> call,
-                                   Response<ArrayList<Composition>> response) {
-                if(response.isSuccessful()){
-                    compositions = response.body();
-                    localCaller.notify(true);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Composition>> call, Throwable t) {
-                localCaller.notify(false);
-            }
-        });
-
+            ActualRequests.actualCompListRequest(compositions,caller);
     }
 
 

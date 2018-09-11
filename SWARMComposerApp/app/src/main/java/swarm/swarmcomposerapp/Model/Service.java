@@ -1,23 +1,27 @@
 package swarm.swarmcomposerapp.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
  * Model representation of a service.
  */
 public class Service {
-
-    private boolean isFlexible;
+    @SerializedName("name")
     private String serviceName;
+    @SerializedName("version")
     private String version;
+    @SerializedName("organisation")
     private String organisation;
+    @SerializedName("logo")
     private String picture;
+    @SerializedName("id")
     private long id;
 
     /**
      * Constructs a service with all needed information.
      *
-     * @param isFlexible
      * @param serviceName
      * @param version
      * @param organisation
@@ -28,10 +32,9 @@ public class Service {
      * @param in
      * @param out
      */
-    public Service(boolean isFlexible, String serviceName, String version, String organisation,
+    public Service( String serviceName, String version, String organisation,
                    String picture, long id, long date, List<String> tags, List<Service> in,
                    List<Service> out) {
-        this.isFlexible = isFlexible;
         this.serviceName = serviceName;
         this.version = version;
         this.organisation = organisation;
@@ -65,10 +68,6 @@ public class Service {
         this.out = out;
     }
 
-    public void setFlexible(boolean flexible) {
-
-        isFlexible = flexible;
-    }
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
@@ -84,11 +83,6 @@ public class Service {
 
     public void setPicture(String picture) {
         this.picture = picture;
-    }
-
-    public boolean isFlexible() {
-
-        return isFlexible;
     }
 
     public String getServiceName() {
