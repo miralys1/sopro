@@ -68,6 +68,7 @@ public class ServiceController{
      * @param id the id ID of the service that is to be deleted
      * @return HTTP-Response ok, if the deletion was a success
      */
+    // TODO should only be possible as admin
     @RequestMapping(value="/services/{id}", method=RequestMethod.DELETE)
     public ResponseEntity<Void> deleteService (@PathVariable("id") long id){
         serviceRepo.deleteById(id);
@@ -79,11 +80,11 @@ public class ServiceController{
      * @param service the service without an id
      * @return HTTP-response ok, if creation was a success
      */
+    // TODO should only be possible as admin
     @RequestMapping(value="/services", method=RequestMethod.POST)
     public ResponseEntity<Void> createServices(@RequestBody List<Service> services){
         for(Service service: services){
             // first save all tags and services, that are referenced
-            // TODO: Search for entries with the same vlaues to prevent duplicates
             for (Tag t : service.getTags()) {           
                 tagRepo.save(t);
             }
@@ -114,24 +115,30 @@ public class ServiceController{
      * @param service the new service that is to be saved
      * @return {@code HttpStatus.OK} if the service was already saved else {@code HttpStatus.NOT_FOUND}
      */
+    // TODO should only be possible as admin
     @RequestMapping(value="/services/{id}", method=RequestMethod.PUT)
     public ResponseEntity<Void> editService(@PathVariable long id, @RequestBody Service service){
         System.out.println(service);
         if(serviceRepo.existsById(id) && service.getId() == id ){
 
             // first save all tags and services, that are referenced
-            // TODO: Search for entries with the same vlaues to prevent duplicates
             for (Tag t : service.getTags()) {           
                 tagRepo.save(t);
             }
             for (Format f : service.getFormatIn()){
-                if(!formatRepo.existsByTypeAndVersion(f.getType(), f.getVersion())){
+                Format fSaved = formatRepo.findOneByTypeAndVersion(f.getType(), f.getVersion());
+                if(fSaved == null){
                     formatRepo.save(f);
+                }else{
+                    f.setId(fSaved.getId());
                 }
             }
             for (Format f : service.getFormatOut()) {
-                if(!formatRepo.existsByTypeAndVersion(f.getType(), f.getVersion())){
+                Format fSaved = formatRepo.findOneByTypeAndVersion(f.getType(), f.getVersion());
+                if(fSaved == null){
                     formatRepo.save(f);
+                }else{
+                    f.setId(fSaved.getId());
                 }
             }
 
