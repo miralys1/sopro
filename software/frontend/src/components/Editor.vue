@@ -2,23 +2,36 @@
 <!-- self prevents that both canvas and nodes are dragged at the same time -->
 <div class="editor" @mousedown.self="mouseDown" :style="editorStyle">
     <h6 class="title is-6"></h6>
-    <Node :params="nodeParams" :scale="scale">3D Modeller</Node>
-    <Node :params="nodeParams" :scale="scale">Converter</Node>
-    <Node :params="nodeParams" :scale="scale">4D Modeller</Node>
-    <Node :params="nodeParams" :scale="scale">Stability</Node>
+    <Node v-for="node in nodes"
+          :params="params"
+          :key="node.id"
+          :ix="node.x"
+          :iy="node.y"
+          @updatePos="nodeMove" >
+      {{ node.name }}
+    </Node>
+  <svg width="100%" height="100%" pointer-events="none">
+    <Link v-for="link in links"
+          :params="params"
+          :start="{x: link.node1.x, y: link.node1.y}"
+          :end="{x: link.node2.x, y:link.node2.y}"
+          :key="link.id + '-link'"
+          />
+  </svg>
 </div>
 </template>
 <script>
-import { Multipane, MultipaneResizer } from 'vue-multipane'
+// import { Multipane, MultipaneResizer } from 'vue-multipane'
 import SidePanel from '@/components/SidePanel'
 import Node from '@/components/Node'
+import Link from '@/components/Link'
 
 export default {
   props: {
     compId: Number
   },
   components: {
-    Multipane, MultipaneResizer, SidePanel, Node
+    Link, SidePanel, Node
   },
   computed: {
     editorStyle: function () {
@@ -27,15 +40,22 @@ export default {
         return {
             backgroundSize: 50*this.scale + 'px ' + 50*this.scale + 'px ',
             backgroundPosition: x + 'px ' + y + 'px'
-
-
         }
     },
-    nodeParams: function () {
+    params: function () {
         return {
             originX: this.originX,
-            originY: this.originY
+            originY: this.originY,
+            scale: this.scale
         }
+    },
+    links: function () {
+        return [
+            {node1: this.nodes[1], node2: this.nodes[2], id: 0},
+            {node1: this.nodes[1], node2: this.nodes[3], id: 1},
+            {node1: this.nodes[2], node2: this.nodes[4], id: 2},
+            {node1: this.nodes[5], node2: this.nodes[6], id: 3}
+        ]
     }
   },
   data () {
@@ -43,7 +63,15 @@ export default {
           originX: 0,
           originY: 0,
           drag: false,
-          canvasNodes: [],
+          nodes: [
+            ({id: 0, name: '3D-Modeller' , x: 0, y: 0, }),
+            ({id: 1, name: '4D-Modeller' , x: 100, y: 200, }),
+            ({id: 2, name: 'Simulation'  , x: 100, y: 900, }),
+            ({id: 3, name: 'whatever'    , x: 300, y: 200, }),
+            ({id: 4, name: 'whatever'    , x: 600, y: 200, }),
+            ({id: 5, name: 'whatever'    , x: 800, y: 600, }),
+            ({id: 6, name: 'whatever'    , x: 900, y: 900, }),
+          ],
           scale: 1,
 
           // we haven't got something like event.deltaX
@@ -63,10 +91,14 @@ export default {
           this.drag=true; // TODO switch back
           this.lastX=event.clientX;
           this.lastY=event.clientY;
-          console.log('mouseDown on Canvas');
       },
       mouseUp: function(event) {
           this.drag=false;
+      },
+      nodeMove: function(event) {
+          console.log(this.links[1].node1.x);
+          console.log(event.x + ' ' + event.y + ' ' + event.id);
+          this.nodes = this.nodes.map(el => el.id != event.id ? el : ({x: event.x, y: event.y, id: el.id, name: el.name}));
       },
       mouseMove: function (event) {
           if (this.drag) {
@@ -142,8 +174,13 @@ a {
     background-color:white;
     background-image: linear-gradient(lightgrey 2px, transparent 2px),
     linear-gradient(90deg, lightgrey 2px, transparent 2px),
+    radial-gradient(lightgrey 10%, transparent 4%),
     linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
+}
+
+.editor:active {
+    cursor: grabbing;
 }
 
 </style>

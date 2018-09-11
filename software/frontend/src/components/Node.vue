@@ -12,15 +12,12 @@ export default {
         scale: Number,
         showDetails: Boolean,
         params: Object,
+        ix: Number,
+        iy: Number
     },
     data () {
         return {
             drag: false,
-
-            // this are the coordinates relative to the originCoordinates
-            x: 0,
-            y: 0,
-
             height: 200,
             width: 200,
 
@@ -36,25 +33,26 @@ export default {
             return {
                 position: 'absolute',
                 // here we transform into screen space coordinates
-                top: this.params.originY + this.y*this.scale + 'px',
-                left: this.params.originX + this.x*this.scale + 'px',
+                top: this.params.originY + this.iy*this.params.scale + 'px',
+                left: this.params.originX + this.ix*this.params.scale + 'px',
                 width:  this.width + 'px',
                 height: this.height + 'px',
-                transform: 'scale(' + this.scale + ')',
+                transform: 'scale(' + this.params.scale + ')',
             }
         }
     },
     methods: {
       mouseDown: function (event) {
-                this.ofX = event.clientX*(1/this.scale) - this.x;
-                this.ofY = event.clientY*(1/this.scale) - this.y;
+                this.ofX = event.clientX*(1/this.params.scale) - this.ix;
+                this.ofY = event.clientY*(1/this.params.scale) - this.iy;
                 this.drag = true;
                 console.log("yes drag")
       },
       mouseMove: function (event) {
           if(this.drag) {
-              this.x = (event.clientX*(1/this.scale) - this.ofX);
-              this.y = (event.clientY*(1/this.scale) - this.ofY);
+              var newX = (event.clientX*(1/this.params.scale) - this.ofX);
+              var newY = (event.clientY*(1/this.params.scale) - this.ofY);
+              this.$emit('updatePos', ({x: newX, y: newY ,id: this.$vnode.key}));
           }
       },
       mouseUp: function (event) {
@@ -77,7 +75,7 @@ export default {
     border: 2px solid black;
     border-radius: 20px;
     background: lightgrey;
-    opacity: 0.89;
+    opacity: 1;
     cursor: grab;
     box-sizing: border-box;
     box-shadow: 4px 4px 8px #101010;
