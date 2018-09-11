@@ -1,10 +1,17 @@
 package de.sopro.model.send;
 
+import java.util.ArrayList;
 import java.util.List;
 
+
+import de.sopro.model.Composition;
+import de.sopro.model.CompositionEdge;
 import de.sopro.model.CompositionNode;
+import de.sopro.model.User;
 
 public class DetailComp extends SimpleComp {
+
+
 
 	private List<CompositionNode> nodes;
 	private List<Edge> edges;
@@ -34,6 +41,16 @@ public class DetailComp extends SimpleComp {
 
 	public String toString() {
 		return super.toString();
+	}
+
+	public Composition createComposition(User owner){
+		List<CompositionEdge> edges = new ArrayList<>();
+		for(Edge e : getEdges()){
+			edges.add(e.createCompositionEdge());
+		}
+		
+
+		return new Composition(owner, getName(), false, getNodes(), edges);
 	}
 
 }

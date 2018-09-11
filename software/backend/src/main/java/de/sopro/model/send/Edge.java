@@ -1,17 +1,24 @@
 package de.sopro.model.send;
 
+import de.sopro.model.CompositionEdge;
 import de.sopro.model.CompositionNode;
 
 public class Edge {
 
+	private long id;
 	private CompositionNode source;
 	private CompositionNode target;
 	private CompatibilityAnswer compatibility;
 
-	public Edge(CompositionNode source, CompositionNode target, CompatibilityAnswer compatibility) {
+	public Edge(long id, CompositionNode source, CompositionNode target, CompatibilityAnswer compatibility) {
+		this.id = id;
 		this.source = source;
 		this.target = target;
 		this.compatibility = compatibility;
+	}
+
+	public CompositionEdge createCompositionEdge(){
+		return new CompositionEdge(source, target);
 	}
 
 	public CompositionNode getSource() {
@@ -41,4 +48,12 @@ public class Edge {
 	public String toString() {
 		return source + " -> " + target;
 	}
+
+	public void setId(long id){
+		this.id = id;
+	}
+	public long getID(){
+		return id;
+	}
+
 }

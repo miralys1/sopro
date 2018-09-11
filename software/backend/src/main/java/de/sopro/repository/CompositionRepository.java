@@ -14,4 +14,6 @@ public interface CompositionRepository extends CrudRepository<Composition, Long>
 	List<Composition> findByViewersId(Long id);
 	
 	List<Composition> findByEditorsId(Long id);
+
+	List<Composition> findByIsPublic(boolean isPublic);
 }
