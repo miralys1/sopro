@@ -6,6 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,12 +24,17 @@ public class ListActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Composition> compList;
+    private TextView tLoading;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         initList();
+
+        tLoading = findViewById(R.id.text_loading1);
+        progressBar = findViewById(R.id.progressBar1);
 
         recycler = (RecyclerView) findViewById(R.id.my_recycler_view);
         recycler.setHasFixedSize(true);
@@ -91,6 +98,8 @@ public class ListActivity extends AppCompatActivity {
     }
 
     public void reloadList(View v){
+        tLoading.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         LocalCache.getInstance().hardRefresh();
     }
 
