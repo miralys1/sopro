@@ -14,10 +14,8 @@
         <Login />
       </MainLayout>
     </div>
-    <div style="height: portrait">
-    <MainLayout v-if="msg == 'editor'">
-        <Editor/>
-    </MainLayout>
+    <div style="height: portrait" v-if="msg == 'editor'">
+      <Editor/>
     </div>
   </div>
 </template>
