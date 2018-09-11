@@ -1,8 +1,9 @@
 <template>
-    <div class="node" :style="nodeStyle" @mousedown="mouseDown">
-      <div class="noselect servicename">
-        <slot/>
+    <div class="node" :style="nodeStyle" @mousedown.self="mouseDown">
+      <div class="noselect servicename" pointer-events="none">
+        <slot pointer-events="none"/>
        </div>
+       <div class="noselect draghandle" @mousedown.self="startDrag" @mouseup="endDrag"/>
     </div>
 </template>
 
@@ -57,6 +58,12 @@ export default {
       },
       mouseUp: function (event) {
           this.drag = false;
+      },
+      startDrag: function (event) {
+          this.$emit('startDrag', this.$vnode.key);
+      },
+      endDrag: function (event) {
+          this.$emit('endDrag', this.$vnode.key);
       }
     },
     mounted () {
@@ -72,7 +79,7 @@ export default {
 
 <style scoped>
   .node {
-    border: 2px solid black;
+    border: 4px solid black;
     border-radius: 20px;
     background: lightgrey;
     opacity: 1;
@@ -83,7 +90,7 @@ export default {
 
   .node:active {
     cursor: move;
-    background: green;
+    border: 6px dotted darkgreen;
   }
 
   .noselect {
@@ -100,6 +107,19 @@ export default {
     color: black;
     text-align: center;
     font-size: 30px;
+  }
+
+  .draghandle {
+      background: lightblue;
+      margin: 0 auto;
+      margin-top: 40px;
+      border: 2px solid black;
+      border-radius: 100%;
+      width:  50px;
+      height: 50px;
+  }
+  .draghandle:active {
+      background: orange;
   }
 
 </style>

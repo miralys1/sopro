@@ -20,7 +20,7 @@ export default {
     computed: {
         style: function () {
             return {
-                stroke: 'rgb(200,0,0)',
+                stroke: 'rgb(100,100,100)',
                 strokeWidth: 20 * this.params.scale
             }
         },

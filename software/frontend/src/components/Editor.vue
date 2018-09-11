@@ -7,17 +7,21 @@
           :key="node.id"
           :ix="node.x"
           :iy="node.y"
+          @startDrag="startDrag"
+          @endDrag="endDrag"
           @updatePos="nodeMove" >
       {{ node.name }}
     </Node>
   <svg width="100%" height="100%" pointer-events="none">
-    <Link v-for="link in links"
+    <Link v-for="link in linkcoords"
           :params="params"
-          :start="{x: link.node1.x, y: link.node1.y}"
-          :end="{x: link.node2.x, y:link.node2.y}"
+          :start="link.start"
+          :end="link.end"
           :key="link.id + '-link'"
           />
   </svg>
+  <SidePanel v-if="sidePanelShow"/>
+  <b-button :pressed.sync="sidePanelShow" variant="primary">Show Services</b-button>
 </div>
 </template>
 <script>
@@ -49,13 +53,12 @@ export default {
             scale: this.scale
         }
     },
-    links: function () {
-        return [
-            {node1: this.nodes[1], node2: this.nodes[2], id: 0},
-            {node1: this.nodes[1], node2: this.nodes[3], id: 1},
-            {node1: this.nodes[2], node2: this.nodes[4], id: 2},
-            {node1: this.nodes[5], node2: this.nodes[6], id: 3}
-        ]
+    linkcoords: function () {
+        return this.links.map( ls => ({
+                             start: {x: (this.nodes.filter(n => n.id == ls.node1)[0]).x, y: (this.nodes.filter(n => n.id == ls.node1)[0]).y},
+                             end:   {x: (this.nodes.filter(n => n.id == ls.node2)[0]).x, y: (this.nodes.filter(n => n.id == ls.node2)[0]).y},
+                             id: ls.id })
+                        )
     }
   },
   data () {
@@ -63,16 +66,19 @@ export default {
           originX: 0,
           originY: 0,
           drag: false,
+          dragNode: undefined,
+          sidePanelShow: false,
           nodes: [
-            ({id: 0, name: '3D-Modeller' , x: 0, y: 0, }),
-            ({id: 1, name: '4D-Modeller' , x: 100, y: 200, }),
-            ({id: 2, name: 'Simulation'  , x: 100, y: 900, }),
-            ({id: 3, name: 'whatever'    , x: 300, y: 200, }),
-            ({id: 4, name: 'whatever'    , x: 600, y: 200, }),
-            ({id: 5, name: 'whatever'    , x: 800, y: 600, }),
-            ({id: 6, name: 'whatever'    , x: 900, y: 900, }),
+              ({id: 0, name: '3D-Modeller' , x: 0, y: 0, }),
+              ({id: 1, name: '4D-Modeller' , x: 100, y: 200, }),
+              ({id: 2, name: 'Simulation'  , x: 100, y: 900, }),
+              ({id: 3, name: 'whatever'    , x: 300, y: 200, }),
+              ({id: 4, name: 'whatever'    , x: 600, y: 200, }),
+              ({id: 5, name: 'whatever'    , x: 800, y: 600, }),
+              ({id: 6, name: 'whatever'    , x: 900, y: 900, }),
           ],
           scale: 1,
+          links: [],
 
           // we haven't got something like event.deltaX
           // so we need to calculate that ourselfes
@@ -96,7 +102,6 @@ export default {
           this.drag=false;
       },
       nodeMove: function(event) {
-          console.log(this.links[1].node1.x);
           console.log(event.x + ' ' + event.y + ' ' + event.id);
           this.nodes = this.nodes.map(el => el.id != event.id ? el : ({x: event.x, y: event.y, id: el.id, name: el.name}));
       },
@@ -111,6 +116,17 @@ export default {
             this.originX += deltaX;
             this.originY += deltaY;
           }
+      },
+      startDrag: function (id) {
+          console.log("start");
+          this.dragNode = id;
+      },
+      endDrag: function (id) {
+          console.log("end");
+          var n1 = id;
+          var n2 = this.dragNode;
+          this.dragNode = undefined;
+          this.links = this.links.concat({id: 0,node1: n1, node2: n2});
       }
 
   },
