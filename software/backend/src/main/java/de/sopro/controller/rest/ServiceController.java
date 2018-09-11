@@ -84,14 +84,24 @@ public class ServiceController{
         for(Service service: services){
             // first save all tags and services, that are referenced
             // TODO: Search for entries with the same vlaues to prevent duplicates
-            for (Tag t : service.getTags()) {
+            for (Tag t : service.getTags()) {           
                 tagRepo.save(t);
             }
             for (Format f : service.getFormatIn()){
-                formatRepo.save(f);
+                Format fSaved = formatRepo.findOneByTypeAndVersion(f.getType(), f.getVersion());
+                if(fSaved == null){
+                    formatRepo.save(f);
+                }else{
+                    f.setId(fSaved.getId());
+                }
             }
             for (Format f : service.getFormatOut()) {
-                formatRepo.save(f);
+                Format fSaved = formatRepo.findOneByTypeAndVersion(f.getType(), f.getVersion());
+                if(fSaved == null){
+                    formatRepo.save(f);
+                }else{
+                    f.setId(fSaved.getId());
+                }
             }
             serviceRepo.save(service);
         }
@@ -111,14 +121,18 @@ public class ServiceController{
 
             // first save all tags and services, that are referenced
             // TODO: Search for entries with the same vlaues to prevent duplicates
-            for (Tag t : service.getTags()) {
+            for (Tag t : service.getTags()) {           
                 tagRepo.save(t);
             }
             for (Format f : service.getFormatIn()){
-                formatRepo.save(f);
+                if(!formatRepo.existsByTypeAndVersion(f.getType(), f.getVersion())){
+                    formatRepo.save(f);
+                }
             }
             for (Format f : service.getFormatOut()) {
-                formatRepo.save(f);
+                if(!formatRepo.existsByTypeAndVersion(f.getType(), f.getVersion())){
+                    formatRepo.save(f);
+                }
             }
 
             serviceRepo.save(service);

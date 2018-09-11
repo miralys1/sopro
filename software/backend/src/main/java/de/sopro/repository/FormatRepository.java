@@ -6,5 +6,5 @@ import de.sopro.model.Format;
 
 public interface FormatRepository extends CrudRepository<Format, Long> {
 
-	boolean existsByTypeAndVersion(String type, String version);
+	Format findOneByTypeAndVersion(String type, String version);
 }
