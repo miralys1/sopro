@@ -5,17 +5,24 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import swarm.swarmcomposerapp.Model.Composition;
+import swarm.swarmcomposerapp.Model.Edge;
+import swarm.swarmcomposerapp.Model.Node;
 import swarm.swarmcomposerapp.R;
 
 /**
  * TODO: document your custom view class.
  */
-public class CompositionView extends View implements IResponse{
+public class CompositionView extends View {
     private String mExampleString; // TODO: use a default from R.string...
     private int mExampleColor = Color.RED; // TODO: use a default from R.color...
     private float mExampleDimension = 0; // TODO: use a default from R.dimen...
@@ -24,6 +31,16 @@ public class CompositionView extends View implements IResponse{
     private TextPaint mTextPaint;
     private float mTextWidth;
     private float mTextHeight;
+
+    private int paddingLeft;
+    private int paddingRight;
+    private int paddingTop;
+    private int paddingBot;
+
+    private int contentWidth;
+    private int contentHeight;
+
+    private Composition comp;
 
     public CompositionView(Context context) {
         super(context);
@@ -38,6 +55,12 @@ public class CompositionView extends View implements IResponse{
     public CompositionView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
+    }
+
+    public CompositionView(Context context, AttributeSet attrs, Composition comp) {
+        super(context, attrs);
+        init(attrs, 0);
+        this.comp = comp;
     }
 
     private void init(AttributeSet attrs, int defStyle) {
@@ -82,25 +105,129 @@ public class CompositionView extends View implements IResponse{
         mTextHeight = fontMetrics.bottom;
     }
 
+    public RectF[] createRectsForNodes(List<Node> nodes, int maxX, int maxY, int length){
+        /*If  maxX or maxY are bigger than the view is able to handle
+        / then scale all coordinates down.*/
+        float convertX = 1;
+        float convertY = 1;
+        if (maxX > contentWidth) {
+            convertX = contentWidth / (float) maxX;
+            maxX = contentWidth;
+        }
+        if (maxY > contentHeight) {
+            convertY = contentHeight / (float) maxY;
+            maxY = contentHeight;
+        }
+
+
+        // rects stores the coordinates for every node
+        RectF[] rects = new RectF[nodes.size()];
+        //pointer for the array
+        int pointer = 0;
+
+
+        boolean xHasToBeConverted = convertX != 1;
+        boolean yHasToBeConverted = convertY != 1;
+        float left;
+        float top;
+        float right;
+        float bot;
+        for (Node n : nodes) {
+            left = n.getX();
+            top = n.getY();
+            if (xHasToBeConverted || yHasToBeConverted) {
+
+                if (xHasToBeConverted) {
+                    if (left != maxX) {
+                        left *= convertX;
+                    } else {
+                        left = maxX;
+                    }
+                }
+
+                if (yHasToBeConverted) {
+                    if (left != maxY) {
+                        top *= convertY;
+                    } else {
+                        top = maxY;
+                    }
+                }
+            }
+
+            bot = top + length;
+            right = left + length;
+
+            rects[pointer] = new RectF(left, top, right, bot);
+            pointer++;
+        }
+
+        return rects;
+    }
+
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // TODO: consider storing these as member variables to reduce
-        // allocations per draw cycle.
-        int paddingLeft = getPaddingLeft();
-        int paddingTop = getPaddingTop();
-        int paddingRight = getPaddingRight();
-        int paddingBottom = getPaddingBottom();
+        Paint drawPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        drawPaint.setColor(Color.BLACK);
+
+
+        Paint edgePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        edgePaint.setColor(Color.BLUE);
 
         int contentWidth = getWidth() - paddingLeft - paddingRight;
-        int contentHeight = getHeight() - paddingTop - paddingBottom;
+        int contentHeight = getHeight() - paddingTop - paddingBot;
 
-        // Draw the text.
-        canvas.drawText(mExampleString,
-                paddingLeft + (contentWidth - mTextWidth) / 2,
-                paddingTop + (contentHeight + mTextHeight) / 2,
-                mTextPaint);
+        List<Node> nodes = comp.getNodeList();
+
+
+        //Calculate an edge length that is small enough to place all nodes on the screen
+        int length = contentHeight * contentWidth / (4 * nodes.size());
+
+        //Search for the maximal coordinates in the list of nodes.
+        int maxX = 0;
+        int maxY = 0;
+
+        for (Node n : nodes) {
+            int tX = n.getX();
+            int tY = n.getY();
+
+            if (tX > maxX) {
+                maxX = tX;
+            }
+            if (tY > maxY) {
+                maxY = tY;
+            }
+        }
+
+        final RectF[] rects = createRectsForNodes(nodes, maxX, maxY, length);
+
+
+        //Draw the edges
+        //TODO: Draw edges
+        //TODO: Draw with compatibility
+        for (Edge e : comp.getEdgeList()){
+            Node source = e.getIn();
+            Node target = e.getOut();
+
+            int sIndex = nodes.indexOf(source);
+            int tIndex = nodes.indexOf(target);
+
+
+
+        }
+        // Draw the nodes as RoundRects
+        //TODO: Draw node images :)
+        for (RectF r : rects) {
+            canvas.drawRoundRect(r, length / (float) 4, length / (float) 4, drawPaint);
+        }
+
+            // Draw the text.
+            canvas.drawText(mExampleString,
+                    paddingLeft + (contentWidth - mTextWidth) / 2,
+                    paddingTop + (contentHeight + mTextHeight) / 2,
+                    mTextPaint);
 
         // Draw the example drawable on top of the text.
         if (mExampleDrawable != null) {
@@ -108,6 +235,25 @@ public class CompositionView extends View implements IResponse{
                     paddingLeft + contentWidth, paddingTop + contentHeight);
             mExampleDrawable.draw(canvas);
         }
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
+        paddingLeft = getPaddingLeft();
+        paddingTop = getPaddingTop();
+        paddingRight = getPaddingRight();
+        paddingBot = getPaddingBottom();
+        // Try for a width based on our minimum
+        int minw = paddingLeft + paddingRight + getSuggestedMinimumWidth();
+        int w = resolveSizeAndState(minw, widthMeasureSpec, 1);
+
+        // Whatever the width ends up being, ask for a height that would let the pie
+        // get as big as it can
+        int minh = MeasureSpec.getSize(w) - (int) mTextWidth + paddingBot + paddingTop;
+        int h = resolveSizeAndState(MeasureSpec.getSize(w) - (int) mTextWidth, heightMeasureSpec, 0);
+
+        setMeasuredDimension(w, h);
     }
 
     /**
@@ -170,27 +316,5 @@ public class CompositionView extends View implements IResponse{
         invalidateTextPaintAndMeasurements();
     }
 
-    /**
-     * Gets the example drawable attribute value.
-     *
-     * @return The example drawable attribute value.
-     */
-    public Drawable getExampleDrawable() {
-        return mExampleDrawable;
-    }
 
-    /**
-     * Sets the view's example drawable attribute value. In the example view, this drawable is
-     * drawn above the text.
-     *
-     * @param exampleDrawable The example drawable attribute value to use.
-     */
-    public void setExampleDrawable(Drawable exampleDrawable) {
-        mExampleDrawable = exampleDrawable;
-    }
-
-    @Override
-    public void notify(Boolean successful) {
-        
-    }
 }
