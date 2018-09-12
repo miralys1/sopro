@@ -97,11 +97,8 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 
 			CompositionNode n1 = new CompositionNode(5, 5, s1);
 			CompositionNode n2 = new CompositionNode(50, 50, s2);
-			compNodeRepo.save(n1);
-			compNodeRepo.save(n2);
 
 			CompositionEdge e = new CompositionEdge(n1, n2);
-			compEdgeRepo.save(e);
 
 			List<CompositionNode> nodes = new ArrayList<>();
 			nodes.add(n1);
