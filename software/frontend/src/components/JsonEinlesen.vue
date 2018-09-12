@@ -11,8 +11,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
-
 export default {
   data () {
     return {
@@ -70,7 +68,7 @@ export default {
       }
     },
     sendJson: function() {
-      Vue.axios.post('/services', this.text)
+      this.axios.post('/services', this.text)
            .then(function (response) { alert(response);})
            .catch(function (error) {alert(error);});
     }
