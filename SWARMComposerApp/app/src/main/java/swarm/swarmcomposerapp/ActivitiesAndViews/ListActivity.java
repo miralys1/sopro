@@ -1,10 +1,15 @@
 package swarm.swarmcomposerapp.ActivitiesAndViews;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,15 +28,32 @@ public class ListActivity extends AppCompatActivity implements IResponse {
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<Composition> compList;
+    private ArrayList<Composition> compList = new ArrayList<>();
     private TextView tLoading;
     private ProgressBar progressBar;
+    private static final String PREFERENCE_NAME = "app_settings";
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+    private LocalCache cache = LocalCache.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        initList();
+
+        //load saved preferences such as email and server address
+        preferences = getSharedPreferences(PREFERENCE_NAME, 0);
+        editor = preferences.edit();
+        String address = preferences.getString("SERVERADDRESS", null);
+        if(address == null)
+            showWelcomeScreen();
+        else
+            cache.setServerAdress(address);
+
+        String email = preferences.getString("EMAIL", null);
+        if(email != null)
+            cache.setEmail(email);
+
 
         tLoading = findViewById(R.id.text_loading1);
         progressBar = findViewById(R.id.progressBar1);
@@ -65,30 +87,21 @@ public class ListActivity extends AppCompatActivity implements IResponse {
     @Override
     protected void onResume(){
         super.onResume();
-        compList = LocalCache.getInstance().getCompositions(this);
-        initList();
-        if(compList == null){
-            //TODO show loading screen
-            Toast.makeText(getApplicationContext(), "loading...", Toast.LENGTH_SHORT).show();
+        updateList();
+    }
 
+    private void updateList(){
+        compList = LocalCache.getInstance().getCompositions(this);
+        if(compList == null){
+            showLoading(true);
         } else {
             adapter.notifyDataSetChanged();
         }
     }
 
-    //called by LocalCache when server data has arrived
-    public void onResponse(ArrayList<Composition> compList){
-            this.compList = compList;
-            adapter.notifyDataSetChanged();
-    }
-
-    //called by LocalCache when server connection has failed
-    public void onFailure(){
-        //TODO show error message
-        Toast.makeText(getApplicationContext(), "server connection failed", Toast.LENGTH_SHORT).show();
-    }
 
     private void initList(){
+        //TODO remove
         compList = new ArrayList<>();
         compList.add(new Composition(1, "Tolle Komposition", new SimpleUser(1, "Connor", "Tarvos")));
         compList.add(new Composition(2, "Tolle Komposition 2", new SimpleUser(2, "Felix", "Gröner")));
@@ -98,8 +111,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
     }
 
     public void reloadList(View v){
-        tLoading.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
+        showLoading(true);
         LocalCache.getInstance().hardRefresh(this);
     }
 
@@ -108,8 +120,42 @@ public class ListActivity extends AppCompatActivity implements IResponse {
         startActivity(intent);
     }
 
-    @Override
-    public void notify(Boolean successful) {
+    private void showLoading(boolean activate){
+            tLoading.setVisibility(activate ? View.VISIBLE : View.GONE);
+            progressBar.setVisibility(activate ? View.VISIBLE : View.GONE);
+    }
 
+    @Override
+    public void notify(boolean successful) {
+        if(successful) {
+            compList = LocalCache.getInstance().getCompositions(this);
+            adapter.notifyDataSetChanged();
+        } else {
+            //TODO show error dialog with tips
+            Toast.makeText(getApplicationContext(), getText(R.string.err_text_list), Toast.LENGTH_SHORT).show();
+        }
+        showLoading(false);
+    }
+
+    /**
+     * only executed once on the very first start of the app
+     */
+    private void showWelcomeScreen(){
+        LayoutInflater inflater = (LayoutInflater)getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.fragment_dialog, null);
+        ((TextView) layout.findViewById(R.id.d_title)).setText(getText(R.string.d_welcome_title));
+        ((TextView) layout.findViewById(R.id.d_text)).setText(getText(R.string.d_welcome_text));
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setNeutralButton(getText(R.string.d_button_close), null);
+        alertDialogBuilder.setPositiveButton(getText(R.string.d_welcome_button), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startSettingsActivity(null);
+            }
+        });
+        alertDialogBuilder.setView(layout);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }
