@@ -13,6 +13,8 @@ export default {
         showDetails: Boolean,
         noHandles: Boolean,
         params: Object,
+        serviceId: Number,
+        dummy: Boolean,
         ix: Number,
         iy: Number
     },
@@ -32,7 +34,7 @@ export default {
     computed: {
         nodeStyle: function () {
             return {
-                position: 'absolute',
+                position: (this.dummy ? 'relative' : 'absolute'),
                 // here we transform into screen space coordinates
                 top: this.params.originY + this.iy*this.params.scale + 'px',
                 left: this.params.originX + this.ix*this.params.scale + 'px',
@@ -78,50 +80,50 @@ export default {
 </script>
 
 <style scoped>
-  .node {
-    border: 4px solid black;
-    border-radius: 20px;
-    background: lightgrey;
-    opacity: 1;
-    cursor: grab;
-    box-sizing: border-box;
-    box-shadow: 4px 4px 8px #101010;
-  }
+.node {
+  border: 4px solid black;
+  border-radius: 20px;
+  background: lightgrey;
+  opacity: 1;
+  cursor: grab;
+  box-sizing: border-box;
+  box-shadow: 4px 4px 8px #101010;
+}
 
-  .node:active {
-    cursor: move;
-    border: 6px dotted darkgreen;
-    box-shadow: 18px 18px 26px #101010;
-    z-index: 1;
-  }
+.node:active {
+  cursor: move;
+  border: 6px dotted darkgreen;
+  box-shadow: 18px 18px 26px #101010;
+  z-index: 1;
+}
 
-  .noselect {
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
-  }
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                supported by Chrome and Opera */
+}
 
-  .servicename {
-    color: black;
-    text-align: center;
-    font-size: 30px;
-  }
+.servicename {
+  color: black;
+  text-align: center;
+  font-size: 30px;
+}
 
-  .draghandle {
-      background: lightblue;
-      margin: 0 auto;
-      margin-top: 40px;
-      border: 2px solid black;
-      border-radius: 100%;
-      width:  50px;
-      height: 50px;
-  }
-  .draghandle:active {
-      background: orange;
-  }
+.draghandle {
+    background: lightblue;
+    margin: 0 auto;
+    margin-top: 40px;
+    border: 2px solid black;
+    border-radius: 100%;
+    width:  50px;
+    height: 50px;
+}
+.draghandle:active {
+    background: orange;
+}
 
 </style>
