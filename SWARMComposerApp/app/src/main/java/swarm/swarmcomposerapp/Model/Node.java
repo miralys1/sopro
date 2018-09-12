@@ -2,13 +2,18 @@ package swarm.swarmcomposerapp.Model;
 
 import android.media.Image;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * A Node represents a Service within the drawing of a Composition.
  */
 public class Node {
 
+    @SerializedName("x")
     private int x;
+    @SerializedName("y")
     private int y;
+    @SerializedName("id")
     private long serviceID;
 
     /**

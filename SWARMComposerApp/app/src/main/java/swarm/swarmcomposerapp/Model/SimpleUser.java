@@ -1,12 +1,17 @@
 package swarm.swarmcomposerapp.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * SimpleUser that is mainly used for mentioning the author of a composition.
  */
 public class SimpleUser {
 
+    @SerializedName("id")
     private long id;
+    @SerializedName("firstName")
     private String firstName;
+    @SerializedName("lastName")
     private String lastName;
 
     /**

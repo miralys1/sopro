@@ -1,11 +1,16 @@
 package swarm.swarmcomposerapp.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class CompatibilityAnswer {
 
+    @SerializedName("compatibility")
     private boolean isCompatible;
+    @SerializedName("suitingFormats")
     List<String> suitingFormats;
+    @SerializedName("alternatives")
     List<Alternative> alternatives;
 
 

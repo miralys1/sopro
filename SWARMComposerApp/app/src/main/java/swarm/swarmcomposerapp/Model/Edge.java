@@ -1,5 +1,7 @@
 package swarm.swarmcomposerapp.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +10,11 @@ import java.util.List;
  *
  */
 public class Edge {
+    @SerializedName("in")
     private Composition in;
+    @SerializedName("out")
     private Composition out;
+    @SerializedName("compatibilityAnswer")
     private CompatibilityAnswer compatibility;
 
     public CompatibilityAnswer getCompatibility() {

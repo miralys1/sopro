@@ -129,7 +129,7 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
     }
 
     @Override
-    public void notify(Boolean successful) {
+    public void notify(boolean successful) {
 
     }
 }
