@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements IResponse {
     }
 
     @Override
-    public void notify(Boolean successful) {
+    public void notify(boolean successful) {
         if(successful){
             Service[] services = LocalCache.getInstance().getServices(this);
             Toast.makeText(this, "Success: first service name is: "+

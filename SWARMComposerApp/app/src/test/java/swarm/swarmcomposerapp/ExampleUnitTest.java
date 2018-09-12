@@ -91,7 +91,7 @@ public class ExampleUnitTest {
         System.out.println("Enqueue Callback");
         Response<ArrayList<Service>> execute = servicesRequest.execute();
         Assert.assertNotNull(execute.body());
-
+        System.out.println(execute.body().get(0).getServiceName());
 
     }
 

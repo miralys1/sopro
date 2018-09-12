@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import swarm.swarmcomposerapp.ActivitiesAndViews.IResponse;
 import swarm.swarmcomposerapp.Utils.ActualRequests;
+import swarm.swarmcomposerapp.Utils.RetrofitClients;
 
 /**
  * LocalCache manages compositions and services and hides its basic structure behind specific methods.
@@ -39,6 +40,8 @@ public class LocalCache implements ICache {
 
     public void setServerAdress(String serverAdress) {
         this.serverAdress = serverAdress;
+
+        RetrofitClients.newRetrofitInstance(serverAdress);
     }
 
     private static LocalCache instance = new LocalCache();
@@ -58,6 +61,7 @@ public class LocalCache implements ICache {
 
     }
 
+    @Override
     /**
      * Tries to receive a service from the LocalCache by its id.
      * It doesn't request it from the backend if its null at the moment!
@@ -70,6 +74,7 @@ public class LocalCache implements ICache {
         return serviceLookUp.get(id);
     }
 
+    @Override
     /**
      * Returns the composition at a specific position in the composition list.
      * If the composition has not received its details then it will request them from the backend.
@@ -96,7 +101,7 @@ public class LocalCache implements ICache {
         }
 
         if (tempComp.getNodeList().isEmpty()) {
-            ActualRequests.actualCompDetailsRequest(tempComp,caller);
+            ActualRequests.actualCompDetailsRequest(tempComp, caller);
             return null;
         }
         return tempComp;
@@ -121,7 +126,7 @@ public class LocalCache implements ICache {
      * without checking for changes.
      */
     public void hardRefresh(IResponse caller) {
-            ActualRequests.actualCompListRequest(compositions,caller);
+        ActualRequests.actualCompListRequest(compositions, caller);
     }
 
 

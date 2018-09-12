@@ -1,26 +1,63 @@
 package swarm.swarmcomposerapp.Model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
 /**
  * Model representation of a composition.
  */
-public class Composition{
+public class Composition {
+    @SerializedName("id")
     private long id;
+    @SerializedName("name")
     private String name;
+    @SerializedName("owner")
     private SimpleUser owner;
     private long lastUpdate;
     private long dateCreated; //Implementation not planned
+    @SerializedName("nodes")
     List<Node> nodeList;
+    @SerializedName("edges")
     List<Edge> edgeList;
     boolean editable;
 
+    /**
+     * Creates a not-detailed, simple or zombie Composition.
+     * (Depending on your desired naming scheme).
+     * Such a composition should only be used for meta data purposes.
+     * Ergo: You will initially not be able to draw a Composition View with such a composition.
+     *
+     * @param id
+     * @param name
+     * @param owner
+     */
     public Composition(long id, String name, SimpleUser owner) {
         this.id = id;
         this.owner = owner;
         this.name = name;
+        nodeList = new ArrayList<>();
+        edgeList = new ArrayList<>();
         setLastUpdate();
+    }
+
+    /**
+     * Creates a Composition including sufficient enough details for drawing it
+     * on a CompositionView.
+     *
+     * @param id
+     * @param name
+     * @param owner
+     * @param edgeList
+     * @param nodeList
+     */
+    public Composition(long id, String name, SimpleUser owner, List<Edge> edgeList,
+                       List<Node> nodeList) {
+        this(id, name, owner);
+        this.edgeList = edgeList;
+        this.nodeList = nodeList;
     }
 
     public SimpleUser getOwner() {
@@ -47,7 +84,7 @@ public class Composition{
         return edgeList;
     }
 
-    public void setLastUpdate(){
+    public void setLastUpdate() {
         this.lastUpdate = System.currentTimeMillis() / 1000L;
     }
 
@@ -84,7 +121,8 @@ public class Composition{
     }
 
     /**
-     *Add compEdges to the edgeList.
+     * Add compEdges to the edgeList.
+     *
      * @param edges
      */
     public void addEdges(List<Edge> edges) {

@@ -24,7 +24,7 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
     }
 
     @Override
-    public void notify(Boolean successful) {
+    public void notify(boolean successful) {
 
     }
 }

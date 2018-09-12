@@ -3,5 +3,5 @@ package swarm.swarmcomposerapp.ActivitiesAndViews;
 
 public interface IResponse {
 
-     void notify(Boolean successful);
+     void notify(boolean successful);
 }

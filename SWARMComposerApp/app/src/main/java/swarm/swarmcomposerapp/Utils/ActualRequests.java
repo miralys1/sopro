@@ -12,17 +12,30 @@ import swarm.swarmcomposerapp.Model.Composition;
 import swarm.swarmcomposerapp.Model.LocalCache;
 import swarm.swarmcomposerapp.Model.Service;
 
+
+/**
+ * ActualRequests separates the Request code made with methods from Retrofit2 from the Activity classes.
+ * This allows to swap the connection logic and follows separation of concerns.
+ */
 public class ActualRequests {
     /**
      * ServerCommunication used for http requests :)
      */
     private static ServerCommunication com = refreshServerCommunication();
 
+
     public static ServerCommunication refreshServerCommunication() {
         return RetrofitClients.getRetrofitInstance().create(ServerCommunication.class);
     }
 
-
+    /**
+     * Starts an asynchronous request for the list of services.
+     * The Services are stored in the LocalCache singleton if the request was successful.
+     * This method expects a IResponse object to react on its success or failure.
+     *
+     * @param serviceLookUp - Reference on the HashMap in which the services should be stored
+     * @param caller        - the IResponse object desiring to receive the services
+     */
     public static void actualServiceRequest(HashMap<Long, Service> serviceLookUp, IResponse caller) {
         Call<ArrayList<Service>> servicesRequest = com.requestServices();
 
@@ -52,6 +65,14 @@ public class ActualRequests {
 
     }
 
+    /**
+     * Starts an asynchronous request for the list of compositions.
+     * The compositions are stored in the LocalCache singleton if the request was successful.
+     * This method expects a IResponse object to react on its success or failure.
+     *
+     * @param comps  - Reference on the ArrayList in which the compositions should be stored
+     * @param caller - the IResponse object desiring to receive the compositions
+     */
     public static void actualCompListRequest(ArrayList<Composition> comps, IResponse caller) {
         final Call<ArrayList<Composition>> compList;
 
@@ -83,19 +104,28 @@ public class ActualRequests {
         });
     }
 
+    /**
+     * Starts an asynchronous request for a detailed composition.
+     * It expects the calling IResponse object to react on the success or failure of its request
+     * with @Code{notify(boolean success)}.
+     * <p>
+     * On success the details of the sent Composition are extracted and added to the @Code{comp}
+     *
+     * @param comp   - Composition that has been chosen for receiving details
+     * @param caller - 'target' the caller has to react on success or failure
+     */
     public static void actualCompDetailsRequest(Composition comp, IResponse caller) {
         Call<Composition> compDetails;
 
-        LocalCache localSettingsRef = LocalCache.getInstance();
-
+        //local variables need to be final to be accessed in OnResponse()
         final Composition tempComp = comp;
 
         LocalCache cacheRef = LocalCache.getInstance();
         String pw = cacheRef.getPassword();
         String mail = cacheRef.getEmail();
 
+        //Depending whether the user is logged in use the specific request method
         if (pw != null && mail != null) {
-            //Depending whether the user is logged in use the specific request method
             compDetails =
                     com.requestDetail(Credentials.basic(mail, pw), tempComp.getId());
         } else {
@@ -108,6 +138,9 @@ public class ActualRequests {
             @Override
             public void onResponse(Call<Composition> call, Response<Composition> response) {
                 if (response.isSuccessful()) {
+
+                    /*Add the details of the response's composition to the
+                    / tempComp referencing to the Composition that should receive the details */
                     tempComp.addComps(response.body().getNodeList());
                     tempComp.addEdges(response.body().getEdgeList());
                     tempComp.setLastUpdate();
