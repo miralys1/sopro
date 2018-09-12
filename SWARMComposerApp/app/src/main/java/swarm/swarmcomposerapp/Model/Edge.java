@@ -11,9 +11,9 @@ import java.util.List;
  */
 public class Edge {
     @SerializedName("in")
-    private Composition in;
+    private Node in;
     @SerializedName("out")
-    private Composition out;
+    private Node out;
     @SerializedName("compatibilityAnswer")
     private CompatibilityAnswer compatibility;
 
@@ -28,7 +28,7 @@ public class Edge {
      * @param out
      * @param  compatibility
      */
-    public Edge(Composition in, Composition out, CompatibilityAnswer  compatibility ){
+    public Edge(Node in, Node out, CompatibilityAnswer  compatibility ){
         this.compatibility  =  compatibility ;
         this.in = in;
         this.out = out;
@@ -39,7 +39,7 @@ public class Edge {
      * Return the out Composition.
      * @return
      */
-    public Composition getOut(){
+    public Node getOut(){
         return out;
     }
 
@@ -47,7 +47,7 @@ public class Edge {
      * Return the in Composition.
      * @return
      */
-    public Composition getIn(){
+    public Node getIn(){
         return in;
     }
 

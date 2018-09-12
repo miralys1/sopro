@@ -24,14 +24,14 @@ public interface ServerCommunication {
      * @param credentials - email + password
      * @return
      */
-    @POST("/login")
+    @POST("login")
     Call<String> login(@Header("Authorization") String credentials);
 
     /**
      * Requests the list of compositions
      * @return
      */
-    @GET("/compositions")
+    @GET("compositions")
     Call<ArrayList<Composition>> requestList();
 
     /**
@@ -39,7 +39,7 @@ public interface ServerCommunication {
      * @param id - an unic identifier
      * @return
      */
-    @GET("/compositions/{comp}")
+    @GET("compositions/{comp}")
     Call<Composition> requestDetail(@Path("comp") long id);
 
     /**
@@ -50,7 +50,7 @@ public interface ServerCommunication {
      * @param token
      * @return
      */
-    @GET("/compositions")
+    @GET("compositions")
     Call<ArrayList<Composition>> requestListCred(@Header("Authorization") String token);
 
     /**
@@ -61,9 +61,9 @@ public interface ServerCommunication {
      * @param id
      * @return
      */
-    @GET("/compositions/{comp}")
+    @GET("compositions/{comp}")
     Call<Composition> requestDetail(@Header("Authorization") String token, @Path("comp") long id);
 
-    @GET("/services")
+    @GET("services")
     Call<ArrayList<Service>> requestServices();
 }

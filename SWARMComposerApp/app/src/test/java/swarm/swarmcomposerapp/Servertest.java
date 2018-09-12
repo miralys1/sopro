@@ -1,0 +1,37 @@
+package swarm.swarmcomposerapp;
+
+import org.junit.Test;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import swarm.swarmcomposerapp.Model.Service;
+import swarm.swarmcomposerapp.Utils.ServerCommunication;
+
+import static org.junit.Assert.assertNotNull;
+
+public class Servertest {
+
+
+    @Test
+    public void test2() throws IOException {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/").addConverterFactory(GsonConverterFactory.create())
+                .build();
+        final ServerCommunication com = retrofit.create(ServerCommunication.class);
+        final HashMap<Long, Service> serviceLookUpL = new HashMap<Long, Service>();
+        Call<ArrayList<Service>> servicesRequest = com.requestServices();
+
+        System.out.println("Enqueue Callback2");
+        Response<ArrayList<Service>> execute = servicesRequest.execute();
+        assertNotNull(execute);
+        System.out.println(execute.message());
+        System.out.println(execute.body().get(0).getServiceName());
+        System.out.println(execute.body().get(1).getServiceName());
+    }
+}
