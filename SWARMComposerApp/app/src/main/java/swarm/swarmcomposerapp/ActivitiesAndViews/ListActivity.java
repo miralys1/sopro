@@ -53,6 +53,9 @@ public class ListActivity extends AppCompatActivity implements IResponse {
 
             }
         }));
+        Intent intent =  new Intent(getApplicationContext(),MainActivity.class);
+        startActivity(intent);
+
     }
 
     @Override

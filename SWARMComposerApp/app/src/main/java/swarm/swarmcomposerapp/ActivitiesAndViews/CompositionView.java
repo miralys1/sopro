@@ -40,6 +40,10 @@ public class CompositionView extends View {
     private int contentWidth;
     private int contentHeight;
 
+    public void setComp(Composition comp) {
+        this.comp = comp;
+    }
+
     private Composition comp;
 
     public CompositionView(Context context) {
@@ -105,7 +109,7 @@ public class CompositionView extends View {
         mTextHeight = fontMetrics.bottom;
     }
 
-    public RectF[] createRectsForNodes(List<Node> nodes, int maxX, int maxY, int length){
+    public RectF[] createRectsForNodes(List<Node> nodes, int maxX, int maxY, int length) {
         /*If  maxX or maxY are bigger than the view is able to handle
         / then scale all coordinates down.*/
         float convertX = 1;
@@ -171,63 +175,74 @@ public class CompositionView extends View {
 
         Paint drawPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         drawPaint.setColor(Color.BLACK);
-
+        drawPaint.setStyle(Paint.Style.FILL);
 
         Paint edgePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         edgePaint.setColor(Color.BLUE);
+        edgePaint.setStyle(Paint.Style.FILL);
 
         int contentWidth = getWidth() - paddingLeft - paddingRight;
         int contentHeight = getHeight() - paddingTop - paddingBot;
 
-        List<Node> nodes = comp.getNodeList();
+        if (comp != null) {
+            List<Node> nodes = comp.getNodeList();
 
 
-        //Calculate an edge length that is small enough to place all nodes on the screen
-        int length = contentHeight * contentWidth / (4 * nodes.size());
+            //Calculate an edge length that is small enough to place all nodes on the screen
+            int length = contentHeight * contentWidth / (4 * nodes.size());
 
-        //Search for the maximal coordinates in the list of nodes.
-        int maxX = 0;
-        int maxY = 0;
+            //Search for the maximal coordinates in the list of nodes.
+            int maxX = 0;
+            int maxY = 0;
 
-        for (Node n : nodes) {
-            int tX = n.getX();
-            int tY = n.getY();
+            for (Node n : nodes) {
+                int tX = n.getX();
+                int tY = n.getY();
 
-            if (tX > maxX) {
-                maxX = tX;
+                if (tX > maxX) {
+                    maxX = tX;
+                }
+                if (tY > maxY) {
+                    maxY = tY;
+                }
             }
-            if (tY > maxY) {
-                maxY = tY;
+
+            final RectF[] rects = createRectsForNodes(nodes, maxX, maxY, length);
+
+
+            //Draw the edges
+            //TODO: Draw arrowheads
+            //TODO: Draw with compatibility
+            for (Edge e : comp.getEdgeList()) {
+                Node source = e.getIn();
+                Node target = e.getOut();
+
+                int sIndex = nodes.indexOf(source);
+                int tIndex = nodes.indexOf(target);
+                RectF srect = rects[sIndex];
+                RectF trect = rects[tIndex];
+                float halfLength = length / (float) 2;
+
+                float sMidX = srect.left + halfLength;
+                float sMidY = srect.top + halfLength;
+                float tMidX = trect.left + halfLength;
+                float tMidY = trect.top + halfLength;
+
+                canvas.drawLine(sMidX, sMidY, tMidX, tMidY, edgePaint);
+
+
+            }
+            // Draw the nodes as RoundRects
+            //TODO: Draw node images :)
+            for (RectF r : rects) {
+                canvas.drawRoundRect(r, length / (float) 4, length / (float) 4, drawPaint);
             }
         }
-
-        final RectF[] rects = createRectsForNodes(nodes, maxX, maxY, length);
-
-
-        //Draw the edges
-        //TODO: Draw edges
-        //TODO: Draw with compatibility
-        for (Edge e : comp.getEdgeList()){
-            Node source = e.getIn();
-            Node target = e.getOut();
-
-            int sIndex = nodes.indexOf(source);
-            int tIndex = nodes.indexOf(target);
-
-
-
-        }
-        // Draw the nodes as RoundRects
-        //TODO: Draw node images :)
-        for (RectF r : rects) {
-            canvas.drawRoundRect(r, length / (float) 4, length / (float) 4, drawPaint);
-        }
-
-            // Draw the text.
-            canvas.drawText(mExampleString,
-                    paddingLeft + (contentWidth - mTextWidth) / 2,
-                    paddingTop + (contentHeight + mTextHeight) / 2,
-                    mTextPaint);
+        // Draw the text.
+        canvas.drawText(mExampleString,
+                paddingLeft + (contentWidth - mTextWidth) / 2,
+                paddingTop + (contentHeight + mTextHeight) / 2,
+                mTextPaint);
 
         // Draw the example drawable on top of the text.
         if (mExampleDrawable != null) {
