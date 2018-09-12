@@ -8,16 +8,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import de.sopro.model.send.DetailComp;
 import de.sopro.model.send.Edge;
+import de.sopro.model.send.Node;
 import de.sopro.model.send.SimpleComp;
 import de.sopro.model.send.SimpleUser;
 import de.sopro.model.send.UserAuthorizations;
@@ -153,11 +152,18 @@ public class Composition {
 				editable = true;
 			}
 		}
+
+		List<Node> nodes = new ArrayList<>();
+		for (CompositionNode node : this.nodes) {
+			nodes.add(node.createNode());
+		}
+
 		List<Edge> edges = new ArrayList<>();
 		for (CompositionEdge edge : this.edges) {
 			edges.add(edge.createEdge());
 		}
-		return new DetailComp(this.id, this.owner.createSimpleUser(), this.name, editable, this.nodes, edges);
+		
+		return new DetailComp(this.id, this.owner.createSimpleUser(), this.name, editable, nodes, edges);
 	}
 
 	public UserAuthorizations createUserAuths() {
