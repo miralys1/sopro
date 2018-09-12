@@ -1,19 +1,10 @@
 package swarm.swarmcomposerapp.Model;
 
-import android.app.Activity;
-import android.net.Credentials;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import swarm.swarmcomposerapp.ActivitiesAndViews.IResponse;
 import swarm.swarmcomposerapp.Utils.ActualRequests;
-import swarm.swarmcomposerapp.Utils.RetrofitClients;
-import swarm.swarmcomposerapp.Utils.ServerCommunication;
 
 /**
  * LocalCache manages compositions and services and hides its basic structure behind specific methods.
@@ -23,7 +14,7 @@ import swarm.swarmcomposerapp.Utils.ServerCommunication;
 public class LocalCache implements ICache {
 
     private String email;
-    private String token;
+    private String password;
     private String serverAdress = "https://134.245.1240:9060";
 
     public String getEmail() {
@@ -34,12 +25,12 @@ public class LocalCache implements ICache {
         this.email = email;
     }
 
-    public String getToken() {
-        return token;
+    public String getPassword() {
+        return password;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getServerAdress() {
