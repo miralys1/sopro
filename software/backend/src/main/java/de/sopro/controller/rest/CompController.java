@@ -44,7 +44,7 @@ public class CompController{
      * @param userId the userId of the user requesting the list
      * @return a Object that contains two lists of compositions. One for editing and one for viewing
      */
-    @RequestMapping(value="compositions", method=RequestMethod.GET)
+    @RequestMapping(value="/compositions", method=RequestMethod.GET)
     public ResponseEntity<CompLists> getCompositions(long userId){
         
         Optional<User> userOp = userRepo.findById(userId);
