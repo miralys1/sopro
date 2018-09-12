@@ -10,13 +10,14 @@
 </div>
 </div
 <br><br>
-<AdminDienstbearbeitenProps v-bind:pform=selectedService />
+<AdminDienstbearbeitenProps v-if="selectedService" v-bind:pform=selectedService />
 
 </div>
 
 </template>
 
 <script>
+
 import AdminDienstbearbeitenProps from '@/components/AdminDienstbearbeitenProps'
 
 export default {
@@ -25,8 +26,8 @@ components: {AdminDienstbearbeitenProps},
 methods: {
 
   onClick(index){
-    this.serviceSelected = true;
     this.selectedService = this.services[index];
+    this.serviceSelected = true;
   }
 
 
@@ -38,7 +39,7 @@ methods: {
      selectedService: {
        id: 0,
        name: "Johanna",
-       organisation: "",
+       organisation: "test",
        version: "",
        date: 0,
        logo: "",
