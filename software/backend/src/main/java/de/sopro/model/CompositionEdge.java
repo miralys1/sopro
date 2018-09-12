@@ -1,5 +1,6 @@
 package de.sopro.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,11 +18,11 @@ public class CompositionEdge {
 	private Long id;
 
 	@NotNull
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private CompositionNode source;
 
 	@NotNull
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private CompositionNode target;
 
 	// Hibernate requires a no-arg constructor

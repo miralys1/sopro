@@ -133,7 +133,7 @@ public class Composition {
 		this.edges = edges;
 	}
 
-	// TODO: userID übergeben?
+	// TODO: userID ï¿½bergeben?
 	public SimpleComp createSimpleComp(long userID) {
 		boolean editable = false;
 		for (User user : editors) {
@@ -144,15 +144,18 @@ public class Composition {
 		return new SimpleComp(this.id, this.owner.createSimpleUser(), this.name, editable);
 	}
 
-	// TODO: userID übergeben?
+	// TODO: userID ï¿½bergeben?
 	public DetailComp createDetailComp(long userID) {
 		boolean editable = false;
-		for (User user : editors) {
-			if (user.getId() == userID) {
-				editable = true;
+		if(userID == getOwner().getId()){
+			editable = true;
+		}else {
+			for (User user : editors) {
+				if (user.getId() == userID) {
+					editable = true;
+				}
 			}
 		}
-
 		List<Node> nodes = new ArrayList<>();
 		for (CompositionNode node : this.nodes) {
 			nodes.add(node.createNode());
