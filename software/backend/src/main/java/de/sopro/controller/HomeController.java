@@ -13,7 +13,7 @@ public class HomeController {
   @Value("${home.welcome}")
   String message = "dummy";
 
-  @RequestMapping("/home")
+  @RequestMapping("/")
   public String showHome(Model model) {
     model.addAttribute("message", message);
     return "home";

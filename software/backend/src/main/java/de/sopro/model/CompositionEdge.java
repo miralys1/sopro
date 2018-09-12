@@ -51,7 +51,7 @@ public class CompositionEdge {
 	}
 
 	public Edge createEdge() {
-		return new Edge(this.source, this.target,
+		return new Edge(this.id, this.source, this.target,
 				Compatibility.checkCompatibility(this.source.getService().getId(), this.target.getService().getId()));
 	}
 
