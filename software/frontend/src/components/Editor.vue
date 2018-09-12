@@ -20,8 +20,24 @@
           :key="link.id + '-link'"
           />
   </svg>
-  <SidePanel v-if="sidePanelShow"/>
-  <b-button :pressed.sync="sidePanelShow" variant="primary">Show Services</b-button>
+  <SidePanel style="position:absolute;top:0px;left:0px" v-if="sidePanelShow"/>
+  <b-button-toolbar style="position:absolute;top:20px;left:80vw" key-nav aria-label="Editor toolbar">
+    <b-button-group class="mx-1">
+        <b-button :pressed.sync="sidePanelShow" variant="primary">Show Services</b-button>
+        <b-button @click="scale=1" variant="primary">reset zoom</b-button>
+    </b-button-group>
+    <b-button-group class="mx-1">
+        <b-button variant="success">Save</b-button>
+    </b-button-group>
+  </b-button-toolbar>
+        <b-form-textarea
+            style="position:absolute;top:40px;left:40px"
+            id="queryfield"
+            v-model="query"
+            placeholder="Filter for tags,names,format..."
+            :rows="1"
+            :max-rows="2"
+        </b-form-textarea>
 </div>
 </template>
 <script>
@@ -42,7 +58,7 @@ export default {
         var x = this.originX+100;
         var y = this.originY+100;
         return {
-            backgroundSize: 50*this.scale + 'px ' + 50*this.scale + 'px ',
+            backgroundSize: 100*this.scale + 'px ' + 100*this.scale + 'px ',
             backgroundPosition: x + 'px ' + y + 'px'
         }
     },
@@ -190,7 +206,6 @@ a {
     background-color:white;
     background-image: linear-gradient(lightgrey 2px, transparent 2px),
     linear-gradient(90deg, lightgrey 2px, transparent 2px),
-    radial-gradient(lightgrey 10%, transparent 4%),
     linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
 }

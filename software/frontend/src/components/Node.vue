@@ -3,15 +3,15 @@
       <div class="noselect servicename" pointer-events="none">
         <slot pointer-events="none"/>
        </div>
-       <div class="noselect draghandle" @mousedown.self="startDrag" @mouseup="endDrag"/>
+       <div v-if="!noHandles" class="noselect draghandle" @mousedown.self="startDrag" @mouseup="endDrag"/>
     </div>
 </template>
 
 <script>
 export default {
     props: {
-        scale: Number,
         showDetails: Boolean,
+        noHandles: Boolean,
         params: Object,
         ix: Number,
         iy: Number
@@ -91,6 +91,8 @@ export default {
   .node:active {
     cursor: move;
     border: 6px dotted darkgreen;
+    box-shadow: 18px 18px 26px #101010;
+    z-index: 1;
   }
 
   .noselect {
