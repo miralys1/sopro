@@ -4,24 +4,23 @@
 
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-      <b-navbar-brand @click="$emit('workspace')" href="#"><b-img width="170px" :src="require('../assets/logo.svg')" alt="SWARMcomposer Logo" /></b-navbar-brand>
+      <b-navbar-brand :to="'/'"><b-img width="170px" :src="require('../assets/logo.svg')" alt="SWARMcomposer Logo" /></b-navbar-brand>
 
       <b-collapse is-nav id="nav_collapse">
 
         <b-navbar-nav class="big" style="margin-left: 20px">
-          <b-nav-item @click="$emit('workspace')">Workspace</b-nav-item>
-          <b-nav-item @click="$emit('adminpanel')">AdminPanel</b-nav-item>
+          <b-nav-item :to="'/'">Workspace</b-nav-item>
+          <b-nav-item :to="'/admin'" v-if="isAdmin">Adminpanel</b-nav-item>
         </b-navbar-nav>
-
-        <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-item @click="$emit('login')">Login</b-nav-item>
-          <b-nav-item-dropdown right>
-            <!-- Using button-content slot -->
+          <b-button class="mr-3" :pressed="false" @click="$emit('admin')" v-if="!isAdmin" variant="success">Admin</b-button>
+          <b-button class="mr-3" :pressed="true" @click="$emit('admin')" v-else variant="danger">Admin</b-button>
+          <b-nav-item :to="'/login'" v-if="!loggedIn">Login</b-nav-item>
+          <b-nav-item-dropdown right v-else>
             <template slot="button-content">
-              logged in as {{userId}}
+              logged in as {{email}}
             </template>
-            <b-dropdown-item href="#">Signout</b-dropdown-item>
+            <b-dropdown-item @click="$emit('logout')">Logout</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
 
@@ -36,19 +35,20 @@
 export default {
   data() {
     return {
-      userId: 0,
-      loggedIn: false
+
     }
+  },
+  props: {
+    isAdmin: Boolean,
+    email: String,
+    loggedIn: Boolean
   }
 }
 </script>
 
 <style scoped>
-  .big {
-    font-size: 30px;
-  }
   .navbar {
-      fixed: true;
+    height: 10vh;
   }
 
 </style>
