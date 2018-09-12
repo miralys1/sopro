@@ -1,0 +1,80 @@
+Im Folgenden erhaltet ihr ein Feedback zur Abgabe eurer Entwurfsdokumentation.
+Weitere Einzelheiten sind in der kommentierten pdf-Datei zu finden.
+Bei Unklarheiten oder Missverständnissen sprecht uns gerne an.
+
+EINLEITUNG
+----------
+
+* (sae) Gute und ausreichend klare Beschreibung des Dokumentenaufbaus und -zwecks
+
+* (sae) Auflistung der Entwicklungsumgebung in Ordnung, soweit überprüft
+
+KOMPONENTENDIAGRAMME
+--------------------
+
+* (sae) Gut. Beschreibung ist genau genug und klar. Aufteilung der Komponenten
+  und Wahl der Schnittstellen ist zweckmäßig.
+
+* (sae) Bezeichnung der Frontend-Komponente als "Web" ist etwas missverständlich.
+
+VERTEILUNGSDIAGRAMM
+-------------------
+
+* (sae) OK, aber es wird die Entwicklungsversion beschrieben (Docker, Jenkins),
+  nicht die für die Produktivversion ausreichende Verteilung
+
+* (sae) Die Auflistung der Anfragen für die REST-Schnittstelle ist hilfreich,
+  in diesem Kapitel aber etwas fehlplatziert (besser als Anhang zum Web-Frontend-
+  Klassendiagramm, da hier die Anfragen auch verwendet werden, oder als separater
+  Anhang zur API).
+
+KLASSENDIAGRAMME
+----------------
+
+* (sae) Bezeichnungen der Abhängigkeiten zwischen User und Composition etwas
+  missverständlich, besser: editor/viewer (analog zu owner) oder can_edit/view,
+  eventuell besser über eine generische Rollenbeziehung modellierbar
+
+* (sae) Warum die Unterscheidung zwischen CompositionNode/Edge und Node/Edge?
+  Die Klassen scheinen austauschbar. Analog: Dopplung der Daten in Klasse User
+  und SimpleUser + DetailUser. Eine kurze Begründung dieser Entwurfsentscheidung
+  wäre hilfreich (wird erst in Kap. 5 klarer), sie ist aber mutmaßlich sinnvoll.
+
+* (sae) In Abb. 4.2 und Abb. 4.4 kommen Klassen vor, die bereits vorher einge-
+  führt wurden. Eventuell zur besseren Übersicht markieren (z. B. farblich) und
+  in der Beschreibung der Klassen auf den vorigen Abschnitt referenzieren, sonst
+  viel Redundanz.
+
+* (sae) Das Klassendiagramm in Abb. 4.5 ist schwer zu lesen, eventuell weiter
+  aufteilen oder im Querformat darstellen? Auch hier besser vorher eingeführte
+  Klassen des Modells kenntlich machen, damit die wesentlichen Frontend-Klassen
+  klarer sichtbar werden.
+ 
+
+SEQUENZDIAGRAMME
+----------------
+
+* (sae) Gute aufeinander aufbauende Auswahl der Sequenzdiagramme für App/Server
+
+* (sae) Nachrichten/Antworten in den Sequenzdiagrammen teilweise unklar (aber
+  im Beschreibungstext erklärt)
+
+* (sae) Achtet auf konsistente Schreibweise der Klassen/Methoden in Diagrammen
+  und Beschreibungstext.
+
+* (sae) Was ist mit open/closeWebApp in Abb. 5.5-7 gemeint? Login/Logout?
+
+* (hs) 5.1 hätte einen besseren Titel als "Sequenzdiagramm" verdient
+
+
+
+ALLGEMEINES
+-----------
+
+* (sae) Glossar fehlt, hier aber auch nicht unbedingt notwendig
+
+
+BEWERTUNG ZUSAMMENFASSUNG UND NOTE
+----------------------------------
+
+* (hs/sae) Note: 1.7
