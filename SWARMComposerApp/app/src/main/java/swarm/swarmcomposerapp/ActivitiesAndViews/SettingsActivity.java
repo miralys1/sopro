@@ -12,7 +12,7 @@ import android.widget.TextView;
 import swarm.swarmcomposerapp.Model.LocalCache;
 import swarm.swarmcomposerapp.R;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements IResponse {
 
     private Button bLogin, bLogout;
     private EditText tEmail, tPassword, tServerAdress;
@@ -121,10 +121,15 @@ public class SettingsActivity extends AppCompatActivity {
     public void goBackToList(View v){
         super.onBackPressed();
         if(changesWereMade)
-            LocalCache.getInstance().hardRefresh();
+            LocalCache.getInstance().hardRefresh(this);
     }
 
     public void showHelp(View v){
         //TODO implement: Show handbook & credits
+    }
+
+    @Override
+    public void notify(Boolean successful) {
+
     }
 }

@@ -15,7 +15,7 @@ import swarm.swarmcomposerapp.R;
 /**
  * TODO: document your custom view class.
  */
-public class CompositionView extends View {
+public class CompositionView extends View implements IResponse{
     private String mExampleString; // TODO: use a default from R.string...
     private int mExampleColor = Color.RED; // TODO: use a default from R.color...
     private float mExampleDimension = 0; // TODO: use a default from R.dimen...
@@ -187,5 +187,10 @@ public class CompositionView extends View {
      */
     public void setExampleDrawable(Drawable exampleDrawable) {
         mExampleDrawable = exampleDrawable;
+    }
+
+    @Override
+    public void notify(Boolean successful) {
+        
     }
 }

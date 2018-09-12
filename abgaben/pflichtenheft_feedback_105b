@@ -46,7 +46,7 @@ PRODUKTFUNKTIONEN
   * (sae) Gute Beschreibung der Anwendungsfälle, nur WEB-5 bleibt unklar (gerade
     hier wäre der konkrete Ablauf der Bearbeitung von Kompositionen wichtig)
     
-  * (hs) an einigen Stellen fehlen Details, wie WEB-5, aber auch die Fälle, in denen
+  * (hs) An einigen Stellen fehlen Details, wie WEB-5, aber auch die Fälle, in denen
     Dienste hinzugefügt werden: Hier wird nicht klar, was überhaupt konfiguriert
     werden kan.
   
@@ -91,3 +91,10 @@ BEWERTUNG ZUSAMMENFASSUNG UND NOTE
 
        - In den Testfällen fehlt die eigentliche Kompatibilitätsprüfung.
 
+* (sae) + Insgesamt gut formuliert, Aufgabenstellung und Begriffe werden sauber
+          eingeführt und konsistent verwendet
+
+        - Achtet darauf, Testfälle konkreter zu formulieren und behaltet dabei die
+          Prüfbarkeit des erwarteten Verhaltens im Auge.
+
+Note: 1.7

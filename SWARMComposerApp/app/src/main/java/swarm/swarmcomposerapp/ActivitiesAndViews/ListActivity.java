@@ -18,7 +18,7 @@ import swarm.swarmcomposerapp.Model.LocalCache;
 import swarm.swarmcomposerapp.Model.SimpleUser;
 import swarm.swarmcomposerapp.R;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity implements IResponse {
 
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
@@ -65,7 +65,7 @@ public class ListActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        compList = LocalCache.getInstance().getCompositions();
+        compList = LocalCache.getInstance().getCompositions(this);
         initList();
         if(compList == null){
             //TODO show loading screen
@@ -100,11 +100,16 @@ public class ListActivity extends AppCompatActivity {
     public void reloadList(View v){
         tLoading.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
-        LocalCache.getInstance().hardRefresh();
+        LocalCache.getInstance().hardRefresh(this);
     }
 
     public void startSettingsActivity(View v){
         Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void notify(Boolean successful) {
+
     }
 }

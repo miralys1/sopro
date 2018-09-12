@@ -1,8 +1,18 @@
 package swarm.swarmcomposerapp.Model;
 
+import android.app.Activity;
+import android.net.Credentials;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import swarm.swarmcomposerapp.ActivitiesAndViews.IResponse;
+import swarm.swarmcomposerapp.Utils.ActualRequests;
+import swarm.swarmcomposerapp.Utils.RetrofitClients;
 import swarm.swarmcomposerapp.Utils.ServerCommunication;
 
 /**
@@ -12,9 +22,50 @@ import swarm.swarmcomposerapp.Utils.ServerCommunication;
 
 public class LocalCache implements ICache {
 
+    private String email;
+    private String token;
+    private String serverAdress = "https://134.245.1240:9060";
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getServerAdress() {
+        return serverAdress;
+    }
+
+    public void setServerAdress(String serverAdress) {
+        this.serverAdress = serverAdress;
+    }
+
     private static LocalCache instance = new LocalCache();
     private ArrayList<Composition> compositions = new ArrayList();
     private HashMap<Long, Service> serviceLookUp = new HashMap<>();
+
+
+    @Override
+    public Service[] getServices(IResponse caller) {
+        if (serviceLookUp.isEmpty()) {
+
+            ActualRequests.actualServiceRequest(serviceLookUp, caller);
+            return null;
+        } else {
+            return (Service[]) serviceLookUp.values().toArray();
+        }
+
+    }
 
     /**
      * Tries to receive a service from the LocalCache by its id.
@@ -24,7 +75,7 @@ public class LocalCache implements ICache {
      * @param id
      * @return
      */
-    public Service getServiceById(long id) {
+    public Service getServiceById(long id, IResponse caller) {
         return serviceLookUp.get(id);
     }
 
@@ -35,7 +86,7 @@ public class LocalCache implements ICache {
      * @param pos
      * @return
      */
-    public Composition getCompAtPos(int pos) throws IllegalArgumentException {
+    public Composition getCompAtPos(int pos, IResponse caller) throws IllegalArgumentException {
 
         if (compositions.size() < pos) {
             throw new IllegalArgumentException("This request would lead to an index out of " +
@@ -46,7 +97,7 @@ public class LocalCache implements ICache {
             throw new IllegalArgumentException("Something went wrong: A list has no positions < 0.");
         }
 
-        Composition tempComp = compositions.get(pos);
+        final Composition tempComp = compositions.get(pos);
 
         if (tempComp == null) {
             throw new CompositionExpectedException("Something went wrong: The element " +
@@ -54,10 +105,8 @@ public class LocalCache implements ICache {
         }
 
         if (tempComp.getNodeList().isEmpty()) {
-            Composition n = ServerCommunication.requestDetail(tempComp.getId());
-
-            tempComp.addComps(n.getNodeList());
-            tempComp.addEdges(n.getEdgeList());
+            ActualRequests.actualCompDetailsRequest(tempComp,caller);
+            return null;
         }
         return tempComp;
     }
@@ -68,9 +117,10 @@ public class LocalCache implements ICache {
      *
      * @return
      */
-    public ArrayList<Composition> getCompositions() {
+    public ArrayList<Composition> getCompositions(IResponse caller) {
         if (compositions.isEmpty()) {
-            hardRefresh();
+            hardRefresh(caller);
+            return null;
         }
         return compositions;
     }
@@ -79,12 +129,9 @@ public class LocalCache implements ICache {
      * Requests the composition list from the backend and replaces the old list completely
      * without checking for changes.
      */
-    public void hardRefresh() {
-        this.compositions = ServerCommunication.requestList();
-
+    public void hardRefresh(IResponse caller) {
+            ActualRequests.actualCompListRequest(compositions,caller);
     }
-
-
 
 
     /**
