@@ -1,11 +1,11 @@
 <template>
   <div class="mainlayout">
-    <b-container style="text-align: center">
+    <b-container style="text-align: center" v-if="false">
       <b-row v-for="i in calc(~~(compositions.length/5))" :key="i">
         <b-col v-for="j in [i, i+1, i+2, i+3, i+4]" :key="j" class="compcol round">
           {{compositions[j].name}} <br />
           ID: {{compositions[j].id}} <br />
-          <b-button v-if="compositions[j].isEditable"  :to="{ name: 'Editor', params: { compId: compositions[j].id}}">bearbeiten</b-button>
+          <b-button :size="'sm'" :variant="'success'" v-if="compositions[j].isEditable"  :to="{ name: 'Editor', params: { compId: compositions[j].id}}">bearbeiten</b-button>
           <span v-else>nicht bearbeitbar</span>
         </b-col>
       </b-row>
@@ -15,6 +15,14 @@
           ID: {{compositions[j].id}} <br />
           <span v-if="compositions[j].isEditable">bearbeiten</span>
           <span v-else>nicht bearbeitbar</span>
+        </b-col>
+      </b-row>
+    </b-container>
+    <b-container v-else>
+      <b-row>
+        <b-col v-for="comp in compositions" :key="comp.id" class="compcol round">
+          {{comp.name}} <br/>
+          ID: {{comp.id}} <br/>
         </b-col>
       </b-row>
     </b-container>
@@ -130,12 +138,17 @@ export default {
 <style>
   .compcol {
     background-color: lightblue;
+    margin: 10px 10px;
     padding: 10px 10px;
     text-align: left;
-    border: 3px solid black;
-    width: 200px;
-    overflow:hidden;
+    font-size: 15px;
+    border: 2px solid black;
+    min-width: 150px;
+    max-width: 150px;
+    min-height: 100px;
+    max-height: 100px;
+    /* overflow:hidden;
     white-space:nowrap;
-    text-overflow: ellipsis;
+    text-overflow: ellipsis; */
   }
 </style>
