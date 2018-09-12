@@ -1,26 +1,40 @@
 <template>
   <div class="mainlayout">
-    <b-container style="text-align: center" v-if="false">
-      <b-row v-for="i in calc(~~(compositions.length/5))" :key="i">
-        <b-col v-for="j in [i, i+1, i+2, i+3, i+4]" :key="j" class="compcol round">
-          {{compositions[j].name}} <br />
-          ID: {{compositions[j].id}} <br />
-          <b-button :size="'sm'" :variant="'success'" v-if="compositions[j].isEditable"  :to="{ name: 'Editor', params: { compId: compositions[j].id}}">bearbeiten</b-button>
-          <span v-else>nicht bearbeitbar</span>
-        </b-col>
-      </b-row>
+    <b-container style="text-align: center">
+      <h3 class="font-weight-bold">bearbeitbare Kompositionen</h3>
       <b-row class="comprow">
-        <b-col v-for="j in calc2()" :key="j" class="compcol round" md="1.9">
-          {{compositions[j].name}} <br />
-          ID: {{compositions[j].id}} <br />
-          <span v-if="compositions[j].isEditable">bearbeiten</span>
-          <span v-else>nicht bearbeitbar</span>
+        <b-col v-for="comp in editableComps"
+               :key="comp.id"
+               class="compcol round">
+          {{comp.name}} <br/>
+          ID: {{comp.id}} <br/>
+          <b-btn :to="{ name: 'Editor' , params: { compId: comp.id }}"
+                 class="edit"
+                 style="float:right"
+                 size="sm"
+                 variant="">edit</b-btn>
         </b-col>
       </b-row>
     </b-container>
-    <b-container v-else>
-      <b-row>
-        <b-col v-for="comp in compositions" :key="comp.id" class="compcol round">
+    <b-container style="text-align: center">
+      <h3 class="font-weight-bold"
+          style="margin-top: 5%">einsehbare Kompositionen</h3>
+      <b-row class="comprow">
+        <b-col v-for="comp in viewableComps"
+               :key="comp.id"
+               class="compcol round">
+          {{comp.name}} <br/>
+          ID: {{comp.id}} <br/>
+        </b-col>
+      </b-row>
+    </b-container>
+    <b-container style="text-align: center">
+      <h3 class="font-weight-bold"
+          style="margin-top: 5%">öffentliche Kompositionen</h3>
+      <b-row class="comprow">
+        <b-col v-for="comp in publicComps"
+               :key="comp.id"
+               class="compcol round">
           {{comp.name}} <br/>
           ID: {{comp.id}} <br/>
         </b-col>
@@ -34,121 +48,153 @@
 export default {
   data() {
     return {
-      compositions: []
+      editableComps: [
+        {
+          name: 'bearbeitbare Komposition 1',
+          id: 0,
+          isEditable: true
+        },
+        {
+          name: 'bearbeitbare Komposition 2',
+          id: 1,
+          isEditable: true
+        },
+        {
+          name: 'bearbeitbare Komposition 3',
+          id: 2,
+          isEditable: true
+        },
+        {
+          name: 'bearbeitbare Komposition 4',
+          id: 3,
+          isEditable: true
+        },
+        {
+          name: 'bearbeitbare Komposition 5',
+          id: 4,
+          isEditable: true
+        },
+        {
+          name: 'bearbeitbare Komposition 6',
+          id: 5,
+          isEditable: true
+        }
+      ],
+      viewableComps: [
+        {
+          name: 'einsehbare Komposition 1',
+          id: 6,
+          isEditable: false
+        },
+        {
+          name: 'einsehbare Komposition 2',
+          id: 7,
+          isEditable: false
+        },
+        {
+          name: 'einsehbare Komposition 3',
+          id: 8,
+          isEditable: false
+        },
+        {
+          name: 'einsehbare Komposition 4',
+          id: 9,
+          isEditable: false
+        },
+        {
+          name: 'einsehbare Komposition 5',
+          id: 10,
+          isEditable: false
+        },
+        {
+          name: 'einsehbare Komposition 6',
+          id: 11,
+          isEditable: false
+        }
+      ],
+      publicComps: [
+        {
+          name: 'öffentliche Komposition 1',
+          id: 12,
+          isEditable: false
+        },
+        {
+          name: 'öffentliche Komposition 2',
+          id: 13,
+          isEditable: false
+        },
+        {
+          name: 'öffentliche Komposition 3',
+          id: 14,
+          isEditable: false
+        },
+        {
+          name: 'öffentliche Komposition 4',
+          id: 15,
+          isEditable: false
+        },
+        {
+          name: 'öffentliche Komposition 5',
+          id: 16,
+          isEditable: false
+        },
+        {
+          name: 'öffentliche Komposition 6',
+          id: 17,
+          isEditable: false
+        },
+        {
+          name: 'öffentliche Komposition 7',
+          id: 18,
+          isEditable: false
+        }
+      ]
     }
   },
-  methods: {
-    calc: function (n) {
-      var x = []
-      for(var i = 0; i < n; i++) {
-        x.push(i*5)
+  mounted() {
+    this.axios({
+      method: 'get',
+      url: 'http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/compositions',
+      headers: {
+        'id': 0
       }
-      return x
-    },
-    calc2: function () {
-      var x = []
-      for(var i = (~~(this.compositions.length/5)) * 5; i < this.compositions.length; i++) {
-        x.push(i)
-      }
-      return x
-    }
-  },
-  created() {
-    this.compositions = [
-      {
-        name: 'Komposition 1',
-        id: 0,
-        isEditable: false
-      },
-      {
-        name: 'Komposition 2',
-        id: 1,
-        isEditable: false
-      },
-      {
-        name: 'Komposition 3',
-        id: 2,
-        isEditable: true
-      },
-      {
-        name: 'Komposition 4',
-        id: 3,
-        isEditable: true
-      },
-      {
-        name: 'Komposition 5',
-        id: 4,
-        isEditable: false
-      },
-      {
-        name: 'Komposition 6',
-        id: 5,
-        isEditable: false
-      },
-      {
-        name: 'Komposition 7',
-        id: 6,
-        isEditable: false
-      },
-      {
-        name: 'Komposition 8',
-        id: 7,
-        isEditable: true
-      },
-      {
-        name: 'Komposition 9',
-        id: 8,
-        isEditable: true
-      },
-      {
-        name: 'Komposition 10',
-        id: 9,
-        isEditable: false
-      },
-      {
-        name: 'Komposition 11',
-        id: 10,
-        isEditable: false
-      },
-      {
-        name: 'Komposition 12',
-        id: 11,
-        isEditable: false
-      },
-      {
-        name: 'Komposition 10',
-        id: 9,
-        isEditable: false
-      },
-      {
-        name: 'Komposition 11',
-        id: 10,
-        isEditable: false
-      },
-      {
-        name: 'Komposition 12',
-        id: 11,
-        isEditable: false
-      }
-    ]
+    }).then(response => {
+      this.editableComps = response.data[0]
+      this.viewableComps = response.data[1]
+      this.publicComps = response.data[2]
+    })
+    .catch(error => alert('Server currently not available'))
   }
 }
 </script>
 
 <style>
-  .compcol {
-    background-color: lightblue;
-    margin: 10px 10px;
-    padding: 10px 10px;
-    text-align: left;
-    font-size: 15px;
-    border: 2px solid black;
-    min-width: 150px;
-    max-width: 150px;
-    min-height: 100px;
-    max-height: 100px;
-    /* overflow:hidden;
-    white-space:nowrap;
-    text-overflow: ellipsis; */
-  }
+h3 {
+  text-align: left
+}
+.comprow{
+  padding-left: 5%
+}
+.compcol {
+  margin: 10px 10px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  text-align: left;
+  font-size: 15px;
+  border: 2px solid black;
+  min-width: 150px;
+  max-width: 150px;
+  height: 130px;
+  overflow: hidden;
+  position: relative;
+  /* white-space:nowrap;
+  text-overflow: ellipsis; */
+}
+.edit {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
 </style>

@@ -43,7 +43,7 @@
             </b-form>
           </b-card>
         </b-tab>
-        <b-tab title="Register" style="overflow: hidden">
+        <b-tab title="Registrieren" style="overflow: hidden">
           <b-form @submit="register">
             <b-card bg-variant="light" >
               <b-form-group horizontal
@@ -131,7 +131,7 @@
                       type="submit"
                       variant="primary"
                       :to="'/'">
-              Register
+              Registrieren
             </b-button>
           </b-form>
         </b-tab>
