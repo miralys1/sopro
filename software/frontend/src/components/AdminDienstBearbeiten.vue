@@ -45,7 +45,7 @@ methods: {
        logo: "",
        tags: [""
        ],
-     inputFormats: [
+     formatIn: [
        {
          id: 0,
          type: "",
@@ -53,7 +53,7 @@ methods: {
          compatibilityDegree: ""
        }
      ],
-     outputFormats: [
+     formatOut: [
        {
          id: 0,
          type: "",

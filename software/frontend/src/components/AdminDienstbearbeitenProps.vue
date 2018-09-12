@@ -78,7 +78,7 @@
 
     <div>
       <div  class = "left" style.overflow= "hidden">
-        <div v-for="(inputFormat, index) in form.inputFormats" class = "lefter">
+        <div v-for="(inputFormat, index) in form.formatIn" class = "lefter">
           <!-- <b-form> -->
           <h3>{{index}}. Input Format</h3>
           <b-form-group id="InpFormatType"
@@ -117,7 +117,7 @@
       </div>
 
       <div class = "right">
-        <div  v-for="(outputFormat, index) in form.outputFormats" class= "lefter">
+        <div  v-for="(outputFormat, index) in form.formatOut" class= "lefter">
         <!-- <b-form> -->
           <h3>{{index}}. Output Format</h3>
           <b-form-group id="OutFormatType"
@@ -162,11 +162,21 @@
 <script>
 export default {
   created() {
-      this.deleteInputFormat();
-      this.deleteOutputFormat();
+      // this.deleteInputFormat();
+      // this.deleteOutputFormat();
+    },
+
+  watch: {
+    pform: function () {
+      this.form = this.pform
+      }
     },
 
   props: {
+    pedit:{
+      type: Boolean,
+      default: false,
+    },
     pform: {
       default() {
         return {
@@ -178,7 +188,7 @@ export default {
         logo: "",
         tags: [""
         ],
-      inputFormats: [
+      formatIn: [
         {
           id: 0,
           type: "",
@@ -186,7 +196,7 @@ export default {
           compatibilityDegree: ""
         }
       ],
-      outputFormats: [
+      formatOut: [
         {
           id: 0,
           type: "",
@@ -214,7 +224,7 @@ export default {
     onSubmit (evt) {
 
       try{
-        if(this.form.inputFormats.length == 0 && this.form.outputFormats.length == 0) {throw "You need to enter an input or output format"}
+        if(this.form.formatIn.length == 0 && this.form.formatOut.length == 0) {throw "You need to enter an input or output format"}
         this.form.date = Date.now();
         alert(this.form.date);
         evt.preventDefault();
@@ -238,12 +248,12 @@ export default {
       this.form.version = "";
       this.form.logo = "";
       this.form.tags = [""];
-      this.form.inputFormats = [  {
+      this.form.formatIn = [  {
           type: "",
           version: "",
           compatibilityDegree: ""
         }];
-      this.form.outputFormats= [  {
+      this.form.formatOut= [  {
           type: "",
           version: "",
           compatibilityDegree: ""
@@ -256,7 +266,7 @@ export default {
     },
 
     addInputFormat () {
-      this.form.inputFormats.push(  {
+      this.form.formatIn.push(  {
           type: "",
           version: "",
           compatibilityDegree: ""
@@ -264,11 +274,11 @@ export default {
     },
 
     deleteInputFormat () {
-      this.form.inputFormats.pop();
+      this.form.formatIn.pop();
     },
 
     addOutputFormat () {
-      this.form.outputFormats.push(  {
+      this.form.formatOut.push(  {
           type: "",
           version: "",
           compatibilityDegree: ""
@@ -276,7 +286,7 @@ export default {
     },
 
     deleteOutputFormat () {
-      this.form.outputFormats.pop();
+      this.form.formatOut.pop();
     },
 
     addTag () {
