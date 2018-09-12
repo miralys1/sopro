@@ -1,9 +1,7 @@
 package swarm.swarmcomposerapp.Utils;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import okhttp3.Credentials;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -11,7 +9,6 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import swarm.swarmcomposerapp.Model.Composition;
 import swarm.swarmcomposerapp.Model.Service;
-import swarm.swarmcomposerapp.Model.Settings;
 
 /**
  * Proposed class for managing requests to the backend.

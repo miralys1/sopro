@@ -1,5 +1,4 @@
-{
-    "products": [
+[
         {
             "name": "TP Modeller",
             "organisation": "TP",
@@ -800,4 +799,3 @@
             ]
         }
     ]
-}

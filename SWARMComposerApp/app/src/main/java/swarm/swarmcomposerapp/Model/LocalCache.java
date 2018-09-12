@@ -22,15 +22,37 @@ import swarm.swarmcomposerapp.Utils.ServerCommunication;
 
 public class LocalCache implements ICache {
 
+    private String email;
+    private String token;
+    private String serverAdress = "https://134.245.1240:9060";
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getServerAdress() {
+        return serverAdress;
+    }
+
+    public void setServerAdress(String serverAdress) {
+        this.serverAdress = serverAdress;
+    }
 
     private static LocalCache instance = new LocalCache();
     private ArrayList<Composition> compositions = new ArrayList();
     private HashMap<Long, Service> serviceLookUp = new HashMap<>();
-
-    /**
-     * local reference on the settings instance
-     */
-    private Settings settings = Settings.getInstance();
 
 
     @Override

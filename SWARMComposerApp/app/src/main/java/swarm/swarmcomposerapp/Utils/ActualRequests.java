@@ -10,7 +10,6 @@ import swarm.swarmcomposerapp.ActivitiesAndViews.IResponse;
 import swarm.swarmcomposerapp.Model.Composition;
 import swarm.swarmcomposerapp.Model.LocalCache;
 import swarm.swarmcomposerapp.Model.Service;
-import swarm.swarmcomposerapp.Model.Settings;
 
 public class ActualRequests {
     /**
@@ -55,8 +54,8 @@ public class ActualRequests {
     public static void actualCompListRequest(ArrayList<Composition> comps, IResponse caller) {
         final Call<ArrayList<Composition>> compList;
 
-        if (Settings.getInstance().getToken() != null) {
-            compList = com.requestListCred(Settings.getInstance().getToken());
+        if (LocalCache.getInstance().getToken() != null) {
+            compList = com.requestListCred(LocalCache.getInstance().getToken());
         } else {
             compList = com.requestList();
         }
@@ -82,7 +81,7 @@ public class ActualRequests {
     public static void actualCompDetailsRequest(Composition comp, IResponse caller) {
         Call<Composition> compDetails;
 
-        Settings localSettingsRef = Settings.getInstance();
+        LocalCache localSettingsRef = LocalCache.getInstance();
 
         final Composition tempComp = comp;
 

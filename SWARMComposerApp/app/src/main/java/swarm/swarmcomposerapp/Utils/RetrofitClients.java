@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import swarm.swarmcomposerapp.Model.Settings;
+import swarm.swarmcomposerapp.Model.LocalCache;
 
 public class RetrofitClients {
 
@@ -15,13 +15,21 @@ public class RetrofitClients {
     public static Retrofit getRetrofitInstance(){
         if(retrofitClient == null){
             retrofitClient = new retrofit2.Retrofit.Builder()
-                    .baseUrl(Settings.getInstance()
+                    .baseUrl(LocalCache.getInstance()
                             .getServerAdress()).addConverterFactory(GsonConverterFactory.create())
                             .build();
         }
 
         return retrofitClient;
+
     }
+    public static Retrofit newRetrofitInstance(String url){
+        retrofitClient = new retrofit2.Retrofit.Builder()
+                .baseUrl(url).addConverterFactory(GsonConverterFactory.create())
+                .build();
+        return retrofitClient;
+    }
+
 
     public static OkHttpClient getOkHttpClientInstance(){
         if(okHttpClient == null){

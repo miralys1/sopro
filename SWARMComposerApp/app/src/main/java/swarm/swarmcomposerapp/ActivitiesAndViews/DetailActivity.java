@@ -6,7 +6,7 @@ import android.view.View;
 
 import swarm.swarmcomposerapp.R;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements IResponse {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,5 +21,10 @@ public class DetailActivity extends AppCompatActivity {
 
     public void sendComposition(View v){
         //TODO create PDF, open share_dialog
+    }
+
+    @Override
+    public void notify(Boolean successful) {
+
     }
 }
