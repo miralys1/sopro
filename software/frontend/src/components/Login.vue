@@ -171,12 +171,18 @@ export default {
         password: this.login.password
       })
       .then(response => {
-        alert('Login erfolgreich')
+        alert('Login erfolgreich') // später raus
+        console.log(response)
         this.$emit('login')
+        window.location.replace('/')
       })
-      .catch(error => alert('Login fehlgeschlagen'))
+      .catch(error => {
+        console.log(error)
+        alert('Login fehlgeschlagen')
+      }
+    )
       this.$emit('login') // muss später raus
-      window.location.replace('/')
+
     },
     register (event) {
       event.preventDefault()
@@ -187,7 +193,11 @@ export default {
         firstName: this.login.firstName,
         lastName: this.login.lastName
       })
-      .then(response => alert('Registrierung erfolgreich'))
+      .then(response => {
+        alert('Registrierung erfolgreich')
+        window.location.replace('/login')
+      }
+      )
       .catch(error => alert('Registrierung fehlgeschlagen'))
     }
   }
