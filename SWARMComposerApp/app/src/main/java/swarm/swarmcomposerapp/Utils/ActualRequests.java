@@ -3,6 +3,7 @@ package swarm.swarmcomposerapp.Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import okhttp3.Credentials;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,8 +55,12 @@ public class ActualRequests {
     public static void actualCompListRequest(ArrayList<Composition> comps, IResponse caller) {
         final Call<ArrayList<Composition>> compList;
 
-        if (LocalCache.getInstance().getToken() != null) {
-            compList = com.requestListCred(LocalCache.getInstance().getToken());
+        LocalCache cacheRef = LocalCache.getInstance();
+        String pw = cacheRef.getPassword();
+        String mail = cacheRef.getEmail();
+
+        if (pw != null && mail != null) {
+            compList = com.requestListCred(Credentials.basic(mail, pw));
         } else {
             compList = com.requestList();
         }
@@ -85,11 +90,14 @@ public class ActualRequests {
 
         final Composition tempComp = comp;
 
+        LocalCache cacheRef = LocalCache.getInstance();
+        String pw = cacheRef.getPassword();
+        String mail = cacheRef.getEmail();
 
-        //Depending whether the user is logged in use the specific request method
-        if (localSettingsRef != null) {
+        if (pw != null && mail != null) {
+            //Depending whether the user is logged in use the specific request method
             compDetails =
-                    com.requestDetail(localSettingsRef.getToken(), tempComp.getId());
+                    com.requestDetail(Credentials.basic(mail, pw), tempComp.getId());
         } else {
             compDetails = com.requestDetail(tempComp.getId());
         }
@@ -114,4 +122,6 @@ public class ActualRequests {
             }
         });
     }
+
+
 }
