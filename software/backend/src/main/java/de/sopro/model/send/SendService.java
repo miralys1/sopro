@@ -121,8 +121,11 @@ public class SendService {
 		for (String tag : this.tags) {
 			tags.add(new Tag(tag));
 		}
-		return new Service(this.name, this.version, tags, this.organisation, this.date, this.logo, this.formatIn,
-				this.formatOut);
+
+		Service s = new Service(this.name, this.version, tags, this.organisation, this.date, this.logo, this.formatIn,
+		this.formatOut);
+		s.setId(id);
+		return s;
 	}
 
 	public String toString() {
