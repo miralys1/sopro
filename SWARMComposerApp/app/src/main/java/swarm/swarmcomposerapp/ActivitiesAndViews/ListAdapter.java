@@ -31,6 +31,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         }
     }
 
+    public void setCompList(List<Composition> compList){
+        this.compList = compList;
+        notifyDataSetChanged();
+    }
+
 
     public ListAdapter(List<Composition> compList) {
         this.compList = compList;

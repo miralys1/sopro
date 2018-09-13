@@ -33,7 +33,7 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
 
         //retrieve the (app-)internal id of the composition
         Intent intent = getIntent();
-        int pos = intent.getIntExtra("COMP_POS", -1);
+        int pos = intent.getIntExtra("COMP_POSITION", -1);
         try {
             comp = LocalCache.getInstance().getCompAtPos(pos, this);
         } catch (Exception e){

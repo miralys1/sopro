@@ -31,7 +31,8 @@ import swarm.swarmcomposerapp.R;
 public class ListActivity extends AppCompatActivity implements IResponse {
 
     private RecyclerView recycler;
-    private RecyclerView.Adapter adapter;
+    private ListAdapter adapter;
+    //private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Composition> compList = new ArrayList<>();
     private TextView tLoading;
@@ -77,10 +78,11 @@ public class ListActivity extends AppCompatActivity implements IResponse {
             @Override
             public void onClick(View view, int position) {
                 //User clicked on one of the compositions in the list. Intent to open it in DetailActivity.
-                Composition comp = compList.get(position);
+                //Composition comp = compList.get(position);
                 Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
                 //pass the (app-) internal id of the requested composition to the DetailActivity via intent
                 intent.putExtra("COMP_POSITION", position);
+                Log.i("Felix", position+"");
                 startActivity(intent);
             }
 
@@ -109,7 +111,8 @@ public class ListActivity extends AppCompatActivity implements IResponse {
         if(compList == null){
             showLoading(true);
         } else {
-            adapter.notifyDataSetChanged();
+            adapter.setCompList(compList);
+            //adapter.notifyDataSetChanged();
         }
     }
 
@@ -153,7 +156,8 @@ public class ListActivity extends AppCompatActivity implements IResponse {
             //overview data is now available at LocalCache
             compList = LocalCache.getInstance().getCompositions(this);
             Log.i("ListActNotify", "Size of compositions: "+compList.size()+"");
-            adapter.notifyDataSetChanged();
+            adapter.setCompList(compList);
+            //adapter.notifyDataSetChanged();
         } else {
             //server request failed
             //TODO show error dialog with tips
