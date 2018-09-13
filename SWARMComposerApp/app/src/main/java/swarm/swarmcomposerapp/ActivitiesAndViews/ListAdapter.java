@@ -13,6 +13,9 @@ import java.util.List;
 import swarm.swarmcomposerapp.Model.Composition;
 import swarm.swarmcomposerapp.R;
 
+/**
+ * Utils class to create and update the RecyclerView
+ */
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> {
 
     private List<Composition> compList;
