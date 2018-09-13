@@ -161,6 +161,7 @@
 
 <script>
 export default {
+
   created() {
     if(!this.pedit) {
       this.deleteInputFormat();
@@ -170,7 +171,7 @@ export default {
 
   watch: {
     pform: function () {
-      this.form = this.pform
+      this.form = JSON.parse(JSON.stringify(this.pform))
       }
     },
 
@@ -214,7 +215,7 @@ export default {
 
   data () {
     return {
-       form: this.pform,
+       form: JSON.parse(JSON.stringify(this.pform)),
         comps: [
         { text: 'Select One', value: "" },
         "strict", "flexible"
@@ -227,15 +228,25 @@ export default {
 
       try{
         if(this.form.formatIn.length == 0 && this.form.formatOut.length == 0) {throw "You need to enter an input or output format"}
+
+        if(this.pedit) {
+
+        alert(JSON.stringify(this.form));
+        Vue.axios.put('/services', JSON.stringify(this.form))
+                 .then(function (response) { alert(response);})
+                 .catch(function (error) {alert(error);});
+
+        } else {
         this.form.date = Date.now();
         alert(this.form.date);
         evt.preventDefault();
 
         alert(JSON.stringify(this.form));
 
-        Vue.axios.post('/services', this.form)
+        Vue.axios.post('/services', JSON.stringify(this.form))
                  .then(function (response) { alert(response);})
                  .catch(function (error) {alert(error);});
+        }
 
       } catch(err) {
         alert(err);
@@ -245,23 +256,30 @@ export default {
     onReset (evt) {
       evt.preventDefault();
       /* Reset our form values */
-      this.form.organisation = ""
-      this.form.name = "";
-      this.form.version = "";
-      this.form.logo = "";
-      this.form.tags = [""];
-      this.form.formatIn = [  {
-          type: "",
-          version: "",
-          compatibilityDegree: ""
-        }];
-      this.form.formatOut= [  {
-          type: "",
-          version: "",
-          compatibilityDegree: ""
-        }];
-        this.deleteInputFormat();
-        this.deleteOutputFormat();
+      if(this.pedit){
+       this.form = JSON.parse(JSON.stringify(this.pform));
+
+      } else {
+            this.form.organisation = ""
+            this.form.name = "";
+            this.form.version = "";
+            this.form.logo = "";
+            this.form.tags = [""];
+            this.form.formatIn = [  {
+                type: "",
+                version: "",
+                compatibilityDegree: ""
+              }];
+            this.form.formatOut= [  {
+                type: "",
+                version: "",
+                compatibilityDegree: ""
+              }];
+              this.deleteInputFormat();
+              this.deleteOutputFormat();
+
+
+      }
       /* Trick to reset/clear native browser form validation state */
       this.show = false;
       this.$nextTick(() => { this.show = true });
@@ -296,7 +314,12 @@ export default {
     },
 
     deleteTag () {
-      this.form.tags.pop();
+      if(this.form.tags.length > 1) {
+        this.form.tags.pop();
+      } else {
+        alert("Bitte geben Sie mindestens einen Tag an.")
+      }
+
     }
 
   }

@@ -21,18 +21,34 @@
 import AdminDienstForm from '@/components/AdminDienstForm'
 
 export default {
+
+watch: {
+  pupdate: function () {
+    this.mupdate()
+      }
+    },
 components: {AdminDienstForm},
-
+props: ['pupdate'],
 methods: {
-
   onClick(index){
     //creating a copy of the object to not pass a reference
     this.selectedService = JSON.parse(JSON.stringify(this.services[index]));
     this.serviceSelected = true;
+  },
+
+  mupdate(){
+    // Vue.axios.get('/services')
+    //          .then(function (response) {
+    //          alert(response);
+    //              })
+    //          .catch(function (error) {
+    //          alert("Da ist etwas schief gelaufen.");
+    //              });
   }
 
 
 },
+
 
  data() {
    return{
