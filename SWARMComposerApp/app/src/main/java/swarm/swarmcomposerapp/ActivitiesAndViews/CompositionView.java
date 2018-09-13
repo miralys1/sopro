@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,8 +73,7 @@ public class CompositionView extends View {
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.CompositionView, defStyle, 0);
 
-        mExampleString = a.getString(
-                R.styleable.CompositionView_exampleString);
+        mExampleString = "bla";
         mExampleColor = a.getColor(
                 R.styleable.CompositionView_exampleColor,
                 mExampleColor);
@@ -97,7 +97,7 @@ public class CompositionView extends View {
         mTextPaint.setTextAlign(Paint.Align.LEFT);
 
         // Update TextPaint and text measurements from attributes
-        invalidateTextPaintAndMeasurements();
+        //invalidateTextPaintAndMeasurements();
     }
 
     private void invalidateTextPaintAndMeasurements() {
@@ -190,7 +190,7 @@ public class CompositionView extends View {
 
             //Calculate an edge length that is small enough to place all nodes on the screen
             int length = contentHeight * contentWidth / (4 * nodes.size());
-
+            Toast.makeText(getContext(),length,Toast.LENGTH_LONG).show();
             //Search for the maximal coordinates in the list of nodes.
             int maxX = 0;
             int maxY = 0;
