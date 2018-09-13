@@ -183,14 +183,20 @@ public class CompositionView extends View {
 
         int contentWidth = getWidth() - paddingLeft - paddingRight;
         int contentHeight = getHeight() - paddingTop - paddingBot;
+        Toast.makeText(getContext(),"Test",Toast.LENGTH_LONG).show();
 
-        if (comp != null) {
+
+        if(comp != null){
+            Node n1 = comp.getNodeList().get(0);
+        canvas.drawCircle(n1.getX(),n1.getY(),20,drawPaint);}
+
+        if (false) {
             List<Node> nodes = comp.getNodeList();
 
 
             //Calculate an edge length that is small enough to place all nodes on the screen
             int length = contentHeight * contentWidth / (4 * nodes.size());
-            Toast.makeText(getContext(),length,Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(),length+"",Toast.LENGTH_LONG).show();
             //Search for the maximal coordinates in the list of nodes.
             int maxX = 0;
             int maxY = 0;
