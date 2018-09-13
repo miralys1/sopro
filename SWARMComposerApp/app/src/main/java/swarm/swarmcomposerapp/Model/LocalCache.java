@@ -15,7 +15,7 @@ public class LocalCache implements ICache {
 
     private String email;
     private String password;
-    private String serverAdress = "https://134.245.1240:9060"; //TODO remove hard code
+    private String serverAdress = "http://134.245.1.240:9062"; //TODO remove hard code
 
     public String getEmail() {
         return email;
