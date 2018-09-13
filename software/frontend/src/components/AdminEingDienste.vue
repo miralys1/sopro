@@ -61,7 +61,7 @@
                         type="text"
                         v-model="form.tags[index]"
                         required
-                        placeholder="Enter a version">
+                        placeholder="Enter a tag">
           </b-form-input>
         </b-form-group>
       <!-- </b-form> -->
@@ -80,7 +80,7 @@
       <div  class = "left" style.overflow= "hidden">
         <div v-for="(inputFormat, index) in form.inputFormats" class = "lefter">
           <!-- <b-form> -->
-          <h3>{{index}}. Input Format</h3>
+          <h3>{{index + 1}}. Input Format</h3>
           <b-form-group id="InpFormatType"
                         label="Type:"
                         label-for="InputType">
@@ -119,7 +119,7 @@
       <div class = "right">
         <div  v-for="(outputFormat, index) in form.outputFormats" class= "lefter">
         <!-- <b-form> -->
-          <h3>{{index}}. Output Format</h3>
+          <h3>{{index + 1}}. Output Format</h3>
           <b-form-group id="OutFormatType"
                         label="Type:"
                         label-for="OutputType">
@@ -200,16 +200,12 @@ export default {
   },
   methods: {
     onSubmit (evt) {
-
       try{
         if(this.form.inputFormats.length == 0 && this.form.outputFormats.length == 0) {throw "You need to enter an input or output format"}
         this.form.date = Date.now();
-        alert(this.form.date);
         evt.preventDefault();
 
-        alert(JSON.stringify(this.form));
-
-        Vue.axios.post('/service', this.form)
+        this.axios.post('/services', this.form)
                  .then(function (response) { alert(response);})
                  .catch(function (error) {alert(error);});
 
