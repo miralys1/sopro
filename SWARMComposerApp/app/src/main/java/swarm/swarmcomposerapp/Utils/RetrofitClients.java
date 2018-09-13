@@ -24,9 +24,9 @@ public class RetrofitClients {
     }
     public static Retrofit newRetrofitInstance(String url){
         Retrofit retrofitClientL = new retrofit2.Retrofit.Builder()
-                .baseUrl(url)
                 .client(getOkHttpClientInstance())
                 .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(url)
                 .build();
         Log.i("ServerAddressRetrofitCl","set to: "+url);
 
@@ -38,9 +38,9 @@ public class RetrofitClients {
     public static OkHttpClient getOkHttpClientInstance(){
         if(okHttpClient == null){
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            builder.connectTimeout(5, TimeUnit.SECONDS);
-            builder.readTimeout(5, TimeUnit.SECONDS);
-            builder.writeTimeout(5, TimeUnit.SECONDS);
+            builder.connectTimeout(5, TimeUnit.SECONDS)
+                    .readTimeout(5, TimeUnit.SECONDS)
+                    .writeTimeout(5, TimeUnit.SECONDS);
             okHttpClient = builder.build();
         }
         return okHttpClient;

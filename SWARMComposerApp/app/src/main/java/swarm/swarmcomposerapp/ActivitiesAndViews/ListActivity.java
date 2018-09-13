@@ -50,7 +50,6 @@ public class ListActivity extends AppCompatActivity implements IResponse {
         preferences = getSharedPreferences(PREFERENCE_NAME, 0);
         editor = preferences.edit();
         String address = preferences.getString("SERVERADDRESS", null);
-        Log.i("AddressPref",address);
         //LocalCache.getInstance().setServerAddress(LocalCache.TEST_SERVER);
         if (address == null) {
             //it's the very first start of the app

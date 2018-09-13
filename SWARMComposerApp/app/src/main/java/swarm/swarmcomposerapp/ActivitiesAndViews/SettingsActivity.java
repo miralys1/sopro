@@ -225,7 +225,7 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
                     //address change failed; remove faulty address
                     //TODO show error dialog with tips
                     Toast.makeText(getApplicationContext(), getText(R.string.err_text_serveraddress), Toast.LENGTH_SHORT).show();
-                    cache.setServerAddress(preferences.getString("SERVERADDRESS", ""));
+                    cache.setServerAddress(preferences.getString("SERVERADDRESS", "http://default.de/"));
                 };
             }
             autoFill();

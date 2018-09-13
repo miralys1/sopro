@@ -28,8 +28,9 @@ public class ActualRequests {
 
 
     public static void refreshServerCommunication() {
-        ActualRequests.com = RetrofitClients.getRetrofitInstance().create(ServerCommunication.class);
-        Log.i("ServerAddressChange","RefreshCom ");
+        ActualRequests.com = RetrofitClients.newRetrofitInstance(LocalCache.getInstance()
+                .getServerAddress()).create(ServerCommunication.class);
+        Log.i("ServerAddressChange", "RefreshCom ");
 
     }
 
@@ -90,24 +91,25 @@ public class ActualRequests {
         } else {
             compAnswer = com.requestList();
         }
-       Log.i("Request",compAnswer.request().url().toString()+" by "+caller.getClass().getName());
+        //  Log.i("Request", compAnswer.request().url().toString() + " by " + caller.getClass().getName());
         final IResponse localCaller = caller;
         final ArrayList<Composition> compsL = comps;
         compAnswer.enqueue(new Callback<CompositionsAnswer>() {
             @Override
             public void onResponse(Call<CompositionsAnswer> call,
                                    Response<CompositionsAnswer> response) {
+
+                // Log.i("Request", "Response " + call.request() + " response: " + response.code()
+                //       + " error: " + response.errorBody());
                 if (response.isSuccessful()) {
                     compsL.addAll(response.body().getPublicComps());
-                    Log.i("HUI:","OKAY -REALLY !!!!");
-                    Log.i("HUI", compsL.get(0).getName());
-
                     localCaller.notify(true);
                 }
             }
 
             @Override
             public void onFailure(Call<CompositionsAnswer> call, Throwable t) {
+                Log.i("Request", "Failure " + call.request() + " cause: " + t.getCause() + " bla");
                 localCaller.notify(false);
             }
         });
