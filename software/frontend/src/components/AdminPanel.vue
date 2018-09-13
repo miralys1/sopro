@@ -11,6 +11,9 @@
     <b-tab title="Dienste bearbeiten" @click="toggleUpdate">
       <AdminDienstBearbeiten v-if="toggly" v-bind:pupdate=update />
     </b-tab>
+    <b-tab title="Nutzer bearbeiten" @click="toggleUpdate2">
+      <AdminUserBearbeiten v-if="toggly" v-bind:pupdate=update2 />
+    </b-tab>
   </b-tabs>
 </b-card>
 </div>
@@ -20,15 +23,17 @@
 import AdminDienstForm from '@/components/AdminDienstForm'
 import JsonEinlesen from '@/components/JsonEinlesen'
 import AdminDienstBearbeiten from '@/components/AdminDienstBearbeiten'
+import AdminUserBearbeiten from '@/components/AdminUserBearbeiten'
 
 export default {
   data() {
     return {
       toggly: true,
-      update: true
+      update: true,
+      update2: true
     }
   },
-   components: { AdminDienstForm, JsonEinlesen, AdminDienstBearbeiten
+   components: { AdminDienstForm, JsonEinlesen, AdminDienstBearbeiten, AdminUserBearbeiten
 
    },
    methods: {
@@ -40,7 +45,11 @@ export default {
      toggleUpdate() {
        this.toggle;
        this.update = !this.update;
+     },
 
+     toggleUpdate2() {
+       this.toggle;
+       this.update2 = !this.update2;
      }
 
 
