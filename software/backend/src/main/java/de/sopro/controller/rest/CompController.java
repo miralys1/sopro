@@ -20,6 +20,7 @@ import de.sopro.model.CompositionNode;
 import de.sopro.model.User;
 import de.sopro.model.send.CompLists;
 import de.sopro.model.send.DetailComp;
+import de.sopro.model.send.Edge;
 import de.sopro.model.send.Node;
 import de.sopro.model.send.SendService;
 import de.sopro.model.send.SimpleComp;
@@ -91,15 +92,28 @@ public class CompController{
         if(comp == null || compRepo.findById(comp.getId()).isPresent()){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+     
         Composition saveComp = comp.createComposition(opUser.get());
 
+        for (CompositionEdge e : saveComp.getEdges()) {
+            for (CompositionNode n : saveComp.getNodes()) {
+                if(n.getX() == e.getSource().getX() && n.getY() == e.getSource().getY()){
+                    e.setSource(n);
+                }else if(n.getX() == e.getTarget().getX() && n.getY() == e.getTarget().getY()){
+                    e.setTarget(n);
+                }
+                
+            }
+        }
 
+
+            
         for(CompositionNode n : saveComp.getNodes()){
             nodeRepo.save(n);
         }
         for(CompositionEdge e : saveComp.getEdges()){
-            nodeRepo.save(e.getSource());
-            nodeRepo.save(e.getTarget());
+            // nodeRepo.save(e.getSource());
+            // nodeRepo.save(e.getTarget());
             edgeRepo.save(e);
 
         }
