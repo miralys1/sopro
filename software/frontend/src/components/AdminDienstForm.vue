@@ -162,8 +162,10 @@
 <script>
 export default {
   created() {
-      // this.deleteInputFormat();
-      // this.deleteOutputFormat();
+    if(!this.pedit) {
+      this.deleteInputFormat();
+      this.deleteOutputFormat();
+    }
     },
 
   watch: {
@@ -231,7 +233,7 @@ export default {
 
         alert(JSON.stringify(this.form));
 
-        Vue.axios.post('/service', this.form)
+        Vue.axios.post('/services', this.form)
                  .then(function (response) { alert(response);})
                  .catch(function (error) {alert(error);});
 

@@ -10,7 +10,7 @@
 </div>
 </div
 <br><br>
-<AdminDienstbearbeitenProps v-if="selectedService" v-bind:pform=selectedService />
+<AdminDienstForm v-if="serviceSelected" v-bind:pform=selectedService v-bind:pedit='true'/>
 
 </div>
 
@@ -18,15 +18,16 @@
 
 <script>
 
-import AdminDienstbearbeitenProps from '@/components/AdminDienstbearbeitenProps'
+import AdminDienstForm from '@/components/AdminDienstForm'
 
 export default {
-components: {AdminDienstbearbeitenProps},
+components: {AdminDienstForm},
 
 methods: {
 
   onClick(index){
-    this.selectedService = this.services[index];
+    //creating a copy of the object to not pass a reference
+    this.selectedService = JSON.parse(JSON.stringify(this.services[index]));
     this.serviceSelected = true;
   }
 
