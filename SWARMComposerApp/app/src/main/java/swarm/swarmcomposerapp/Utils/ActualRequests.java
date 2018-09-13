@@ -28,8 +28,11 @@ public class ActualRequests {
 
 
     public static void refreshServerCommunication() {
-        ActualRequests.com = RetrofitClients.newRetrofitInstance(LocalCache.getInstance()
-                .getServerAddress()).create(ServerCommunication.class);
+        //ActualRequests.com = RetrofitClients.newRetrofitInstance(LocalCache.getInstance()
+        //        .getServerAddress()).create(ServerCommunication.class);
+
+        ActualRequests.com = RetrofitClients.getRetrofitInstance()
+                .create(ServerCommunication.class);
         Log.i("ServerAddressChange", "RefreshCom ");
 
     }

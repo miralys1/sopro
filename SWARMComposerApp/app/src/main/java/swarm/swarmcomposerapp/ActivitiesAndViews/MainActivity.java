@@ -24,11 +24,9 @@ public class MainActivity extends AppCompatActivity implements IResponse {
 
 
 
-        Composition c2 = new Composition(2,"testi",new SimpleUser(1,"Karl", "Karlson")
-        ,eList,nList);
+
 
         CompositionView compi = findViewById(R.id.compositionView);
-        compi.setComp(c2);
         Toast.makeText(getApplicationContext(),"comp should be added now",Toast.LENGTH_SHORT).show();
 
     }

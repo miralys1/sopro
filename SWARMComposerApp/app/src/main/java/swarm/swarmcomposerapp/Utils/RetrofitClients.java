@@ -16,7 +16,7 @@ public class RetrofitClients {
 
     public static Retrofit getRetrofitInstance(){
         if(retrofitClient == null){
-            retrofitClient = newRetrofitInstance(LocalCache.getInstance().getServerAddress());
+            newRetrofitInstance(LocalCache.getInstance().getServerAddress());
         }
 
         return retrofitClient;
@@ -30,6 +30,7 @@ public class RetrofitClients {
                 .build();
         Log.i("ServerAddressRetrofitCl","set to: "+url);
 
+        retrofitClient = retrofitClientL;
 
         return retrofitClientL;
     }
