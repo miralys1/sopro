@@ -28,6 +28,13 @@
                class="compcol round">
           {{comp.name}} <br/>
           <span class="author">{{comp.owner.fullName}} <br /></span>
+          <b-btn :to="{
+                   name: 'Editor',
+                   params: { compId: comp.id, viewerId: userId }}"
+                 class="edit"
+                 style="float:right"
+                 size="sm"
+                 variant="">view</b-btn>
         </b-col>
       </b-row>
     </b-container>
@@ -40,6 +47,14 @@
                class="compcol round">
           {{comp.name}} <br/>
           <span class="author">{{comp.owner.fullName}} <br /></span>
+          <b-btn :to="{
+                   name: 'Editor',
+                   params: { compId: comp.id, viewerId: userId }}"
+                 class="edit"
+                 style="float:right"
+                 size="sm"
+                 variant="">view</b-btn>
+        </b-col>
         </b-col>
       </b-row>
     </b-container>
