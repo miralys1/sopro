@@ -1,7 +1,7 @@
 <template>
     <div class="node" :style="nodeStyle" @mousedown.self="mouseDown">
       <div class="noselect servicename" pointer-events="none">
-        <slot pointer-events="none"/>
+        {{ service.name }}
        </div>
        <div v-if="!noHandles" class="noselect draghandle" @mousedown.self="startDrag" @mouseup="endDrag"/>
     </div>
@@ -13,7 +13,7 @@ export default {
         showDetails: Boolean,
         noHandles: Boolean,
         params: Object,
-        serviceId: Number,
+        service: Object,
         dummy: Boolean,
         ix: Number,
         iy: Number
@@ -46,20 +46,7 @@ export default {
     },
     methods: {
       mouseDown: function (event) {
-                this.ofX = event.clientX*(1/this.params.scale) - this.ix;
-                this.ofY = event.clientY*(1/this.params.scale) - this.iy;
-                this.drag = true;
-                console.log("yes drag")
-      },
-      mouseMove: function (event) {
-          if(this.drag) {
-              var newX = (event.clientX*(1/this.params.scale) - this.ofX);
-              var newY = (event.clientY*(1/this.params.scale) - this.ofY);
-              this.$emit('updatePos', ({x: newX, y: newY ,id: this.$vnode.key}));
-          }
-      },
-      mouseUp: function (event) {
-          this.drag = false;
+          this.$emit('mouseDown', {x: this.ix, y: this.iy, id: this.$vnode.key, serviceId: this.service.id, clientX: event.clientX, clientY: event.clientY});
       },
       startDrag: function (event) {
           this.$emit('startDrag', this.$vnode.key);
@@ -67,14 +54,6 @@ export default {
       endDrag: function (event) {
           this.$emit('endDrag', this.$vnode.key);
       }
-    },
-    mounted () {
-        document.documentElement.addEventListener('mousemove', this.mouseMove, true)
-        document.documentElement.addEventListener('mouseup', this.mouseUp, true)
-    },
-    beforeDestroy () {
-        document.documentElement.removeEventListener('mousemove', this.mouseMove, true)
-        document.documentElement.removeEventListener('mouseup', this.mouseUp, true)
     }
 }
 </script>
@@ -87,13 +66,13 @@ export default {
   opacity: 1;
   cursor: grab;
   box-sizing: border-box;
-  box-shadow: 4px 4px 8px #101010;
+  box-shadow: 0px 4px 3px #101010;
 }
 
 .node:active {
   cursor: move;
-  border: 6px dotted darkgreen;
-  box-shadow: 18px 18px 26px #101010;
+  background: lightgreen;
+  box-shadow: 0px 8px 3px #101010;
   z-index: 1;
 }
 
@@ -111,6 +90,10 @@ export default {
   color: black;
   text-align: center;
   font-size: 30px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .draghandle {
