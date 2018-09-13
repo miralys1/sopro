@@ -141,8 +141,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
-
 export default {
     data() {
       return {
@@ -166,27 +164,21 @@ export default {
     methods: {
     signin (event) {
       event.preventDefault()
-      Vue.axios.post('/login', {
-        email: this.login.email,
+      this.axios.post('/login', {
+        username: this.login.email,
         password: this.login.password
       })
       .then(response => {
-        alert('Login erfolgreich') // später raus
-        console.log(response)
         this.$emit('login')
         window.location.replace('/')
       })
       .catch(error => {
-        console.log(error)
         alert('Login fehlgeschlagen')
-      }
-    )
-      this.$emit('login') // muss später raus
-
+      })
     },
     register (event) {
       event.preventDefault()
-      Vue.axios.post('/users', {
+      this.axios.post('/users', {
         email: this.login.email,
         password: this.login.password,
         title: this.login.title,

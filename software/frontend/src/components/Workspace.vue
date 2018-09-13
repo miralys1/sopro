@@ -1,60 +1,44 @@
 <template>
   <div class="mainlayout">
     <b-container style="text-align: center"
-                 v-if="!editableComps.length == 0 && isLoggedIn">
+                 v-if="!editableComps.length == 0 && loggedIn">
       <h3>bearbeitbare Kompositionen</h3>
       <b-row class="comprow">
         <b-col v-for="comp in editableComps"
                :key="comp.id"
                class="compcol round">
-          {{comp.name}} <br/>
+          <span class="title">{{comp.name}} <br/></span>
           <span class="author">{{comp.owner.fullName}} <br /></span>
-          <b-btn :to="{
-                   name: 'Editor',
-                   params: { compId: comp.id, viewerId: userId }}"
-                 class="edit"
-                 style="float:right"
-                 size="sm"
-                 variant="">edit</b-btn>
         </b-col>
       </b-row>
     </b-container>
     <b-container style="text-align: center"
-                 v-if="!viewableComps.length == 0 && isLoggedIn">
+                 v-if="!viewableComps.length == 0 && loggedIn">
       <h3>einsehbare Kompositionen</h3>
       <b-row class="comprow">
         <b-col v-for="comp in viewableComps"
                :key="comp.id"
                class="compcol round">
-          {{comp.name}} <br/>
+          <span class="title">{{comp.name}} <br/></span>
           <span class="author">{{comp.owner.fullName}} <br /></span>
-          <b-btn :to="{
-                   name: 'Editor',
-                   params: { compId: comp.id, viewerId: userId }}"
-                 class="edit"
-                 style="float:right"
-                 size="sm"
-                 variant="">view</b-btn>
         </b-col>
       </b-row>
     </b-container>
     <b-container style="text-align: center"
                  v-if="!publicComps.length == 0">
-      <h3 >öffentliche Kompositionen</h3>
+      <h3>öffentliche Kompositionen</h3>
       <b-row class="comprow">
         <b-col v-for="comp in publicComps"
                :key="comp.id"
                class="compcol round">
-          {{comp.name}} <br/>
-          <span class="author">{{comp.owner.fullName}} <br /></span>
-          <b-btn :to="{
-                   name: 'Editor',
-                   params: { compId: comp.id, viewerId: userId }}"
-                 class="edit"
-                 style="float:right"
-                 size="sm"
-                 variant="">view</b-btn>
-        </b-col>
+          <router-link class="test" :to="{
+                  name: 'Editor',
+                  params: { compId: comp.id, viewerId: userId }}">
+                  <div style="width: 200px; height: 150px">
+            <span class="title">{{comp.name}} <br/></span>
+            <span class="author">{{comp.owner.fullName}} <br /></span>
+                 </div>
+          </router-link>
         </b-col>
       </b-row>
     </b-container>
@@ -65,7 +49,7 @@
 
 export default {
   props: {
-    isLoggedIn: Boolean,
+    loggedIn: Boolean,
     userId: Number
   },
   data() {
@@ -105,19 +89,34 @@ h3 {
 .compcol {
   margin: 10px 10px;
   padding-top: 10px;
-  padding-left: 10px;
+  /* padding-left: 10px;
   padding-right: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 10px; */
   text-align: left;
   font-size: 15px;
-  border: 2px solid black;
-  min-width: 150px;
-  max-width: 150px;
+  border: 1px solid black;
+  min-width: 200px;
+  max-width: 200px;
   height: 130px;
   overflow: hidden;
   position: relative;
   white-space:nowrap;
   text-overflow: ellipsis;
+}
+.compcol:hover {
+  border: 2px solid black;
+}
+.title {
+  font-size: 20px;
+  font-weight: bold
+}
+.test {
+  color: black;
+}
+.test:hover {
+  color: black;
+  color: blue;
+  text-decoration: none;
 }
 .edit {
   position: absolute;
