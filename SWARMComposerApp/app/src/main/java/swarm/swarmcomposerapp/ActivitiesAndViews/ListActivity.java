@@ -19,7 +19,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import swarm.swarmcomposerapp.Model.Composition;
-import swarm.swarmcomposerapp.Model.ICache;
 import swarm.swarmcomposerapp.Model.LocalCache;
 import swarm.swarmcomposerapp.Model.SimpleUser;
 import swarm.swarmcomposerapp.R;
@@ -51,14 +50,17 @@ public class ListActivity extends AppCompatActivity implements IResponse {
         preferences = getSharedPreferences(PREFERENCE_NAME, 0);
         editor = preferences.edit();
         String address = preferences.getString("SERVERADDRESS", null);
-        if(address == null)
+        Log.i("AddressPref",address);
+        //LocalCache.getInstance().setServerAddress(LocalCache.TEST_SERVER);
+        if (address == null) {
             //it's the very first start of the app
             showWelcomeScreen();
-        else
-            cache.setServerAdress(address);
+        } else {
+            cache.setServerAddress(address);
+        }
 
         String email = preferences.getString("EMAIL", null);
-        if(email != null)
+        if (email != null)
             cache.setEmail(email);
 
 
@@ -82,7 +84,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
                 Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
                 //pass the (app-) internal id of the requested composition to the DetailActivity via intent
                 intent.putExtra("COMP_POSITION", position);
-                Log.i("Felix", position+"");
+                Log.i("Felix", position + "");
                 startActivity(intent);
             }
 
@@ -96,7 +98,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         //refresh the list with latest data from LocalCache every time the user returns to ListActitvity.
         //also called when the app is started
@@ -106,9 +108,9 @@ public class ListActivity extends AppCompatActivity implements IResponse {
     /**
      * get the latest data from LocalCache and put it in the RecyclerView
      */
-    private void updateList(){
+    private void updateList() {
         compList = LocalCache.getInstance().getCompositions(this);
-        if(compList == null){
+        if (compList == null) {
             showLoading(true);
         } else {
             adapter.setCompList(compList);
@@ -117,7 +119,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
     }
 
 
-    private void initList(){
+    private void initList() {
         //TODO remove
         compList = new ArrayList<>();
         compList.add(new Composition(1, "Tolle Komposition", new SimpleUser(1, "Connor", "Tarvos")));
@@ -129,33 +131,35 @@ public class ListActivity extends AppCompatActivity implements IResponse {
 
     /**
      * invalidate all cache data and initiate a new server request
+     *
      * @param v
      */
-    public void reloadList(View v){
+    public void reloadList(View v) {
         showLoading(true);
         LocalCache.getInstance().hardRefresh(this);
     }
 
-    public void startSettingsActivity(View v){
+    public void startSettingsActivity(View v) {
         Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
         startActivity(intent);
     }
 
     /**
      * changes the views to display a loading bar and text
+     *
      * @param activate turn loading view on
      */
-    private void showLoading(boolean activate){
-            tLoading.setVisibility(activate ? View.VISIBLE : View.GONE);
-            progressBar.setVisibility(activate ? View.VISIBLE : View.GONE);
+    private void showLoading(boolean activate) {
+        tLoading.setVisibility(activate ? View.VISIBLE : View.GONE);
+        progressBar.setVisibility(activate ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public void notify(boolean successful) {
-        if(successful) {
+        if (successful) {
             //overview data is now available at LocalCache
             compList = LocalCache.getInstance().getCompositions(this);
-            Log.i("ListActNotify", "Size of compositions: "+compList.size()+"");
+            Log.i("ListActNotify", "Size of compositions: " + compList.size() + "");
             adapter.setCompList(compList);
             //adapter.notifyDataSetChanged();
         } else {
@@ -170,8 +174,8 @@ public class ListActivity extends AppCompatActivity implements IResponse {
      * Show a welcome message with tips on how to start using the app.
      * Only executed once on the very first start of the app.
      */
-    private void showWelcomeScreen(){
-        LayoutInflater inflater = (LayoutInflater)getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    private void showWelcomeScreen() {
+        LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.fragment_dialog, null);
         ((TextView) layout.findViewById(R.id.d_title)).setText(getText(R.string.d_welcome_title));
         ((TextView) layout.findViewById(R.id.d_text)).setText(getText(R.string.d_welcome_text));

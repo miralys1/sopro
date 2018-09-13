@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,8 +14,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import swarm.swarmcomposerapp.Model.LocalCache;
 import swarm.swarmcomposerapp.R;
@@ -135,8 +134,9 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
             Toast.makeText(getApplicationContext(), getText(R.string.err_text_serveraddressmissing), Toast.LENGTH_SHORT).show();
         } else {
             showLoading(true);
+            Log.i("UpdateAddressTo",serverAddress);
             state = LastRequest.ADDRESS_CHANGE;
-            cache.setServerAdress(serverAddress);
+            cache.setServerAddress(serverAddress);
             cache.hardRefresh(this);
         }
     }
@@ -225,7 +225,7 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
                     //address change failed; remove faulty address
                     //TODO show error dialog with tips
                     Toast.makeText(getApplicationContext(), getText(R.string.err_text_serveraddress), Toast.LENGTH_SHORT).show();
-                    cache.setServerAdress(preferences.getString("SERVERADDRESS", ""));
+                    cache.setServerAddress(preferences.getString("SERVERADDRESS", ""));
                 };
             }
             autoFill();
@@ -243,7 +243,7 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
         email = cache.getEmail();
         if(email != null)
             tEmail.setText(email);
-        serverAddress = cache.getServerAdress();
+        serverAddress = cache.getServerAddress();
         if(serverAddress != null)
             tServerAdress.setText(serverAddress);
     }

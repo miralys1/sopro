@@ -24,11 +24,13 @@ public class ActualRequests {
     /**
      * ServerCommunication used for http requests :)
      */
-    private static ServerCommunication com = refreshServerCommunication();
+    private static ServerCommunication com = RetrofitClients.getRetrofitInstance().create(ServerCommunication.class);
 
 
-    public static ServerCommunication refreshServerCommunication() {
-        return RetrofitClients.getRetrofitInstance().create(ServerCommunication.class);
+    public static void refreshServerCommunication() {
+        ActualRequests.com = RetrofitClients.getRetrofitInstance().create(ServerCommunication.class);
+        Log.i("ServerAddressChange","RefreshCom ");
+
     }
 
     /**
@@ -88,6 +90,7 @@ public class ActualRequests {
         } else {
             compAnswer = com.requestList();
         }
+       Log.i("Request",compAnswer.request().url().toString()+" by "+caller.getClass().getName());
         final IResponse localCaller = caller;
         final ArrayList<Composition> compsL = comps;
         compAnswer.enqueue(new Callback<CompositionsAnswer>() {

@@ -18,7 +18,8 @@ public class LocalCache implements ICache {
 
     private String email;
     private String password;
-    private String serverAdress = "http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/";
+    public static final String TEST_SERVER = "http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/";
+    private String serverAddress = "http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/";
 
     public String getEmail() {
         return email;
@@ -36,14 +37,15 @@ public class LocalCache implements ICache {
         this.password = password;
     }
 
-    public String getServerAdress() {
-        return serverAdress;
+    public String getServerAddress() {
+        return serverAddress;
     }
 
-    public void setServerAdress(String serverAdress) {
-        this.serverAdress = serverAdress;
-
-        RetrofitClients.newRetrofitInstance(serverAdress);
+    public void setServerAddress(String serverAddress) {
+        this.serverAddress = serverAddress;
+        Log.i("ServerAddressLocalCache","set to: "+serverAddress);
+        RetrofitClients.newRetrofitInstance(serverAddress);
+        ActualRequests.refreshServerCommunication();
     }
 
     private static LocalCache instance = new LocalCache();
@@ -128,6 +130,7 @@ public class LocalCache implements ICache {
      * without checking for changes.
      */
     public void hardRefresh(IResponse caller) {
+        Log.i("AddressHardRefresh","Caller: "+caller.getClass().getName());
         compositions = new ArrayList<>();
         ActualRequests.actualCompListRequest(compositions, caller);
 
