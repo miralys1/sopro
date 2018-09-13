@@ -49,7 +49,9 @@ public class Node {
 	}
 
 	public CompositionNode createCompositionNode() {
-		return new CompositionNode(this.x, this.y, sendService.createService());
+		CompositionNode node = new CompositionNode(this.x, this.y, sendService.createService());
+		node.setId(getId());
+		return node;
 	}
 
 	public String toString() {

@@ -97,9 +97,9 @@ public class CompController{
 
         for (CompositionEdge e : saveComp.getEdges()) {
             for (CompositionNode n : saveComp.getNodes()) {
-                if(n.getX() == e.getSource().getX() && n.getY() == e.getSource().getY()){
+                if(n.getX() == e.getSource().getX() && n.getY() == e.getSource().getY()&& n.getId() == e.getSource().getId()){
                     e.setSource(n);
-                }else if(n.getX() == e.getTarget().getX() && n.getY() == e.getTarget().getY()){
+                }else if(n.getX() == e.getTarget().getX() && n.getY() == e.getTarget().getY() && n.getId() == e.getTarget().getId()){
                     e.setTarget(n);
                 }
                 
@@ -126,39 +126,51 @@ public class CompController{
 
     
 
-    // @RequestMapping(value="/compositions/{id}",method=RequestMethod.PUT)
-    // public ResponseEntity<Void> editComposition(@RequestBody DetailComp dComp, @RequestHeader(value="id", defaultValue="0") long userID ){
-    //     Optional<Composition> opComp = compRepo.findById(dComp.getId());
-    //     if(!opComp.isPresent()){
-    //         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    //     }
+    @RequestMapping(value="/compositions/{id}",method=RequestMethod.PUT)
+    public ResponseEntity<Void> editComposition(@RequestBody DetailComp dComp, @RequestHeader(value="id", defaultValue="0") long userID ){
+        Optional<Composition> opComp = compRepo.findById(dComp.getId());
+        if(!opComp.isPresent()){
+            System.out.println("doof");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
-    //     Optional<User> opUser = userRepo.findById(userID);
-    //     Composition composition = opComp.get();
-	// 	if(!opUser.isPresent() || !isViewerEditor(opUser.get(), composition)){
-    //         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-    //     }
+        Optional<User> opUser = userRepo.findById(userID);
+        Composition composition = opComp.get();
+		if(!opUser.isPresent() || !isViewerEditor(opUser.get(), composition)){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
 
-    //     if (dComp == null || compRepo.findById(dComp.getId()).isPresent()) {
-    //         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    //     }
-    //     Composition saveComp = dComp.createComposition(opUser.get());
+        if (dComp == null || !compRepo.findById(dComp.getId()).isPresent()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Composition saveComp = dComp.createComposition(opUser.get());
 
-    //     for (CompositionNode n : saveComp.getNodes()) {
-    //         nodeRepo.save(n);
-    //     }
-    //     for (CompositionEdge e : saveComp.getEdges()) {
-    //         nodeRepo.save(e.getSource());
-    //         nodeRepo.save(e.getTarget());
-    //         edgeRepo.save(e);
+        for (CompositionEdge e : saveComp.getEdges()) {
+            for (CompositionNode n : saveComp.getNodes()) {
+                if(n.getX() == e.getSource().getX() && n.getY() == e.getSource().getY() && n.getId() == e.getSource().getId()){
+                    e.setSource(n);
+                }else if(n.getX() == e.getTarget().getX() && n.getY() == e.getTarget().getY() && n.getId() == e.getTarget().getId()){
+                    e.setTarget(n);
+                }
+                
+            }
+        }
 
-    //     }
+        for(CompositionNode n : saveComp.getNodes()){
+            nodeRepo.save(n);
+        }
+        for(CompositionEdge e : saveComp.getEdges()){
+            // nodeRepo.save(e.getSource());
+            // nodeRepo.save(e.getTarget());
+            edgeRepo.save(e);
 
-    //     compRepo.save(saveComp);
+        }
+
+        compRepo.save(saveComp);
         
     
-    //     return new ResponseEntity<>(HttpStatus.OK);
-    // }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     @RequestMapping(value="/compositions/{id}", method=RequestMethod.DELETE)
     public ResponseEntity<Void> deleteComposition(@PathVariable(value="id") long compId, @RequestHeader(value="id", defaultValue = "0") long userId){

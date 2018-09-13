@@ -1,5 +1,6 @@
 package de.sopro.model.send;
 
+import de.sopro.model.Composition;
 import de.sopro.model.CompositionEdge;
 
 public class Edge {
@@ -17,7 +18,9 @@ public class Edge {
 	}
 
 	public CompositionEdge createCompositionEdge() {
-		return new CompositionEdge(source.createCompositionNode(), target.createCompositionNode());
+		CompositionEdge edge = new CompositionEdge(source.createCompositionNode(), target.createCompositionNode());
+		edge.setId(id);
+		return edge;
 	}
 
 	public Node getSource() {

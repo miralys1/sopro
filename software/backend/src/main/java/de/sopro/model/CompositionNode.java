@@ -34,6 +34,14 @@ public class CompositionNode {
 		this.service = service;
 	}
 
+	public void setId(long id){
+		this.id = id;
+	}
+
+	public long getId(){
+		return id;
+	}
+
 	public int getX() {
 		return x;
 	}

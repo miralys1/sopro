@@ -51,9 +51,9 @@ public class DetailComp extends SimpleComp {
 			edges.add(e.createCompositionEdge());
 		}
 
-		
-
-		return new Composition(owner, getName(), false, nodes, edges);
+		Composition comp = new Composition(owner, getName(), false, nodes, edges);
+		comp.setId(getId());
+		return comp;
 	}
 
 }
