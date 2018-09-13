@@ -45,7 +45,7 @@ export default {
                 position: 'absolute',
                 // here we transform into screen space coordinates
                 width:  500 + 'px',
-                height: 90 + 'vh'
+                height: 92 + 'vh'
             }
         },
         filteredServices: function () {

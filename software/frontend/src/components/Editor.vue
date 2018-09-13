@@ -1,7 +1,7 @@
 <template>
+<!-- Owner: 52 -->
 <!-- self prevents that both canvas and nodes are dragged at the same time -->
 <div class="editor" @mousedown.self="mouseDown" @wheel.self="wheelEvent" :style="editorStyle">
-    <h6 class="title is-6"></h6>
     <Node v-if="services!==null" v-for="node in nodes"
           :params="params"
           :key="node.id"
@@ -13,9 +13,15 @@
           @endDrag="endDrag">
     </Node>
   <svg width="100%" height="100%" pointer-events="none">
+    <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="2" orient="auto-start-reverse" markerUnits="strokeWidth">
+        <path d="M0,0 L0,4 L3,2 z" fill="black" />
+        </marker>
+    </defs>
     <Link v-for="link in linkcoords"
           :params="params"
           :start="link.start"
+          state="invalid"
           :end="link.end"
           :key="link.id + '-link'"
           />
@@ -26,7 +32,7 @@
         :services="services"
         @newNode="createNewNode"
   />
-  <b-button-toolbar style="position:absolute;top:20px;left:80vw" key-nav aria-label="Editor toolbar">
+  <b-button-toolbar style="position:absolute;top:10px;left:80vw" key-nav aria-label="Editor toolbar">
   <b-button-group class="mx-1">
       <b-button :pressed.sync="sidePanelShow" variant="primary">toggle Sidebar</b-button>
       <b-button @click="scale=1" variant="primary">reset zoom</b-button>
@@ -45,12 +51,13 @@
   </b-form-textarea>
   <Node
       v-if="insertingNode"
-      :params="{originX: -100, originY: -200, scale: scale}"
-      style="z-index: 2;opacity: 0.4;border: 4px dotted black"
+      :params="{originX: -100, originY: -170, scale: scale}"
+      style="z-index: 2;opacity: 0.4;border: 4px dotted black; background-color: lightgreen"
       :service="(services.filter(e => e.id==newNodeId))[0]"
       :ix="newNodeX"
       :iy="newNodeY"
   />
+  <v-icon v-if="showTrash" class="trash" name="trash" scale="6"/>
 </div>
 </template>
 <script>
@@ -60,9 +67,6 @@ import Node from '@/components/Node'
 import Link from '@/components/Link'
 
 export default {
-  props: {
-    compId: Number
-  },
   components: {
     Link, SidePanel, Node
   },
@@ -71,7 +75,7 @@ export default {
         var x = this.originX+100;
         var y = this.originY+100;
         return {
-            backgroundSize: 100*this.scale + 'px ' + 100*this.scale + 'px ',
+            backgroundSize: 100*this.scale + 'px ' + 100*this.scale + 'px',
             backgroundPosition: x + 'px ' + y + 'px'
         }
     },
@@ -84,10 +88,11 @@ export default {
     },
     linkcoords: function () {
         return this.links.map( ls => ({
-                             start: {x: (this.nodes.filter(n => n.id == ls.node1)[0]).x, y: (this.nodes.filter(n => n.id == ls.node1)[0]).y},
-                             end:   {x: (this.nodes.filter(n => n.id == ls.node2)[0]).x, y: (this.nodes.filter(n => n.id == ls.node2)[0]).y},
-                             id: ls.id })
-                        )
+            start: {x: (this.nodes.filter(n => n.id == ls.node1)[0]).x,
+                    y: (this.nodes.filter(n => n.id == ls.node1)[0]).y},
+            end:   {x: (this.nodes.filter(n => n.id == ls.node2)[0]).x,
+                    y: (this.nodes.filter(n => n.id == ls.node2)[0]).y},
+                    id: ls.id }))
     }
   },
   data () {
@@ -98,6 +103,7 @@ export default {
           dragNode: null,
           dragLink: null,
           sidePanelShow: true,
+          showTrash: false,
 
           insertingNode: false,
 
@@ -105,9 +111,9 @@ export default {
           newNodeY: 0,
           newNodeId: null,
 
-          nodes: [
-              ({id: 1, serviceId: 5, x: 10, y: 10, })
-          ],
+          // TODO Use server model
+          nodes: [],
+          composition: null,
           services: null,
           scale: 1,
           links: [],
@@ -124,7 +130,7 @@ export default {
   },
   methods: {
       wheelEvent: function (event) {
-          if(this.scale + 5/event.deltaY >= 0.05
+          if(this.scale + 5/event.deltaY >= 0.15
              && this.scale + 5/event.deltaY <= 7) {
                 this.scale = this.scale + 5/event.deltaY;
           }
@@ -138,13 +144,14 @@ export default {
           console.log("Mouse Up")
           this.dragCanvas=false;
           this.dragNode=null;
+          this.showTrash=false;
           if(this.insertingNode) {
             // TODO real ids
             console.log("new node inserted")
             // TODO Magic numbers REAL serviceId
-              this.nodes = this.nodes.concat({id: this.nodes.length+1, serviceId: this.newNodeId,
-                                              x: (event.clientX - this.originX - 100)*1/this.scale,
-                                              y: (event.clientY - this.originY - 200)*1/this.scale})
+            this.nodes = this.nodes.concat({id: this.nodes.length+1, serviceId: this.newNodeId,
+                                            x: (event.clientX - this.originX - 100)*1/this.scale,
+                                            y: (event.clientY - this.originY - 170)*1/this.scale})
 
             this.insertingNode = false;
             this.sidePanelShow = true;
@@ -179,6 +186,7 @@ export default {
           this.ofX = event.clientX*(1/this.scale) - event.x;
           this.ofY = event.clientY*(1/this.scale) - event.y;
           this.dragNode=event.id;
+          this.showTrash=true;
       },
       createNewNode: function (event) {
           console.log("Creating new node")
@@ -194,21 +202,27 @@ export default {
       },
       endDrag: function (id) {
           console.log("end");
-          var n1 = id;
-          var n2 = this.dragLink;
+          var n1 = this.dragLink;
+          var n2 = id;
           this.dragLink = null;
+          // TODO Prevent double entries
           this.links = this.links.concat({id: 0,node1: n1, node2: n2});
       }
-
   },
-  created () {
+  mounted () {
     this.axios.get('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/services')
         .then(response => this.services = response.data)
         .catch(error => console.log(error))
 
-    console.log(this.$data)
-  },
-  mounted () {
+    this.axios.get('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/compositions/' + this.$route.params.compId)
+          .then(response => {
+                    this.composition = response.data
+                    this.nodes = this.composition.nodes.map(e => ({id: e.id, serviceId: e.sendService.id, x: e.x, y: e.y}))
+                    this.links = this.composition.edges.map(e => ({node1: e.source.id, node2: e.target.id}))
+                }
+               )
+          .catch(error => console.log(error))
+
     document.documentElement.addEventListener('mousemove', this.mouseMove, true)
     document.documentElement.addEventListener('mouseup', this.mouseUp, true)
     this.originX = this.$el.clientWidth / 2
@@ -225,7 +239,8 @@ export default {
 .editor {
     position:relative;
     box-sizing: border-box;
-    height:90vh;
+    top: 8vh;
+    height:92vh;
     overflow: hidden;
     border-width: 3px 1 1 1;
     border-color: grey;
@@ -242,4 +257,9 @@ export default {
     cursor: grabbing;
 }
 
+.trash {
+    position: absolute;
+    top: 75vh;
+    left: 92vw;
+}
 </style>

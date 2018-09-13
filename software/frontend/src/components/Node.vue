@@ -1,6 +1,6 @@
 <template>
     <div class="node" :style="nodeStyle" @mousedown.self="mouseDown">
-      <div class="noselect servicename" pointer-events="none">
+      <div class="noselect servicename" pointer-events="none" @mousedown.self="mouseDown">
         {{ service.name }}
        </div>
        <div v-if="!noHandles" class="noselect draghandle" @mousedown.self="startDrag" @mouseup="endDrag"/>
@@ -62,7 +62,7 @@ export default {
 .node {
   border: 4px solid black;
   border-radius: 20px;
-  background: lightgrey;
+  background: #bbd2f7;
   opacity: 1;
   cursor: grab;
   box-sizing: border-box;
@@ -89,7 +89,7 @@ export default {
 .servicename {
   color: black;
   text-align: center;
-  font-size: 30px;
+  font-size: 20px;
 
   white-space: nowrap;
   overflow: hidden;
