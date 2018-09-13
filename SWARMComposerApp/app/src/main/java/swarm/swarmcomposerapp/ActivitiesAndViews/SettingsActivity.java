@@ -133,11 +133,16 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
         if(serverAddress.isEmpty()){
             Toast.makeText(getApplicationContext(), getText(R.string.err_text_serveraddressmissing), Toast.LENGTH_SHORT).show();
         } else {
-            showLoading(true);
-            Log.i("UpdateAddressTo",serverAddress);
-            state = LastRequest.ADDRESS_CHANGE;
-            cache.setServerAddress(serverAddress);
-            cache.hardRefresh(this);
+            try {
+                cache.setServerAddress(serverAddress);
+                cache.hardRefresh(this);
+                showLoading(true);
+                state = LastRequest.ADDRESS_CHANGE;
+            } catch(Exception e){
+                Toast.makeText(getApplicationContext(), getText(R.string.err_text_illegalserveraddress), Toast.LENGTH_SHORT).show();
+            }
+            Log.i("UpdateAddressTo", serverAddress);
+
         }
     }
 

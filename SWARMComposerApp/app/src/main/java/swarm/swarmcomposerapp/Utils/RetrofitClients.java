@@ -29,7 +29,7 @@ public class RetrofitClients {
                 .baseUrl(url)
                 .build();
         Log.i("ServerAddressRetrofitCl","set to: "+url);
-
+        retrofitClient = retrofitClientL;
 
         return retrofitClientL;
     }

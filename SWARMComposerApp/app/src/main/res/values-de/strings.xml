@@ -29,6 +29,7 @@
     <string name="err_text_serveraddress">Die Kommunikation mit dem Server unter der neuen Adresse ist fehlgeschlagen.</string>
     <string name="err_text_list">Die Kommunikation mit dem Server ist während der Abfrage der Übersichtsliste fehlgeschlagen.</string>
     <string name="err_text_detail">Die Kommunikation mit dem Server ist während der Abfrage der Kompositionsdetails fehlgeschlagen.</string>
+    <string name="err_text_illegalserveraddress">Die eingegebene Serveradresse ist ungültig. Bitte prüfen Sie, ob sie die Vorgaben einhält. Zum Beispiel muss die Adresse mit einem / enden.</string>
 
 
 </resources>
