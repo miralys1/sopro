@@ -69,7 +69,7 @@ export default {
     },
 
     sendJson: function() {
-      Vue.axios.post('/service', this.text)
+      this.axios.post('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/services', this.text)
            .then(function (response) { alert(response);})
            .catch(function (error) {alert(error);});
     }
