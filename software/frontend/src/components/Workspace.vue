@@ -1,15 +1,17 @@
 <template>
   <div class="mainlayout">
-    <b-container style="text-align: center" v-if="!editableComps.length == 0">
-      <h3 class="font-weight-bold">bearbeitbare Kompositionen</h3>
+    <b-container style="text-align: center"
+                 v-if="!editableComps.length == 0 && isLoggedIn">
+      <h3>bearbeitbare Kompositionen</h3>
       <b-row class="comprow">
         <b-col v-for="comp in editableComps"
                :key="comp.id"
                class="compcol round">
           {{comp.name}} <br/>
-          Owner: <br />{{comp.owner.fullName}} <br />
-          ID: {{comp.id}} <br/>
-          <b-btn :to="{ name: 'Editor' , params: { compId: comp.id }}"
+          <span class="author">{{comp.owner.fullName}} <br /></span>
+          <b-btn :to="{
+                   name: 'Editor',
+                   params: { compId: comp.id, viewerId: userId }}"
                  class="edit"
                  style="float:right"
                  size="sm"
@@ -17,29 +19,27 @@
         </b-col>
       </b-row>
     </b-container>
-    <b-container style="text-align: center" v-if="!viewableComps.length == 0">
-      <h3 class="font-weight-bold"
-          style="margin-top: 5%">einsehbare Kompositionen</h3>
+    <b-container style="text-align: center"
+                 v-if="!viewableComps.length == 0 && isLoggedIn">
+      <h3>einsehbare Kompositionen</h3>
       <b-row class="comprow">
         <b-col v-for="comp in viewableComps"
                :key="comp.id"
                class="compcol round">
           {{comp.name}} <br/>
-          Owner: <br />{{comp.owner.fullName}} <br />
-          ID: {{comp.id}} <br/>
+          <span class="author">{{comp.owner.fullName}} <br /></span>
         </b-col>
       </b-row>
     </b-container>
-    <b-container style="text-align: center" v-if="!publicComps.length == 0">
-      <h3 class="font-weight-bold"
-          style="margin-top: 5%">öffentliche Kompositionen</h3>
+    <b-container style="text-align: center"
+                 v-if="!publicComps.length == 0">
+      <h3 >öffentliche Kompositionen</h3>
       <b-row class="comprow">
         <b-col v-for="comp in publicComps"
                :key="comp.id"
                class="compcol round">
           {{comp.name}} <br/>
-          Owner: <br />{{comp.owner.fullName}} <br />
-          ID: {{comp.id}} <br/>
+          <span class="author">{{comp.owner.fullName}} <br /></span>
         </b-col>
       </b-row>
     </b-container>
@@ -49,6 +49,10 @@
 <script>
 
 export default {
+  props: {
+    isLoggedIn: Boolean,
+    userId: Number
+  },
   data() {
     return {
       editableComps: [],
@@ -72,10 +76,16 @@ export default {
 
 <style>
 h3 {
-  text-align: left
+  text-align: left;
+  font-weight: bold;
+}
+.author {
+  position: absolute;
+  margin-top: 1vh
 }
 .comprow{
-  padding-left: 5%
+  padding-left: 5%;
+  margin-bottom: 5%;
 }
 .compcol {
   margin: 10px 10px;
@@ -91,12 +101,12 @@ h3 {
   height: 130px;
   overflow: hidden;
   position: relative;
-  /* white-space:nowrap;
-  text-overflow: ellipsis; */
+  white-space:nowrap;
+  text-overflow: ellipsis;
 }
 .edit {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
+  bottom: 6px;
+  right: 6px;
 }
 </style>
