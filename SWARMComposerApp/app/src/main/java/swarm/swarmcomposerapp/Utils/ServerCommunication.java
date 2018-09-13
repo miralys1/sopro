@@ -8,6 +8,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
 import swarm.swarmcomposerapp.Model.Composition;
+import swarm.swarmcomposerapp.Model.CompositionsAnswer;
 import swarm.swarmcomposerapp.Model.Service;
 
 /**
@@ -32,7 +33,7 @@ public interface ServerCommunication {
      * @return
      */
     @GET("compositions")
-    Call<ArrayList<Composition>> requestList();
+    Call<CompositionsAnswer> requestList();
 
     /**
      * Requests the details of a single composition, specified by its @code{id}
@@ -51,7 +52,7 @@ public interface ServerCommunication {
      * @return
      */
     @GET("compositions")
-    Call<ArrayList<Composition>> requestListCred(@Header("Authorization") String token);
+    Call<CompositionsAnswer> requestListCred(@Header("Authorization") String token);
 
     /**
      * Requests the details of a composition specified by @code{id} and expects a @code{token}

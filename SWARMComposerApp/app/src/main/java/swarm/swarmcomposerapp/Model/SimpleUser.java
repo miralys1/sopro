@@ -14,6 +14,13 @@ public class SimpleUser {
     @SerializedName("lastName")
     private String lastName;
 
+    @SerializedName("fullName")
+    private String fullName;
+
+    public String getFullName() {
+        return fullName;
+    }
+
     /**
      * Constructs a simple user.
      * @param id - unic identifying number

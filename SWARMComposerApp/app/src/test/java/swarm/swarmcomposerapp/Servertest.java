@@ -10,6 +10,8 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import swarm.swarmcomposerapp.Model.Composition;
+import swarm.swarmcomposerapp.Model.CompositionsAnswer;
 import swarm.swarmcomposerapp.Model.Service;
 import swarm.swarmcomposerapp.Utils.ServerCommunication;
 
@@ -33,5 +35,21 @@ public class Servertest {
         System.out.println(execute.message());
         System.out.println(execute.body().get(0).getServiceName());
         System.out.println(execute.body().get(1).getServiceName());
+    }
+
+    @Test
+    public void test3() throws IOException {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/").addConverterFactory(GsonConverterFactory.create())
+                .build();
+        final ServerCommunication com = retrofit.create(ServerCommunication.class);
+        final ArrayList<Composition> comps = new ArrayList<>();
+        final Call<CompositionsAnswer> arrayListCall = com.requestList();
+
+        System.out.println("Enqueue Callback2");
+        Response<CompositionsAnswer> execute = arrayListCall.execute();
+        assertNotNull(execute);
+        System.out.println(execute.message());
+        System.out.println(execute.body().getPublicComps().get(0).getName());
     }
 }

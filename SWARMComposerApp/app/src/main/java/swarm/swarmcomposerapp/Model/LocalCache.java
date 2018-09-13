@@ -16,7 +16,7 @@ public class LocalCache implements ICache {
 
     private String email;
     private String password;
-    private String serverAdress = "https://134.245.1240:9060";
+    private String serverAdress = "http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/";
 
     public String getEmail() {
         return email;
