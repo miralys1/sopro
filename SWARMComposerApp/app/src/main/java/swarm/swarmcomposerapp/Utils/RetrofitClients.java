@@ -1,5 +1,7 @@
 package swarm.swarmcomposerapp.Utils;
 
+import android.util.Log;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -14,30 +16,32 @@ public class RetrofitClients {
 
     public static Retrofit getRetrofitInstance(){
         if(retrofitClient == null){
-            retrofitClient = new retrofit2.Retrofit.Builder()
-                    .baseUrl(LocalCache.getInstance()
-                            .getServerAdress()).addConverterFactory(GsonConverterFactory.create())
-                            .build();
+            retrofitClient = newRetrofitInstance(LocalCache.getInstance().getServerAddress());
         }
 
         return retrofitClient;
 
     }
     public static Retrofit newRetrofitInstance(String url){
-        retrofitClient = new retrofit2.Retrofit.Builder()
-                .baseUrl(url).addConverterFactory(GsonConverterFactory.create())
+        Retrofit retrofitClientL = new retrofit2.Retrofit.Builder()
+                .client(getOkHttpClientInstance())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(url)
                 .build();
-        return retrofitClient;
+        Log.i("ServerAddressRetrofitCl","set to: "+url);
+
+
+        return retrofitClientL;
     }
 
 
     public static OkHttpClient getOkHttpClientInstance(){
         if(okHttpClient == null){
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            builder.connectTimeout(30, TimeUnit.SECONDS);
-            builder.readTimeout(30, TimeUnit.SECONDS);
-            builder.writeTimeout(30, TimeUnit.SECONDS);
-            okHttpClient = okHttpClient.newBuilder().build();
+            builder.connectTimeout(5, TimeUnit.SECONDS)
+                    .readTimeout(5, TimeUnit.SECONDS)
+                    .writeTimeout(5, TimeUnit.SECONDS);
+            okHttpClient = builder.build();
         }
         return okHttpClient;
     }

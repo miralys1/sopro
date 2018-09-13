@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SWARM Composer</string>
+    <string name="settings">Einstellungen</string>
+    <string name="loading">Lädt...</string>
+    <string name="login">Einloggen</string>
+    <string name="logged_in_as">"Eingeloogt als "</string>
+    <string name="logout">Ausloggen</string>
+    <string name="email">E-Mail-Adresse</string>
+    <string name="password">Passwort</string>
+    <string name="update">Aktualisieren</string>
+    <string name="webaddress">Serveradresse</string>
+    <string name="webaddress_change">Serveradresse ändern</string>
+    <string name="lastupdate">"Stand: "</string>
+    <string name="d_button_close">Schließen</string>
+    <string name="d_instructions_title">Anleitung</string>
+    <string name="d_instructions_text">Um die Verbindung zu einem Server herzustellen, muss die Serveradresse in der Form 123.456.1.123:1234 angegeben werden.\nUm private Kompositionen sehen zu können, loggen Sie sich bitte mit Ihrer E-Mail-Adresse und Ihrem Passwort ein.</string>
+    <string name="d_welcome_title">Willkommen!</string>
+    <string name="d_welcome_button">Einstellungen öffnen</string>
+    <string name="d_welcome_text">Guten Tag! Hier werden Sie zunächst eine Liste der öffentlichen Kompositionen sehen, sobald Sie in den Einstellungen die Serveradresse angegeben haben. \nDort können Sie sich auch einloggen, um Ihre privaten oder die mit Ihnen geteilten Kompositionen einsehen zu können.\nDie Einstellungen finden Sie, indem Sie auf das Icon in der oberen rechten Ecke tippen.</string>
+    <string name="d_detailviewguide_title">Anleitung</string>
+    <string name="d_detailviewguide_text">...</string>
+    <string name="err_title">Fehler!</string>
+    <string name="err_text">Es gibt keine weiteren Informationen zu diesem Fehler.</string>
+    <string name="err_text_emailpasswordmissing">Die E-Mail-Adresse oder das Passwort fehlen.</string>
+    <string name="err_text_serveraddressmissing">Bitte eine Serveradresse eingeben.</string>
+    <string name="err_text_logout">Die Kommunikation mit dem Server ist während des Ausloggens fehlgeschlagen.</string>
+    <string name="err_text_login">Die Kommunikation mit dem Server ist während des Einloggens fehlgeschlagen.</string>
+    <string name="err_text_serveraddress">Die Kommunikation mit dem Server unter der neuen Adresse ist fehlgeschlagen.</string>
+    <string name="err_text_list">Die Kommunikation mit dem Server ist während der Abfrage der Übersichtsliste fehlgeschlagen.</string>
+    <string name="err_text_detail">Die Kommunikation mit dem Server ist während der Abfrage der Kompositionsdetails fehlgeschlagen.</string>
+
+
+</resources>

@@ -10,11 +10,11 @@ import java.util.List;
  *
  */
 public class Edge {
-    @SerializedName("in")
+    @SerializedName("source")
     private Node in;
-    @SerializedName("out")
+    @SerializedName("target")
     private Node out;
-    @SerializedName("compatibilityAnswer")
+    @SerializedName("compatibility")
     private CompatibilityAnswer compatibility;
 
     public CompatibilityAnswer getCompatibility() {

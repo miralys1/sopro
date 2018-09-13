@@ -18,6 +18,12 @@ public class Service {
     private String picture;
     @SerializedName("id")
     private long id;
+    @SerializedName("tags")
+    private List<String> tags;
+    @SerializedName("formatIn")
+    private List<Service> in;
+    @SerializedName("formatOut")
+    private List<Service> out;
 
     /**
      * Constructs a service with all needed information.
@@ -32,7 +38,7 @@ public class Service {
      * @param in
      * @param out
      */
-    public Service( String serviceName, String version, String organisation,
+    public Service(String serviceName, String version, String organisation,
                    String picture, long id, long date, List<String> tags, List<Service> in,
                    List<Service> out) {
         this.serviceName = serviceName;
@@ -47,10 +53,7 @@ public class Service {
     }
 
     private long date;
-    private List<String> tags;
 
-    private List<Service> in;
-    private List<Service> out;
 
     public void setDate(long date) {
         this.date = date;

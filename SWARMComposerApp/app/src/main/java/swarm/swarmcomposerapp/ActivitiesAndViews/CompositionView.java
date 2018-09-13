@@ -338,4 +338,15 @@ public class CompositionView extends View {
     }
 
 
+    /**
+     * Sets the view's example drawable attribute value. In the example view, this drawable is
+     * drawn above the text.
+     *
+     * @param exampleDrawable The example drawable attribute value to use.
+     */
+    public void setExampleDrawable(Drawable exampleDrawable) {
+        mExampleDrawable = exampleDrawable;
+    }
+
+
 }

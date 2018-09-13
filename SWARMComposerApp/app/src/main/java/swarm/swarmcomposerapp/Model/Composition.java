@@ -22,6 +22,7 @@ public class Composition {
     List<Node> nodeList;
     @SerializedName("edges")
     List<Edge> edgeList;
+    @SerializedName("editable")
     boolean editable;
 
     /**

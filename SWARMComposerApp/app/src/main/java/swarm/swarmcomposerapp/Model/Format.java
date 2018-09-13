@@ -14,6 +14,16 @@ public class Format {
     private String version;
     @SerializedName("compatibilityDegree")
     private String compatibilityDegree;
+    @SerializedName("id")
+    private long id;
+
+    public String getCompatibilityDegree() {
+        return compatibilityDegree;
+    }
+
+    public long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;

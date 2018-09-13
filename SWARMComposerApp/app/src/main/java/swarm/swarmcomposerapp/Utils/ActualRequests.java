@@ -1,5 +1,7 @@
 package swarm.swarmcomposerapp.Utils;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -9,6 +11,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import swarm.swarmcomposerapp.ActivitiesAndViews.IResponse;
 import swarm.swarmcomposerapp.Model.Composition;
+import swarm.swarmcomposerapp.Model.CompositionsAnswer;
 import swarm.swarmcomposerapp.Model.LocalCache;
 import swarm.swarmcomposerapp.Model.Service;
 
@@ -21,11 +24,14 @@ public class ActualRequests {
     /**
      * ServerCommunication used for http requests :)
      */
-    private static ServerCommunication com = refreshServerCommunication();
+    private static ServerCommunication com = RetrofitClients.getRetrofitInstance().create(ServerCommunication.class);
 
 
-    public static ServerCommunication refreshServerCommunication() {
-        return RetrofitClients.getRetrofitInstance().create(ServerCommunication.class);
+    public static void refreshServerCommunication() {
+        ActualRequests.com = RetrofitClients.newRetrofitInstance(LocalCache.getInstance()
+                .getServerAddress()).create(ServerCommunication.class);
+        Log.i("ServerAddressChange", "RefreshCom ");
+
     }
 
     /**
@@ -74,31 +80,36 @@ public class ActualRequests {
      * @param caller - the IResponse object desiring to receive the compositions
      */
     public static void actualCompListRequest(ArrayList<Composition> comps, IResponse caller) {
-        final Call<ArrayList<Composition>> compList;
+        final Call<CompositionsAnswer> compAnswer;
 
         LocalCache cacheRef = LocalCache.getInstance();
         String pw = cacheRef.getPassword();
         String mail = cacheRef.getEmail();
 
         if (pw != null && mail != null) {
-            compList = com.requestListCred(Credentials.basic(mail, pw));
+            compAnswer = com.requestListCred(Credentials.basic(mail, pw));
         } else {
-            compList = com.requestList();
+            compAnswer = com.requestList();
         }
+        //  Log.i("Request", compAnswer.request().url().toString() + " by " + caller.getClass().getName());
         final IResponse localCaller = caller;
         final ArrayList<Composition> compsL = comps;
-        compList.enqueue(new Callback<ArrayList<Composition>>() {
+        compAnswer.enqueue(new Callback<CompositionsAnswer>() {
             @Override
-            public void onResponse(Call<ArrayList<Composition>> call,
-                                   Response<ArrayList<Composition>> response) {
+            public void onResponse(Call<CompositionsAnswer> call,
+                                   Response<CompositionsAnswer> response) {
+
+                // Log.i("Request", "Response " + call.request() + " response: " + response.code()
+                //       + " error: " + response.errorBody());
                 if (response.isSuccessful()) {
-                    compsL.addAll(response.body());
+                    compsL.addAll(response.body().getPublicComps());
                     localCaller.notify(true);
                 }
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Composition>> call, Throwable t) {
+            public void onFailure(Call<CompositionsAnswer> call, Throwable t) {
+                Log.i("Request", "Failure " + call.request() + " cause: " + t.getCause() + " bla");
                 localCaller.notify(false);
             }
         });

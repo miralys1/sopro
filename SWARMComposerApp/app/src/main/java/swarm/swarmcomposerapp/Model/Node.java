@@ -13,8 +13,10 @@ public class Node {
     private int x;
     @SerializedName("y")
     private int y;
-    @SerializedName("id")
     private long serviceID;
+
+    @SerializedName("sendService")
+    private Service sendService;
 
     /**
      * A service is mapped to an instance of node.
@@ -28,6 +30,12 @@ public class Node {
         this.x = x;
         this.y = y;
         this.serviceID = serviceID;
+    }
+
+    public Node(int x, int y, Service sendService){
+        this.x = x;
+        this.y = y;
+        this.sendService = sendService;
     }
 
     public void setX(int x) {
@@ -54,4 +62,15 @@ public class Node {
     public long getServiceID() {
         return serviceID;
     }
+
+
+    public Service getSendService() {
+        return sendService;
+    }
+
+    public void setSendService(Service sendService) {
+        this.sendService = sendService;
+    }
+
+
 }

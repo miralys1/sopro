@@ -13,6 +13,9 @@ import java.util.List;
 import swarm.swarmcomposerapp.Model.Composition;
 import swarm.swarmcomposerapp.R;
 
+/**
+ * Utils class to create and update the RecyclerView
+ */
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> {
 
     private List<Composition> compList;
@@ -26,6 +29,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
             author = (TextView) view.findViewById(R.id.author);
             date = (TextView) view.findViewById(R.id.date);
         }
+    }
+
+    public void setCompList(List<Composition> compList){
+        this.compList = compList;
+        notifyDataSetChanged();
     }
 
 
