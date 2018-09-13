@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -151,6 +152,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
         if(successful) {
             //overview data is now available at LocalCache
             compList = LocalCache.getInstance().getCompositions(this);
+            Log.i("ListActNotify", "Size of compositions: "+compList.size()+"");
             adapter.notifyDataSetChanged();
         } else {
             //server request failed

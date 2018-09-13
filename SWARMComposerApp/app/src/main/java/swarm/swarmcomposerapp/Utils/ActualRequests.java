@@ -96,7 +96,9 @@ public class ActualRequests {
                                    Response<CompositionsAnswer> response) {
                 if (response.isSuccessful()) {
                     compsL.addAll(response.body().getPublicComps());
-                    Log.i("HUI:","OKAY!!!!");
+                    Log.i("HUI:","OKAY -REALLY !!!!");
+                    Log.i("HUI", compsL.get(0).getName());
+
                     localCaller.notify(true);
                 }
             }

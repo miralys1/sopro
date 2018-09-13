@@ -342,8 +342,5 @@ public class CompositionView extends View {
         mExampleDrawable = exampleDrawable;
     }
 
-    @Override
-    public void notify(boolean successful) {
-        
-    }
+
 }

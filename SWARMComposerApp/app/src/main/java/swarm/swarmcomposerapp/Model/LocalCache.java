@@ -1,5 +1,7 @@
 package swarm.swarmcomposerapp.Model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -126,7 +128,9 @@ public class LocalCache implements ICache {
      * without checking for changes.
      */
     public void hardRefresh(IResponse caller) {
+        compositions = new ArrayList<>();
         ActualRequests.actualCompListRequest(compositions, caller);
+
     }
 
 

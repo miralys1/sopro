@@ -23,15 +23,15 @@ public class MainActivity extends AppCompatActivity implements IResponse {
         setContentView(R.layout.activity_main);
 
 
-
     }
 
     @Override
     public void notify(boolean successful) {
-        if(successful){
+        if (successful) {
             Service[] services = LocalCache.getInstance().getServices(this);
-            Toast.makeText(this, "Success: first service name is: "+
-                    services[0].getServiceName(),Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Success: first service name is: " +
+                    services[0].getServiceName(), Toast.LENGTH_LONG).show();
 
+        }
     }
 }
