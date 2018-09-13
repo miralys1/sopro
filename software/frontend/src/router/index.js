@@ -25,7 +25,7 @@ export default new Router({
       component: Login
     },
     {
-      path: '/editor/:compId',
+      path: '/editor/:compId/:viewerId',
       name: 'Editor',
       component: Editor
     }
