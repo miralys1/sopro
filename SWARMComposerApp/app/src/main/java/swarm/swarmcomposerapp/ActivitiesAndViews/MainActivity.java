@@ -23,10 +23,24 @@ public class MainActivity extends AppCompatActivity implements IResponse {
         setContentView(R.layout.activity_main);
 
 
+        Node n1 = new Node(10,10,2);
+        Node n2 = new Node(300,300,1);
+        Node n3 = new Node(400,400,4);
+        Edge e1 = new Edge(n1,n2,null);
+        Edge e3 = new Edge(n1,n3,null);
+        final ArrayList<Edge> edges2 = new ArrayList<>();
+        edges2.add(e1);
+        edges2.add(e3);
+        ArrayList<Node> nodis = new ArrayList<>();
+        nodis.add(n1);
+        nodis.add(n2);
+        nodis.add(n3);
 
+        Composition c1 = new Composition(0, "tolle Komposition",new SimpleUser(1,"Harald","Derp"),edges2,nodis);
 
 
         CompositionView compi = findViewById(R.id.compositionView);
+        compi.setComp(c1);
         Toast.makeText(getApplicationContext(),"comp should be added now",Toast.LENGTH_SHORT).show();
 
     }

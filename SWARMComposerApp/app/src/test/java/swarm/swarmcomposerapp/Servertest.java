@@ -1,5 +1,7 @@
 package swarm.swarmcomposerapp;
 
+import android.net.Credentials;
+
 import org.junit.Test;
 
 import java.io.IOException;
@@ -12,6 +14,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import swarm.swarmcomposerapp.Model.Composition;
 import swarm.swarmcomposerapp.Model.CompositionsAnswer;
+import swarm.swarmcomposerapp.Model.LocalCache;
 import swarm.swarmcomposerapp.Model.Service;
 import swarm.swarmcomposerapp.Utils.ServerCommunication;
 
@@ -23,7 +26,7 @@ public class Servertest {
     @Test
     public void test2() throws IOException {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/").addConverterFactory(GsonConverterFactory.create())
+                .baseUrl("http://134.245.1.240:9061/composer-0.0.1-AUTH/").addConverterFactory(GsonConverterFactory.create())
                 .build();
         final ServerCommunication com = retrofit.create(ServerCommunication.class);
         final HashMap<Long, Service> serviceLookUpL = new HashMap<Long, Service>();
@@ -40,14 +43,21 @@ public class Servertest {
     @Test
     public void test3() throws IOException {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/").addConverterFactory(GsonConverterFactory.create())
+                .baseUrl("http://134.245.1.240:9061/composer-0.0.1-AUTH/").addConverterFactory(GsonConverterFactory.create())
                 .build();
         final ServerCommunication com = retrofit.create(ServerCommunication.class);
         final ArrayList<Composition> comps = new ArrayList<>();
-        final Call<CompositionsAnswer> arrayListCall = com.requestList();
+        final Call<CompositionsAnswer> arrayListCall = com.requestListCred(okhttp3.Credentials.basic("d@d.de","123"));
+
+
+        LocalCache.getInstance().setEmail("d@d.de");
+        LocalCache.getInstance().setPassword("123");
 
         System.out.println("Enqueue Callback2");
         Response<CompositionsAnswer> execute = arrayListCall.execute();
+        System.out.println(arrayListCall.request() +" auth "+arrayListCall.request().header("Authorization")
+        );
+
         assertNotNull(execute);
         System.out.println(execute.message());
         System.out.println(execute.body().getPublicComps().get(0).getName());

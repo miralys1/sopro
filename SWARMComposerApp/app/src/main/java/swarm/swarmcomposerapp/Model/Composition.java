@@ -19,9 +19,9 @@ public class Composition {
     private long lastUpdate;
     private long dateCreated; //Implementation not planned
     @SerializedName("nodes")
-    List<Node> nodeList;
+    List<Node> nodeList = new ArrayList<>();
     @SerializedName("edges")
-    List<Edge> edgeList;
+    List<Edge> edgeList = new ArrayList<>();
     @SerializedName("editable")
     boolean editable;
 

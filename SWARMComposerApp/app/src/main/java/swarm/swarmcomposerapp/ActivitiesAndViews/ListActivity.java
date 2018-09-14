@@ -92,7 +92,8 @@ public class ListActivity extends AppCompatActivity implements IResponse {
 
             }
         }));
-
+        Intent start = new Intent(getApplicationContext(),MainActivity.class);
+        //sstartActivity(start);
 
     }
 

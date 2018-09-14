@@ -2,6 +2,7 @@ package swarm.swarmcomposerapp.ActivitiesAndViews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -180,6 +181,8 @@ public class CompositionView extends View {
         Paint edgePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         edgePaint.setColor(Color.BLUE);
         edgePaint.setStyle(Paint.Style.FILL);
+        edgePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        edgePaint.setStrokeWidth(8);
 
         int contentWidth = getWidth() - paddingLeft - paddingRight;
         int contentHeight = getHeight() - paddingTop - paddingBot;
@@ -187,19 +190,30 @@ public class CompositionView extends View {
 
 
         if(comp != null){
-            Node n1 = comp.getNodeList().get(0);
-        canvas.drawCircle(n1.getX(),n1.getY(),20,drawPaint);}
-
-        if (false) {
             List<Node> nodes = comp.getNodeList();
 
 
-            //Calculate an edge length that is small enough to place all nodes on the screen
-            int length = contentHeight * contentWidth / (4 * nodes.size());
-            Toast.makeText(getContext(),length+"",Toast.LENGTH_LONG).show();
+            int initialLength = 100;
+
             //Search for the maximal coordinates in the list of nodes.
             int maxX = 0;
             int maxY = 0;
+            int minX = 0;
+            int minY = 0;
+
+            for (Edge e : comp.getEdgeList()) {
+                Node source = e.getIn();
+                Node target = e.getOut();
+
+                float halfLength = initialLength /  (float)2;
+
+
+
+                canvas.drawLine(halfLength+source.getX(),halfLength+source.getY(),
+                        halfLength+target.getX(),halfLength+target.getY(), edgePaint);
+
+
+            }
 
             for (Node n : nodes) {
                 int tX = n.getX();
@@ -211,9 +225,38 @@ public class CompositionView extends View {
                 if (tY > maxY) {
                     maxY = tY;
                 }
+
+                if(tX < minX){
+                    minX = tX;
+                }
+
+                if(tY < minY){
+                    minY = tY;
+                }
             }
 
-            final RectF[] rects = createRectsForNodes(nodes, maxX, maxY, length);
+
+            for (Node n : nodes){
+                canvas.drawCircle(n.getX(),n.getY(),initialLength,drawPaint);
+
+                final Drawable drawable = getContext().getDrawable(R.drawable.tp_angebote);
+                drawable.setBounds(0,0,150,150);
+                canvas.translate(n.getX()-75,n.getY()-75);
+                drawable.draw(canvas);
+                canvas.translate(- n.getX()+75,-n.getY()+75);
+            }
+
+
+
+        }
+
+        if (false) {
+            List<Node> nodes = comp.getNodeList();
+
+
+            //Calculate an edge length that is small enough to place all nodes on the screen
+            //int length = contentHeight * contentWidth / (4 * nodes.size());
+
 
 
             //Draw the edges
@@ -225,24 +268,23 @@ public class CompositionView extends View {
 
                 int sIndex = nodes.indexOf(source);
                 int tIndex = nodes.indexOf(target);
-                RectF srect = rects[sIndex];
-                RectF trect = rects[tIndex];
-                float halfLength = length / (float) 2;
+               // RectF srect = rects[sIndex];
+               // RectF trect = rects[tIndex];
+               // float halfLength = length / (float) 2;
+//                float sMidX = srect.left + halfLength;
+//                float sMidY = srect.top + halfLength;
+//                float tMidX = trect.left + halfLength;
+//                float tMidY = trect.top + halfLength;
 
-                float sMidX = srect.left + halfLength;
-                float sMidY = srect.top + halfLength;
-                float tMidX = trect.left + halfLength;
-                float tMidY = trect.top + halfLength;
-
-                canvas.drawLine(sMidX, sMidY, tMidX, tMidY, edgePaint);
+//                canvas.drawLine(sMidX, sMidY, tMidX, tMidY, edgePaint);
 
 
             }
             // Draw the nodes as RoundRects
             //TODO: Draw node images :)
-            for (RectF r : rects) {
-                canvas.drawRoundRect(r, length / (float) 4, length / (float) 4, drawPaint);
-            }
+//            for (RectF r : rects) {
+//                canvas.drawRoundRect(r, length / (float) 4, length / (float) 4, drawPaint);
+//            }
         }
         // Draw the text.
         canvas.drawText(mExampleString,
