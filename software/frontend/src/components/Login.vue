@@ -43,7 +43,7 @@
             </b-form>
           </b-card>
         </b-tab>
-        <b-tab title="Register" style="overflow: hidden">
+        <b-tab title="Registrieren" style="overflow: hidden">
           <b-form @submit="register">
             <b-card bg-variant="light" >
               <b-form-group horizontal
@@ -131,7 +131,7 @@
                       type="submit"
                       variant="primary"
                       :to="'/'">
-              Register
+              Registrieren
             </b-button>
           </b-form>
         </b-tab>
@@ -141,8 +141,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
-
 export default {
     data() {
       return {
@@ -151,42 +149,52 @@ export default {
           password: ''
         },
         form: {
-        email: '',
-        password: '',
-        title: null,
-        firstName: '',
-        lastName: ''
-      },
-      titles: [
-        { text: 'optional', value: null },
-        'Prof.', 'Dr.'
-      ]
+          email: '',
+          password: '',
+          title: null,
+          firstName: '',
+          lastName: ''
+        },
+        titles: [
+          { text: 'optional', value: null },
+          'Prof.', 'Dr.'
+        ],
+        user: {
+          token: '',
+          fullName: '',
+          id: -1,
+          admin: false
+        }
       }
     },
     methods: {
     signin (event) {
+      var token = 'Basic ' + btoa(unescape(encodeURIComponent(this.login.email +
+        ':' + this.login.password)))
       event.preventDefault()
-      Vue.axios.post('/login', {
-        email: this.login.email,
-        password: this.login.password
+      this.axios({
+        url: '/authentification',
+        method: 'GET',
+        headers:
+        {
+          Authorization: token
+        }
       })
       .then(response => {
-        alert('Login erfolgreich') // später raus
-        console.log(response)
-        this.$emit('login')
-        window.location.replace('/')
+        this.user.token = token
+        this.user.fullName = response.data.fullName
+        this.user.id = response.data.id
+        this.user.isAdmin = response.data.admin
+        this.$emit('login', this.user)
+        this.$router.push('/')
       })
       .catch(error => {
-        console.log(error)
-        alert('Login fehlgeschlagen')
-      }
-    )
-      this.$emit('login') // muss später raus
-
+        alert('Authentifizierung fehlgeschlagen')
+      })
     },
     register (event) {
       event.preventDefault()
-      Vue.axios.post('/users', {
+      this.axios.post('/users', {
         email: this.login.email,
         password: this.login.password,
         title: this.login.title,
@@ -195,7 +203,7 @@ export default {
       })
       .then(response => {
         alert('Registrierung erfolgreich')
-        window.location.replace('/login')
+        this.$router.push('/login')
       }
       )
       .catch(error => alert('Registrierung fehlgeschlagen'))

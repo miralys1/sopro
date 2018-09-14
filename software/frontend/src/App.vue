@@ -1,7 +1,7 @@
 <template>
   <div>
-    <NavBar :admin="admin" :loggedIn="loggedIn" :email="email" @logout="logout" @admin="admin" :isAdmin="isAdmin"/>
-    <router-view @login="login"></router-view>
+    <NavBar :user="user" @logout="logout" @admin="admin"/>
+    <router-view @login="login" :user="user"></router-view>
   </div>
 </template>
 
@@ -11,9 +11,13 @@ import NavBar from '@/components/NavBar'
 export default {
   data() {
     return {
-      loggedIn: false,
-      email: '',
-      isAdmin: false
+      user: {
+        token: '',
+        loggedIn: false,
+        userId: -1,
+        isAdmin: false,
+        fullName: ''
+      }
     }
   },
   name: 'app',
@@ -21,33 +25,41 @@ export default {
     NavBar
   },
   methods: {
-    login() {
-      this.loggedIn = true
+    login(user) {
+      this.user.loggedIn = true
+      this.user.email = user.email
+      this.user.password = user.password
+      this.user.id = user.id
+      this.user.isAdmin = user.isAdmin
+      this.user.fullName = user.fullName
+      alert('Willkommen ' + this.user.fullName + '!')
     },
     logout() {
-      this.loggedIn = false
+      this.user.email = ''
+      this.user.loggedIn = false
+      this.user.id = -1
+      this.user.isAdmin = false
+      this.user.fullName = ''
+      this.$router.push('/')
+      alert('Sie wurden erfolgreich ausgeloggt!')
     },
+
+    // später raus
     admin() {
-      this.isAdmin = !this.isAdmin
+      this.user.isAdmin = !this.user.isAdmin
     }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 .mainlayout {
   margin: 10vh auto;
-  width: 60vw;
+  width: 90vw;
   padding: 2.5% 5%;
-  background-color: lightgrey;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  border: 1px solid black;
 }
 .round {
   border-radius: 10px;
