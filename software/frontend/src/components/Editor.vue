@@ -235,8 +235,7 @@ export default {
                   return {
                           id: (e.id <= 0 ? 0 : e.id),
                           source: nodes.find(n => n.id == e.node1),
-                          target: nodes.find(n => n.id == e.node2),
-                          editable: comps.editable
+                          target: nodes.find(n => n.id == e.node2)
                   }
               });
 
@@ -245,15 +244,13 @@ export default {
               id: comps.id,
               name: comps.name,
               nodes: nodes,
-              edges: links
+              edges: links,
+              editable: comps.editable
           }
 
           this.axios.put('/compositions/' + this.$route.params.compId,
                          dataSeg,
-                         {headers: {"Content-Type": "application/json",
-                                    "id" : 1,
-                                    "Authorization": this.$route.params.viewerId.user.token
-                                   }}
+                         {headers: {"Content-Type": "application/json" }}
                         )
       }
   },
