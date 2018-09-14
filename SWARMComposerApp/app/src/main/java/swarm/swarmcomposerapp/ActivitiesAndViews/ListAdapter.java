@@ -55,8 +55,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         holder.name.setText(comp.getName());
         holder.author.setText(comp.getOwner().getFirstName() + " " + comp.getOwner().getLastName());
         //TODO Display icon based on whether Composition is Owned, Shared or Public
-        holder.date.setText("Last Updated: "+
-                DateFormat.getInstance().format((new Date(comp.getLastUpdate()*1000))));
+        holder.date.setText("ID: "+ comp.getId());
     }
 
     @Override

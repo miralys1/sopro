@@ -1,5 +1,7 @@
 package swarm.swarmcomposerapp.Model;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class Composition {
     @SerializedName("editable")
     boolean editable;
 
+
     /**
      * Creates a not-detailed, simple or zombie Composition.
      * (Depending on your desired naming scheme).
@@ -39,8 +42,6 @@ public class Composition {
         this.id = id;
         this.owner = owner;
         this.name = name;
-        nodeList = new ArrayList<>();
-        edgeList = new ArrayList<>();
         setLastUpdate();
     }
 
@@ -86,7 +87,7 @@ public class Composition {
     }
 
     public void setLastUpdate() {
-        this.lastUpdate = System.currentTimeMillis() / 1000L;
+        this.lastUpdate = System.currentTimeMillis();
     }
 
     public boolean isEditable() {
@@ -108,7 +109,14 @@ public class Composition {
      * @param nodes
      */
     public void addComps(List<Node> nodes) {
+        Log.i("DETAIL", "node: "+nodeList);
+        if(nodeList == null)
+            nodeList = new ArrayList<>();
         nodeList.addAll(nodes);
+    }
+
+    public void setNodeList(List<Node> nodeList){
+        this.nodeList = nodeList;
     }
 
 
@@ -127,6 +135,8 @@ public class Composition {
      * @param edges
      */
     public void addEdges(List<Edge> edges) {
+        if(edgeList == null)
+            edgeList = new ArrayList<>();
         edgeList.addAll(edges);
     }
 

@@ -1,12 +1,17 @@
 package swarm.swarmcomposerapp.ActivitiesAndViews;
 
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import swarm.swarmcomposerapp.Model.Composition;
 import swarm.swarmcomposerapp.Model.LocalCache;
@@ -20,6 +25,8 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
     private Composition comp;
     private TextView tTitle, tInfo, tLoading;
     private ProgressBar progressBar;
+    private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy HH:mm");
+    private int position; //(app-)internal id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +40,9 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
 
         //retrieve the (app-)internal id of the composition
         Intent intent = getIntent();
-        int pos = intent.getIntExtra("COMP_POSITION", -1);
+        position = intent.getIntExtra("COMP_POSITION", -1);
         try {
-            comp = LocalCache.getInstance().getCompAtPos(pos, this);
+            comp = LocalCache.getInstance().getCompAtPos(position, this);
         } catch (Exception e){
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             goBackToList(null);
@@ -43,6 +50,8 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
         if(comp != null){
             //the needed composition details are not stored in the LocalCache yet; a request has been sent by LocalCache
             showLoading(false);
+            tTitle.setText(comp.getName());
+            tInfo.setText(getText(R.string.lastupdate)+" "+dateFormat.format(comp.getLastUpdate()));
             draw();
         }
 
@@ -80,8 +89,18 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
 
     @Override
     public void notify(boolean successful) {
+
         if(successful){
             //needed composition details are in LocalCache now
+            comp = LocalCache.getInstance().getCompAtPos(position, this);
+            if(comp == null){
+                //TODO handle fatal event
+                Toast.makeText(getApplicationContext(), getText(R.string.err_text_detail), Toast.LENGTH_SHORT).show();
+                goBackToList(null);
+            }
+
+            tTitle.setText(comp.getName());
+            tInfo.setText(getText(R.string.lastupdate)+" "+dateFormat.format(comp.getLastUpdate()));
             draw();
         } else {
             //server communication failed
