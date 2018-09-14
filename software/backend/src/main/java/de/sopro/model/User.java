@@ -8,17 +8,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
-import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import de.sopro.model.send.DetailUser;
 import de.sopro.model.send.SimpleUser;
 
 @Entity
 public class User {
+
+	public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,6 +40,11 @@ public class User {
 
 	@NotBlank
 	private String title;
+
+	@NotBlank
+	private String password;
+
+	private String [] roles;
 
 	// CascadeType.ALL => if you delete an User then all compositions associated
 	// with that User also be deleted
@@ -135,6 +143,22 @@ public class User {
 
 	public void setEditable(List<Composition> editable) {
 		this.editableComps = editable;
+	}
+
+	public String getPassword(){
+		return password;
+	}
+	
+	public void setPassword(String password){
+		this.password = PASSWORD_ENCODER.encode(password);
+	}
+
+	public String[] getRole(){
+		return roles;
+	}
+
+	public void setRole(String[] roles){
+		this.roles = roles;
 	}
 
 	public String getFullName() {
