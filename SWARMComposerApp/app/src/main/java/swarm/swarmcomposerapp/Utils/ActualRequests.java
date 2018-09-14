@@ -63,6 +63,10 @@ public class ActualRequests {
                         serviceLookUpL.put(serv.getId(), serv);
                     }
                     localCaller.notify(true);
+                } else {
+                    //Some error has happened
+
+                    localCaller.notify(false);
                 }
             }
 
@@ -89,7 +93,7 @@ public class ActualRequests {
         String pw = cacheRef.getPassword();
         String mail = cacheRef.getEmail();
 
-        if (pw != null && mail != null) {
+        if (pw != null && mail != null && pw != "" && mail != "") {
             compAnswer = com.requestListCred(Credentials.basic(mail, pw));
         } else {
             compAnswer = com.requestList();
@@ -102,17 +106,20 @@ public class ActualRequests {
             public void onResponse(Call<CompositionsAnswer> call,
                                    Response<CompositionsAnswer> response) {
 
-                // Log.i("Request", "Response " + call.request() + " response: " + response.code()
-                //       + " error: " + response.errorBody());
+                Log.i("RequestC", "Response " + call.request() + " was successful?: " + response.isSuccessful() + " response Code: " + response.code()
+                        + " error: " + response.errorBody() + " auth? " + call.request().header("Authorization"));
                 if (response.isSuccessful()) {
-                    compsL.addAll(response.body().getPublicComps());
+                    compsL.addAll(response.body().getSeeableComps());
                     localCaller.notify(true);
+                } else {
+                    //Some error has happened
+                    localCaller.notify(false);
                 }
             }
 
             @Override
             public void onFailure(Call<CompositionsAnswer> call, Throwable t) {
-                Log.i("Request", "Failure " + call.request() + " cause: " + t.getCause() + " bla");
+                Log.i("RequestC", "Failure " + call.request() + " cause: " + t.getCause() + " bla");
                 localCaller.notify(false);
             }
         });
@@ -159,11 +166,16 @@ public class ActualRequests {
                     tempComp.addEdges(response.body().getEdgeList());
                     tempComp.setLastUpdate();
                     localResponse.notify(true);
+                } else {
+                    //Some error has happened
+                    localResponse.notify(false);
                 }
             }
 
             @Override
             public void onFailure(Call<Composition> call, Throwable t) {
+
+                Log.i("RquestFailure", call.request() + " cause: " + t.getCause() + " message: " + t.getMessage() + "type: " + t.getClass().toString());
 
                 localResponse.notify(false);
             }
