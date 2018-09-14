@@ -18,11 +18,11 @@ public class CompositionEdge {
 	private Long id;
 
 	@NotNull
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
 	private CompositionNode source;
 
 	@NotNull
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
 	private CompositionNode target;
 
 	// Hibernate requires a no-arg constructor
@@ -51,17 +51,17 @@ public class CompositionEdge {
 		this.target = target;
 	}
 
-	public void setId(long id){
+	public void setId(long id) {
 		this.id = id;
 	}
 
-	public long getId(){
+	public long getId() {
 		return id;
 	}
 
 	public Edge createEdge() {
-		return new Edge(this.id, this.source.createNode(), this.target.createNode(),
-				Compatibility.checkCompatibility(this.source.getService().getId(), this.target.getService().getId()));
+		Edge e = new Edge(this.id, this.source.createNode(), this.target.createNode());
+		return e;
 	}
 
 	public String toString() {
