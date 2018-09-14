@@ -12,7 +12,6 @@ export default {
   data() {
     return {
       user: {
-        token: '',
         loggedIn: false,
         userId: -1,
         isAdmin: false,
@@ -27,15 +26,12 @@ export default {
   methods: {
     login(user) {
       this.user.loggedIn = true
-      this.user.email = user.email
-      this.user.password = user.password
       this.user.id = user.id
       this.user.isAdmin = user.isAdmin
       this.user.fullName = user.fullName
       alert('Willkommen ' + this.user.fullName + '!')
     },
     logout() {
-      this.user.email = ''
       this.user.loggedIn = false
       this.user.id = -1
       this.user.isAdmin = false
@@ -48,6 +44,18 @@ export default {
     admin() {
       this.user.isAdmin = !this.user.isAdmin
     }
+  },
+  mounted() {
+    this.axios({
+      url: '/authentificate',
+      method: 'get',
+    }).then(function(res) {
+      this.user.loggedIn = true
+      this.user.id = res.data.id
+      this.user.isAdmin = res.data.isAdmin
+      this.user.fullName = res.data.fullName
+      alert('Willkommen ' + this.user.fullName + '!')
+    }).ctach(function(err) {console.log(err)})
   }
 }
 </script>

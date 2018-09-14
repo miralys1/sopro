@@ -160,7 +160,6 @@ export default {
           'Prof.', 'Dr.'
         ],
         user: {
-          token: '',
           fullName: '',
           id: -1,
           admin: false
