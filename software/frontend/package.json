@@ -82,7 +82,9 @@
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.18.0",
     "webpack-merge": "^4.1.0",
-    "vue-awesome": "~3.1.0"
+    "vue-awesome": "~3.1.0",
+    "fuse.js": "^3.2.1",
+    "vue-fuse": "^1.5.0"
   },
   "engines": {
     "node": ">= 4.0.0",

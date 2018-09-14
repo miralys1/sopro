@@ -10,7 +10,9 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
+import VueFuse from 'vue-fuse'
 
+Vue.use(VueFuse)
 Vue.use(BootstrapVue)
 Vue.use(VueAxios, axios)
 Vue.config.productionTip = false
