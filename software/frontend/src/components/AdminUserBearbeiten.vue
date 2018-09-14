@@ -1,7 +1,13 @@
 <template>
   <div class = "out">
-    <input type="text" placeholder="Suche.." v-model="searchedUser">
+    <input type="text" placeholder="Suche.." v-model="searchedUser" @keyup.enter="search">
     <br><br>
+    <div class="list-group list-group-flush" style="overflow:scroll;">
+    <button type="button" class="list-group-item list-group-item-action" style="display: inline-block" v-for="(user,index) in users" @click="onClick(index)">
+      {{user.firstName}} {{user.lastName}}
+    </button>
+  </div>
+  <br><br>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
       <b-button type="submit" variant="primary" style="float:right;">Submit</b-button>
       <b-button type="reset" variant="danger" style="float:right;">Reset</b-button>
@@ -68,15 +74,6 @@
 
 export default {
 
-props: ["pupdate"],
-
-watch: {
-  pupdate: function () {
-    this.user = JSON.parse(JSON.stringify(this.users.user1))
-    this.backupUser = JSON.parse(JSON.stringify(this.users.user1))
-    }
-  },
-
 data() {
   return {
 
@@ -98,16 +95,16 @@ data() {
     isAdmin: false
   },
 
-  users: {
-    user1: {
+  users: [
+     {
       id: "1",
       firstName: "Anna",
       lastName: "Müller",
-      email:"bla@bla",
+      email:"Bla@bla",
       title:"Frau",
       isAdmin: true
     },
-    user2: {
+     {
       id: "2",
       firstName: "Ben",
       lastName: "Bär",
@@ -115,7 +112,7 @@ data() {
       title:"Herr",
       isAdmin: false
     },
-  },
+  ],
 
   admin: [
   { text: 'Nein', value: false },
@@ -137,6 +134,7 @@ methods: {
                .catch(function (error) {alert(error);});
 
   },
+
   onReset (evt) {
     evt.preventDefault();
     /* Reset our form values */
@@ -144,8 +142,32 @@ methods: {
 
     this.show = false;
     this.$nextTick(() => { this.show = true });
+  },
+
+  search (evt) {
+   this.users = [];
+
+   this.axios.get('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/users')
+            .then(response =>
+            this.users = response.data
+                )
+            .catch(function (error) {
+             alert("Fehler");
+            console.log(error);
+                });
+ }
+
+
+
+  },
+
+  onClick(index) {
+     var id = this.users[idex].id;
+    //get request mit id und antwort auf this user und this backup user
+    this.user = JSON.parse(JSON.stringify(this.users[index])) ;
+    this.backupUser = JSON.parse(JSON.stringify(this.users[index])) ;
   }
-}
+
 }
 
 </script>

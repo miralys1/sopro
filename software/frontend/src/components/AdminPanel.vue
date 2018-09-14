@@ -2,7 +2,7 @@
   <div class="mainlayout">
   <b-card no-body>
   <b-tabs pills card vertical>
-    <b-tab title="Dienste aus JSON landen" active @click="toggle">
+    <b-tab title="Dienste aus JSON laden" active @click="toggle">
       <JsonEinlesen v-if="toggly"/>
     </b-tab>
     <b-tab title="Dienst manuell bearbeiten" @click="toggle">
@@ -11,8 +11,8 @@
     <b-tab title="Dienste bearbeiten" @click="toggleUpdate">
       <AdminDienstBearbeiten v-if="toggly" v-bind:pupdate=update />
     </b-tab>
-    <b-tab title="Nutzer bearbeiten" @click="toggleUpdate2">
-      <AdminUserBearbeiten v-if="toggly" v-bind:pupdate=update2 />
+    <b-tab title="Nutzer bearbeiten" @click="toggle">
+      <AdminUserBearbeiten v-if="toggly" />
     </b-tab>
   </b-tabs>
 </b-card>
@@ -30,7 +30,6 @@ export default {
     return {
       toggly: true,
       update: true,
-      update2: true
     }
   },
    components: { AdminDienstForm, JsonEinlesen, AdminDienstBearbeiten, AdminUserBearbeiten
@@ -45,11 +44,6 @@ export default {
      toggleUpdate() {
        this.toggle;
        this.update = !this.update;
-     },
-
-     toggleUpdate2() {
-       this.toggle;
-       this.update2 = !this.update2;
      }
 
 

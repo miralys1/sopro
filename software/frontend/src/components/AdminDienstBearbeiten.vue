@@ -2,9 +2,11 @@
 <div>
 
 <div>
+  <input type="text" class="search" placeholder="Suche.." v-model="searchedService" @keyup.enter="search">
+  <br><br>
   <h3> {{this.msg}} </h3>
   <div class="list-group list-group-flush" style="overflow:scroll; height:400px;">
-  <button type="button" class="list-group-item list-group-item-action" style="display: inline-block" v-for="(service,index) in services" @click="onClick(index)">
+  <button type="button" class="list-group-item list-group-item-action" style="display: inline-block" v-for="(service,index) in foundServices" @click="onClick(index)">
     {{service.name}} ({{service.version}}) {{service.organisation}}
   </button>
 </div>
@@ -25,26 +27,37 @@ export default {
 watch: {
   pupdate: function () {
     this.mupdate()
-      }
+  },
+  searchedService: function() {
+    if(this.searchedService == ""){
+      this.foundServices = this.services;
+    }
+  }
     },
+
 components: {AdminDienstForm},
 props: ['pupdate'],
 methods: {
   onClick(index){
     //creating a copy of the object to not pass a reference
-    this.selectedService = JSON.parse(JSON.stringify(this.services[index]));
+    this.selectedService = JSON.parse(JSON.stringify(this.foundServices[index]));
     this.serviceSelected = true;
   },
 
   mupdate(){
-    this.axios.get('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/services')
-             .then(response =>
-             this.services = response.data
+    this.axios.get('http://134.245.1.240:9061/composer-0.0.1-AUTH/services')
+             .then(response => {
+             this.services = response.data;
+             this.foundServices = this.services;}
                  )
              .catch(function (error) {
               alert("Fehler");
              console.log(error);
                  });
+  },
+
+  search() {
+    
   }
 
 
@@ -53,6 +66,8 @@ methods: {
 
  data() {
    return{
+     searchedService: "",
+     foundServices: this.services,
      serviceSelected: false,
      selectedService: {
        id: 0,
@@ -89,3 +104,11 @@ methods: {
 }
 
 </script>
+
+<style>
+.search {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #000000;
+}
+</style>
