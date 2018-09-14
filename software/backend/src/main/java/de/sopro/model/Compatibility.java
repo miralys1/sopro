@@ -41,7 +41,7 @@ public class Compatibility {
 		// get list of names of all formats in the intersection
 		List<String> suitingFormats = intersect(s1.getFormatOut(), s2.getFormatIn());
 
-		boolean isCompatible = suitingFormats.isEmpty();
+		boolean isCompatible = !suitingFormats.isEmpty();
 
 		List<Alternative> alternatives = new ArrayList<Alternative>();
 
@@ -100,7 +100,7 @@ public class Compatibility {
 		// second list
 		for (Format elem : list1) {
 			for (Format elem2 : list2) {
-				if (!elem.equals(elem2) && isCompatible(elem, elem2)) {
+				if (isCompatible(elem, elem2)) {
 					intersection.add(elem.getType());
 				}
 			}
