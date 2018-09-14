@@ -22,12 +22,12 @@ public class AuthentificationController{
     @RequestMapping(value="/authentification", method=RequestMethod.GET)
     public ResponseEntity<DetailUser> getUserInformation(Principal principal){
         if(principal == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         User user = userRepo.findByEmail(principal.getName());
         if(user == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         DetailUser dUser = user.createDetailUser();
