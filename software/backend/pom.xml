@@ -4,7 +4,7 @@
 
         <groupId>de.se.105b</groupId>
         <artifactId>composer</artifactId>
-        <version>0.0.1-DEVELOPEMENT</version>
+        <version>0.0.1-SNAPSHOT</version>
         <packaging>war</packaging>
         <name>SWARM Composer</name>
         <description>Composer component of the SWARM Ecosystem</description>
