@@ -27,6 +27,8 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
     private ProgressBar progressBar;
     private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy HH:mm");
     private int position; //(app-)internal id
+    private CompositionView compositionView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +43,22 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
         //retrieve the (app-)internal id of the composition
         Intent intent = getIntent();
         position = intent.getIntExtra("COMP_POSITION", -1);
+
+        compositionView = findViewById(R.id.compositionView3);
+
         try {
             comp = LocalCache.getInstance().getCompAtPos(position, this);
         } catch (Exception e){
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             goBackToList(null);
         }
-        if(comp != null){
+        if(comp != null&& comp.getNodeList() != null && comp.getEdgeList() != null){
             //the needed composition details are not stored in the LocalCache yet; a request has been sent by LocalCache
             showLoading(false);
             tTitle.setText(comp.getName());
             tInfo.setText(getText(R.string.lastupdate)+" "+dateFormat.format(comp.getLastUpdate()));
-            draw();
+            compositionView.setComp(comp);
+
         }
 
     }
@@ -62,6 +68,8 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
      */
     private void draw(){
         //TODO create compView etc
+        //compositionView.setComp(comp);
+
     }
 
     /**
@@ -93,6 +101,8 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
         if(successful){
             //needed composition details are in LocalCache now
             comp = LocalCache.getInstance().getCompAtPos(position, this);
+            Toast.makeText(getApplicationContext(), "comp is ready", Toast.LENGTH_SHORT).show();
+
             if(comp == null){
                 //TODO handle fatal event
                 Toast.makeText(getApplicationContext(), getText(R.string.err_text_detail), Toast.LENGTH_SHORT).show();
@@ -101,7 +111,8 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
 
             tTitle.setText(comp.getName());
             tInfo.setText(getText(R.string.lastupdate)+" "+dateFormat.format(comp.getLastUpdate()));
-            draw();
+            Log.i("DetailActivity","View should receive Comp with "+comp.getNodeList().size()+" nodes");
+            compositionView.setComp(comp);
         } else {
             //server communication failed
             //TODO show error message

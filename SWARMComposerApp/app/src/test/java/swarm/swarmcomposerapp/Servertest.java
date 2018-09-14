@@ -22,6 +22,9 @@ import swarm.swarmcomposerapp.Utils.ServerCommunication;
 
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * Basic connection tests using Retrofit code and our interface
+ */
 public class Servertest {
 
 

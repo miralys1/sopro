@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -39,8 +40,14 @@ public class CompositionView extends View {
     private int paddingTop;
     private int paddingBot;
 
+    private int initX;
+    private int initY;
+
+    private double zoom=1;
+
     private int contentWidth;
     private int contentHeight;
+
 
     public void setComp(Composition comp) {
         this.comp = comp;
@@ -175,7 +182,7 @@ public class CompositionView extends View {
         super.onDraw(canvas);
 
         Paint drawPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        drawPaint.setColor(Color.BLACK);
+        drawPaint.setColor(Color.GRAY);
         drawPaint.setStyle(Paint.Style.FILL);
 
         Paint edgePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -183,13 +190,17 @@ public class CompositionView extends View {
         edgePaint.setStyle(Paint.Style.FILL);
         edgePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         edgePaint.setStrokeWidth(8);
+        canvas.translate(paddingLeft + contentWidth, paddingTop + contentHeight);
 
         int contentWidth = getWidth() - paddingLeft - paddingRight;
         int contentHeight = getHeight() - paddingTop - paddingBot;
-        Toast.makeText(getContext(),"Test",Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Test", Toast.LENGTH_LONG).show();
 
 
-        if(comp != null){
+        if (comp != null) {
+            Log.i("CompositionView", "Comp should be shown it includes " + comp.getNodeList().size() + " nodes");
+
+
             List<Node> nodes = comp.getNodeList();
 
 
@@ -205,12 +216,11 @@ public class CompositionView extends View {
                 Node source = e.getIn();
                 Node target = e.getOut();
 
-                float halfLength = initialLength /  (float)2;
+                float halfLength = initialLength / (float) 2;
 
 
-
-                canvas.drawLine(halfLength+source.getX(),halfLength+source.getY(),
-                        halfLength+target.getX(),halfLength+target.getY(), edgePaint);
+                canvas.drawLine(halfLength + source.getX(), halfLength + source.getY(),
+                        halfLength + target.getX(), halfLength + target.getY(), edgePaint);
 
 
             }
@@ -226,26 +236,39 @@ public class CompositionView extends View {
                     maxY = tY;
                 }
 
-                if(tX < minX){
+                if (tX < minX) {
                     minX = tX;
                 }
 
-                if(tY < minY){
+                if (tY < minY) {
                     minY = tY;
                 }
             }
 
 
-            for (Node n : nodes){
-                canvas.drawCircle(n.getX(),n.getY(),initialLength,drawPaint);
+            for (Node n : nodes) {
+                canvas.drawCircle(n.getX(), n.getY(), initialLength, drawPaint);
+                Log.d("Node", "X: " + n.getX() + " Y: " + n.getY());
 
-                final Drawable drawable = getContext().getDrawable(R.drawable.tp_angebote);
-                drawable.setBounds(0,0,150,150);
-                canvas.translate(n.getX()-75,n.getY()-75);
-                drawable.draw(canvas);
-                canvas.translate(- n.getX()+75,-n.getY()+75);
+                /*
+                  Attempt to get the resource of the image
+                 */
+                int drawableID = getContext().getResources()
+                        .getIdentifier(n.getSendService().getPicture().toLowerCase(),
+                                "drawable", getContext().getPackageName());
+                Log.d("Drawable",n.getSendService().getPicture().toLowerCase()+" id: "+drawableID);
+
+                //In the case that the drawableID is 0 the resource couldn't be found.
+                if (drawableID != 0) {
+
+                    final Drawable drawable = getContext().getDrawable(drawableID);
+
+                    drawable.setBounds(0, 0, 150, 150);
+                    canvas.translate(n.getX() - 75, n.getY() - 75);
+                    drawable.draw(canvas);
+                    canvas.translate(-n.getX() + 75, -n.getY() + 75);
+                }
             }
-
 
 
         }
@@ -258,7 +281,6 @@ public class CompositionView extends View {
             //int length = contentHeight * contentWidth / (4 * nodes.size());
 
 
-
             //Draw the edges
             //TODO: Draw arrowheads
             //TODO: Draw with compatibility
@@ -268,9 +290,9 @@ public class CompositionView extends View {
 
                 int sIndex = nodes.indexOf(source);
                 int tIndex = nodes.indexOf(target);
-               // RectF srect = rects[sIndex];
-               // RectF trect = rects[tIndex];
-               // float halfLength = length / (float) 2;
+                // RectF srect = rects[sIndex];
+                // RectF trect = rects[tIndex];
+                // float halfLength = length / (float) 2;
 //                float sMidX = srect.left + halfLength;
 //                float sMidY = srect.top + halfLength;
 //                float tMidX = trect.left + halfLength;
