@@ -170,8 +170,7 @@ public class ServiceController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	// TODO: implement
-	@RequestMapping(value = "/services/{id1}/{id2}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/services/{id1}/{id2}", method = RequestMethod.GET)
 	public ResponseEntity<CompatibilityAnswer> checkCompatibility(@PathVariable long id1, @PathVariable long id2) {
 		if (!serviceRepo.existsById(id1) || !serviceRepo.existsById(id2)) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
