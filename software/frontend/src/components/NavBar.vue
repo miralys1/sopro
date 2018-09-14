@@ -15,20 +15,20 @@
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav class="big" style="margin-left: 20px">
           <b-nav-item :to="'/'">Workspace</b-nav-item>
-          <b-nav-item :to="'/admin'" v-if="isAdmin">Adminpanel</b-nav-item> <!-- && isLoggedIn -->
+          <b-nav-item :to="'/admin'" v-if="user.isAdmin">Adminpanel</b-nav-item> <!-- && isLoggedIn -->
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
 
 
           <!-- später raus -->
-          <b-button class="mr-3" :pressed="false" @click="$emit('admin')" v-if="!isAdmin" variant="success">Admin</b-button>
+          <b-button class="mr-3" :pressed="false" @click="$emit('admin')" v-if="!user.isAdmin" variant="success">Admin</b-button>
           <b-button class="mr-3" :pressed="true" @click="$emit('admin')" v-else variant="danger">Admin</b-button>
 
 
-          <b-nav-item :to="'/login'" v-if="!loggedIn">Login</b-nav-item>
+          <b-nav-item :to="'/login'" v-if="!user.loggedIn">Login</b-nav-item>
           <b-nav-item-dropdown right v-else>
             <template slot="button-content">
-              Sie sind eingeloggt als: {{ fullName }}
+              Sie sind eingeloggt als: {{ user.fullName }}
             </template>
             <b-dropdown-item @click="$emit('logout')">Logout</b-dropdown-item>
           </b-nav-item-dropdown>
@@ -42,9 +42,7 @@
 <script>
 export default {
   props: {
-    isAdmin: Boolean,
-    fullName: String,
-    loggedIn: Boolean
+    user: Object
   }
 }
 </script>

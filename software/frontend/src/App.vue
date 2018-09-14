@@ -1,7 +1,7 @@
 <template>
   <div>
-    <NavBar :loggedIn="user.loggedIn" :fullName="user.fullName" :isAdmin="user.isAdmin" @logout="logout" @admin="admin"/>
-    <router-view @login="login" :loggedIn="user.loggedIn" :userId="user.userId"></router-view>
+    <NavBar :user="user" @logout="logout" @admin="admin"/>
+    <router-view @login="login" :user="user"></router-view>
   </div>
 </template>
 
@@ -12,6 +12,7 @@ export default {
   data() {
     return {
       user: {
+        token: '',
         loggedIn: false,
         userId: -1,
         isAdmin: false,
@@ -24,28 +25,23 @@ export default {
     NavBar
   },
   methods: {
-    login() {
+    login(user) {
       this.user.loggedIn = true
-      this.axios.get('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/whoami')
-        .then(response => {
-          this.user.userId = response.data.id
-          this.user.fullName = response.data.fullName
-          this.user.isAdmin = response.data.isAdmin
-          alert('Authentifizierung erfolgreich')
-        })
-        .catch(error => alert('Authentifizierung fehlgeschlagen'))
+      this.user.email = user.email
+      this.user.password = user.password
+      this.user.id = user.id
+      this.user.isAdmin = user.isAdmin
+      this.user.fullName = user.fullName
+      alert('Willkommen ' + this.user.fullName + '!')
     },
     logout() {
-      this.axios.post(
-        'http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/logout'
-      ).then(response => {
-        this.user.loggedIn = false
-        this.user.userId = -1
-        this.user.isAdmin = false
-        this.user.fullName = ''
-        window.location.replace('/')
-        alert('Sie wurden erfolgreich ausgeloggt!')
-      }).catch(response => alert('Server konnte nicht erreicht werden'))
+      this.user.email = ''
+      this.user.loggedIn = false
+      this.user.id = -1
+      this.user.isAdmin = false
+      this.user.fullName = ''
+      this.$router.push('/')
+      alert('Sie wurden erfolgreich ausgeloggt!')
     },
 
     // später raus

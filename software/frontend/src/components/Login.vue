@@ -149,31 +149,47 @@ export default {
           password: ''
         },
         form: {
-        email: '',
-        password: '',
-        title: null,
-        firstName: '',
-        lastName: ''
-      },
-      titles: [
-        { text: 'optional', value: null },
-        'Prof.', 'Dr.'
-      ]
+          email: '',
+          password: '',
+          title: null,
+          firstName: '',
+          lastName: ''
+        },
+        titles: [
+          { text: 'optional', value: null },
+          'Prof.', 'Dr.'
+        ],
+        user: {
+          token: '',
+          fullName: '',
+          id: -1,
+          admin: false
+        }
       }
     },
     methods: {
     signin (event) {
+      var token = 'Basic ' + btoa(unescape(encodeURIComponent(this.login.email +
+        ':' + this.login.password)))
       event.preventDefault()
-      this.axios.post('/login', {
-        username: this.login.email,
-        password: this.login.password
+      this.axios({
+        url: 'http://134.245.1.240:9061/composer-0.0.1-AUTH/authentification',
+        method: 'GET',
+        headers:
+        {
+          Authorization: token
+        }
       })
       .then(response => {
-        this.$emit('login')
-        window.location.replace('/')
+        this.user.token = token
+        this.user.fullName = response.data.fullName
+        this.user.id = response.data.id
+        this.user.isAdmin = response.data.admin
+        this.$emit('login', this.user)
+        this.$router.push('/')
       })
       .catch(error => {
-        alert('Login fehlgeschlagen')
+        alert('Authentifizierung fehlgeschlagen')
       })
     },
     register (event) {
@@ -187,7 +203,7 @@ export default {
       })
       .then(response => {
         alert('Registrierung erfolgreich')
-        window.location.replace('/login')
+        this.$router.push('/login')
       }
       )
       .catch(error => alert('Registrierung fehlgeschlagen'))
