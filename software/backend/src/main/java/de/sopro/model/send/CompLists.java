@@ -3,21 +3,23 @@ package de.sopro.model.send;
 import java.util.List;
 
 public class CompLists{
-    private List<SimpleComp> editable;
-    private List<SimpleComp> viewable;
+    private Iterable<SimpleComp> editable;
+    private Iterable<SimpleComp> viewable;
     private Iterable<SimpleComp> publicComps;
+    private Iterable<SimpleComp> owns;
 
-    public CompLists(List<SimpleComp> editable,List<SimpleComp> viewable, Iterable<SimpleComp> publicComps){
+    public CompLists(Iterable<SimpleComp> owns, Iterable<SimpleComp> editable, Iterable<SimpleComp> viewable, Iterable<SimpleComp> publicComps){
         this.editable = editable;
         this.viewable = viewable;
         this.publicComps = publicComps;
+        this.owns = owns;
     }
 
-    public List<SimpleComp> getEditable(){
+    public Iterable<SimpleComp> getEditable(){
         return editable;
     }
 
-    public List<SimpleComp> getviewable(){
+    public Iterable<SimpleComp> getviewable(){
         return viewable;
     }
 
@@ -25,15 +27,7 @@ public class CompLists{
         return publicComps;
     }
 
-    // public void setEditable(List<SimpleComp> editable){
-    //     this.editable = editable;
-    // }
-
-    // public void setViewable(List<SimpleComp> viewable){
-    //     this.viewable = viewable;
-    // }
-
-    // public void setPublicComps(List<SimpleComp> publicComps){
-    //     this.publicComps = publicComps;
-    // }
+    public Iterable<SimpleComp>  getOwns(){
+        return owns;
+    }
 }
