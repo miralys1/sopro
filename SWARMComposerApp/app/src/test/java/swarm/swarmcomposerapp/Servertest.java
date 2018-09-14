@@ -7,7 +7,9 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -42,9 +44,19 @@ public class Servertest {
 
     @Test
     public void test3() throws IOException {
-        Retrofit retrofit = new Retrofit.Builder()
+
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(5, TimeUnit.SECONDS)
+                .writeTimeout(5, TimeUnit.SECONDS);
+
+        Retrofit retrofit = new Retrofit.Builder().client(builder.build())
                 .baseUrl("http://134.245.1.240:9061/composer-0.0.1-AUTH/").addConverterFactory(GsonConverterFactory.create())
                 .build();
+
+
+
+
         final ServerCommunication com = retrofit.create(ServerCommunication.class);
         final ArrayList<Composition> comps = new ArrayList<>();
         final Call<CompositionsAnswer> arrayListCall = com.requestListCred(okhttp3.Credentials.basic("d@d.de","123"));

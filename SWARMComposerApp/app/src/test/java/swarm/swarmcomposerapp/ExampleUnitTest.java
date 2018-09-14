@@ -17,7 +17,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import retrofit2.Call;
@@ -51,6 +53,7 @@ public class ExampleUnitTest {
         mocky = new MockWebServer();
         mocky.start();
         url = mocky.url("/").toString();
+
     }
 
     @After
@@ -66,7 +69,13 @@ public class ExampleUnitTest {
     public void test() throws IOException {
         System.out.println("Begin of test: ");
 
-        Retrofit retrofit = new Retrofit.Builder()
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(5, TimeUnit.SECONDS)
+                .writeTimeout(5, TimeUnit.SECONDS);
+
+
+        Retrofit retrofit = new Retrofit.Builder().client(builder.build())
                 .baseUrl(url).addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -83,7 +92,7 @@ public class ExampleUnitTest {
         }
 
         System.out.println("Begin of response enqueue");
-        mocky.enqueue(new MockResponse().setResponseCode(200).setBody(input));
+        mocky.enqueue(new MockResponse().setResponseCode(200).setBody(input).setBodyDelay(6,TimeUnit.SECONDS));
 
 
         Call<ArrayList<Service>> servicesRequest = com.requestServices();
