@@ -1,9 +1,47 @@
 <template>
     <div class="node" :style="nodeStyle" @mousedown.self="mouseDown">
-      <div class="noselect servicename" pointer-events="none" @mousedown.self="mouseDown">
-        {{ service.name }}
+       <div class="noselect servicename" pointer-events="none" @mousedown.self="mouseDown">
+         {{ service.name }}
        </div>
-       <div v-if="!noHandles" class="noselect draghandle" @mousedown.self="startDrag" @mouseup="endDrag"/>
+       <div v-if="!noHandles" class="noselect draghandle"
+            @mousedown.self="startDrag"
+            @mouseup="endDrag"/>
+       <b-btn v-if="!dummy"
+              variant="primary"
+              :id="'info'+$vnode.key"
+              style="position:absolute; top: 72%; left: 75%"
+              >
+           <v-icon name="info"/>
+        </b-btn>
+        <b-popover :target="'info'+$vnode.key"
+                   placement="topright"
+                   title="Dienst Informationen"
+                   triggers="hover focus"
+                   >
+          <div> name: {{ service.name }} </div>
+          <div> version: {{ service.version }} </div>
+          <div> organisation: {{ service.organisation }} </div>
+          <div> created: {{ service.date }} </div>
+          <div> in:
+            <li v-for="input in service.formatIn">
+              {{
+                 input.type +
+                 (input.compatibilityDegree==="flexible" ? '<=' : '=') +
+                 (input.version==="" ? '?' : input.version )
+              }}
+            </li>
+          </div>
+          <div> out:
+            <li v-for="output in service.formatOut">
+              {{
+                 output.type +
+                 (output.compatibilityDegree==="flexible" ? '<=' : '=') +
+                 (output.version==="" ? '?' : output.version )
+              }}
+            </li>
+          </div>
+        </b-popover>
+
     </div>
 </template>
 
@@ -61,12 +99,17 @@ export default {
 <style scoped>
 .node {
   border: 4px solid black;
-  border-radius: 20px;
+  border-radius: 30px;
   background: #bbd2f7;
   opacity: 1;
   cursor: grab;
   box-sizing: border-box;
   box-shadow: 0px 4px 3px #101010;
+
+  /* background-image: url("https://www.webdesignerdepot.com/cdn-origin/uploads/circular_logos/NASA.jpg"); */
+  /* /\* background-size: cover; *\/ */
+  /* background-position: 50% 50%; */
+  /* background-repeat: no-repeat; */
 }
 
 .node:active {
@@ -102,8 +145,8 @@ export default {
     margin-top: 40px;
     border: 2px solid black;
     border-radius: 100%;
-    width:  50px;
-    height: 50px;
+    width:  60px;
+    height: 60px;
 }
 .draghandle:active {
     background: orange;

@@ -5,6 +5,9 @@
           :style="style">
         <!-- <animate attributeType="CSS" attributeName="opacity" -->
         <!--             from="1" to="0.7" dur="10s" repeatCount="indefinite" /> -->
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="2" orient="auto-start-reverse" markerUnits="strokeWidth">
+            <path d="M0,0 L0,4 L3,2 z" :fill="(state==="invalid" ? '#dc3545' : '#28a745')" />
+            </marker>
   </path>
 </template>
 

@@ -62,7 +62,7 @@ export default {
   mounted() {
     this.axios({
       method: 'get',
-      url: 'http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/compositions'
+      url: 'http://134.245.1.240:9061/composer-0.0.1-AUTH/compositions'
     }).then(response => {
       this.editableComps = response.data.editable
       this.viewableComps = response.data.viewable
