@@ -232,7 +232,7 @@ export default {
         if(this.pedit) {
 
         alert(JSON.stringify(this.form));
-        this.axios.put('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/services', JSON.stringify(this.form))
+        this.axios.put('http://134.245.1.240:9061/composer-0.0.1-AUTH/services', JSON.stringify(this.form))
                  .then(function (response) { alert(response);})
                  .catch(function (error) {alert(error);});
 
@@ -243,7 +243,7 @@ export default {
 
         alert(JSON.stringify(this.form));
 
-        this.axios.post('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/services', JSON.stringify(this.form))
+        this.axios.post('http://134.245.1.240:9061/composer-0.0.1-AUTH/services', JSON.stringify(this.form))
                  .then(function (response) { alert(response);})
                  .catch(function (error) {alert(error);});
         }
