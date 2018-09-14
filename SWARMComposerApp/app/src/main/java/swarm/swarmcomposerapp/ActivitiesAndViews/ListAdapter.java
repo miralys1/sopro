@@ -53,7 +53,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Composition comp = compList.get(position);
         holder.name.setText(comp.getName());
-        holder.author.setText(comp.getOwner().getFirstName() + " " + comp.getOwner().getLastName());
+        holder.author.setText(comp.getOwner().getFullName());
         //TODO Display icon based on whether Composition is Owned, Shared or Public
         holder.date.setText("ID: "+ comp.getId());
     }
