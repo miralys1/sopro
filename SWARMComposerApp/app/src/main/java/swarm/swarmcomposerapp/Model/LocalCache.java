@@ -2,7 +2,10 @@ package swarm.swarmcomposerapp.Model;
 
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import swarm.swarmcomposerapp.ActivitiesAndViews.IResponse;
@@ -18,8 +21,11 @@ public class LocalCache implements ICache {
 
     private String email;
     private String password;
-    public static final String TEST_SERVER = "http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/";
-    private String serverAddress = "http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/";
+    private long lastUpdate;
+    //public static final String TEST_SERVER = "http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/";
+    public static final String TEST_SERVER = "http://134.245.1.240:9061/composer-0.0.1-AUTH/";
+    private String serverAddress = TEST_SERVER;
+    private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy HH:mm");
 
     public String getEmail() {
         return email;
@@ -39,6 +45,10 @@ public class LocalCache implements ICache {
 
     public String getServerAddress() {
         return serverAddress;
+    }
+
+    public String getLastUpdate(){
+        return dateFormat.format(new Date(lastUpdate));
     }
 
     public void setServerAddress(String serverAddress) {
@@ -104,7 +114,7 @@ public class LocalCache implements ICache {
                     "at this position is null.");
         }
 
-        if (tempComp.getNodeList().isEmpty()) {
+        if (tempComp.getNodeList() == null || tempComp.getNodeList().isEmpty()) {
             ActualRequests.actualCompDetailsRequest(tempComp, caller);
             return null;
         }
@@ -130,6 +140,7 @@ public class LocalCache implements ICache {
      * without checking for changes.
      */
     public void hardRefresh(IResponse caller) {
+        lastUpdate = System.currentTimeMillis();
         Log.i("AddressHardRefresh","Caller: "+caller.getClass().getName());
         compositions = new ArrayList<>();
         ActualRequests.actualCompListRequest(compositions, caller);

@@ -31,10 +31,9 @@ public class ListActivity extends AppCompatActivity implements IResponse {
 
     private RecyclerView recycler;
     private ListAdapter adapter;
-    //private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Composition> compList = new ArrayList<>();
-    private TextView tLoading;
+    private TextView tLoading, tLastUpdate;
     private ProgressBar progressBar;
     private static final String PREFERENCE_NAME = "app_settings";
     private SharedPreferences preferences;
@@ -63,6 +62,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
             cache.setEmail(email);
 
 
+        tLastUpdate = findViewById(R.id.text_lastupdate);
         tLoading = findViewById(R.id.text_loading1);
         progressBar = findViewById(R.id.progressBar1);
 
@@ -79,7 +79,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
             @Override
             public void onClick(View view, int position) {
                 //User clicked on one of the compositions in the list. Intent to open it in DetailActivity.
-                //Composition comp = compList.get(position);
+                showLoading(false);
                 Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
                 //pass the (app-) internal id of the requested composition to the DetailActivity via intent
                 intent.putExtra("COMP_POSITION", position);
@@ -139,6 +139,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
     }
 
     public void startSettingsActivity(View v) {
+        showLoading(false);
         Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
         startActivity(intent);
     }
@@ -158,9 +159,14 @@ public class ListActivity extends AppCompatActivity implements IResponse {
         if (successful) {
             //overview data is now available at LocalCache
             compList = LocalCache.getInstance().getCompositions(this);
+            if(compList == null){
+                //TODO handle fatal event
+                Toast.makeText(getApplicationContext(), getText(R.string.err_text_detail), Toast.LENGTH_SHORT).show();
+                return;
+            }
             Log.i("ListActNotify", "Size of compositions: " + compList.size() + "");
             adapter.setCompList(compList);
-            //adapter.notifyDataSetChanged();
+            tLastUpdate.setText(getText(R.string.lastupdate)+" "+cache.getLastUpdate());
         } else {
             //server request failed
             //TODO show error dialog with tips
