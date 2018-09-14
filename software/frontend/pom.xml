@@ -4,7 +4,7 @@
 
   <groupId>de.se.105b</groupId>
   <artifactId>frontend</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1-DEVELOPEMENT</version>
   <packaging>jar</packaging>
 
   <build>
