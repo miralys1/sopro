@@ -248,20 +248,21 @@ export default {
               edges: links
           }
 
-          this.axios.put('http://134.245.1.240:9061/composer-0.0.1-AUTH/compositions/' + this.$route.params.compId,
+          this.axios.put('/compositions/' + this.$route.params.compId,
                          dataSeg,
                          {headers: {"Content-Type": "application/json",
-                                    "id" : 1
+                                    "id" : 1,
+                                    "Authorization": this.$route.params.viewerId.user.token
                                    }}
                         )
       }
   },
   mounted () {
-    this.axios.get('http://134.245.1.240:9061/composer-0.0.1-AUTH/services')
+    this.axios.get('/services')
         .then(response => this.services = response.data)
         .catch(error => console.log(error))
 
-    this.axios.get('http://134.245.1.240:9061/composer-0.0.1-AUTH/compositions/' + this.$route.params.compId)
+    this.axios.get('/compositions/' + this.$route.params.compId)
           .then(response => {
                     this.composition = response.data
                     this.nodes = this.composition.nodes //.map(e => ({id: e.id, x: e.x, y: e.y, sendService: e.sendService}))

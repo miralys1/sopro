@@ -173,7 +173,7 @@ export default {
         ':' + this.login.password)))
       event.preventDefault()
       this.axios({
-        url: 'http://134.245.1.240:9061/composer-0.0.1-AUTH/authentification',
+        url: '/authentification',
         method: 'GET',
         headers:
         {

@@ -60,11 +60,11 @@ export default {
   },
   mounted() {
     this.axios({
-      url: 'http://134.245.1.240:9061/composer-0.0.1-AUTH/compositions',
+      url: '/compositions',
       method: 'get',
       headers:
       {
-        Authorization: user.token
+        Authorization: this.user.token
       }
     }).then(response => {
       this.editableComps = response.data.editable
