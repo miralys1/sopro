@@ -1,6 +1,6 @@
 <template>
   <div class = "out">
-    <input type="text" placeholder="Suche.." v-model="searchedUser" @keyup.enter="search">
+    <input class="search" type="text" placeholder="Suche.." v-model="searchedUser" @keyup.enter="search">
     <br><br>
     <div class="list-group list-group-flush" style="overflow:scroll;">
     <button type="button" class="list-group-item list-group-item-action" style="display: inline-block" v-for="(user,index) in users" @click="onClick(index)">
@@ -171,3 +171,11 @@ methods: {
 }
 
 </script>
+
+<style>
+.search {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #000000;
+}
+</style>
