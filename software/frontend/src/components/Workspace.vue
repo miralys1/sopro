@@ -1,7 +1,7 @@
 <template>
   <div class="mainlayout">
     <b-container style="text-align: center"
-                 v-if="!editableComps.length == 0 && loggedIn">
+                 v-if="!editableComps.length == 0 && user.loggedIn">
       <h3>bearbeitbare Kompositionen</h3>
       <b-row class="comprow">
         <b-col v-for="comp in editableComps"
@@ -13,7 +13,7 @@
       </b-row>
     </b-container>
     <b-container style="text-align: center"
-                 v-if="!viewableComps.length == 0 && loggedIn">
+                 v-if="!viewableComps.length == 0 && user.loggedIn">
       <h3>einsehbare Kompositionen</h3>
       <b-row class="comprow">
         <b-col v-for="comp in viewableComps"
@@ -33,7 +33,7 @@
                class="compcol round">
           <router-link class="test" :to="{
                   name: 'Editor',
-                  params: { compId: comp.id, viewerId: userId }}">
+                  params: { compId: comp.id, viewerId: user }}">
                   <div style="width: 200px; height: 150px">
             <span class="title">{{comp.name}} <br/></span>
             <span class="author">{{comp.owner.fullName}} <br /></span>
@@ -49,8 +49,7 @@
 
 export default {
   props: {
-    loggedIn: Boolean,
-    userId: Number
+    user: Object
   },
   data() {
     return {
@@ -61,8 +60,12 @@ export default {
   },
   mounted() {
     this.axios({
+      url: 'http://134.245.1.240:9061/composer-0.0.1-AUTH/compositions',
       method: 'get',
-      url: 'http://134.245.1.240:9061/composer-0.0.1-AUTH/compositions'
+      headers:
+      {
+        Authorization: user.token
+      }
     }).then(response => {
       this.editableComps = response.data.editable
       this.viewableComps = response.data.viewable
