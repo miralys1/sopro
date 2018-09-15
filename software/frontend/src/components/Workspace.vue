@@ -1,14 +1,41 @@
 <template>
   <div class="mainlayout">
     <b-container style="text-align: center"
+                 v-if="!ownComps.length == 0 && user.loggedIn">
+      <h3>eigene Kompositionen</h3>
+      <b-row class="comprow">
+        <b-col v-for="comp in ownComps"
+               :key="comp.id"
+               class="compcol round"
+               cols="2">
+          <router-link class="test" :to="{
+            name: 'Editor',
+            params: { compId: comp.id }
+          }">
+            <div style="width: 200px; height: 150px">
+              <span class="title">{{comp.name}} <br/></span>
+            </div>
+          </router-link>
+        </b-col>
+      </b-row>
+    </b-container>
+    <b-container style="text-align: center"
                  v-if="!editableComps.length == 0 && user.loggedIn">
       <h3>bearbeitbare Kompositionen</h3>
       <b-row class="comprow">
         <b-col v-for="comp in editableComps"
                :key="comp.id"
-               class="compcol round">
-          <span class="title">{{comp.name}} <br/></span>
-          <span class="author">{{comp.owner.fullName}} <br /></span>
+               class="compcol round"
+               cols="2">
+          <router-link class="test" :to="{
+                 name: 'Editor',
+                 params: { compId: comp.id }
+               }">
+            <div style="width: 200px; height: 150px">
+              <span class="title">{{comp.name}} <br/></span>
+              <span class="author">{{comp.owner.fullName}} <br /></span>
+            </div>
+          </router-link>
         </b-col>
       </b-row>
     </b-container>
@@ -18,9 +45,17 @@
       <b-row class="comprow">
         <b-col v-for="comp in viewableComps"
                :key="comp.id"
-               class="compcol round">
-          <span class="title">{{comp.name}} <br/></span>
-          <span class="author">{{comp.owner.fullName}} <br /></span>
+               class="compcol round"
+               cols="2">
+          <router-link class="test" :to="{
+                  name: 'Editor',
+                  params: { compId: comp.id }
+                }">
+            <div style="width: 200px; height: 150px">
+              <span class="title">{{comp.name}} <br/></span>
+              <span class="author">{{comp.owner.fullName}} <br /></span>
+            </div>
+          </router-link>
         </b-col>
       </b-row>
     </b-container>
@@ -30,14 +65,16 @@
       <b-row class="comprow">
         <b-col v-for="comp in publicComps"
                :key="comp.id"
-               class="compcol round">
+               class="compcol round"
+               cols="2">
           <router-link class="test" :to="{
                   name: 'Editor',
-                  params: { compId: comp.id, viewerId: user }}">
-                  <div style="width: 200px; height: 150px">
-            <span class="title">{{comp.name}} <br/></span>
-            <span class="author">{{comp.owner.fullName}} <br /></span>
-                 </div>
+                  params: { compId: comp.id }
+                }">
+            <div style="width: 200px; height: 150px">
+              <span class="title">{{comp.name}} <br/></span>
+              <span class="author">{{comp.owner.fullName}} <br /></span>
+            </div>
           </router-link>
         </b-col>
       </b-row>
@@ -53,6 +90,7 @@ export default {
   },
   data() {
     return {
+      ownComps: [],
       editableComps: [],
       viewableComps: [],
       publicComps: []
@@ -61,12 +99,9 @@ export default {
   mounted() {
     this.axios({
       url: '/compositions',
-      method: 'get',
-      headers:
-      {
-        Authorization: this.user.token
-      }
+      method: 'get'
     }).then(response => {
+      this.ownComps = response.data.owns
       this.editableComps = response.data.editable
       this.viewableComps = response.data.viewable
       this.publicComps = response.data.publicComps
@@ -98,12 +133,10 @@ h3 {
   text-align: left;
   font-size: 15px;
   border: 1px solid black;
-  min-width: 200px;
-  max-width: 200px;
   height: 130px;
   overflow: hidden;
   position: relative;
-  white-space:nowrap;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 .compcol:hover {

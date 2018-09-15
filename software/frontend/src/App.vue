@@ -47,15 +47,15 @@ export default {
   },
   mounted() {
     this.axios({
-      url: '/authentificate',
+      url: '/authentification',
       method: 'get',
-    }).then(function(res) {
+    }).then(res => {
       this.user.loggedIn = true
       this.user.id = res.data.id
-      this.user.isAdmin = res.data.isAdmin
+      this.user.isAdmin = res.data.admin
       this.user.fullName = res.data.fullName
       alert('Willkommen ' + this.user.fullName + '!')
-    }).ctach(function(err) {console.log(err)})
+    }).catch(function(err) {console.log(err)})
   }
 }
 </script>
@@ -63,8 +63,8 @@ export default {
 <style>
 .mainlayout {
   margin: 10vh auto;
-  width: 90vw;
-  padding: 2.5% 5%;
+  width: 65vw;
+  padding: 2.5% 2.5%;
   background-color: #f8f9fa;
   border-radius: 5px;
   border: 1px solid black;

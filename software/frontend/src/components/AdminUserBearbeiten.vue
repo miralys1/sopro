@@ -129,9 +129,15 @@ methods: {
 
       alert(JSON.stringify(this.user));
 
-      this.axios.post('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/users', JSON.stringify(this.user))
-               .then(function (response) { alert(response);})
-               .catch(function (error) {alert(error);});
+      this.axios({
+        url: '/users',
+        method: 'post',
+        data: this.user,
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(function (response) { alert(response);})
+        .catch(function (error) {alert(error);});
 
   },
 
@@ -147,7 +153,7 @@ methods: {
   search (evt) {
    this.users = [];
 
-   this.axios.get('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/users')
+   this.axios.get('/users')
             .then(response =>
             this.users = response.data
                 )
