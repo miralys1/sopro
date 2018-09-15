@@ -65,6 +65,9 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
         bHelp = findViewById(R.id.button_help);
 
         autoFill(); //fill in the fields with saved data
+        if(cache.getPassword() != null){
+            setLogoutView();
+        }
     }
 
     /**
@@ -80,13 +83,12 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
 
     /**
      * change the views to show the logout button as well as the username
-     * @param username (formatted) to be displayed to the user
      */
-    private void setLogoutView(String username){
+    private void setLogoutView(){
         //TODO get username
         bLogin.setVisibility(View.GONE);
         bLogout.setVisibility(View.VISIBLE);
-        tLogin.setText(getString(R.string.logged_in_as)+" "+username);
+        tLogin.setText(getString(R.string.logged_in_as)+cache.getEmail());
         tEmail.setVisibility(View.GONE);
         tPassword.setVisibility(View.GONE);
     }
@@ -141,7 +143,6 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
             } catch(Exception e){
                 Toast.makeText(getApplicationContext(), getText(R.string.err_text_illegalserveraddress), Toast.LENGTH_SHORT).show();
             }
-            Log.i("UpdateAddressTo", serverAddress);
 
         }
     }
@@ -189,26 +190,27 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
 
     @Override
     public void notify(boolean successful) {
+        Log.i("LOGIN", "settings notify successful = "+successful+", state "+state);
         if(successful){
             LocalCache cache = LocalCache.getInstance();
             switch (state){
                 case LOGIN: {
-                    //login was successfull; store new email in preferences
-                    setLogoutView(cache.getEmail());
+                    //login was successful; store new email in preferences
+                    setLogoutView();
                     editor.putString("EMAIL", email);
                     editor.commit();
-                };
+                }; break;
                 case LOGOUT: {
                     //logout was successfull; remove email in preferences
                     setLoginView();
                     editor.putString("EMAIL", null);
                     editor.commit();
-                };
+                }; break;
                 case ADDRESS_CHANGE: {
                     //address change was successfull; store new server address in preferences
                     editor.putString("SERVERADDRESS", serverAddress);
                     editor.commit();
-                };
+                }; break;
             }
         } else {
             //Something went wrong; reload old preferences into cache and text fields
@@ -218,29 +220,29 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
                     //TODO show error dialog with tips
                     Toast.makeText(getApplicationContext(), getText(R.string.err_text_logout), Toast.LENGTH_SHORT).show();
                     cache.setEmail(preferences.getString("EMAIL", ""));
-                };
+                }; break;
                 case LOGIN: {
                     //login failed, remove faulty user data
                     //TODO show error dialog with tips
                     Toast.makeText(getApplicationContext(), getText(R.string.err_text_login), Toast.LENGTH_SHORT).show();
                     cache.setEmail(null);
                     cache.setPassword(null);
-                };
+                }; break;
                 case ADDRESS_CHANGE: {
                     //address change failed; remove faulty address
                     //TODO show error dialog with tips
                     Toast.makeText(getApplicationContext(), getText(R.string.err_text_serveraddress), Toast.LENGTH_SHORT).show();
                     cache.setServerAddress(preferences.getString("SERVERADDRESS", "http://default.de/"));
-                };
+                }; break;
             }
-            autoFill();
-            //fill in fields with new/old information
         }
+        autoFill();
+        //fill in fields with new/old information
         showLoading(false);
     }
 
     /**
-     * retieve email and server address from LocalCache and pre fill in the fields
+     * retrieve email and server address from LocalCache and pre fill in the fields
      */
     private void autoFill(){
         password = "";
