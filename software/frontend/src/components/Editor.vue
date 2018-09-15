@@ -212,14 +212,18 @@ export default {
           this.dragLink = id;
       },
       endDrag: function (id) {
-          console.log("end");
-          var n1 = this.dragLink;
-          var n2 = id;
-          this.dragLink = null;
-          // TODO Prevent double entries
-          // TODO Get service connecting
-          // console.log(newId(this.links))
-          this.links = this.links.concat({id: newId(this.links),node1: n1, node2: n2, compatibility: null});
+          if (this.dragLink!==null) {
+            console.log("end");
+            var n1 = this.dragLink;
+            var n2 = id;
+            this.dragLink = null;
+            // TODO Prevent double entries
+            // TODO Get service connecting
+            // console.log(newId(this.links))
+            if (this.links.find(e => e.node1 === n1 && e.node2 === n2)===undefined) {
+                this.links = this.links.concat({id: newId(this.links), node1: n1, node2: n2, compatibility: null});
+            }
+          }
       },
       save: function (event) {
           var nodes = this.nodes.map(function(e) {
