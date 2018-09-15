@@ -45,7 +45,7 @@ methods: {
   },
 
   mupdate(){
-    this.axios.get('http://134.245.1.240:9061/composer-0.0.1-AUTH/services')
+    this.axios.get('/services')
              .then(response => {
              this.services = response.data;
              this.foundServices = this.services;}

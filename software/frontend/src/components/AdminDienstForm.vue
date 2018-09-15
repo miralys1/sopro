@@ -232,9 +232,15 @@ export default {
         if(this.pedit) {
 
         alert(JSON.stringify(this.form));
-        this.axios.put('http://134.245.1.240:9061/composer-0.0.1-AUTH/services', JSON.stringify(this.form))
-                 .then(function (response) { alert(response);})
-                 .catch(function (error) {alert(error);});
+        this.axios({
+          url: '/services/' + this.form.id,
+          method: 'put',
+          data: this.form,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }).then(function (response) { alert(response);})
+          .catch(function (error) {alert(error);});
 
         } else {
         this.form.date = Date.now();
@@ -243,9 +249,15 @@ export default {
 
         alert(JSON.stringify(this.form));
 
-        this.axios.post('http://134.245.1.240:9061/composer-0.0.1-AUTH/services', JSON.stringify(this.form))
-                 .then(function (response) { alert(response);})
-                 .catch(function (error) {alert(error);});
+        this.axios({
+          url: '/services',
+          method: 'post',
+          data: this.form,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }).then(function (response) { alert(response);})
+          .catch(function (error) {alert(error);});
         }
 
       } catch(err) {
