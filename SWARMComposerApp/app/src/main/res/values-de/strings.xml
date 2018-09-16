@@ -4,7 +4,7 @@
     <string name="settings">Einstellungen</string>
     <string name="loading">Lädt...</string>
     <string name="login">Einloggen</string>
-    <string name="logged_in_as">"Eingeloogt als "</string>
+    <string name="logged_in_as">"Eingeloggt als "</string>
     <string name="logout">Ausloggen</string>
     <string name="email">E-Mail-Adresse</string>
     <string name="password">Passwort</string>
@@ -24,8 +24,8 @@
     <string name="err_text">Es gibt keine weiteren Informationen zu diesem Fehler.</string>
     <string name="err_text_emailpasswordmissing">Die E-Mail-Adresse oder das Passwort fehlen.</string>
     <string name="err_text_serveraddressmissing">Bitte eine Serveradresse eingeben.</string>
-    <string name="err_text_logout">Die Kommunikation mit dem Server ist während des Ausloggens fehlgeschlagen.</string>
-    <string name="err_text_login">Die Kommunikation mit dem Server ist während des Einloggens fehlgeschlagen.</string>
+    <string name="err_text_logout">Das Ausloggen ist fehlgeschlagen.</string>
+    <string name="err_text_login">Das Einloggen ist fehlgeschlagen.</string>
     <string name="err_text_serveraddress">Die Kommunikation mit dem Server unter der neuen Adresse ist fehlgeschlagen.</string>
     <string name="err_text_list">Die Kommunikation mit dem Server ist während der Abfrage der Übersichtsliste fehlgeschlagen.</string>
     <string name="err_text_detail">Die Kommunikation mit dem Server ist während der Abfrage der Kompositionsdetails fehlgeschlagen.</string>

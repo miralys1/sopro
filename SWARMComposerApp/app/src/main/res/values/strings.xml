@@ -48,7 +48,7 @@
     </string>
     <string name="d_welcome_title">Welcome!</string>
     <string name="d_welcome_button">Open Settings</string>
-    <string name="d_welcome_text">"\n        Hello! You will find a list of public compositions, once you have updated the server address on the settings page.\n        In order to see your own compositions or those shared with you, please log in on the settings page.\n        You can find the settings page by tapping on the icon at the top right of the current screen.\n    "</string>
+    <string name="d_welcome_text">"Hello! You will find a list of public compositions, once you have updated the server address on the settings page.\n        In order to see your own compositions or those shared with you, please log in on the settings page.\n        You can find the settings page by tapping on the icon at the top right of the current screen.\n    "</string>
     <string name="d_detailviewguide_title">Guide</string>
     <string name="d_detailviewguide_text">Instructions</string>
 
@@ -57,8 +57,8 @@
     <string name="err_text">There are no details about the error.</string>
     <string name="err_text_emailpasswordmissing">Email or password missing.</string>
     <string name="err_text_serveraddressmissing">Server address missing.</string>
-    <string name="err_text_logout">Server connection failed during logout.</string>
-    <string name="err_text_login">Server connection failed during login.</string>
+    <string name="err_text_logout">Logout failed.</string>
+    <string name="err_text_login">Login failed.</string>
     <string name="err_text_serveraddress">Server connection failed while testing changed server address.</string>
     <string name="err_text_list">Server connection failed when requesting list.</string>
     <string name="err_text_detail">Server connection failed when requesting details.</string>
