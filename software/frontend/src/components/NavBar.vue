@@ -18,13 +18,6 @@
           <b-nav-item :to="'/admin'" v-if="user.isAdmin">Adminpanel</b-nav-item> <!-- && isLoggedIn -->
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
-
-
-          <!-- später raus -->
-          <b-button class="mr-3" :pressed="false" @click="$emit('admin')" v-if="!user.isAdmin" variant="success">Admin</b-button>
-          <b-button class="mr-3" :pressed="true" @click="$emit('admin')" v-else variant="danger">Admin</b-button>
-
-
           <b-nav-item :to="'/login'" v-if="!user.loggedIn">Login</b-nav-item>
           <b-nav-item-dropdown right v-else>
             <template slot="button-content">

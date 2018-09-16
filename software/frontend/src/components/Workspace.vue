@@ -1,14 +1,13 @@
 <template>
   <div class="mainlayout">
-    <b-container style="text-align: center"
-                 v-if="!ownComps.length == 0 && user.loggedIn">
+    <b-container v-if="!ownComps.length == 0 && user.loggedIn">
       <h3>eigene Kompositionen</h3>
       <b-row class="comprow">
         <b-col v-for="comp in ownComps"
                :key="comp.id"
                class="compcol round"
                cols="2">
-          <router-link class="test" :to="{
+          <router-link class="link" :to="{
             name: 'Editor',
             params: { compId: comp.id }
           }">
@@ -19,15 +18,14 @@
         </b-col>
       </b-row>
     </b-container>
-    <b-container style="text-align: center"
-                 v-if="!editableComps.length == 0 && user.loggedIn">
+    <b-container v-if="!editableComps.length == 0 && user.loggedIn">
       <h3>bearbeitbare Kompositionen</h3>
       <b-row class="comprow">
         <b-col v-for="comp in editableComps"
                :key="comp.id"
                class="compcol round"
                cols="2">
-          <router-link class="test" :to="{
+          <router-link class="link" :to="{
                  name: 'Editor',
                  params: { compId: comp.id }
                }">
@@ -39,15 +37,14 @@
         </b-col>
       </b-row>
     </b-container>
-    <b-container style="text-align: center"
-                 v-if="!viewableComps.length == 0 && user.loggedIn">
+    <b-container v-if="!viewableComps.length == 0 && user.loggedIn">
       <h3>einsehbare Kompositionen</h3>
       <b-row class="comprow">
         <b-col v-for="comp in viewableComps"
                :key="comp.id"
                class="compcol round"
                cols="2">
-          <router-link class="test" :to="{
+          <router-link class="link" :to="{
                   name: 'Editor',
                   params: { compId: comp.id }
                 }">
@@ -59,15 +56,14 @@
         </b-col>
       </b-row>
     </b-container>
-    <b-container style="text-align: center"
-                 v-if="!publicComps.length == 0">
-      <h3>öffentliche Kompositionen</h3>
+    <b-container v-if="!publicComps.length == 0">
+      <h3>&ouml;ffentliche Kompositionen</h3>
       <b-row class="comprow">
         <b-col v-for="comp in publicComps"
                :key="comp.id"
                class="compcol round"
                cols="2">
-          <router-link class="test" :to="{
+          <router-link class="link" :to="{
                   name: 'Editor',
                   params: { compId: comp.id }
                 }">
@@ -127,9 +123,6 @@ h3 {
 .compcol {
   margin: 10px 10px;
   padding-top: 10px;
-  /* padding-left: 10px;
-  padding-right: 10px;
-  padding-bottom: 10px; */
   text-align: left;
   font-size: 15px;
   border: 1px solid black;
@@ -146,17 +139,12 @@ h3 {
   font-size: 20px;
   font-weight: bold
 }
-.test {
+.link {
   color: black;
 }
-.test:hover {
+.link:hover {
   color: black;
   color: blue;
   text-decoration: none;
-}
-.edit {
-  position: absolute;
-  bottom: 6px;
-  right: 6px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavBar :user="user" @logout="logout" @admin="admin"/>
+    <NavBar :user="user" @logout="logout"/>
     <router-view @login="login" :user="user"></router-view>
   </div>
 </template>
@@ -38,11 +38,6 @@ export default {
       this.user.fullName = ''
       this.$router.push('/')
       alert('Sie wurden erfolgreich ausgeloggt!')
-    },
-
-    // später raus
-    admin() {
-      this.user.isAdmin = !this.user.isAdmin
     }
   },
   mounted() {

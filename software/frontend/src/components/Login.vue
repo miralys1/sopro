@@ -168,12 +168,13 @@ export default {
     },
     methods: {
     signin (event) {
-      var token = 'Basic ' + btoa(unescape(encodeURIComponent(this.login.email +
+      var token = 'Basic ' +
+        btoa(decodeURIComponent(encodeURIComponent(this.login.email +
         ':' + this.login.password)))
       event.preventDefault()
       this.axios({
         url: '/authentification',
-        method: 'GET',
+        method: 'get',
         headers:
         {
           Authorization: token
