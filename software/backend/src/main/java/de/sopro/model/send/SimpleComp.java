@@ -1,17 +1,22 @@
 package de.sopro.model.send;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class SimpleComp {
 
 	private SimpleUser owner;
 	private long id;
 	private String name;
-	private boolean isEditable;
+	private boolean editable;
 
-	public SimpleComp(long id, SimpleUser owner, String name, boolean isEditable) {
+	@JsonCreator
+	public SimpleComp(@JsonProperty("id") long id, @JsonProperty("owner") SimpleUser owner,
+			@JsonProperty("name") String name, @JsonProperty("editable")boolean editable) {
 		this.id = id;
 		this.owner = owner;
 		this.name = name;
-		this.isEditable = isEditable;
+		this.editable = editable;
 	}
 
 	public SimpleUser getOwner() {
@@ -39,11 +44,11 @@ public class SimpleComp {
 	}
 
 	public boolean isEditable() {
-		return isEditable;
+		return editable;
 	}
 
-	public void setEditable(boolean isEditable) {
-		this.isEditable = isEditable;
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 
 	public String toString() {
