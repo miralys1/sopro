@@ -2,7 +2,7 @@
 <multipane class="vertical-panes" layout="vertical">
   <div class="pane" :style="{ minWidth: '0%', width: '150px', maxWidth: '40%' }">
     <div>
-      <h6 class="title is-6">Janek ist dum</h6>
+      <h6 class="title is-6">Janek ist dumm und Christian auch</h6>
     </div>
   </div>
 

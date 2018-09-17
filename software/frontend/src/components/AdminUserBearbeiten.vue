@@ -147,7 +147,7 @@ methods: {
   search (evt) {
    this.users = [];
 
-   this.axios.get('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/users')
+   this.axios.get('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/users', this.searchedUser)
             .then(response =>
             this.users = response.data
                 )
@@ -163,9 +163,17 @@ methods: {
 
   onClick(index) {
      var id = this.users[idex].id;
-    //get request mit id und antwort auf this user und this backup user
-    this.user = JSON.parse(JSON.stringify(this.users[index])) ;
-    this.backupUser = JSON.parse(JSON.stringify(this.users[index])) ;
+
+     this.axios.get('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/users/' + id)
+              .then(response => {
+              this.users = response.data;
+              this.backupUser = JSON.parse(JSON.stringify(this.users)) ;
+            }
+                  )
+              .catch(function (error) {
+               alert("Fehler");
+              console.log(error);
+                  });
   }
 
 }
