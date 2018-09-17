@@ -1,5 +1,8 @@
 package de.sopro.model.send;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import de.sopro.model.User;
 
 public class DetailUser extends SimpleUser {
@@ -8,7 +11,10 @@ public class DetailUser extends SimpleUser {
 	private String title;
 	private boolean admin;
 
-	public DetailUser(String email, String title, boolean admin, String firstName, String lastName, long id) {
+	@JsonCreator
+	public DetailUser(@JsonProperty("email") String email, @JsonProperty("title") String title,
+			@JsonProperty("admin") boolean admin, @JsonProperty("firstName") String firstName,
+			@JsonProperty("lastName") String lastName, @JsonProperty("id") long id) {
 		super(id, firstName, lastName);
 		this.email = email;
 		this.title = title;
