@@ -1,5 +1,6 @@
 package de.sopro.controller.rest;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,7 +45,21 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
-	public ResponseEntity<DetailUser> getUserDetails(@PathVariable long id) {
+	public ResponseEntity<DetailUser> getUserDetails(@PathVariable long id, Principal principal) {
+
+		if (principal == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		User loggedUser = userRepo.findByEmail(principal.getName());
+		if (loggedUser == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		if (!loggedUser.isAdmin() && loggedUser.getId() != id) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
 		Optional<User> user = userRepo.findById(id);
 		if (!user.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -52,17 +68,30 @@ public class UserController {
 		return new ResponseEntity<>(u.createDetailUser(), HttpStatus.OK);
 	}
 
-//	@RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)
-//	public ResponseEntity<Void> editUser(@RequestParam(value = "user", defaultValue = "") DetailUser user,
-//			@PathVariable long id) {
-//		Optional<User> existingUser = userRepo.findById(id);
-//		if (!existingUser.isPresent()) {
-//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//		}
-//
-//		user.setId(id);
-//		userRepo.save(user.createUser());
-//		return new ResponseEntity<>(HttpStatus.OK);
-//	}
+	@RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> editUser(Principal principal, @PathVariable long id, @RequestBody DetailUser detailUser) {
+		if (principal == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		User loggedUser = userRepo.findByEmail(principal.getName());
+		if (loggedUser == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		if (!loggedUser.isAdmin() && loggedUser.getId() != id) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
+		Optional<User> user = userRepo.findById(id);
+		if (!user.isPresent()) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		User u = user.get();
+//		User newUser = detailUser.createUser();
+		// userRepo.save(user.createUser());
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
 }
