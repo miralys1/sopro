@@ -1,4 +1,4 @@
-% Created 2018-09-05 Wed 15:42
+% Created 2018-09-09 Sun 19:15
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -27,29 +27,103 @@
 \begin{document}
 
 \section{REST Interface}
-\label{sec:org21e44af}
-\begin{center}
+\label{sec:org7526752}
+\begin{table}[htbp]
+\caption{objects written in cursive can be found in the class diagram}
+\centering
 \begin{tabular}{lllllll}
 Action & HTTP Method & Endpoint & Request & Response & Authorized & Note\\
 \hline
 createService(s) & POST & /services & List of services & 201 - CREATED & Admin & -\\
-editService & PUT & /services/\{id\} & single service & 200 - OK & Admin & -\\
-getServices & GET & /services & optional: tags & 200 - OK + \texttt{List} of \texttt{Service} & - & -\\
-getServiceDetails & GET & /services/\{id\} & - & 200 - OK + \texttt{Service} & - & \textbf{OPTIONAL}\\
-deleteService & DELETE & /services/\{id\} & - & 200 - OK & Admin & -\\
+editService & PUT & /services/\{service\(_{\text{id}}\)\} & single service & 200 - OK & Admin & -\\
+getServices & GET & /services & query: string & 200 - OK + List of \emph{Service} & - & -\\
+getServiceDetails & GET & /services/\{service\(_{\text{id}}\)\} & - & 200 - OK + \emph{Service} & - & \textbf{OPTIONAL}\\
+deleteService & DELETE & /services/\{service\(_{\text{id}}\)\} & - & 200 - OK & Admin & -\\
 \hline
-checkCompatibility & GET & /services/\{id\(_{\text{1}}\)\}/\{id\(_{\text{2}}\)\} & - & 200 - OK + \texttt{CompatibilityAnswer} & - & -\\
+checkCompatibility & GET & /services/\{user\(_{\text{id}}\)\(_{\text{1}}\)\}/\{user\(_{\text{id}}\)\(_{\text{2}}\)\} & - & 200 - OK + \emph{CompatibilityAnswer} & - & -\\
 \hline
-getCompositions & GET & /compositions & - & 200 - OK + \texttt{List} of \texttt{SimpleComp} & - & -\\
-getCompositionDetail & GET & /compositions/\{id\} & - & 200 - OK + \texttt{DetailComp} & Owner + Authorized Users (Or public) & -\\
-createComposition & POST & /compositions & single composition & 201 - CREATED & User & -\\
-editComposition & PUT & /compositions/\{id\} & single composition & 200 - OK & Owner + Authorized Users & Only Owner can change Authorized Users\\
+getCompositions & GET & /compositions & - & 200 - OK + List of \emph{SimpleComp} & - & -\\
+getCompositionDetail & GET & /compositions/\{comp\(_{\text{id}}\)\} & - & 200 - OK + \emph{DetailComp} & Owner + Authorized Users (Or public) & -\\
+createComposition & POST & /compositions & name: string & 201 - CREATED & User & -\\
+editComposition & PUT & /compositions/\{comp\(_{\text{id}}\)\} & \emph{Composition Object} & 200 - OK & Owner + Authorized Users & Only Owner can change Authorized Users\\
 \hline
-getUsers & GET & /users & - & 200 - OK + \texttt{List} of \texttt{SimpleUser} & - & -\\
-getUserDetails & GET & /users/\{id\} & - & 200 - OK + \texttt{DetailUser} & Owner + Admin & -\\
-editUser & PUT & /users/\{id\} & single user & 200 - OK & Owner + Admin & -\\
-register & POST & /users & single user & 201 - CREATED & - & -\\
+getUserPermissions & GET & /compositions/\{comp\(_{\text{id}}\)\}/users & \emph{userAuthorizations} & 200 - OK + List of \emph{SimpleUser} & Owner & -\\
+createUserPermission & POST & /compositions/\{comp\(_{\text{id}}\)\}/users/\{email\} & \emph{userPermission Object} & 201 - CREATED & Owner & true means can edit, false can only see. If no object exists user can neither.\\
+editUserPermission & PUT & /compositions/\{comp\(_{\text{id}}\)\}/users/\{email\} & \emph{userPermission Object} & 200 - OK & Owner & -\\
+deleteUserPermission & DELETE & /compositions/\{comp\(_{\text{id}}\)\}/users/\{user\(_{\text{id}}\)\} & - & 200 - OK & Owner & -\\
+\hline
+getUsers & GET & /users & query: string & 200 - OK + List of \emph{SimpleUser} & - & -\\
+getUserDetails & GET & /users/\{user\(_{\text{id}}\)\} & - & 200 - OK + \emph{DetailUser} & Owner + Admin & -\\
+editUser & PUT & /users/\{user\(_{\text{id}}\)\} & \emph{Detail User} & 200 - OK & Owner + Admin & -\\
+register & POST & /users & \emph{User} & 201 - CREATED & - & -\\
 \hline
 \end{tabular}
-\end{center}
+\end{table}
+
+
+\section{REST Schnittstelle}
+\label{sec:org1844c6e}
+\begin{table}[htbp]
+\caption{Argumente und erwartete Rückgabe eine API Anfrage}
+\centering
+\begin{tabular}{lll}
+Aktion & Inhalt der Anfrage & erwartete Antwort\\
+\hline
+createService(s) & List of services & 201 - CREATED\\
+editService & single service & 200 - OK\\
+getServices & query: string & 200 - OK + List of \emph{Service}\\
+getServiceDetails & - & 200 - OK + \emph{Service}\\
+deleteService & - & 200 - OK\\
+\hline
+checkCompatibility & - & 200 - OK + \emph{CompatibilityAnswer}\\
+\hline
+getCompositions & - & 200 - OK + List of \emph{SimpleComp}\\
+getCompositionDetail & - & 200 - OK + \emph{DetailComp}\\
+createComposition & name: string & 201 - CREATED\\
+editComposition & \emph{Composition Object} & 200 - OK\\
+\hline
+getUserPermissions & \emph{userAuthorizations} & 200 - OK + List of \emph{SimpleUser}\\
+createUserPermission & \emph{userPermission Object} & 201 - CREATED\\
+editUserPermission & \emph{userPermission Object} & 200 - OK\\
+deleteUserPermission & - & 200 - OK\\
+\hline
+getUsers & query: string & 200 - OK + List of \emph{SimpleUser}\\
+getUserDetails & - & 200 - OK + \emph{DetailUser}\\
+editUser & \emph{Detail User} & 200 - OK\\
+register & \emph{User} & 201 - CREATED\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\caption{Art der Anfrage und zu kontaktierender Endpunkt der API}
+\centering
+\begin{tabular}{lll}
+Aktion & HTTP Methode & Endpunkt\\
+\hline
+createService(s) & POST & /services\\
+editService & PUT & /services/\{service\(_{\text{id}}\)\}\\
+getServices & GET & /services\\
+getServiceDetails & GET & /services/\{service\(_{\text{id}}\)\}\\
+deleteService & DELETE & /services/\{service\(_{\text{id}}\)\}\\
+\hline
+checkCompatibility & GET & /services/\{user\(_{\text{id}}\)\(_{\text{1}}\)\}/\{user\(_{\text{id}}\)\(_{\text{2}}\)\}\\
+\hline
+getCompositions & GET & /compositions\\
+getCompositionDetail & GET & /compositions/\{comp\(_{\text{id}}\)\}\\
+createComposition & POST & /compositions\\
+editComposition & PUT & /compositions/\{comp\(_{\text{id}}\)\}\\
+\hline
+getUserPermissions & GET & /compositions/\{comp\(_{\text{id}}\)\}/users\\
+createUserPermission & POST & /compositions/\{comp\(_{\text{id}}\)\}/users/\{email\}\\
+editUserPermission & PUT & /compositions/\{comp\(_{\text{id}}\)\}/users/\{email\}\\
+deleteUserPermission & DELETE & /compositions/\{comp\(_{\text{id}}\)\}/users/\{user\(_{\text{id}}\)\}\\
+\hline
+getUsers & GET & /users\\
+getUserDetails & GET & /users/\{user\(_{\text{id}}\)\}\\
+editUser & PUT & /users/\{user\(_{\text{id}}\)\}\\
+register & POST & /users\\
+\hline
+\end{tabular}
+\end{table}
 \end{document}

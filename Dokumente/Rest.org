@@ -1,22 +1,83 @@
 **  REST Interface
- | Action               | HTTP Method | Endpoint                | Request            | Response                          | Authorized                           | Note                                   |
- |----------------------+-------------+-------------------------+--------------------+-----------------------------------+--------------------------------------+----------------------------------------|
- | createService(s)     | POST        | /services               | List of services   | 201 - CREATED                     | Admin                                | -                                      |
- | editService          | PUT         | /services/{id}          | single service     | 200 - OK                          | Admin                                | -                                      |
- | getServices          | GET         | /services               | optional: tags     | 200 - OK + ~List~ of ~Service~    | -                                    | -                                      |
- | getServiceDetails    | GET         | /services/{id}          | -                  | 200 - OK + ~Service~              | -                                    | *OPTIONAL*                             |
- | deleteService        | DELETE      | /services/{id}          | -                  | 200 - OK                          | Admin                                | -                                      |
- |----------------------+-------------+-------------------------+--------------------+-----------------------------------+--------------------------------------+----------------------------------------|
- | checkCompatibility   | GET         | /services/{id_1}/{id_2} | -                  | 200 - OK + ~CompatibilityAnswer~  | -                                    | -                                      |
- |----------------------+-------------+-------------------------+--------------------+-----------------------------------+--------------------------------------+----------------------------------------|
- | getCompositions      | GET         | /compositions           | -                  | 200 - OK + ~List~ of ~SimpleComp~ | -                                    | -                                      |
- | getCompositionDetail | GET         | /compositions/{id}      | -                  | 200 - OK + ~DetailComp~           | Owner + Authorized Users (Or public) | -                                      |
- | createComposition    | POST        | /compositions           | single composition | 201 - CREATED                     | User                                 | -                                      |
- | editComposition      | PUT         | /compositions/{id}      | single composition | 200 - OK                          | Owner + Authorized Users             | Only Owner can change Authorized Users |
- |----------------------+-------------+-------------------------+--------------------+-----------------------------------+--------------------------------------+----------------------------------------|
- | getUsers             | GET         | /users                  | -                  | 200 - OK + ~List~ of ~SimpleUser~ | -                                    | -                                      |
- | getUserDetails       | GET         | /users/{id}             | -                  | 200 - OK + ~DetailUser~           | Owner + Admin                        | -                                      |
- | editUser             | PUT         | /users/{id}             | single user        | 200 - OK                          | Owner + Admin                        | -                                      |
- | register             | POST        | /users                  | single user        | 201 - CREATED                     | -                                    | -                                      |
- |----------------------+-------------+-------------------------+--------------------+-----------------------------------+--------------------------------------+----------------------------------------|
+#+CAPTION: objects written in cursive can be found in the class diagram
+ | Action               | HTTP Method | Endpoint                                | Request                 | Response                         | Authorized                           | Note                                                                           |
+ |----------------------+-------------+-----------------------------------------+-------------------------+----------------------------------+--------------------------------------+--------------------------------------------------------------------------------|
+ | createService(s)     | POST        | /services                               | List of services        | 201 - CREATED                    | Admin                                | -                                                                              |
+ | editService          | PUT         | /services/{service_id}                  | single service          | 200 - OK                         | Admin                                | -                                                                              |
+ | getServices          | GET         | /services                               | query: string           | 200 - OK + List of /Service/     | -                                    | -                                                                              |
+ | getServiceDetails    | GET         | /services/{service_id}                  | -                       | 200 - OK + /Service/             | -                                    | *OPTIONAL*                                                                     |
+ | deleteService        | DELETE      | /services/{service_id}                  | -                       | 200 - OK                         | Admin                                | -                                                                              |
+ |----------------------+-------------+-----------------------------------------+-------------------------+----------------------------------+--------------------------------------+--------------------------------------------------------------------------------|
+ | checkCompatibility   | GET         | /services/{user_id_1}/{user_id_2}       | -                       | 200 - OK + /CompatibilityAnswer/ | -                                    | -                                                                              |
+ |----------------------+-------------+-----------------------------------------+-------------------------+----------------------------------+--------------------------------------+--------------------------------------------------------------------------------|
+ | getCompositions      | GET         | /compositions                           | -                       | 200 - OK + List of /SimpleComp/  | -                                    | -                                                                              |
+ | getCompositionDetail | GET         | /compositions/{comp_id}                 | -                       | 200 - OK + /DetailComp/          | Owner + Authorized Users (Or public) | -                                                                              |
+ | createComposition    | POST        | /compositions                           | name: string            | 201 - CREATED                    | User                                 | -                                                                              |
+ | editComposition      | PUT         | /compositions/{comp_id}                 | /Composition Object/    | 200 - OK                         | Owner + Authorized Users             | Only Owner can change Authorized Users                                         |
+ |----------------------+-------------+-----------------------------------------+-------------------------+----------------------------------+--------------------------------------+--------------------------------------------------------------------------------|
+ | getUserPermissions   | GET         | /compositions/{comp_id}/users           | /userAuthorizations/    | 200 - OK + List of /SimpleUser/  | Owner                                | -                                                                              |
+ | createUserPermission | POST        | /compositions/{comp_id}/users/{email}   | /userPermission Object/ | 201 - CREATED                    | Owner                                | true means can edit, false can only see. If no object exists user can neither. |
+ | editUserPermission   | PUT         | /compositions/{comp_id}/users/{email}   | /userPermission Object/ | 200 - OK                         | Owner                                | -                                                                              |
+ | deleteUserPermission | DELETE      | /compositions/{comp_id}/users/{user_id} | -                       | 200 - OK                         | Owner                                | -                                                                              |
+ |----------------------+-------------+-----------------------------------------+-------------------------+----------------------------------+--------------------------------------+--------------------------------------------------------------------------------|
+ | getUsers             | GET         | /users                                  | query: string           | 200 - OK + List of /SimpleUser/  | -                                    | -                                                                              |
+ | getUserDetails       | GET         | /users/{user_id}                        | -                       | 200 - OK + /DetailUser/          | Owner + Admin                        | -                                                                              |
+ | editUser             | PUT         | /users/{user_id}                        | /Detail User/           | 200 - OK                         | Owner + Admin                        | -                                                                              |
+ | register             | POST        | /users                                  | /User/                  | 201 - CREATED                    | -                                    | -                                                                              |
+ |----------------------+-------------+-----------------------------------------+-------------------------+----------------------------------+--------------------------------------+--------------------------------------------------------------------------------|
 
+
+**  REST Schnittstelle
+#+CAPTION: Argumente und erwartete Rückgabe eine API Anfrage
+ | Aktion               | Inhalt der Anfrage      | erwartete Antwort                |
+ |----------------------+-------------------------+----------------------------------|
+ | createService(s)     | List of services        | 201 - CREATED                    |
+ | editService          | single service          | 200 - OK                         |
+ | getServices          | query: string           | 200 - OK + List of /Service/     |
+ | getServiceDetails    | -                       | 200 - OK + /Service/             |
+ | deleteService        | -                       | 200 - OK                         |
+ |----------------------+-------------------------+----------------------------------|
+ | checkCompatibility   | -                       | 200 - OK + /CompatibilityAnswer/ |
+ |----------------------+-------------------------+----------------------------------|
+ | getCompositions      | -                       | 200 - OK + List of /SimpleComp/  |
+ | getCompositionDetail | -                       | 200 - OK + /DetailComp/          |
+ | createComposition    | name: string            | 201 - CREATED                    |
+ | editComposition      | /Composition Object/    | 200 - OK                         |
+ |----------------------+-------------------------+----------------------------------|
+ | getUserPermissions   | /userAuthorizations/    | 200 - OK + List of /SimpleUser/  |
+ | createUserPermission | /userPermission Object/ | 201 - CREATED                    |
+ | editUserPermission   | /userPermission Object/ | 200 - OK                         |
+ | deleteUserPermission | -                       | 200 - OK                         |
+ |----------------------+-------------------------+----------------------------------|
+ | getUsers             | query: string           | 200 - OK + List of /SimpleUser/  |
+ | getUserDetails       | -                       | 200 - OK + /DetailUser/          |
+ | editUser             | /Detail User/           | 200 - OK                         |
+ | register             | /User/                  | 201 - CREATED                    |
+ |----------------------+-------------------------+----------------------------------|
+
+ #+CAPTION: Art der Anfrage und zu kontaktierender Endpunkt der API
+ | Aktion               | HTTP Methode | Endpunkt                                |
+ |----------------------+--------------+-----------------------------------------+
+ | createService(s)     | POST         | /services                               |
+ | editService          | PUT          | /services/{service_id}                  |
+ | getServices          | GET          | /services                               |
+ | getServiceDetails    | GET          | /services/{service_id}                  |
+ | deleteService        | DELETE       | /services/{service_id}                  |
+ |----------------------+--------------+-----------------------------------------+
+ | checkCompatibility   | GET          | /services/{user_id_1}/{user_id_2}       |
+ |----------------------+--------------+-----------------------------------------+
+ | getCompositions      | GET          | /compositions                           |
+ | getCompositionDetail | GET          | /compositions/{comp_id}                 |
+ | createComposition    | POST         | /compositions                           |
+ | editComposition      | PUT          | /compositions/{comp_id}                 |
+ |----------------------+--------------+-----------------------------------------+
+ | getUserPermissions   | GET          | /compositions/{comp_id}/users           |
+ | createUserPermission | POST         | /compositions/{comp_id}/users/{email}   |
+ | editUserPermission   | PUT          | /compositions/{comp_id}/users/{email}   |
+ | deleteUserPermission | DELETE       | /compositions/{comp_id}/users/{user_id} |
+ |----------------------+--------------+-----------------------------------------+
+ | getUsers             | GET          | /users                                  |
+ | getUserDetails       | GET          | /users/{user_id}                        |
+ | editUser             | PUT          | /users/{user_id}                        |
+ | register             | POST         | /users                                  |
+ |----------------------+--------------+-----------------------------------------+

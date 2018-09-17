@@ -3,6 +3,9 @@ package de.sopro.model.send;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import de.sopro.model.Composition;
 import de.sopro.model.CompositionEdge;
 import de.sopro.model.CompositionNode;
@@ -13,8 +16,11 @@ public class DetailComp extends SimpleComp {
 	private List<Node> nodes;
 	private List<Edge> edges;
 
-	public DetailComp(long id, SimpleUser owner, String name, boolean isEditable, List<Node> nodes, List<Edge> edges) {
-		super(id, owner, name, isEditable);
+	@JsonCreator
+	public DetailComp(@JsonProperty("id") long id, @JsonProperty("owner") SimpleUser owner,
+			@JsonProperty("name") String name, @JsonProperty("editable") boolean editable,
+			@JsonProperty("nodes") List<Node> nodes, @JsonProperty("edges")List<Edge> edges) {
+		super(id, owner, name, editable);
 		this.nodes = nodes;
 		this.edges = edges;
 	}
