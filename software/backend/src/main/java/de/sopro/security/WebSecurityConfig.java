@@ -23,7 +23,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
   @Override
   public void configure(HttpSecurity http) throws Exception{
-    http.authorizeRequests()
+    http.cors()
+        .and().authorizeRequests()
         .anyRequest().permitAll()
         .and()
         .httpBasic()

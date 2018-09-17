@@ -10,6 +10,12 @@ public class Edge {
 	private Node target;
 	private CompatibilityAnswer compatibility;
 
+	public Edge(long id, Node source, Node target) {
+		this.id = id;
+		this.source = source;
+		this.target = target;
+	}
+
 	public Edge(long id, Node source, Node target, CompatibilityAnswer compatibility) {
 		this.id = id;
 		this.source = source;
