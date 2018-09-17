@@ -101,25 +101,20 @@ public class CompController {
 	}
 
 	@RequestMapping(value = "/compositions", method = RequestMethod.POST)
-	public ResponseEntity<Void> createComposition(@RequestBody DetailComp comp, Principal principal) {
+	public ResponseEntity<Long> createComposition(@RequestBody String name, Principal principal) {
 
 		if (principal == null) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
-		if (comp == null || compRepo.findById(comp.getId()).isPresent()) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-
-		Composition saveComp = comp.createComposition(userRepo.findByEmail(principal.getName()));
-
-		setIdsForComp(saveComp);
-
 		User owner = userRepo.findByEmail(principal.getName());
-		owner.getOwnsComp().add(saveComp);
-		compRepo.save(saveComp);
+
+		Composition comp = new Composition(owner, name, false, new ArrayList<>(), new ArrayList<>());
+
+		owner.getOwnsComp().add(comp);
+		compRepo.save(comp);
 		userRepo.save(owner);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+		return new ResponseEntity<>(comp.getId(), HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/compositions/{id}", method = RequestMethod.PUT)
