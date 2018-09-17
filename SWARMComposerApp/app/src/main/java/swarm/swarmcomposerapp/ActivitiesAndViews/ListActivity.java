@@ -29,15 +29,13 @@ import swarm.swarmcomposerapp.R;
  */
 public class ListActivity extends AppCompatActivity implements IResponse {
 
-    private RecyclerView recycler;
-    private ListAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<Composition> compList = new ArrayList<>();
-    private TextView tLoading, tLastUpdate;
+    private RecyclerView recycler_public, recycler_viewable, recycler_owned;
+    private ListAdapter adapter_public, adapter_viewable, adapter_owned;
+    private RecyclerView.LayoutManager layoutManager, layoutManager2, layoutManager3;
+    private TextView tLoading, tLastUpdate, tOwned, tViewable, tPublic;
     private ProgressBar progressBar;
     private static final String PREFERENCE_NAME = "app_settings";
     private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
     private LocalCache cache = LocalCache.getInstance();
 
     @Override
@@ -47,7 +45,6 @@ public class ListActivity extends AppCompatActivity implements IResponse {
 
         //load saved preferences such as email and server address
         preferences = getSharedPreferences(PREFERENCE_NAME, 0);
-        editor = preferences.edit();
         String address = preferences.getString("SERVERADDRESS", null);
         //LocalCache.getInstance().setServerAddress(LocalCache.TEST_SERVER);
         if (address == null) {
@@ -61,21 +58,42 @@ public class ListActivity extends AppCompatActivity implements IResponse {
         if (email != null)
             cache.setEmail(email);
 
+        tOwned = findViewById(R.id.text_owned);
+        tPublic = findViewById(R.id.text_public);
+        tViewable = findViewById(R.id.text_viewable);
 
         tLastUpdate = findViewById(R.id.text_lastupdate);
         tLoading = findViewById(R.id.text_loading1);
         progressBar = findViewById(R.id.progressBar1);
 
-        recycler = (RecyclerView) findViewById(R.id.my_recycler_view);
-        recycler.setHasFixedSize(true);
+        recycler_owned = findViewById(R.id.recyclerView_owned);
+        recycler_public = findViewById(R.id.recyclerView_public);
+        recycler_viewable = findViewById(R.id.recyclerView_viewable);
 
         layoutManager = new LinearLayoutManager(this);
-        recycler.setLayoutManager(layoutManager);
+        layoutManager2 = new LinearLayoutManager(this);
+        layoutManager3 = new LinearLayoutManager(this);
 
-        adapter = new ListAdapter(compList);
-        recycler.setAdapter(adapter);
+        recycler_viewable.setLayoutManager(layoutManager);
+        recycler_public.setLayoutManager(layoutManager2);
+        recycler_owned.setLayoutManager(layoutManager3);
 
-        recycler.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recycler, new RecyclerTouchListener.ClickListener() {
+        adapter_owned = new ListAdapter(cache.getCompositions(this, LocalCache.ListIdentifier.OWNED));
+        recycler_owned.setAdapter(adapter_owned);
+        //adapter_public = new ListAdapter(cache.getCompositions(this, LocalCache.ListIdentifier.PUBLIC));
+        adapter_public = new ListAdapter(null);
+        recycler_public.setAdapter(adapter_public);
+        //adapter_viewable = new ListAdapter(cache.getCompositions(this, LocalCache.ListIdentifier.VIEWABLE));
+        adapter_viewable = new ListAdapter(null);
+        recycler_viewable.setAdapter(adapter_viewable);
+
+        addRecyclerTouchListener(recycler_owned, 0);
+        addRecyclerTouchListener(recycler_viewable, 1);
+        addRecyclerTouchListener(recycler_public, 2);
+    }
+
+    private void addRecyclerTouchListener(RecyclerView recyclerView, final int listID){
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 //User clicked on one of the compositions in the list. Intent to open it in DetailActivity.
@@ -83,7 +101,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
                 Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
                 //pass the (app-) internal id of the requested composition to the DetailActivity via intent
                 intent.putExtra("COMP_POSITION", position);
-                Log.i("Felix", position + "");
+                intent.putExtra("LIST_ID", listID);
                 startActivity(intent);
             }
 
@@ -92,9 +110,6 @@ public class ListActivity extends AppCompatActivity implements IResponse {
 
             }
         }));
-        Intent start = new Intent(getApplicationContext(),MainActivity.class);
-        //sstartActivity(start);
-
     }
 
     @Override
@@ -109,23 +124,19 @@ public class ListActivity extends AppCompatActivity implements IResponse {
      * get the latest data from LocalCache and put it in the RecyclerView
      */
     private void updateList() {
-        compList = LocalCache.getInstance().getCompositions(this);
+        ArrayList<Composition> compList;
+        compList = LocalCache.getInstance().getCompositions(this, LocalCache.ListIdentifier.PUBLIC);
         if (compList == null) {
             showLoading(true);
         } else {
-            adapter.setCompList(compList);
-            //adapter.notifyDataSetChanged();
+            adapter_public.setCompList(compList);
+            compList = LocalCache.getInstance().getCompositions(this, LocalCache.ListIdentifier.VIEWABLE);
+            tViewable.setVisibility(compList.isEmpty() ? View.GONE : View.VISIBLE);
+            adapter_viewable.setCompList(compList);
+            compList = LocalCache.getInstance().getCompositions(this, LocalCache.ListIdentifier.OWNED);
+            tOwned.setVisibility(compList.isEmpty() ? View.GONE : View.VISIBLE);
+            adapter_owned.setCompList(compList);
         }
-    }
-
-
-    private void initList() {
-        //TODO remove
-        compList = new ArrayList<>();
-        compList.add(new Composition(1, "Tolle Komposition", new SimpleUser(1, "Connor", "Tarvos")));
-        compList.add(new Composition(2, "Tolle Komposition 2", new SimpleUser(2, "Felix", "Gröner")));
-        compList.add(new Composition(3, "Tolle Komposition 3", new SimpleUser(3, "Max", "Mustermann")));
-        compList.add(new Composition(4, "Tolle Komposition 4", new SimpleUser(4, "Max", "Mustermann")));
 
     }
 
@@ -159,14 +170,19 @@ public class ListActivity extends AppCompatActivity implements IResponse {
     public void notify(boolean successful) {
         if (successful) {
             //overview data is now available at LocalCache
-            compList = LocalCache.getInstance().getCompositions(this);
+            ArrayList<Composition> compList;
+            compList = LocalCache.getInstance().getCompositions(this, LocalCache.ListIdentifier.PUBLIC);
             if(compList == null){
                 //TODO handle fatal event
                 Toast.makeText(getApplicationContext(), getText(R.string.err_text_detail), Toast.LENGTH_SHORT).show();
                 return;
+            } else {
+                adapter_public.setCompList(compList);
+                compList = LocalCache.getInstance().getCompositions(this, LocalCache.ListIdentifier.VIEWABLE);
+                adapter_viewable.setCompList(compList);
+                compList = LocalCache.getInstance().getCompositions(this, LocalCache.ListIdentifier.OWNED);
+                adapter_owned.setCompList(compList);
             }
-            Log.i("ListActNotify", "Size of compositions: " + compList.size() + "");
-            adapter.setCompList(compList);
             tLastUpdate.setText(getText(R.string.lastupdate)+" "+cache.getLastUpdate());
         } else {
             //server request failed

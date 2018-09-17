@@ -25,20 +25,23 @@ public class CompositionsAnswer {
     }
 
     public List<Composition> getViewable() {
+        viewable.addAll(editable);
         return viewable;
     }
 
     public List<Composition> getPublicComps() {
+        //TODO remove all items that are already in one of the other lists
         return publicComps;
     }
 
+    public List<Composition> getOwns() { return owns; }
 
     /**
      * Merges all compositions that are seeable for the current user.
      *
      * @return
      */
-    public List<Composition> getSeeableComps() {
+    public List<Composition> getSeeableComps() { //TODO remove
         HashSet<Long> ids = new HashSet<>();
 
         List<Composition> toReturn = new ArrayList<>();

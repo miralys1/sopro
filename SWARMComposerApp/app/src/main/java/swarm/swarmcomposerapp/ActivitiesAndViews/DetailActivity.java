@@ -27,6 +27,7 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
     private ProgressBar progressBar;
     private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy HH:mm");
     private int position; //(app-)internal id
+    private int listID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +42,17 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
         //retrieve the (app-)internal id of the composition
         Intent intent = getIntent();
         position = intent.getIntExtra("COMP_POSITION", -1);
+        listID = intent.getIntExtra("LIST_ID", -1);
+        Log.i("DETAIL", "called position "+position+" of list "+listID);
         try {
-            comp = LocalCache.getInstance().getCompAtPos(position, this);
+            comp = LocalCache.getInstance().getCompAtPos(position, this, listID);
+            Log.i("DETAIL", "tried getCompAtPos");
         } catch (Exception e){
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             goBackToList(null);
         }
         if(comp != null){
+            Log.i("DETAIL", "comp was in cache");
             //the needed composition details are not stored in the LocalCache yet; a request has been sent by LocalCache
             showLoading(false);
             tTitle.setText(comp.getName());
@@ -89,10 +94,12 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
 
     @Override
     public void notify(boolean successful) {
+        Log.i("DETAIL", "got a notification");
 
         if(successful){
             //needed composition details are in LocalCache now
-            comp = LocalCache.getInstance().getCompAtPos(position, this);
+            comp = LocalCache.getInstance().getCompAtPos(position, this, listID);
+            Log.i("DETAIL", "comp is in cache now");
             if(comp == null){
                 //TODO handle fatal event
                 Toast.makeText(getApplicationContext(), getText(R.string.err_text_detail), Toast.LENGTH_SHORT).show();
@@ -103,6 +110,7 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
             tInfo.setText(getText(R.string.lastupdate)+" "+dateFormat.format(comp.getLastUpdate()));
             draw();
         } else {
+            Log.i("DETAIL", "cache returned null again!");
             //server communication failed
             //TODO show error message
             Toast.makeText(getApplicationContext(), "server connection failed when requesting details", Toast.LENGTH_SHORT).show();

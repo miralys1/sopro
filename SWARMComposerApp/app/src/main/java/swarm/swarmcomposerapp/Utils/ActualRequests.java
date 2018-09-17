@@ -83,10 +83,12 @@ public class ActualRequests {
      * The compositions are stored in the LocalCache singleton if the request was successful.
      * This method expects a IResponse object to react on its success or failure.
      *
-     * @param comps  - Reference on the ArrayList in which the compositions should be stored
+     * @param publicComps  - Reference on the ArrayList objects in which the compositions should be stored
+     * @param ownedComps  - Reference on the ArrayList objects in which the compositions should be stored
+     * @param viewableComps  - Reference on the ArrayList objects in which the compositions should be stored
      * @param caller - the IResponse object desiring to receive the compositions
      */
-    public static void actualCompListRequest(ArrayList<Composition> comps, IResponse caller) {
+    public static void actualCompListRequest(final ArrayList<Composition> publicComps, final ArrayList<Composition> ownedComps, final ArrayList<Composition> viewableComps, IResponse caller) {
         final Call<CompositionsAnswer> compAnswer;
 
         LocalCache cacheRef = LocalCache.getInstance();
@@ -100,7 +102,9 @@ public class ActualRequests {
         }
         //  Log.i("Request", compAnswer.request().url().toString() + " by " + caller.getClass().getName());
         final IResponse localCaller = caller;
-        final ArrayList<Composition> compsL = comps;
+        //final ArrayList<Composition> publicCompsL = publicComps;
+        //final ArrayList<Composition> viewableCompsL = viewableComps; //TODO remove
+        //final ArrayList<Composition> ownedCompsL = ownedComps;
         compAnswer.enqueue(new Callback<CompositionsAnswer>() {
             @Override
             public void onResponse(Call<CompositionsAnswer> call,
@@ -109,7 +113,10 @@ public class ActualRequests {
                 Log.i("RequestC", "Response " + call.request() + " was successful?: " + response.isSuccessful() + " response Code: " + response.code()
                         + " error: " + response.errorBody() + " auth? " + call.request().header("Authorization"));
                 if (response.isSuccessful()) {
-                    compsL.addAll(response.body().getSeeableComps());
+                    //compsL.addAll(response.body().getSeeableComps());
+                    publicComps.addAll(response.body().getPublicComps());
+                    ownedComps.addAll(response.body().getOwns());
+                    viewableComps.addAll(response.body().getViewable());
                     localCaller.notify(true);
                 } else {
                     //Some error has happened
