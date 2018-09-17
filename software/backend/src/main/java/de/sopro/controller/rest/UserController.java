@@ -68,29 +68,31 @@ public class UserController {
 		return new ResponseEntity<>(u.createDetailUser(), HttpStatus.OK);
 	}
 
+	// TODO:implement
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> editUser(Principal principal, @PathVariable long id, @RequestBody DetailUser detailUser) {
-		if (principal == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-
-		User loggedUser = userRepo.findByEmail(principal.getName());
-		if (loggedUser == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-
-		if (!loggedUser.isAdmin() && loggedUser.getId() != id) {
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		}
-
-		Optional<User> user = userRepo.findById(id);
-		if (!user.isPresent()) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-
-		User u = user.get();
-//		User newUser = detailUser.createUser();
-		// userRepo.save(user.createUser());
+	public ResponseEntity<Void> editUser(Principal principal, @PathVariable long id,
+			@RequestBody SimpleUser detailUser) {
+//		if (principal == null) {
+//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//		}
+//
+//		User loggedUser = userRepo.findByEmail(principal.getName());
+//		if (loggedUser == null) {
+//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//		}
+//
+//		if (!loggedUser.isAdmin() && loggedUser.getId() != id) {
+//			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//		}
+//
+//		Optional<User> user = userRepo.findById(id);
+//		if (!user.isPresent()) {
+//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//		}
+//
+//		User oldUser = user.get();
+//		User newUser = detailUser.createUser(oldUser.getPassword());
+//		userRepo.save(newUser);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
