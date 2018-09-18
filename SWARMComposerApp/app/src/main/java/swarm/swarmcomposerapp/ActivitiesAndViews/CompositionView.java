@@ -325,14 +325,7 @@ public class CompositionView extends View {
                     }
                 }
 
-                if (selectedEdge == e) {
-                    Log.d("Edge", "an edge is selected");
-                    edgePaint.setStrokeWidth(20);
-                } else {
-                    edgePaint.setStrokeWidth(4);
-                }
-
-
+                //Draw an edge as a line styled by edgePaint
                 canvas.drawLine(halfLength + source.getX(), halfLength + source.getY(),
                         halfLength + target.getX(), halfLength + target.getY(), edgePaint);
 
