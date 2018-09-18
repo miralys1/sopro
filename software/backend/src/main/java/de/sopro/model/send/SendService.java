@@ -26,6 +26,8 @@ public class SendService {
 
 	private String logo;
 
+	private boolean certified;
+
 	private List<Format> formatIn;
 
 	private List<Format> formatOut;
@@ -34,8 +36,8 @@ public class SendService {
 	public SendService(@JsonProperty("id") Long id, @JsonProperty("name") String name,
 			@JsonProperty("version") String version, @JsonProperty("tags") List<String> tags,
 			@JsonProperty("organisation") String organisation, @JsonProperty("date") long date,
-			@JsonProperty("logo") String logo, @JsonProperty("formatIn") List<Format> formatIn,
-			@JsonProperty("formatOut") List<Format> formatOut) {
+			@JsonProperty("logo") String logo, @JsonProperty("certified") boolean certified,
+			@JsonProperty("formatIn") List<Format> formatIn, @JsonProperty("formatOut") List<Format> formatOut) {
 		this.id = id;
 		this.name = name;
 		this.version = version;
@@ -43,6 +45,7 @@ public class SendService {
 		this.organisation = organisation;
 		this.date = date;
 		this.logo = logo;
+		this.setCertified(certified);
 		this.formatIn = formatIn;
 		this.formatOut = formatOut;
 	}
@@ -103,6 +106,14 @@ public class SendService {
 		this.logo = picture;
 	}
 
+	public boolean isCertified() {
+		return certified;
+	}
+
+	public void setCertified(boolean certified) {
+		this.certified = certified;
+	}
+
 	public List<Format> getFormatIn() {
 		return formatIn;
 	}
@@ -125,8 +136,8 @@ public class SendService {
 			tags.add(new Tag(tag));
 		}
 
-		Service s = new Service(this.name, this.version, tags, this.organisation, this.date, this.logo, this.formatIn,
-				this.formatOut);
+		Service s = new Service(this.name, this.version, tags, this.organisation, this.date, this.logo, this.certified,
+				this.formatIn, this.formatOut);
 		s.setId(id);
 		return s;
 	}
