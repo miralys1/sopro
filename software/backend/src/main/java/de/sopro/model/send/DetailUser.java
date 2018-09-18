@@ -1,16 +1,24 @@
 package de.sopro.model.send;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import de.sopro.model.User;
+
 public class DetailUser extends SimpleUser {
 
 	private String email;
 	private String title;
-	private boolean isAdmin;
+	private boolean admin;
 
-	public DetailUser(String email, String title, boolean isAdmin, String firstName, String lastName, long id) {
+	@JsonCreator
+	public DetailUser(@JsonProperty("email") String email, @JsonProperty("title") String title,
+			@JsonProperty("admin") boolean admin, @JsonProperty("firstName") String firstName,
+			@JsonProperty("lastName") String lastName, @JsonProperty("id") long id) {
 		super(id, firstName, lastName);
 		this.email = email;
 		this.title = title;
-		this.isAdmin = isAdmin;
+		this.admin = admin;
 	}
 
 	public String getEmail() {
@@ -30,11 +38,18 @@ public class DetailUser extends SimpleUser {
 	}
 
 	public boolean isAdmin() {
-		return isAdmin;
+		return admin;
 	}
 
 	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
+		this.admin = isAdmin;
+	}
+
+	public User createUser(String pw) {
+		User user = new User(super.getFirstName(), super.getLastName(), this.email, this.title, this.admin);
+		user.setId(super.getId());
+		user.setPassword(pw);
+		return user;
 	}
 
 	public String toString() {

@@ -137,6 +137,16 @@ methods: {
                .then(response => { alert(response); this.showForm = false;})
                .catch(error => { alert(error);});
 
+      this.axios({
+        url: '/users',
+        method: 'post',
+        data: this.user,
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(function (response) { alert(response);})
+        .catch(function (error) {alert(error);});
+
   },
 
   onReset (evt) {

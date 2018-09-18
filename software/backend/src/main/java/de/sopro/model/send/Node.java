@@ -1,5 +1,8 @@
 package de.sopro.model.send;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import de.sopro.model.CompositionNode;
 
 public class Node {
@@ -9,7 +12,9 @@ public class Node {
 	private int y;
 	private SendService sendService;
 
-	public Node(long id, int x, int y, SendService service) {
+	@JsonCreator
+	public Node(@JsonProperty("id") long id, @JsonProperty("x") int x, @JsonProperty("y") int y,
+			@JsonProperty("servcie") SendService service) {
 		this.id = id;
 		this.x = x;
 		this.y = y;
