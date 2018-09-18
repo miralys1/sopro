@@ -6,6 +6,9 @@
     <string name="viewableComps">Geteilte Kompositionen</string>
     <string name="ownedComps">Eigene Kompositionen</string>
     <string name="loading">Lädt...</string>
+    <string name="pdf_saved">PDF gespeichert!</string>
+    <string name="pdf_share">PDF senden</string>
+    <string name="compositions">Kompositionen</string>
     <string name="login">Einloggen</string>
     <string name="logged_in_as">"Eingeloggt als "</string>
     <string name="logout">Ausloggen</string>

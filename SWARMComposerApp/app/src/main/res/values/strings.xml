@@ -8,6 +8,9 @@
     <string name="viewableComps">Shared Compositions</string>
     <string name="ownedComps">Your Own Compositions</string>
     <string name="loading">Loading...</string>
+    <string name="pdf_saved">PDF saved!</string>
+    <string name="pdf_share">Send PDF</string>
+    <string name="compositions">Compositions</string>
     <string name="login">Log in</string>
     <string name="logged_in_as">Logged in as </string>
     <string name="logout">Log out</string>

@@ -26,20 +26,24 @@ public class CompositionsAnswer {
         return editable;
     }
 
+    /**
+     * @return concatenation of editable and viewable compositions
+     */
     public List<Composition> getViewable() {
         viewable.addAll(editable);
         return viewable;
     }
 
+    /**
+     * filters the list of public compositions to only show those which are not owned by or shared with the current user
+     * @return the filtered list of public compositions
+     */
     public List<Composition> getPublicComps() {
         HashSet<Long> ids = new HashSet<>();
 
         List<Composition> toReturn = new ArrayList<>();
 
-
-        /*
-
-         */
+        //collect the IDs of viewable and owned comps
         for (Composition c : owns) {
            ids.add(c.getId());
         }
@@ -47,39 +51,13 @@ public class CompositionsAnswer {
            ids.add(c.getId());
         }
 
+        //remove comps which are already displayed in another list
         addCompWithIdNotInSet(publicComps, ids, toReturn);
 
         return toReturn;
     }
 
     public List<Composition> getOwns() { return owns; }
-
-    /**
-     * Merges all compositions that are seeable for the current user.
-     *
-     * @return
-     */
-    public List<Composition> getSeeableComps() { //TODO remove
-        HashSet<Long> ids = new HashSet<>();
-
-        List<Composition> toReturn = new ArrayList<>();
-
-
-        /*
-        /Add all Compositions from publicComps to toReturn and remember their id in ids
-         */
-        for (Composition c : publicComps) {
-            ids.add(c.getId());
-            toReturn.add(c);
-        }
-
-
-        addCompWithIdNotInSet(editable, ids, toReturn);
-        addCompWithIdNotInSet(viewable, ids, toReturn);
-        addCompWithIdNotInSet(owns, ids, toReturn);
-
-        return toReturn;
-    }
 
     /**
      * Only adds Compositions from the elementPool that don't

@@ -2,6 +2,7 @@ package swarm.swarmcomposerapp.ActivitiesAndViews;
 
 import android.app.ActivityManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import java.text.SimpleDateFormat;
 import swarm.swarmcomposerapp.Model.Composition;
 import swarm.swarmcomposerapp.Model.LocalCache;
 import swarm.swarmcomposerapp.R;
+import swarm.swarmcomposerapp.Utils.PDFCreator;
 
 /**
  * This activity displays a single composition in detail. The graph is drawn and details are presented as text.
@@ -88,6 +90,27 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
      */
     public void sendComposition(View v){
         //TODO create PDF, open share_dialog
+        if(comp != null) {
+            String path = PDFCreator.createPDF(this, this, comp);
+            openShareDialog(path);
+        }
+    }
+
+    private void openShareDialog(String path){
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("application/pdf");
+
+        share.putExtra(Intent.EXTRA_STREAM,
+                Uri.parse(path));
+
+        startActivity(Intent.createChooser(share, getText(R.string.pdf_share)));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        //permission to write to storage has been granted
+        String path = PDFCreator.createPDF(this, this, comp);
+        openShareDialog(path);
     }
 
     @Override
