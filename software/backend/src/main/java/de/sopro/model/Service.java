@@ -147,8 +147,12 @@ public class Service {
 		for (Tag t : tags) {
 			ts.add(t.getName());
 		}
-		return new SendService(this.id, this.name, this.version, ts, this.organisation, this.date, this.logo,
-				this.certified, this.formatIn, this.formatOut);
+		String c = "false";
+		if (certified) {
+			c = "true";
+		}
+		return new SendService(this.id, this.name, this.version, ts, this.organisation, this.date, this.logo, c,
+				this.formatIn, this.formatOut);
 	}
 
 	public String toString() {

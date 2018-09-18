@@ -26,7 +26,7 @@ public class SendService {
 
 	private String logo;
 
-	private boolean certified;
+	private String certified;
 
 	private List<Format> formatIn;
 
@@ -36,7 +36,7 @@ public class SendService {
 	public SendService(@JsonProperty("id") Long id, @JsonProperty("name") String name,
 			@JsonProperty("version") String version, @JsonProperty("tags") List<String> tags,
 			@JsonProperty("organisation") String organisation, @JsonProperty("date") long date,
-			@JsonProperty("logo") String logo, @JsonProperty("certified") boolean certified,
+			@JsonProperty("logo") String logo, @JsonProperty("certified") String certified,
 			@JsonProperty("formatIn") List<Format> formatIn, @JsonProperty("formatOut") List<Format> formatOut) {
 		this.id = id;
 		this.name = name;
@@ -45,7 +45,7 @@ public class SendService {
 		this.organisation = organisation;
 		this.date = date;
 		this.logo = logo;
-		this.setCertified(certified);
+		this.certified = certified;
 		this.formatIn = formatIn;
 		this.formatOut = formatOut;
 	}
@@ -106,11 +106,11 @@ public class SendService {
 		this.logo = picture;
 	}
 
-	public boolean isCertified() {
+	public String getCertified() {
 		return certified;
 	}
 
-	public void setCertified(boolean certified) {
+	public void setCertified(String certified) {
 		this.certified = certified;
 	}
 
@@ -136,7 +136,11 @@ public class SendService {
 			tags.add(new Tag(tag));
 		}
 
-		Service s = new Service(this.name, this.version, tags, this.organisation, this.date, this.logo, this.certified,
+		boolean c = false;
+		if (certified.equals("true")) {
+			c = true;
+		}
+		Service s = new Service(this.name, this.version, tags, this.organisation, this.date, this.logo, c,
 				this.formatIn, this.formatOut);
 		s.setId(id);
 		return s;
