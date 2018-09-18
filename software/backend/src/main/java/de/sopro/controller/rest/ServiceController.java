@@ -44,10 +44,6 @@ public class ServiceController {
 
 	/**
 	 * Method to get the existing services stored in the Database
-	 * 
-	 * @param searchString
-	 *            a string that must be contained in either the name or the tags of
-	 *            a service
 	 * @return all services with the given string contained in tags or name
 	 */
 	@RequestMapping(value = "/services", method = RequestMethod.GET)
@@ -186,33 +182,10 @@ public class ServiceController {
 	@RequestMapping(value = "/services/{id1}/{id2}", method = RequestMethod.GET)
 	public ResponseEntity<CompatibilityAnswer> checkCompatibility(@PathVariable long id1, @PathVariable long id2) {
 		if (!serviceRepo.existsById(id1) || !serviceRepo.existsById(id2)) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		CompatibilityAnswer answer = compa.checkCompatibility(id1, id2);
 		return new ResponseEntity<>(answer, HttpStatus.OK);
-	}
-
-	////////////////////////////////
-	// Helper Methods and classes //
-	////////////////////////////////
-
-	/**
-	 * Small method that allows to search for a substring in the tags of a service
-	 * 
-	 * @param str
-	 *            the string that should be in at least one tag
-	 * @param s
-	 *            the service
-	 * @return {@code true} if the string was found in one of the tags, else
-	 *         {@code false}
-	 */
-	private boolean stringInTags(String str, Service s) {
-		for (Tag t : s.getTags()) {
-			if (t.getName().contains(str)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }

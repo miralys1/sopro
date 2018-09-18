@@ -30,7 +30,7 @@ public class User {
 	@NotBlank
 	private String email;
 
-	private boolean isAdmin;
+	private boolean admin;
 
 	@NotBlank
 	private String firstname;
@@ -67,7 +67,7 @@ public class User {
 		this.lastname = lastname;
 		this.email = email;
 		this.title = title;
-		this.isAdmin = isAdmin;
+		this.admin = isAdmin;
 		this.ownsComp = new ArrayList<Composition>();
 		this.viewableComps = new ArrayList<Composition>();
 		this.editableComps = new ArrayList<Composition>();
@@ -90,11 +90,11 @@ public class User {
 	}
 
 	public boolean isAdmin() {
-		return isAdmin;
+		return admin;
 	}
 
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 
 	public String getFirstName() {
@@ -170,7 +170,7 @@ public class User {
 	}
 
 	public DetailUser createDetailUser() {
-		return new DetailUser(this.email, this.title, this.isAdmin, this.firstname, this.lastname, this.id);
+		return new DetailUser(this.email, this.title, this.admin, this.firstname, this.lastname, this.id);
 	}
 
 	public String toString() {

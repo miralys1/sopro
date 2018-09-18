@@ -1,5 +1,8 @@
 package de.sopro.model.send;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import de.sopro.model.Composition;
 import de.sopro.model.CompositionEdge;
 
@@ -10,13 +13,16 @@ public class Edge {
 	private Node target;
 	private CompatibilityAnswer compatibility;
 
-	public Edge(long id, Node source, Node target) {
+	@JsonCreator
+	public Edge(@JsonProperty("id") long id, @JsonProperty("source") Node source, @JsonProperty("target") Node target) {
 		this.id = id;
 		this.source = source;
 		this.target = target;
 	}
 
-	public Edge(long id, Node source, Node target, CompatibilityAnswer compatibility) {
+	@JsonCreator
+	public Edge(@JsonProperty("id") long id, @JsonProperty("source") Node source, @JsonProperty("target") Node target,
+			@JsonProperty("compatibility") CompatibilityAnswer compatibility) {
 		this.id = id;
 		this.source = source;
 		this.target = target;

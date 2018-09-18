@@ -1,12 +1,15 @@
 package de.sopro.model.send;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class SimpleUser {
 
 	private long id;
 	private String firstName;
 	private String lastName;
 
-	public SimpleUser(long id, String firstName, String lastName) {
+	@JsonCreator public SimpleUser(@JsonProperty("id")long id, @JsonProperty("firstName")String firstName, @JsonProperty("lastName")String lastName) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;

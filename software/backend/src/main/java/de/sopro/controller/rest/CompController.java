@@ -59,38 +59,29 @@ public class CompController {
 	@RequestMapping(value = "/compositions", method = RequestMethod.GET)
 	public ResponseEntity<CompLists> getCompositions(Principal principal) {
 
-		if(principal == null){
+		if (principal == null) {
 			// if user is not logged in, only public compositions are viewable, none
 			// editable
-			return new ResponseEntity<CompLists>(
-			new CompLists(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), convertListToSimple(compRepo.findByIsPublic(true), 0)),
-			HttpStatus.OK);
+			return new ResponseEntity<CompLists>(new CompLists(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+					convertListToSimple(compRepo.findByIsPublic(true), 0)), HttpStatus.OK);
 		}
-
 
 		User user = userRepo.findByEmail(principal.getName());
 		// if user is logged in, editable, viewable and public composition are shown
-		
 
-		return new ResponseEntity<CompLists>(
-			new CompLists(
-				convertListToSimple(user.getOwnsComp(), user.getId()),	
+		return new ResponseEntity<CompLists>(new CompLists(convertListToSimple(user.getOwnsComp(), user.getId()),
 				convertListToSimple(user.getEditable(), user.getId()),
-				convertListToSimple(user.getViewable(), user.getId()), 
-				convertListToSimple(compRepo.findByIsPublic(true), user.getId()))
-			, HttpStatus.OK);
-
-		
-
+				convertListToSimple(user.getViewable(), user.getId()),
+				convertListToSimple(compRepo.findByIsPublic(true), user.getId())), HttpStatus.OK);
 
 	}
 
 	@RequestMapping(value = "/compositions/{id}", method = RequestMethod.GET)
-	public ResponseEntity<DetailComp> getCompositionDetail(@PathVariable long id,Principal principal){
+	public ResponseEntity<DetailComp> getCompositionDetail(@PathVariable long id, Principal principal) {
 
 		Optional<Composition> opComp = compRepo.findById(id);
 		if (opComp.isPresent()) {
-			long userID = principal == null ? 0: userRepo.findByEmail(principal.getName()).getId();
+			long userID = principal == null ? 0 : userRepo.findByEmail(principal.getName()).getId();
 			Composition comp = opComp.get();
 
 			if (isUserViewer(userID, comp)) {
@@ -110,57 +101,33 @@ public class CompController {
 	}
 
 	@RequestMapping(value = "/compositions", method = RequestMethod.POST)
-	public ResponseEntity<Void> createComposition(@RequestBody DetailComp comp, Principal principal) {
+	public ResponseEntity<Long> createComposition(@RequestBody String name, Principal principal) {
 
-		if(principal == null){
+		if (principal == null) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
-		if (comp == null || compRepo.findById(comp.getId()).isPresent()) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-
-		Composition saveComp = comp.createComposition(userRepo.findByEmail(principal.getName()));
-
-		
-		for (CompositionEdge e : saveComp.getEdges()) {
-			for (CompositionNode n : saveComp.getNodes()) {
-				if (n.getX() == e.getSource().getX() && n.getY() == e.getSource().getY()
-						&& n.getId() == e.getSource().getId()) {
-					e.setSource(n);
-				} else if (n.getX() == e.getTarget().getX() && n.getY() == e.getTarget().getY()
-						&& n.getId() == e.getTarget().getId()) {
-					e.setTarget(n);
-				}
-
-			}
-		}
-
-		for (CompositionNode n : saveComp.getNodes()) {
-			nodeRepo.save(n);
-		}
-		for (CompositionEdge e : saveComp.getEdges()) {
-			edgeRepo.save(e);
-
-		}
 		User owner = userRepo.findByEmail(principal.getName());
-		owner.getOwnsComp().add(saveComp);
-		compRepo.save(saveComp);
+
+		Composition comp = new Composition(owner, name, false, new ArrayList<>(), new ArrayList<>());
+
+		owner.getOwnsComp().add(comp);
+		compRepo.save(comp);
 		userRepo.save(owner);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+		return new ResponseEntity<>(comp.getId(), HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/compositions/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> editComposition(@RequestBody DetailComp dComp, Principal principal) {
 		Optional<Composition> opComp = compRepo.findById(dComp.getId());
-		
+
 		if (!opComp.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
 		User user = userRepo.findByEmail(principal.getName());
 		// User is not logged in or not authorized
-		if(principal == null || !isViewerEditor(user, opComp.get())){
+		if (principal == null || !isViewerEditor(user, opComp.get())) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
@@ -169,35 +136,14 @@ public class CompController {
 		}
 		Composition saveComp = dComp.createComposition(user);
 
-		for (CompositionEdge e : saveComp.getEdges()) {
-			for (CompositionNode n : saveComp.getNodes()) {
-				if (n.getX() == e.getSource().getX() && n.getY() == e.getSource().getY()
-						&& n.getId() == e.getSource().getId()) {
-					e.setSource(n);
-				} else if (n.getX() == e.getTarget().getX() && n.getY() == e.getTarget().getY()
-						&& n.getId() == e.getTarget().getId()) {
-					e.setTarget(n);
-				}
-
-			}
-		}
-
-		for (CompositionNode n : saveComp.getNodes()) {
-			nodeRepo.save(n);
-		}
-		for (CompositionEdge e : saveComp.getEdges()) {
-			edgeRepo.save(e);
-
-		}
-
+		setIdsForComp(saveComp);
 		compRepo.save(saveComp);
 
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/compositions/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteComposition(@PathVariable(value = "id") long compId,
-			Principal principal) {
+	public ResponseEntity<Void> deleteComposition(@PathVariable(value = "id") long compId, Principal principal) {
 
 		Optional<Composition> opComp = compRepo.findById(compId);
 
@@ -212,13 +158,32 @@ public class CompController {
 		}
 
 		compRepo.delete(comp);
-
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	/////////////////
 	// Helper Code //
 	/////////////////
+
+	// TODO: in Util Klasse auslagern
+
+	private void setIdsForComp(Composition saveComp) {
+		for (CompositionEdge e : saveComp.getEdges()) {
+			for (CompositionNode n : saveComp.getNodes()) {
+				if (n.getX() == e.getSource().getX() && n.getY() == e.getSource().getY()
+						&& n.getId() == e.getSource().getId()) {
+					e.setSource(n);
+				} else if (n.getX() == e.getTarget().getX() && n.getY() == e.getTarget().getY()
+						&& n.getId() == e.getTarget().getId()) {
+					e.setTarget(n);
+				}
+
+			}
+		}
+
+		nodeRepo.saveAll(saveComp.getNodes());
+		edgeRepo.saveAll(saveComp.getEdges());
+	}
 
 	private boolean isViewerEditor(User user, Composition composition) {
 		return user.getId() == composition.getOwner().getId() || composition.getEditors().contains(user);
