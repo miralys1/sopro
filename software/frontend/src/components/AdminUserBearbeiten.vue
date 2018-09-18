@@ -2,14 +2,14 @@
   <div class = "out">
     <input class="search" type="text" placeholder="Suche.." v-model="searchedUser" @keyup.enter="search">
     <br><br>
-    <div class="list-group list-group-flush" style="overflow-y:scroll; max-height: 100px;">
+    <div v-if="showList" class="list-group list-group-flush" style="overflow-y:scroll; max-height: 100px;">
     <button type="button" class="list-group-item list-group-item-action" style="display: inline-block; margin: auto auto; min-height: 10vh;" v-for="(user,index) in users" @click="onClick(index)">
       {{user.firstName}} {{user.lastName}}
     </button>
   </div>
   <br><br>
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-      <b-button type="submit" variant="primary" style="float:right;">Submit</b-button>
+    <b-form @submit="onSubmit" @reset="onReset" v-if="showForm">
+      <b-button type="submit" variant="primary" style="float:right ;margin-left: 0.5vw;">Speichern</b-button>
       <b-button type="reset" variant="danger" style="float:right;">Reset</b-button>
       <h4>Benutzer Information</h4>
       <b-form-group id="title"
@@ -18,8 +18,7 @@
         <b-form-input id="genTitle"
                       type="text"
                       v-model="user.title"
-                      required
-                      placeholder="Enter a title">
+                      required>
         </b-form-input>
       </b-form-group>
       <b-form-group id="FName"
@@ -28,8 +27,7 @@
         <b-form-input id="genFName"
                       type="text"
                       v-model="user.firstName"
-                      required
-                      placeholder="Enter a firstname">
+                      required>
         </b-form-input>
       </b-form-group>
       <b-form-group id="LName"
@@ -38,8 +36,7 @@
         <b-form-input id="genLName"
                       type="text"
                       v-model="user.lastName"
-                      required
-                      placeholder="Enter a lastname">
+                      required>
         </b-form-input>
       </b-form-group>
       <b-form-group id="Email"
@@ -48,8 +45,7 @@
         <b-form-input id="genEmail"
                       type="text"
                       v-model="user.email"
-                      required
-                      placeholder="Enter an email adress">
+                      required>
         </b-form-input>
       </b-form-group>
 
@@ -73,6 +69,15 @@
 <script>
 
 export default {
+
+  watch: {
+    searchedUser: function() {
+      if(this.searchedUser == ""){
+        this.showForm = false;
+        this.showList = false;
+      }
+    }
+      },
 
 data() {
   return {
@@ -118,7 +123,8 @@ data() {
   { text: 'Nein', value: false },
   { text: 'Ja', value: true}
 ],
-show: true
+showForm: false,
+showList: false,
 }
 },
 
@@ -127,11 +133,9 @@ methods: {
 
       evt.preventDefault();
 
-      alert(JSON.stringify(this.user));
-
-      this.axios.post('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/users', JSON.stringify(this.user))
-               .then(function (response) { alert(response);})
-               .catch(function (error) {alert(error);});
+      this.axios.post('/users', JSON.stringify(this.user))
+               .then(response => { alert(response); this.showForm = false;})
+               .catch(error => { alert(error);});
 
   },
 
@@ -145,9 +149,13 @@ methods: {
   },
 
   search (evt) {
-   this.users = [];
 
-   this.axios.get('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/users?search='+ this.searchedUser)
+  if(this.searchedUser != ""){
+   this.showList = true;
+   this.showForm = false;
+   //this.users = [];
+
+   this.axios.get('/users?search='+ this.searchedUser)
             .then(response =>
             this.users = response.data
                 )
@@ -155,29 +163,28 @@ methods: {
              alert("Fehler");
             console.log(error);
                 });
- }
-
-
+    }
 
   },
 
   onClick(index) {
-     var id = this.users[idex].id;
 
-     this.axios.get('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/users/' + id)
+     var id = this.users[index].id;
+
+     this.axios.get('/users/' + id)
               .then(response => {
-              this.users = response.data;
-              this.backupUser = JSON.parse(JSON.stringify(this.users)) ;
+              this.user = response.data;
+              this.backupUser = JSON.parse(JSON.stringify(this.user)) ;
+              this.showForm = true;
             }
                   )
               .catch(function (error) {
                alert("Fehler");
-              console.log(error);
                   });
   }
 
 }
-
+}
 </script>
 
 <style>

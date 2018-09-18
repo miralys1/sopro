@@ -1,12 +1,12 @@
 <template>
 <div>
   <!-- Styled -->
-  <b-form-file v-model="file" :state="!unvalid" placeholder="Choose a file or drop one in this box..."  accept=".json"></b-form-file>
+  <b-form-file v-model="file" :state="!unvalid" placeholder="Wählen Sie eine JSON aus oder legen Sie eine hier ab..."  accept=".json"></b-form-file>
   <br> <br>
-  <div v-if="show">
+  <div style= "float:left;" v-if="show">
     {{numberOfServices}} Dienste wurden erkannt.
   </div>
-  <b-button @click="sendJson">Dienste importieren</b-button>
+  <b-button style= "float:right;" @click="sendJson">Dienste importieren</b-button>
 
 </div>
 </template>
@@ -29,7 +29,7 @@ export default {
 
       try{
         this.unvalid = false;
-        if(this.file == null) throw "No file has been loaded.";
+        if(this.file == null) throw "Es wurde keine Datei geladen.";
         const reader = new FileReader();
         reader.onload = this.setText;
 
@@ -60,16 +60,16 @@ export default {
         for(var i = 0; i < n; i++){
           var srvs = this.services[i];
           var unvalid = false;
-          var errMsg = "The " + (i+1) + ". service is missing:";
+          var errMsg = "Dem " + (i+1) + ". Dienst fehlt:";
 
-          if(srvs.name == null  || srvs.name == "") {errMsg = errMsg + "\n a name"; unvalid = true}
-          if(srvs.organisation == null  || srvs.organisation == "") {errMsg = errMsg + " an organisation"; unvalid = true}
-          if(srvs.version == null  || srvs.version == "") {errMsg = errMsg + " a version"; unvalid = true}
-          if(srvs.date == null) {errMsg = errMsg + " a date"; unvalid = true}
-          if(srvs.logo == null  || srvs.logo == "") {errMsg = errMsg + " a logo"; unvalid = true}
-          if(srvs.tags == null || srvs.tags.length == 0) {errMsg = errMsg + " a tag"; unvalid = true}
+          if(srvs.name == null  || srvs.name == "") {errMsg = errMsg + "\n ein Name"; unvalid = true}
+          if(srvs.organisation == null  || srvs.organisation == "") {errMsg = errMsg + "\n eine Organisation"; unvalid = true}
+          if(srvs.version == null  || srvs.version == "") {errMsg = errMsg + "\n eine Version"; unvalid = true}
+          if(srvs.date == null) {errMsg = errMsg + "\n ein Datum"; unvalid = true}
+          if(srvs.logo == null  || srvs.logo == "") {errMsg = errMsg + "\n ein Logo"; unvalid = true}
+          if(srvs.tags == null || srvs.tags.length == 0) {errMsg = errMsg + "\n mindestens ein Tag"; unvalid = true}
           if((srvs.formatIn == null || srvs.formatIn.length == 0) && (srvs.formatOut == null || srvs.formatOut.length == 0))
-          {errMsg = errMsg + " an in or output format"; unvalid = true}
+          {errMsg = errMsg + " \n mindestens ein Ein- oder Ausgabeformat"; unvalid = true}
 
           if(unvalid) {numberUnvalid++, err = err + errMsg+ '\n'}
         }
@@ -78,23 +78,24 @@ export default {
       } catch(err) {
         this.unvalid = true;
 
-        if(Boolean(err.message.indexOf("SyntaxError"))) {
-         alert("Die JSON Datei scheint fehlerhaft zu sein. Bitte achten Sie darauf nur richtige JSON datein hochzuladen.");
+        if(err instanceof SyntaxError) {
+         alert("Die JSON Datei scheint fehlerhaft zu sein. Bitte achten Sie darauf nur richtige JSON Datein hochzuladen.");
          this.show = false;
+
         } else {
-         alert("While parsing the JSON file the following error occured: " + err);
+         alert("Beim Lesen der Datei sind folgende Fehler aufgetreten: \n" + err);
       }
       }
     },
     sendJson: function() {
 
       if(!this.unvalid){
-      this.axios.post('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/services', this.text)
+      this.axios.post('/services', this.text)
            .then(function (response) { alert(response);})
            .catch(function (error) {alert(error);});
       this.show = false;
       } else {
-        alert("Die gelesene Datei ist nicht gültig");
+        alert("Die gelesene Datei ist nicht gültig.");
       }
     }
   },

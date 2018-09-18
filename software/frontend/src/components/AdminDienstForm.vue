@@ -1,17 +1,16 @@
 <template>
   <div class = "out">
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-      <b-button type="submit" variant="primary" style="float:right;">Submit</b-button>
+      <b-button type="submit" variant="primary" style="float:right;margin-left: 0.5vw;">Speichern</b-button>
       <b-button type="reset" variant="danger" style="float:right;">Reset</b-button>
-      <h4>General Info</h4>
+      <h4>Dienst Informationen</h4>
       <b-form-group id="GeneralName"
                     label="Name:"
                     label-for="genName">
         <b-form-input id="genName"
                       type="text"
                       v-model="form.name"
-                      required
-                      placeholder="Enter a name">
+                      required>
         </b-form-input>
       </b-form-group>
 
@@ -21,8 +20,7 @@
         <b-form-input id="genOrg"
                       type="text"
                       v-model="form.organisation"
-                      required
-                      placeholder="Enter an organisation">
+                      required>
         </b-form-input>
       </b-form-group>
 
@@ -32,26 +30,24 @@
         <b-form-input id="genVersion"
                       type="text"
                       v-model="form.version"
-                      required
-                      placeholder="Enter a version">
+                      required>
         </b-form-input>
       </b-form-group>
 
       <b-form-group id="GeneralLogo"
-                    label="Logo:"
+                    label="Logo-Name:"
                     label-for="genLogo">
         <b-form-input id="genLogo"
                       type="text"
                       v-model="form.logo"
-                      required
-                      placeholder="Enter a logo name">
+                      required>
         </b-form-input>
       </b-form-group>
 
-      <b-button-toolbar>
-      <b-button class="small"  @click = "deleteTag">-</b-button>
-      <b-button class="small"  @click = "addTag">+</b-button>
-      </b-button-toolbar>
+
+      <b-button class="small" style="float: right; margin-left: 0.5vw;" @click = "deleteTag">-</b-button>
+      <b-button class="small" style="float: right;"  @click = "addTag">+</b-button>
+
 
       <br>
       <div v-for= "(tag,index) in form.tags">
@@ -62,19 +58,18 @@
           <b-form-input id="genTag"
                         type="text"
                         v-model="form.tags[index]"
-                        required
-                        placeholder="Enter a version">
+                        required>
           </b-form-input>
         </b-form-group>
-      <!-- </b-form> -->
+
       </div>
-    <!-- </b-form> -->
 
+     <br>
 
-    <b-button class="small" style="float:left;" @click = "addInputFormat">Add In Format</b-button>
-    <b-button class="small" style="float:left;" @click = "deleteInputFormat">Delete In Format</b-button>
-    <b-button class= "small" style="float:right;" @click = "deleteOutputFormat">Delete Out Format</b-button>
-    <b-button class= "small" style="float:right;" @click = "addOutputFormat">Add Out Format</b-button>
+    <b-button class="small" style="float:left; margin-right: 0.5vw;" @click = "addInputFormat">+ Input</b-button>
+    <b-button class="small" style="float:left;" @click = "deleteInputFormat">- Input</b-button>
+    <b-button class= "small" style="float:right; margin-left: 0.5vw;" @click = "deleteOutputFormat">- Output</b-button>
+    <b-button class= "small" style="float:right;" @click = "addOutputFormat">+ Output</b-button>
 
     <br><br>
 
@@ -82,15 +77,14 @@
       <div  class = "left" style.overflow= "hidden">
         <div v-for="(inputFormat, index) in form.formatIn" class = "lefter">
           <!-- <b-form> -->
-          <h3>{{index}}. Input Format</h3>
+          <h5>{{index + 1}}. Input Format</h5>
           <b-form-group id="InpFormatType"
-                        label="Type:"
+                        label="Typ:"
                         label-for="InputType">
             <b-form-input id="InputType"
                           type="text"
                           v-model="inputFormat.type"
-                          required
-                          placeholder="Enter a type">
+                          required>
             </b-form-input>
           </b-form-group>
 
@@ -100,13 +94,12 @@
             <b-form-input id="InputVersion"
                           type="text"
                           v-model="inputFormat.version"
-                          required
-                          placeholder="Enter a version">
+                          required>
             </b-form-input>
           </b-form-group>
 
           <b-form-group id="InpComp"
-                        label="Compatibility Degree:"
+                        label="Kompatibilität:"
                         label-for="InputComp">
             <b-form-select id="InputComp"
                            :options="comps"
@@ -114,22 +107,21 @@
                            v-model="inputFormat.compatibilityDegree">
             </b-form-select>
           </b-form-group>
-          <!-- </b-form> -->
+
         </div>
       </div>
 
       <div class = "right">
-        <div  v-for="(outputFormat, index) in form.formatOut" class= "lefter">
-        <!-- <b-form> -->
-          <h3>{{index}}. Output Format</h3>
+        <div  v-for="(outputFormat, index) in form.formatOut" class= "righter">
+
+          <h5>{{index + 1}}. Output Format</h5>
           <b-form-group id="OutFormatType"
-                        label="Type:"
+                        label="Typ:"
                         label-for="OutputType">
             <b-form-input id="OutputType"
                           type="text"
                           v-model="outputFormat.type"
-                          required
-                          placeholder="Enter a type">
+                          required>
             </b-form-input>
           </b-form-group>
 
@@ -139,13 +131,12 @@
             <b-form-input id="OutputVersion"
                           type="text"
                           v-model="outputFormat.version"
-                          required
-                          placeholder="Enter a version">
+                          required>
             </b-form-input>
           </b-form-group>
 
           <b-form-group id="OutComp"
-                        label="Compatibility Degree:"
+                        label="Kompatibilität:"
                         label-for="OutputComp">
             <b-form-select id="OutputComp"
                            :options="comps"
@@ -219,33 +210,34 @@ export default {
     return {
        form: JSON.parse(JSON.stringify(this.pform)),
         comps: [
-        { text: 'Select One', value: "" },
-        "strict", "flexible"
+        { text: 'Wählen Sie aus', value: "" },
+        "strikt", "flexibel"
       ],
       show: true
     }
   },
   methods: {
     onSubmit (evt) {
-
+      evt.preventDefault();
+      
       try{
-        if(this.form.formatIn.length == 0 && this.form.formatOut.length == 0) {throw "You need to enter an input or output format"}
+        if(this.form.formatIn.length == 0 && this.form.formatOut.length == 0) {throw "Bitte geben Sie mindestens ein Ein- oder Ausgabeformat an."}
 
         if(this.pedit) {
 
         alert(JSON.stringify(this.form));
-        this.axios.put('http://134.245.1.240:9061/composer-0.0.1-AUTH/services', JSON.stringify(this.form))
+        this.axios.put('/services', JSON.stringify(this.form))
                  .then(function (response) { alert(response);})
                  .catch(function (error) {alert(error);});
 
         } else {
         this.form.date = Date.now();
         alert(this.form.date);
-        evt.preventDefault();
+
 
         alert(JSON.stringify(this.form));
 
-        this.axios.post('http://134.245.1.240:9061/composer-0.0.1-AUTH/services', JSON.stringify(this.form))
+        this.axios.post('/services', JSON.stringify(this.form))
                  .then(function (response) { alert(response);})
                  .catch(function (error) {alert(error);});
         }
@@ -333,21 +325,23 @@ export default {
 .right{
   float: right;
   width: 45%;
-  padding: 20px;
 }
 
 .left{
   float: left;
   width: 45%;
-  padding: 20px;
 }
 
 .lefter{
   float: left;
-  width: 50%;
-  padding: 20px;
-  border: dashed;
-  border-radius: 25px;
+  width: 90%;
+  padding: 3%;
+}
+
+.righter {
+  float: right;
+  width: 90%;
+  padding: 3%;
 }
 
 .small{
