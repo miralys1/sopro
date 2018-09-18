@@ -65,7 +65,13 @@ public class CompositionView extends View {
      */
     private float scaleFactor = 1.f;
 
+    /**
+     * Initial X coordinate for drawing
+     */
     private float initX = 100;
+    /**
+     * Initial Y coordinate for drawing
+     */
     private float initY = 100;
 
 
@@ -79,15 +85,62 @@ public class CompositionView extends View {
      */
     private Node selectedNode;
 
-    private Edge selectedEdge;
-
 
     private int maxX = 0;
     private int maxY = 0;
     private int minX = 0;
     private int minY = 0;
 
+    /**
+     * Returns the currently selected Node. Attention: It returns NULL if no node is selected.
+     *
+     * @return
+     */
+    public Node getSelectedNode() {
+        return selectedNode;
+    }
 
+    /**
+     * Returns the composition that is drawn by the CompositionView. It's NULL
+     * if no composition has been set.
+     *
+     * @return
+     */
+    public Composition getComp() {
+        return comp;
+    }
+
+
+    /**
+     * This is the compositions that is drawn by the CompositionView.
+     */
+    private Composition comp;
+
+    public CompositionView(Context context) {
+        super(context);
+        init(null, 0);
+    }
+
+    public CompositionView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(attrs, 0);
+    }
+
+    public CompositionView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init(attrs, defStyle);
+    }
+
+    public CompositionView(Context context, AttributeSet attrs, Composition comp) {
+        super(context, attrs);
+        init(attrs, 0);
+        this.comp = comp;
+    }
+
+
+    /**
+     * Gesture Detector for selecting edges or nodes and panning.
+     */
     private final GestureDetector.SimpleOnGestureListener gestureListener
             = new GestureDetector.SimpleOnGestureListener() {
         @Override
@@ -131,6 +184,8 @@ public class CompositionView extends View {
                         invalidate();
                     }
                 }
+
+
                 if (!set) {
                     selectedNode = null;
                     invalidate();
@@ -153,28 +208,6 @@ public class CompositionView extends View {
         this.comp = comp;
     }
 
-    private Composition comp;
-
-    public CompositionView(Context context) {
-        super(context);
-        init(null, 0);
-    }
-
-    public CompositionView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(attrs, 0);
-    }
-
-    public CompositionView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(attrs, defStyle);
-    }
-
-    public CompositionView(Context context, AttributeSet attrs, Composition comp) {
-        super(context, attrs);
-        init(attrs, 0);
-        this.comp = comp;
-    }
 
     private void init(AttributeSet attrs, int defStyle) {
         // Load attributes
@@ -215,7 +248,12 @@ public class CompositionView extends View {
         return true;
     }
 
-
+    /**
+     * Small helper method for removing .png ending from a file name.
+     *
+     * @param urlPic
+     * @return
+     */
     public static String removePNGEnding(String urlPic) {
 
         if (urlPic.endsWith(".png")) {
@@ -225,6 +263,7 @@ public class CompositionView extends View {
             return urlPic;
         }
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -284,6 +323,13 @@ public class CompositionView extends View {
                         //nodes are not compatible, but there are alternatives
                         edgePaint.setColor(Color.YELLOW);
                     }
+                }
+
+                if (selectedEdge == e) {
+                    Log.d("Edge", "an edge is selected");
+                    edgePaint.setStrokeWidth(20);
+                } else {
+                    edgePaint.setStrokeWidth(4);
                 }
 
 
@@ -397,6 +443,9 @@ public class CompositionView extends View {
     }
 
 
+    /**
+     * This Listener is used for scaling in the CompositionView.
+     */
     private class ScaleListener
             extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
