@@ -23,10 +23,10 @@
                             breakpoint="lg"
                             label-class="text-sm-right"
                             :label-cols="4"
-                            label-for="login.passwort"
+                            label-for="login.password"
                             class="mb-0">
                 <b-input-group prepend="Passwort:">
-                  <b-form-input id="login.passwort"
+                  <b-form-input id="login.password"
                                 type="password"
                                 v-model="login.password"
                                 required
@@ -56,8 +56,8 @@
                             label-class="text-sm-right"
                             :label-cols="3"
                             label="Email:"
-                            label-for="email.register">
-                <b-form-input id="email.register"
+                            label-for="register.email">
+                <b-form-input id="register.email"
                               type="email"
                               v-model="form.email"
                               required
@@ -69,9 +69,9 @@
                             label-class="text-sm-right"
                             :label-cols="3"
                             label="Passwort:"
-                            label-for="passwort.register"
+                            label-for="register.password"
                             class="mb-0">
-                <b-form-input id="passwort.register"
+                <b-form-input id="register.password"
                               type="password"
                               v-model="form.password"
                               required
@@ -93,7 +93,7 @@
                               :label-cols="3"
                               label="Titel:"
                               label-for="title" >
-                  <b-form-select id="title"
+                  <b-form-select id="register.title"
                                  :options="titles"
                                  v-model="form.title">
                   </b-form-select>
@@ -129,8 +129,7 @@
             <b-button class="mt-4"
                       style="float:right"
                       type="submit"
-                      variant="primary"
-                      :to="'/'">
+                      variant="primary">
               Registrieren
             </b-button>
           </b-form>
