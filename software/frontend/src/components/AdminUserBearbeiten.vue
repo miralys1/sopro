@@ -133,10 +133,6 @@ methods: {
 
       evt.preventDefault();
 
-      this.axios.post('/users', JSON.stringify(this.user))
-               .then(response => { alert(response); this.showForm = false;})
-               .catch(error => { alert(error);});
-
       this.axios({
         url: '/users',
         method: 'post',

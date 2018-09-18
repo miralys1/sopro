@@ -9,8 +9,4 @@
     <module>frontend</module>
     <module>backend</module>
   </modules>
-
-  <artifactId>parent</artifactId>
 </project>
-
- 
