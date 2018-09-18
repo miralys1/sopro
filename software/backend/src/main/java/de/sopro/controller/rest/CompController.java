@@ -132,11 +132,12 @@ public class CompController {
 		}
 
 		Composition saveComp = dComp.createComposition(user);
-		Composition emptyComp = new Composition(saveComp.getOwner(), saveComp.getName(), saveComp.isPublic(), new ArrayList<>(), new ArrayList<>());
-		emptyComp.setId(saveComp.getId());
-		compRepo.save(emptyComp);
+//		Composition emptyComp = new Composition(saveComp.getOwner(), saveComp.getName(), saveComp.isPublic(), new ArrayList<>(), new ArrayList<>());
+//		emptyComp.setId(saveComp.getId());
+//		compRepo.save(emptyComp);
 		
 		setIdsForComp(saveComp);
+		compRepo.deleteById(saveComp.getId());
 		compRepo.save(saveComp);
 
 		return new ResponseEntity<>(HttpStatus.OK);
