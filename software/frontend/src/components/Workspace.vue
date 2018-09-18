@@ -1,7 +1,7 @@
 <template>
   <div class="mainlayout" style="overflow: hidden">
     <b-input-group style="float: right; width: 15vw">
-      <b-form-input :v-model="newComp.name" type="text" placeholder="Kompositionsname" />
+      <b-form-input v-model="name" type="text" placeholder="Kompositionsname" />
       <b-input-group-append>
         <b-btn @click="createComp" variant="success">erstellen</b-btn>
       </b-input-group-append>
@@ -92,9 +92,7 @@ export default {
   },
   data() {
     return {
-      newComp: {
-        name: ''
-      },
+      name: '',
       ownComps: [],
       editableComps: [],
       viewableComps: [],
@@ -106,7 +104,11 @@ export default {
       this.axios({
         url: '/compositions',
         method: 'post',
-        data: this.newComp.name
+        data: this.name,
+        headers: {
+          'Content-Length': 0,
+          'Content-Type': 'text/plain'
+        }
       }).then(res => {
         this.$router.push('/editor/' + res.data)
         alert('Komposition erfolgreich erstellt')
