@@ -1,5 +1,7 @@
 package swarm.swarmcomposerapp.Model;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -25,20 +27,39 @@ public class CompositionsAnswer {
     }
 
     public List<Composition> getViewable() {
+        viewable.addAll(editable);
         return viewable;
     }
 
     public List<Composition> getPublicComps() {
-        return publicComps;
+        HashSet<Long> ids = new HashSet<>();
+
+        List<Composition> toReturn = new ArrayList<>();
+
+
+        /*
+
+         */
+        for (Composition c : owns) {
+           ids.add(c.getId());
+        }
+        for (Composition c : getViewable()) {
+           ids.add(c.getId());
+        }
+
+        addCompWithIdNotInSet(publicComps, ids, toReturn);
+
+        return toReturn;
     }
 
+    public List<Composition> getOwns() { return owns; }
 
     /**
      * Merges all compositions that are seeable for the current user.
      *
      * @return
      */
-    public List<Composition> getSeeableComps() {
+    public List<Composition> getSeeableComps() { //TODO remove
         HashSet<Long> ids = new HashSet<>();
 
         List<Composition> toReturn = new ArrayList<>();

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,24 +22,33 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
     private List<Composition> compList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, author, date;
+        public TextView name, author;
 
         public MyViewHolder(View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.name);
             author = (TextView) view.findViewById(R.id.author);
-            date = (TextView) view.findViewById(R.id.date);
         }
     }
 
+    /**
+     * update the data set for this recyclerView
+     * @param compList list of compositions
+     */
     public void setCompList(List<Composition> compList){
-        this.compList = compList;
-        notifyDataSetChanged();
+        if(compList != null) {
+            this.compList = compList;
+            notifyDataSetChanged();
+        }
     }
 
 
     public ListAdapter(List<Composition> compList) {
-        this.compList = compList;
+        if(compList == null){
+            this.compList = new ArrayList<>();
+        } else {
+            this.compList = compList;
+        }
     }
 
     @Override
@@ -54,8 +64,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         Composition comp = compList.get(position);
         holder.name.setText(comp.getName());
         holder.author.setText(comp.getOwner().getFullName());
-        //TODO Display icon based on whether Composition is Owned, Shared or Public
-        holder.date.setText("ID: "+ comp.getId());
     }
 
     @Override

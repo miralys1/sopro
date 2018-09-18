@@ -28,6 +28,7 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
     private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy HH:mm");
     private int position; //(app-)internal id
     private CompositionView compositionView;
+    private int listID;
 
 
     @Override
@@ -46,8 +47,10 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
 
         compositionView = findViewById(R.id.compositionView3);
 
+        listID = intent.getIntExtra("LIST_ID", -1);
+        Log.i("DETAIL", "called position "+position+" of list "+listID);
         try {
-            comp = LocalCache.getInstance().getCompAtPos(position, this);
+            comp = LocalCache.getInstance().getCompAtPos(position, this, listID);
         } catch (Exception e){
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             goBackToList(null);
@@ -97,12 +100,9 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
 
     @Override
     public void notify(boolean successful) {
-
         if(successful){
             //needed composition details are in LocalCache now
-            comp = LocalCache.getInstance().getCompAtPos(position, this);
-            Toast.makeText(getApplicationContext(), "comp is ready", Toast.LENGTH_SHORT).show();
-
+            comp = LocalCache.getInstance().getCompAtPos(position, this, listID);
             if(comp == null){
                 //TODO handle fatal event
                 Toast.makeText(getApplicationContext(), getText(R.string.err_text_detail), Toast.LENGTH_SHORT).show();

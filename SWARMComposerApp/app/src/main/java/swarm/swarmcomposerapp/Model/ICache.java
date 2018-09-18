@@ -13,7 +13,7 @@ public interface ICache {
 
     Service getServiceById(long id, IResponse caller);
 
-    Composition getCompAtPos(int pos, IResponse caller);
+    Composition getCompAtPos(int pos, IResponse caller, int listID);
 
     ArrayList<Composition> getCompositions(IResponse caller);
 

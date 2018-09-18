@@ -59,7 +59,10 @@ public class LocalCache implements ICache {
     }
 
     private static LocalCache instance = new LocalCache();
-    private ArrayList<Composition> compositions = new ArrayList();
+    private ArrayList<Composition> compositions = new ArrayList(); //TODO remove
+    private ArrayList<Composition> publicComps = new ArrayList();
+    private ArrayList<Composition> viewableComps = new ArrayList();
+    private ArrayList<Composition> ownedComps = new ArrayList();
     private HashMap<Long, Service> serviceLookUp = new HashMap<>();
 
 
@@ -96,29 +99,48 @@ public class LocalCache implements ICache {
      * @param pos
      * @return
      */
-    public Composition getCompAtPos(int pos, IResponse caller) throws IllegalArgumentException {
+    public Composition getCompAtPos(int pos, IResponse caller, int listID) throws IllegalArgumentException {
 
+        /*
         if (compositions.size() < pos) {
             throw new IllegalArgumentException("This request would lead to an index out of " +
                     "bounds exception!");
         }
+        */
 
         if (pos < 0) {
             throw new IllegalArgumentException("Something went wrong: A list has no positions < 0.");
         }
 
-        final Composition tempComp = compositions.get(pos);
 
-        if (tempComp == null) {
-            throw new CompositionExpectedException("Something went wrong: The element " +
-                    "at this position is null.");
+        Log.i("DETAIL", "in cache: getCompAtPos "+ pos + " in list "+listID);
+        switch(listID) {
+            case 2:
+                final Composition tempPublicComp = publicComps.get(pos);
+                if (tempPublicComp.getNodeList() == null || tempPublicComp.getNodeList().isEmpty()) {
+                    ActualRequests.actualCompDetailsRequest(tempPublicComp, caller);
+                    return null;
+                } else {
+                    return tempPublicComp;
+                }
+            case 1:
+                final Composition tempViewableComp = viewableComps.get(pos);
+                if (tempViewableComp.getNodeList() == null || tempViewableComp.getNodeList().isEmpty()) {
+                    ActualRequests.actualCompDetailsRequest(tempViewableComp, caller);
+                    return null;
+                } else {
+                    return tempViewableComp;
+                }
+            case 0:
+                final Composition tempOwnedComp = ownedComps.get(pos);
+                if (tempOwnedComp.getNodeList() == null || tempOwnedComp.getNodeList().isEmpty()) {
+                    ActualRequests.actualCompDetailsRequest(tempOwnedComp, caller);
+                    return null;
+                } else {
+                    return tempOwnedComp;
+                }
         }
-
-        if (tempComp.getNodeList() == null || tempComp.getNodeList().isEmpty()) {
-            ActualRequests.actualCompDetailsRequest(tempComp, caller);
-            return null;
-        }
-        return tempComp;
+        return null;
     }
 
     /**
@@ -128,9 +150,30 @@ public class LocalCache implements ICache {
      * @return
      */
     public ArrayList<Composition> getCompositions(IResponse caller) {
+        //TODO also hand over an enum which represents one of the four lists. Return the needed ArrayList. Only hardRefresh if public list is empty.
         if (compositions.isEmpty()) {
             hardRefresh(caller);
             return null;
+        }
+        return compositions;
+    }
+
+    /**
+     * Returns the compositions.
+     * If there hasn't been any requests yet, it will request the composition list from backend.
+     *
+     * @return
+     */
+    public ArrayList<Composition> getCompositions(IResponse caller, ListIdentifier listIdentifier) {
+        if (!hasData() && listIdentifier == ListIdentifier.PUBLIC) {
+            hardRefresh(caller);
+            return null;
+        } else {
+            switch(listIdentifier){
+                case PUBLIC: return publicComps;
+                case OWNED: return ownedComps;
+                case VIEWABLE: return viewableComps;
+            }
         }
         return compositions;
     }
@@ -142,9 +185,12 @@ public class LocalCache implements ICache {
     public void hardRefresh(IResponse caller) {
         lastUpdate = System.currentTimeMillis();
         Log.i("AddressHardRefresh","Caller: "+caller.getClass().getName());
-        compositions = new ArrayList<>();
-        ActualRequests.actualCompListRequest(compositions, caller);
 
+        publicComps = new ArrayList<>();
+        ownedComps = new ArrayList<>();
+        viewableComps = new ArrayList<>();
+
+        ActualRequests.actualCompListRequest(publicComps, ownedComps, viewableComps, caller);
     }
 
 
@@ -163,5 +209,12 @@ public class LocalCache implements ICache {
         return instance;
     }
 
+    public enum ListIdentifier{
+        PUBLIC, OWNED, VIEWABLE;
+    }
+
+    public boolean hasData(){
+        return((publicComps != null && !publicComps.isEmpty()) || (viewableComps != null && !viewableComps.isEmpty()) || (ownedComps != null && !ownedComps.isEmpty()));
+    }
 
 }

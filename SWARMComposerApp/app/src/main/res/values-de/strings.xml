@@ -2,6 +2,9 @@
 <resources>
     <string name="app_name">SWARM Composer</string>
     <string name="settings">Einstellungen</string>
+    <string name="publicComps">Öffentliche Kompositionen</string>
+    <string name="viewableComps">Geteilte Kompositionen</string>
+    <string name="ownedComps">Eigene Kompositionen</string>
     <string name="loading">Lädt...</string>
     <string name="login">Einloggen</string>
     <string name="logged_in_as">"Eingeloggt als "</string>
