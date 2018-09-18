@@ -88,13 +88,13 @@ export default {
             comp: null
         }
     },
-    watch: {
-        compability: function () {
-            if(this.compability===null) {
-                this.comp
-            }
-        }
-    }
+    // watch: {
+    //     compability: function () {
+    //         if(this.compability===null) {
+    //             this.comp
+    //         }
+    //     }
+    // },
     methods: {
         deleteLink: function (event) {
             console.log("delete link")
