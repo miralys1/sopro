@@ -2,14 +2,14 @@
 <div>
 
 <div>
-  <input type="text" class="search" placeholder="Suche.." v-model="searchedService" @keyup.enter="search">
+  <input type="text" class="search" placeholder="Suche.." v-model="searchedService" @keyup.enter="search" @click="serviceSelected=false">
   <br><br>
   <h3> {{this.msg}} </h3>
-  <div class="list-group list-group-flush" style="overflow:scroll; height:400px;">
-  <button type="button" class="list-group-item list-group-item-action" style="display: inline-block" v-for="(service,index) in foundServices" @click="onClick(index)">
+  <ul class="list-group list-group-flush" style="overflow-y: scroll; max-height:200px;">
+  <button type="button" class="list-group-item list-group-item-action" style="display: inline-block; margin: auto auto; min-height: 10vh;" v-for="(service,index) in foundServices" @click="onClick(index)">
     {{service.name}} ({{service.version}}) {{service.organisation}}
   </button>
-</div>
+</ul>
 </div
 <br><br>
 <AdminDienstForm v-if="serviceSelected" v-bind:pform=selectedService v-bind:pedit='true'/>
@@ -35,6 +35,7 @@ watch: {
   }
     },
 
+
 components: {AdminDienstForm},
 props: ['pupdate'],
 methods: {
@@ -57,20 +58,26 @@ methods: {
   },
 
   search() {
-//     var options = {
-//     shouldSort: true,
-//     threshold: 0.6,
-//     location: 0,
-//     distance: 100,
-//     maxPatternLength: 32,
-//     minMatchCharLength: 1,
-//     keys: [
-//     "name",
-//     "organisation"
-//     ]
-// };
-// var fuse = new Fuse(this.services, options); // "list" is the item array
-// this.foundServices = fuse.search(searchedService);
+
+  if(this.searchedService != "") {
+    var options = {
+    shouldSort: true,
+    threshold: 0.6,
+    location: 0,
+    distance: 100,
+    maxPatternLength: 32,
+    minMatchCharLength: 1,
+    keys: [
+    "name",
+    "organisation",
+    "formatIn.type",
+    "formatOut.type"
+    ]
+};
+this.$search(this.searchedService, this.services, options).then(results => {
+  this.foundServices = results
+})
+}
   }
 
 
@@ -80,12 +87,12 @@ methods: {
  data() {
    return{
      searchedService: "",
-     foundServices: this.services,
      serviceSelected: false,
      selectedService: {
        id: 0,
-       name: "Johanna",
-       organisation: "test",
+       name: "",
+       certified: "",
+       organisation: "",
        version: "",
        date: 0,
        logo: "",
@@ -108,8 +115,10 @@ methods: {
        }
      ]
    },
-     services: [],
-     msg: "Dienste"
+     services: [{name: "johanna", version: "h", organisation: "adesso", formatIn:[{type: "pdf"}, {type: "axio"}]},{name: "susanne", version: "h", organisation: "pudel"},
+      {name: "franzi", version: "h", organisation: "katze", formatIn:[{type: "axios"}, {type: "pdf"}]},{name: "philip", version: "h", organisation: "google"}],
+     msg: "Dienste",
+    foundServices: this.services,
    }
 
  }
