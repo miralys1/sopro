@@ -17,7 +17,17 @@
     <string name="update">Aktualisieren</string>
     <string name="webaddress">Serveradresse</string>
     <string name="webaddress_change">Serveradresse ändern</string>
-    <string name="lastupdate">"Stand: "</string>
+    <string name="lastupdate">"Stand"</string>
+
+    <string name="service">Dienst</string>
+    <string name="service_name">Name</string>
+    <string name="service_organisation">Organisation</string>
+    <string name="service_version">Version</string>
+    <string name="service_date">Datum</string>
+    <string name="service_certified">Ziertifiziert</string>
+    <string name="service_certified_yes">ja</string>
+    <string name="service_certified_no">nein</string>
+
     <string name="d_button_close">Schließen</string>
     <string name="d_instructions_title">Anleitung</string>
     <string name="d_instructions_text">Um die Verbindung zu einem Server herzustellen, muss die Serveradresse in der Form 123.456.1.123:1234 angegeben werden.\nUm private Kompositionen sehen zu können, loggen Sie sich bitte mit Ihrer E-Mail-Adresse und Ihrem Passwort ein.</string>

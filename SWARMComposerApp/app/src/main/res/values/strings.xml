@@ -19,8 +19,17 @@
     <string name="update">Update</string>
     <string name="webaddress">Web Adress</string>
     <string name="webaddress_change">Update web adress</string>
-    <string name="lastupdate">Last updated: </string>
-    <string name="welcome_messages" translatable="false">Hello, %1$s! You have %2$d new messages.</string>
+    <string name="lastupdate">Last updated</string>
+
+    <!-- Strings for info text in DetailActivity -->
+    <string name="service">Service</string>
+    <string name="service_name">Name</string>
+    <string name="service_organisation">Organisation</string>
+    <string name="service_version">Version</string>
+    <string name="service_date">Date</string>
+    <string name="service_certified">Certified</string>
+    <string name="service_certified_yes">yes</string>
+    <string name="service_certified_no">no</string>
 
     <!-- Icons encoded as strings -->
     <string name="ic_settings" translatable="false">&#xf085;</string>

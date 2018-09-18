@@ -185,7 +185,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
                 compList = LocalCache.getInstance().getCompositions(this, LocalCache.ListIdentifier.OWNED);
                 adapter_owned.setCompList(compList);
             }
-            tLastUpdate.setText(getText(R.string.lastupdate)+" "+cache.getLastUpdate());
+            tLastUpdate.setText(getText(R.string.lastupdate)+": "+cache.getLastUpdate());
         } else {
             //server request failed
             //TODO show error dialog with tips
