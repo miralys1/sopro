@@ -194,11 +194,11 @@ export default {
     register (event) {
       event.preventDefault()
       this.axios.post('/users', {
-        email: this.login.email,
-        password: this.login.password,
-        title: this.login.title,
-        firstName: this.login.firstName,
-        lastName: this.login.lastName
+        email: this.form.email,
+        password: this.form.password,
+        title: this.form.title,
+        firstName: this.form.firstName,
+        lastName: this.form.lastName
       })
       .then(response => {
         alert('Registrierung erfolgreich')
