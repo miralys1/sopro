@@ -20,9 +20,7 @@ public class Edge {
 		this.target = target;
 	}
 
-	@JsonCreator
-	public Edge(@JsonProperty("id") long id, @JsonProperty("source") Node source, @JsonProperty("target") Node target,
-			@JsonProperty("compatibility") CompatibilityAnswer compatibility) {
+	public Edge(long id, Node source, Node target, CompatibilityAnswer compatibility) {
 		this.id = id;
 		this.source = source;
 		this.target = target;
