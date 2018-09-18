@@ -91,8 +91,9 @@ this.$search(this.searchedService, this.services, options).then(results => {
      serviceSelected: false,
      selectedService: {
        id: 0,
-       name: "Johanna",
-       organisation: "test",
+       name: "",
+       certified: "",
+       organisation: "",
        version: "",
        date: 0,
        logo: "",

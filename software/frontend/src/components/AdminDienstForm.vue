@@ -34,6 +34,16 @@
         </b-form-input>
       </b-form-group>
 
+      <b-form-group id="Certified"
+                    label="Zertifiziert:"
+                    label-for="cert">
+        <b-form-select id="cert"
+                       :options="certs"
+                       required
+                       v-model="form.certified">
+        </b-form-select>
+      </b-form-group>
+
       <b-form-group id="GeneralLogo"
                     label="Logo-Name:"
                     label-for="genLogo">
@@ -45,6 +55,7 @@
       </b-form-group>
 
 
+
       <b-button class="small" style="float: right; margin-left: 0.5vw;" @click = "deleteTag">-</b-button>
       <b-button class="small" style="float: right;"  @click = "addTag">+</b-button>
 
@@ -52,10 +63,10 @@
       <br>
       <div v-for= "(tag,index) in form.tags">
        <!-- <b-form> -->
-        <b-form-group id="GeneralTag"
+        <b-form-group id="GeneralTag"+ index
                       label="Tag:"
-                      label-for="genTag">
-          <b-form-input id="genTag"
+                      label-for="genTag"+ index>
+          <b-form-input id="genTag"+ index
                         type="text"
                         v-model="form.tags[index]"
                         required>
@@ -78,30 +89,30 @@
         <div v-for="(inputFormat, index) in form.formatIn" class = "lefter">
           <!-- <b-form> -->
           <h5>{{index + 1}}. Input Format</h5>
-          <b-form-group id="InpFormatType"
+          <b-form-group id="InpFormatType"+ index
                         label="Typ:"
-                        label-for="InputType">
-            <b-form-input id="InputType"
+                        label-for="InputType"+ index>
+            <b-form-input id="InputType"+ index
                           type="text"
                           v-model="inputFormat.type"
                           required>
             </b-form-input>
           </b-form-group>
 
-          <b-form-group id="InpFormatVersion"
+          <b-form-group id="InpFormatVersion"+ index
                         label="Version:"
-                        label-for="InputVersion">
-            <b-form-input id="InputVersion"
+                        label-for="InputVersion"+ index>
+            <b-form-input id="InputVersion"+ index
                           type="text"
                           v-model="inputFormat.version"
                           required>
             </b-form-input>
           </b-form-group>
 
-          <b-form-group id="InpComp"
+          <b-form-group id="InpComp"+ index
                         label="Kompatibilität:"
-                        label-for="InputComp">
-            <b-form-select id="InputComp"
+                        label-for="InputComp"+ index>
+            <b-form-select id="InputComp"+ index
                            :options="comps"
                            required
                            v-model="inputFormat.compatibilityDegree">
@@ -115,36 +126,36 @@
         <div  v-for="(outputFormat, index) in form.formatOut" class= "righter">
 
           <h5>{{index + 1}}. Output Format</h5>
-          <b-form-group id="OutFormatType"
+          <b-form-group id="OutFormatType" + index
                         label="Typ:"
-                        label-for="OutputType">
-            <b-form-input id="OutputType"
+                        label-for="OutputType" + index>
+            <b-form-input id="OutputType" +index
                           type="text"
                           v-model="outputFormat.type"
                           required>
             </b-form-input>
           </b-form-group>
 
-          <b-form-group id="OutFormatVersion"
+          <b-form-group id="OutFormatVersion" + index
                         label="Version:"
-                        label-for="OutputVersion">
-            <b-form-input id="OutputVersion"
+                        label-for="OutputVersion"+ index>
+            <b-form-input id="OutputVersion"+ index
                           type="text"
                           v-model="outputFormat.version"
                           required>
             </b-form-input>
           </b-form-group>
 
-          <b-form-group id="OutComp"
+          <b-form-group id="OutComp"+ index
                         label="Kompatibilität:"
-                        label-for="OutputComp">
-            <b-form-select id="OutputComp"
+                        label-for="OutputComp"+ index>
+            <b-form-select id="OutputComp"+ index
                            :options="comps"
                            required
                            v-model="outputFormat.compatibilityDegree">
             </b-form-select>
           </b-form-group>
-        <!-- </b-form> -->
+
       </div>
     </div>
  </div>
@@ -178,6 +189,7 @@ export default {
         return {
         id: 0,
         name: "",
+        certified: "false",
         organisation: "",
         version: "",
         date: 0,
@@ -213,13 +225,15 @@ export default {
         { text: 'Wählen Sie aus', value: "" },
         "strikt", "flexibel"
       ],
+
+      certs: [{ text: 'Ja', value: "true" }, { text: 'Nein', value: "false" }],
       show: true
     }
   },
   methods: {
     onSubmit (evt) {
       evt.preventDefault();
-      
+
       try{
         if(this.form.formatIn.length == 0 && this.form.formatOut.length == 0) {throw "Bitte geben Sie mindestens ein Ein- oder Ausgabeformat an."}
 
@@ -256,6 +270,7 @@ export default {
       } else {
             this.form.organisation = ""
             this.form.name = "";
+            this.form.certified = "";
             this.form.version = "";
             this.form.logo = "";
             this.form.tags = [""];
