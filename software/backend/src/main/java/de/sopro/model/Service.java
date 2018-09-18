@@ -35,6 +35,8 @@ public class Service {
 
 	private String logo;
 
+	private boolean certified;
+
 	@NotNull
 	@ManyToMany
 	private List<Format> formatIn;
@@ -48,13 +50,14 @@ public class Service {
 	}
 
 	public Service(String name, String version, List<Tag> tags, String organisation, long date, String logo,
-			List<Format> formatIn, List<Format> formatOut) {
+			boolean certified, List<Format> formatIn, List<Format> formatOut) {
 		this.name = name;
 		this.version = version;
 		this.tags = tags;
 		this.organisation = organisation;
 		this.date = date;
 		this.logo = logo;
+		this.certified = certified;
 		this.formatIn = formatIn;
 		this.formatOut = formatOut;
 	}
@@ -115,6 +118,14 @@ public class Service {
 		this.logo = logo;
 	}
 
+	public boolean isCertified() {
+		return certified;
+	}
+
+	public void setCertified(boolean certified) {
+		this.certified = certified;
+	}
+
 	public List<Format> getFormatIn() {
 		return formatIn;
 	}
@@ -136,8 +147,12 @@ public class Service {
 		for (Tag t : tags) {
 			ts.add(t.getName());
 		}
-		return new SendService(this.id, this.name, this.version, ts, this.organisation, this.date, this.logo, this.formatIn,
-				this.formatOut);
+		String c = "false";
+		if (certified) {
+			c = "true";
+		}
+		return new SendService(this.id, this.name, this.version, ts, this.organisation, this.date, this.logo, c,
+				this.formatIn, this.formatOut);
 	}
 
 	public String toString() {
