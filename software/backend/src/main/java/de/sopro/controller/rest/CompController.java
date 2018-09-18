@@ -119,21 +119,18 @@ public class CompController {
 
 	@RequestMapping(value = "/compositions/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> editComposition(@RequestBody DetailComp dComp, Principal principal) {
-		Optional<Composition> opComp = compRepo.findById(dComp.getId());
-
-		if (!opComp.isPresent()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		if (dComp == null || !compRepo.findById(dComp.getId()).isPresent()) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
+		
+		Optional<Composition> opComp = compRepo.findById(dComp.getId());
+		
 		User user = userRepo.findByEmail(principal.getName());
 		// User is not logged in or not authorized
 		if (principal == null || !isViewerEditor(user, opComp.get())) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
-		if (dComp == null || !compRepo.findById(dComp.getId()).isPresent()) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
 		Composition saveComp = dComp.createComposition(user);
 
 		setIdsForComp(saveComp);
