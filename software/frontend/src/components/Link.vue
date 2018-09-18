@@ -1,13 +1,13 @@
 <template>
   <path
-          :d="svgPath"
-          marker-mid="url(#arrow)"
-          :style="style">
-        <!-- <animate attributeType="CSS" attributeName="opacity" -->
-        <!--             from="1" to="0.7" dur="10s" repeatCount="indefinite" /> -->
-            <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="2" orient="auto-start-reverse" markerUnits="strokeWidth">
-            <path d="M0,0 L0,4 L3,2 z" :fill="(state==="invalid" ? '#dc3545' : '#28a745')" />
-            </marker>
+    :d="svgPath"
+    marker-mid="url(#arrow)"
+    @click.ctrl="deleteLink"
+    :style="style">
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="2" orient="auto-start-reverse" markerUnits="strokeWidth">
+        <text x="0" y="0" class="small">FBX</text>
+        <path d="M0,0 L0,4 L3,2 z" :fill="(state==="invalid" ? '#dc3545' : '#28a745')" />
+    </marker>
   </path>
 </template>
 
@@ -21,15 +21,15 @@ export default {
         params: Object,
         // start and end of link
         start: Object,
+        compability: Object,
         end: Object,
-        type: String,
-        state: String, // Should be either "valid", "invalid", "alternative"
-        format: Object // Format Object through which Nodes are connected
-        // TEST: If state is invalid or alternative format should be null or undefined
+
+        // if set we use this cords instead of the position of the second node
+        endCords: Object
     },
     computed: {
         style: function () {
-            if(this.state!==null) {
+            if(this.compability!==null) {
                 switch (this.state) {
                 case "valid":
                     return {
@@ -53,21 +53,29 @@ export default {
                         strokeWidth: 20 * this.params.scale
                     }
                 }
-            }
+            } else
+                return {
+                        stroke: 'rgb(0,0,0)',
+                        strokeWidth: 20 * this.params.scale
+                }
         },
         x1: function () {
-            console.log(this.params.originX + ' ' +  this.params.scale + ' ' + this.start.x)
             // 100 magical value
-            return this.params.originX + this.params.scale * this.start.x + 100;
+            return this.params.originX + this.params.scale * this.start.x
         },
         x2: function () {
-            return this.params.originX + this.params.scale * this.end.x + 100;
+            return (this.endCords
+                    ? this.endCords.x
+                    : this.params.originX + this.params.scale * this.end.x);
+
         },
         y1: function () {
-            return this.params.originY + this.params.scale * this.start.y + 100;
+            return this.params.originY + this.params.scale * this.start.y;
         },
         y2: function () {
-            return this.params.originY + this.params.scale * this.end.y + 100;
+            return (this.endCords
+                    ? this.endCords.y - 80
+                    : this.params.originY + this.params.scale * this.end.y);
         },
         svgPath: function () {
             return "M " + this.x1 + ',' + this.y1 +
@@ -77,9 +85,24 @@ export default {
     },
     data () {
         return {
+            comp: null
         }
     },
+    // watch: {
+    //     compability: function () {
+    //         if(this.compability===null) {
+    //             this.comp
+    //         }
+    //     }
+    // },
     methods: {
+        deleteLink: function (event) {
+            console.log("delete link")
+            this.$emit('deleteLink', this.$vnode.key)
+        },
+        checkCompability: function (event) {
+            axios.get()
+        }
     },
     mounted () {
     },

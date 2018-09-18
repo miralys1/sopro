@@ -2,14 +2,14 @@
   <div class = "out">
     <input class="search" type="text" placeholder="Suche.." v-model="searchedUser" @keyup.enter="search">
     <br><br>
-    <div class="list-group list-group-flush" style="overflow:scroll;">
-    <button type="button" class="list-group-item list-group-item-action" style="display: inline-block" v-for="(user,index) in users" @click="onClick(index)">
+    <div v-if="showList" class="list-group list-group-flush" style="overflow-y:scroll; max-height: 100px;">
+    <button type="button" class="list-group-item list-group-item-action" style="display: inline-block; margin: auto auto; min-height: 10vh;" v-for="(user,index) in users" @click="onClick(index)">
       {{user.firstName}} {{user.lastName}}
     </button>
   </div>
   <br><br>
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-      <b-button type="submit" variant="primary" style="float:right;">Submit</b-button>
+    <b-form @submit="onSubmit" @reset="onReset" v-if="showForm">
+      <b-button type="submit" variant="primary" style="float:right ;margin-left: 0.5vw;">Speichern</b-button>
       <b-button type="reset" variant="danger" style="float:right;">Reset</b-button>
       <h4>Benutzer Information</h4>
       <b-form-group id="title"
@@ -18,8 +18,7 @@
         <b-form-input id="genTitle"
                       type="text"
                       v-model="user.title"
-                      required
-                      placeholder="Enter a title">
+                      required>
         </b-form-input>
       </b-form-group>
       <b-form-group id="FName"
@@ -28,8 +27,7 @@
         <b-form-input id="genFName"
                       type="text"
                       v-model="user.firstName"
-                      required
-                      placeholder="Enter a firstname">
+                      required>
         </b-form-input>
       </b-form-group>
       <b-form-group id="LName"
@@ -38,8 +36,7 @@
         <b-form-input id="genLName"
                       type="text"
                       v-model="user.lastName"
-                      required
-                      placeholder="Enter a lastname">
+                      required>
         </b-form-input>
       </b-form-group>
       <b-form-group id="Email"
@@ -48,8 +45,7 @@
         <b-form-input id="genEmail"
                       type="text"
                       v-model="user.email"
-                      required
-                      placeholder="Enter an email adress">
+                      required>
         </b-form-input>
       </b-form-group>
 
@@ -73,6 +69,15 @@
 <script>
 
 export default {
+
+  watch: {
+    searchedUser: function() {
+      if(this.searchedUser == ""){
+        this.showForm = false;
+        this.showList = false;
+      }
+    }
+      },
 
 data() {
   return {
@@ -118,7 +123,8 @@ data() {
   { text: 'Nein', value: false },
   { text: 'Ja', value: true}
 ],
-show: true
+showForm: false,
+showList: false,
 }
 },
 
@@ -126,8 +132,6 @@ methods: {
   onSubmit (evt) {
 
       evt.preventDefault();
-
-      alert(JSON.stringify(this.user));
 
       this.axios({
         url: '/users',
@@ -151,9 +155,13 @@ methods: {
   },
 
   search (evt) {
-   this.users = [];
 
-   this.axios.get('/users')
+  if(this.searchedUser != ""){
+   this.showList = true;
+   this.showForm = false;
+   //this.users = [];
+
+   this.axios.get('/users?search='+ this.searchedUser)
             .then(response =>
             this.users = response.data
                 )
@@ -161,21 +169,28 @@ methods: {
              alert("Fehler");
             console.log(error);
                 });
- }
-
-
+    }
 
   },
 
   onClick(index) {
-     var id = this.users[idex].id;
-    //get request mit id und antwort auf this user und this backup user
-    this.user = JSON.parse(JSON.stringify(this.users[index])) ;
-    this.backupUser = JSON.parse(JSON.stringify(this.users[index])) ;
+
+     var id = this.users[index].id;
+
+     this.axios.get('/users/' + id)
+              .then(response => {
+              this.user = response.data;
+              this.backupUser = JSON.parse(JSON.stringify(this.user)) ;
+              this.showForm = true;
+            }
+                  )
+              .catch(function (error) {
+               alert("Fehler");
+                  });
   }
 
 }
-
+}
 </script>
 
 <style>

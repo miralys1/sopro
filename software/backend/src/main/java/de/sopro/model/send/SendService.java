@@ -3,6 +3,9 @@ package de.sopro.model.send;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import de.sopro.model.Format;
 import de.sopro.model.Service;
 import de.sopro.model.Tag;
@@ -23,16 +26,18 @@ public class SendService {
 
 	private String logo;
 
+	private String certified;
+
 	private List<Format> formatIn;
 
 	private List<Format> formatOut;
 
-	public SendService(){
-
-	}
-
-	public SendService(Long id, String name, String version, List<String> tags, String organisation, long date, String logo,
-			List<Format> formatIn, List<Format> formatOut) {
+	@JsonCreator
+	public SendService(@JsonProperty("id") Long id, @JsonProperty("name") String name,
+			@JsonProperty("version") String version, @JsonProperty("tags") List<String> tags,
+			@JsonProperty("organisation") String organisation, @JsonProperty("date") long date,
+			@JsonProperty("logo") String logo, @JsonProperty("certified") String certified,
+			@JsonProperty("formatIn") List<Format> formatIn, @JsonProperty("formatOut") List<Format> formatOut) {
 		this.id = id;
 		this.name = name;
 		this.version = version;
@@ -40,6 +45,7 @@ public class SendService {
 		this.organisation = organisation;
 		this.date = date;
 		this.logo = logo;
+		this.certified = certified;
 		this.formatIn = formatIn;
 		this.formatOut = formatOut;
 	}
@@ -100,6 +106,14 @@ public class SendService {
 		this.logo = picture;
 	}
 
+	public String getCertified() {
+		return certified;
+	}
+
+	public void setCertified(String certified) {
+		this.certified = certified;
+	}
+
 	public List<Format> getFormatIn() {
 		return formatIn;
 	}
@@ -122,8 +136,12 @@ public class SendService {
 			tags.add(new Tag(tag));
 		}
 
-		Service s = new Service(this.name, this.version, tags, this.organisation, this.date, this.logo, this.formatIn,
-		this.formatOut);
+		boolean c = false;
+		if (certified.equals("true")) {
+			c = true;
+		}
+		Service s = new Service(this.name, this.version, tags, this.organisation, this.date, this.logo, c,
+				this.formatIn, this.formatOut);
 		s.setId(id);
 		return s;
 	}

@@ -1,7 +1,11 @@
 <template>
 <!-- Owner: 52 -->
 <!-- self prevents that both canvas and nodes are dragged at the same time -->
-<div class="editor" @mousedown.self="mouseDown" @wheel.self="wheelEvent" :style="editorStyle">
+<div class="editor"
+     @mousedown.self="mouseDown"
+     @mouseup="mouseUp"
+     @wheel.self="wheelEvent"
+     :style="editorStyle">
     <Node v-for="node in nodes"
           :params="params"
           :key="node.id"
@@ -10,23 +14,53 @@
           :iy="node.y"
           @startDrag="startDrag"
           @mouseDown="startNodeDrag"
+          @deleteNode="handleDeleteNode"
           @endDrag="endDrag">
     </Node>
-  <svg width="100%" height="100%" pointer-events="none">
+
+    <!-- TODO Remove! -->
+    <div
+        id="origin"
+        :style="originStyle"
+        class="noselect"
+      >
+      origin
+    </div>
+
+    <svg
+         width="100%"
+         height="100%"
+         @mousedown.self="mouseDown"
+         @mouseup.self="mouseUp"
+         @wheel.self="wheelEvent">
     <defs>
         <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="2" orient="auto-start-reverse" markerUnits="strokeWidth">
         <path d="M0,0 L0,4 L3,2 z" fill="#dc3545" />
         </marker>
     </defs>
     <Link v-for="link in linkcoords"
+          :compability="link.compability"
           :params="params"
           :start="link.start"
           state="invalid"
           :end="link.end"
           :key="link.id + '-link'"
+          @deleteLink="handleDeleteLink"
+          @mouseup.self="mouseUp"
+          @wheel.self="wheelEvent"
           />
+
+    <!-- TODO endCords with end object -->
+    <Link
+        v-if="newLinkCords!==null"
+        :params="params"
+        :start="newLinkStart"
+        :endCords="newLinkCords"
+        style="z-index: 2;opacity: 0.4;"
+    />
   </svg>
   <SidePanel
+        v-if="services!==null"
         v-show="sidePanelShow"
         style="position:absolute;top:0px;left:0px"
         :services="services"
@@ -52,18 +86,12 @@
 
   <Node
       v-if="insertingNode"
-      :params="{originX: -100, originY: -170, scale: scale}"
+      :params="{originX: 0, originY: 0, scale: scale}"
       style="z-index: 2;opacity: 0.4;border: 4px dotted black; background-color: lightgreen"
       :service="(services.filter(e => e.id==newNodeId))[0]"
       :ix="newNodeX"
       :iy="newNodeY"
   />
-  <!-- <Link -->
-  <!--     v-if="dragLink!==null" -->
-  <!--     :params="params" -->
-  <!--     style="z-index: 2;opacity: 0.4;border: 4px dotted black; background-color: lightgreen" -->
-  <!-- /> -->
-  <v-icon v-if="showTrash" class="trash" name="trash" scale="6"/>
 </div>
 </template>
 <script>
@@ -72,22 +100,36 @@ import Node from '@/components/Node'
 import Link from '@/components/Link'
 
 function newId(list) {
-    if (list===null || list===undefined || list.length===0) return 0;
-    console.log((e => e < 0 ? e-1 : e*-1) (Math.min(...list.map(obj => obj.id))))
-    return (e => e <= 0 ? e-1 : e*(-1)) (Math.min(...list.map(obj => obj.id)))
+    if (list===null || list===undefined || list.length===0) return 1;
+    // console.log((e => e < 0 ? e-1 : e*-1) (Math.min(...list.map(obj => obj.id))))
+    return (Math.max(...list.map(obj => obj.id)) + 1)
 }
 
 export default {
   components: {
     Link, SidePanel, Node
   },
+    // TODO Short style syntax save () { ... }
   computed: {
     editorStyle: function () {
-        var x = this.originX+100;
-        var y = this.originY+100;
+        var x = this.originX;
+        var y = this.originY;
         return {
             backgroundSize: 100*this.scale + 'px ' + 100*this.scale + 'px',
             backgroundPosition: x + 'px ' + y + 'px'
+        }
+    },
+    newLinkStart: function () {
+        var n = this.nodes.find(e => e.id === this.dragLink)
+        return {x: n.x + 100, y: n.y + 100}
+    },
+    originStyle: function () {
+        return {
+            position: 'absolute',
+            left: this.originX + 'px',
+            top: this.originY + 'px',
+            transform: 'scale('+ this.scale + ')',
+            transformOrigin: '0 0'
         }
     },
     params: function () {
@@ -98,11 +140,13 @@ export default {
         }
     },
     linkcoords: function () {
+        // TODO 50 replace with width / height of node
         return this.links.map( ls => ({
-            start: {x: this.nodes.find(n => n.id == ls.node1).x,
-                    y: this.nodes.find(n => n.id == ls.node1).y},
-            end:   {x: this.nodes.find(n => n.id == ls.node2).x,
-                    y: this.nodes.find(n => n.id == ls.node2).y},
+            compability: ls.compability,
+            start: {x: this.nodes.find(n => n.id == ls.node1).x + 100,
+                    y: this.nodes.find(n => n.id == ls.node1).y + 100},
+            end:   {x: this.nodes.find(n => n.id == ls.node2).x + 100,
+                    y: this.nodes.find(n => n.id == ls.node2).y + 100},
                     id: ls.id }))
     }
   },
@@ -114,7 +158,6 @@ export default {
           dragNode: null,
           dragLink: null,
           sidePanelShow: true,
-          showTrash: false,
 
           insertingNode: false,
 
@@ -135,12 +178,14 @@ export default {
           lastY: 0,
 
           ofX: 0,
-          ofY: 0
+          ofY: 0,
 
+          newLinkCords: null
       }
   },
   methods: {
       wheelEvent: function (event) {
+          console.log("scale: " + this.scale)
           if(this.scale + 5/event.deltaY >= 0.15
              && this.scale + 5/event.deltaY <= 7) {
                 this.scale = this.scale + 5/event.deltaY;
@@ -155,14 +200,15 @@ export default {
           console.log("Mouse Up")
           this.dragCanvas=false;
           this.dragNode=null;
-          this.showTrash=false;
+          this.newLinkCords = null;
+          this.dragLink=null;
           if(this.insertingNode) {
             // TODO real ids
             console.log("new node inserted")
-            // TODO Magic numbers REAL serviceId
-            this.nodes = this.nodes.concat({id: newId(this.nodes), sendService: (this.services.find(e => e.id==this.newNodeId)),
-                                            x: (event.clientX - this.originX - 100)*1/this.scale,
-                                            y: (event.clientY - this.originY - 170)*1/this.scale})
+            this.nodes = this.nodes.concat({id: newId(this.nodes),
+                sendService: (this.services.find(e => e.id==this.newNodeId)),
+                x: (event.clientX - this.originX)*1/this.scale,
+                y: (event.clientY - this.originY - 80)*1/this.scale})
 
             this.insertingNode = false;
             this.sidePanelShow = true;
@@ -185,11 +231,18 @@ export default {
               var newY = (event.clientY*(1/this.scale) - this.ofY)
               // console.log(event.x + ' ' + event.y + ' ' + this.dragNode);
               this.nodes.map(e => console.log(' ' + e.x))
-              this.nodes = this.nodes.map(el => el.id != this.dragNode ? el : ({x: newX, y: newY, id: el.id, sendService: el.sendService}))
+              this.nodes = this.nodes.map(el =>
+                                el.id != this.dragNode
+                                ? el
+                                : ({x: newX, y: newY, id: el.id, sendService: el.sendService}))
           }
           if(this.insertingNode) {
               this.newNodeX = (event.clientX*(1/this.scale))
-              this.newNodeY = (event.clientY*(1/this.scale))
+              this.newNodeY = ((event.clientY-80)*(1/this.scale))
+          }
+          if(this.dragLink!==null) {
+              this.newLinkCords = { x: event.clientX,
+                                    y: event.clientY }
           }
       },
       startNodeDrag: function (event) {
@@ -197,15 +250,21 @@ export default {
           this.ofX = event.clientX*(1/this.scale) - event.x;
           this.ofY = event.clientY*(1/this.scale) - event.y;
           this.dragNode=event.id;
-          this.showTrash=true;
       },
       createNewNode: function (event) {
           console.log("Creating new node")
           this.newNodeX = (event.clientX*(1/this.scale))
-          this.newNodeY = (event.clientY*(1/this.scale))
+          this.newNodeY = ((event.clientY - 80) *(1/this.scale))
           this.newNodeId = event.serviceId
           this.insertingNode = true
           this.sidePanelShow = false
+      },
+      handleDeleteLink: function (event) {
+          this.links = this.links.filter(e => (e.id + '-link') != event)
+      },
+      handleDeleteNode: function (event) {
+          this.nodes = this.nodes.filter(e => e.id != event)
+          this.links = this.links.filter(e => e.node1 != event && e.node2 != event)
       },
       startDrag: function (id) {
           console.log("start");
@@ -217,27 +276,18 @@ export default {
             var n1 = this.dragLink;
             var n2 = id;
             this.dragLink = null;
-            // TODO Prevent double entries
-            // TODO Get service connecting
-            // console.log(newId(this.links))
             if (this.links.find(e => e.node1 === n1 && e.node2 === n2)===undefined) {
                 this.links = this.links.concat({id: newId(this.links), node1: n1, node2: n2, compatibility: null});
             }
           }
       },
       save: function (event) {
-          var nodes = this.nodes.map(function(e) {
-                  return {
-                      id: (e.id <= 0 ? 0 : e.id),
-                      x: e.x,
-                      y: e.y,
-                      sendService: e.sendService
-                  }
-              });
+          var nodes = this.nodes;
           var comps = this.composition;
           var links = this.links.map(function (e) {
                   return {
-                          id: (e.id <= 0 ? 0 : e.id),
+                          id: e.id,
+                          compability: e.compability,
                           source: nodes.find(n => n.id == e.node1),
                           target: nodes.find(n => n.id == e.node2)
                   }
@@ -273,13 +323,13 @@ export default {
           .catch(error => console.log(error))
 
     document.documentElement.addEventListener('mousemove', this.mouseMove, true)
-    document.documentElement.addEventListener('mouseup', this.mouseUp, true)
+    // document.documentElement.addEventListener('mouseup', this.mouseUp, true)
     this.originX = this.$el.clientWidth / 2
     this.originY = this.$el.clientHeight / 2
   },
   beforeDestroy () {
     document.documentElement.removeEventListener('mousemove', this.mouseMove, true)
-    document.documentElement.removeEventListener('mouseup', this.mouseUp, true)
+    // document.documentElement.removeEventListener('mouseup', this.mouseUp, true)
   }
 }
 </script>
@@ -302,13 +352,26 @@ export default {
     linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px);
 }
 
+#origin {
+    border-width: 3px 1 1 1;
+    border-color: black;
+    border-style: solid;
+    width: 10px;
+    height: 10px;
+    background-color:black;
+}
+
 .editor:active {
     cursor: grabbing;
 }
 
-.trash {
-    position: absolute;
-    top: 75vh;
-    left: 92vw;
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
 </style>
