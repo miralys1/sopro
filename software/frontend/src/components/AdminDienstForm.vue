@@ -63,10 +63,10 @@
       <br>
       <div v-for= "(tag,index) in form.tags">
        <!-- <b-form> -->
-        <b-form-group id="GeneralTag"+ index
+        <b-form-group id="'GeneralTag' + index"
                       label="Tag:"
-                      label-for="genTag"+ index>
-          <b-form-input id="genTag"+ index
+                      label-for="'genTag' + index">
+          <b-form-input id="'genTag' + index"
                         type="text"
                         v-model="form.tags[index]"
                         required>
@@ -89,30 +89,30 @@
         <div v-for="(inputFormat, index) in form.formatIn" class = "lefter">
           <!-- <b-form> -->
           <h5>{{index + 1}}. Input Format</h5>
-          <b-form-group id="InpFormatType"+ index
+          <b-form-group id="'InpFormatType' + index"
                         label="Typ:"
-                        label-for="InputType"+ index>
-            <b-form-input id="InputType"+ index
+                        label-for="'InputType'+ index">
+            <b-form-input id="'InputType'+ index"
                           type="text"
                           v-model="inputFormat.type"
                           required>
             </b-form-input>
           </b-form-group>
 
-          <b-form-group id="InpFormatVersion"+ index
+          <b-form-group id="'InpFormatVersion' + index"
                         label="Version:"
-                        label-for="InputVersion"+ index>
-            <b-form-input id="InputVersion"+ index
+                        label-for="'InputVersion'+ index">
+            <b-form-input id="'InputVersion'+ index"
                           type="text"
                           v-model="inputFormat.version"
                           required>
             </b-form-input>
           </b-form-group>
 
-          <b-form-group id="InpComp"+ index
+          <b-form-group id="'InpComp' + index"
                         label="Kompatibilität:"
-                        label-for="InputComp"+ index>
-            <b-form-select id="InputComp"+ index
+                        label-for="'InputComp'+ index">
+            <b-form-select id="'InputComp'+ index"
                            :options="comps"
                            required
                            v-model="inputFormat.compatibilityDegree">
@@ -126,30 +126,30 @@
         <div  v-for="(outputFormat, index) in form.formatOut" class= "righter">
 
           <h5>{{index + 1}}. Output Format</h5>
-          <b-form-group id="OutFormatType" + index
+          <b-form-group id="'OutFormatType' + index"
                         label="Typ:"
-                        label-for="OutputType" + index>
-            <b-form-input id="OutputType" +index
+                        label-for="'OutputType' + index">
+            <b-form-input id="'OutputType' + index"
                           type="text"
                           v-model="outputFormat.type"
                           required>
             </b-form-input>
           </b-form-group>
 
-          <b-form-group id="OutFormatVersion" + index
+          <b-form-group id="'OutFormatVersion' + index"
                         label="Version:"
-                        label-for="OutputVersion"+ index>
-            <b-form-input id="OutputVersion"+ index
+                        label-for="'OutputVersion'+ index">
+            <b-form-input id="'OutputVersion'+ index"
                           type="text"
                           v-model="outputFormat.version"
                           required>
             </b-form-input>
           </b-form-group>
 
-          <b-form-group id="OutComp"+ index
+          <b-form-group id="'OutComp'+ index"
                         label="Kompatibilität:"
-                        label-for="OutputComp"+ index>
-            <b-form-select id="OutputComp"+ index
+                        label-for="'OutputComp'+ index">
+            <b-form-select id="'OutputComp'+ index"+ index
                            :options="comps"
                            required
                            v-model="outputFormat.compatibilityDegree">
