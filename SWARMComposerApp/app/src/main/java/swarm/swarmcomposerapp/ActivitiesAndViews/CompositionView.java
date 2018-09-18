@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
@@ -15,6 +16,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import swarm.swarmcomposerapp.Model.CompatibilityAnswer;
 import swarm.swarmcomposerapp.Model.Composition;
 import swarm.swarmcomposerapp.Model.Edge;
 import swarm.swarmcomposerapp.Model.Node;
+import swarm.swarmcomposerapp.Model.Service;
 import swarm.swarmcomposerapp.R;
 
 /**
@@ -54,11 +57,8 @@ public class CompositionView extends View {
     private float offsetX;
     private float offsetY;
 
-    private float focusX;
-    private float focusY;
+    private PointF focusPoint;
 
-    private int contentWidth;
-    private int contentHeight;
 
     /**
      * Scale factor for zooming on pinch
@@ -79,6 +79,15 @@ public class CompositionView extends View {
      */
     private Node selectedNode;
 
+    private Edge selectedEdge;
+
+
+    private int maxX = 0;
+    private int maxY = 0;
+    private int minX = 0;
+    private int minY = 0;
+
+
     private final GestureDetector.SimpleOnGestureListener gestureListener
             = new GestureDetector.SimpleOnGestureListener() {
         @Override
@@ -89,6 +98,7 @@ public class CompositionView extends View {
             initY -= distanceY;
 
             invalidate();
+
             return true;
         }
 
@@ -99,29 +109,29 @@ public class CompositionView extends View {
             final List<Node> nodeList = comp.getNodeList();
 
             if (comp != null && nodeList != null && !nodeList.isEmpty()) {
-                //float posX = (e.getX()-initX)/scaleFactor - offsetX;
-                //float posY = (e.getY()-initY)/scaleFactor - offsetY;
+                float posX = (e.getX() - initX - offsetX) / scaleFactor;
+                float posY = (e.getY() - initY - offsetY) / scaleFactor;
 
-                float posX = (e.getX()-initX)/scaleFactor;
-                float posY = (e.getY()-initY)/scaleFactor;
+                //float posX = (e.getX()-initX)/scaleFactor;
+                //float posY = (e.getY()-initY)/scaleFactor;
                 boolean set = false;
 
-                for (Node n : nodeList){
+                for (Node n : nodeList) {
                     float absX = Math.abs(n.getX() - posX);
                     float absY = Math.abs(n.getY() - posY);
-                    double distance = Math.sqrt(absX*absX+absY*absY);
-                    Log.d("SingleTap","posX: "+posX+ " posY "+posY+ " node X "+n.getX()
-                            + " node Y "+n.getY()+ " dist "+distance+" radius "+radius*scaleFactor);
+                    double distance = Math.sqrt(absX * absX + absY * absY);
+                    Log.d("SingleTap", "posX: " + posX + " posY " + posY + " node X " + n.getX()
+                            + " node Y " + n.getY() + " dist " + distance + " radius " + radius * scaleFactor);
 
                     //If the single tap occurs within a node select it
                     //The first encountered node is selected
-                    if(distance <= radius){
+                    if (distance <= radius) {
                         selectedNode = n;
                         set = true;
                         invalidate();
                     }
                 }
-                if(!set){
+                if (!set) {
                     selectedNode = null;
                     invalidate();
                 }
@@ -194,72 +204,15 @@ public class CompositionView extends View {
 
     }
 
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+
         scaleDetec.onTouchEvent(ev);
         gestureDetec.onTouchEvent(ev);
 
+
         return true;
-    }
-
-    public RectF[] createRectsForNodes(List<Node> nodes, int maxX, int maxY, int length) {
-        /*If  maxX or maxY are bigger than the view is able to handle
-        / then scale all coordinates down.*/
-        float convertX = 1;
-        float convertY = 1;
-        if (maxX > contentWidth) {
-            convertX = contentWidth / (float) maxX;
-            maxX = contentWidth;
-        }
-        if (maxY > contentHeight) {
-            convertY = contentHeight / (float) maxY;
-            maxY = contentHeight;
-        }
-
-
-        // rects stores the coordinates for every node
-        RectF[] rects = new RectF[nodes.size()];
-        //pointer for the array
-        int pointer = 0;
-
-
-        boolean xHasToBeConverted = convertX != 1;
-        boolean yHasToBeConverted = convertY != 1;
-        float left;
-        float top;
-        float right;
-        float bot;
-        for (Node n : nodes) {
-            left = n.getX();
-            top = n.getY();
-            if (xHasToBeConverted || yHasToBeConverted) {
-
-                if (xHasToBeConverted) {
-                    if (left != maxX) {
-                        left *= convertX;
-                    } else {
-                        left = maxX;
-                    }
-                }
-
-                if (yHasToBeConverted) {
-                    if (left != maxY) {
-                        top *= convertY;
-                    } else {
-                        top = maxY;
-                    }
-                }
-            }
-
-            bot = top + length;
-            right = left + length;
-
-            rects[pointer] = new RectF(left, top, right, bot);
-            pointer++;
-        }
-
-
-        return rects;
     }
 
 
@@ -288,35 +241,10 @@ public class CompositionView extends View {
             List<Node> nodes = comp.getNodeList();
 
 
-            int initialLength = (int)radius;
+            int initialLength = (int) radius;
             float halfLength = initialLength / (float) 2;
 
 
-            //Search for the maximal coordinates in the list of nodes.
-//            int maxX = 0;
-//            int maxY = 0;
-//            int minX = 0;
-//            int minY = 0;
-//
-//            for (Node n : nodes) {
-//                int tX = n.getX();
-//                int tY = n.getY();
-//
-//                if (tX > maxX) {
-//                    maxX = tX;
-//                }
-//                if (tY > maxY) {
-//                    maxY = tY;
-//                }
-//
-//                if (tX < minX) {
-//                    minX = tX;
-//                }
-//
-//                if (tY < minY) {
-//                    minY = tY;
-//                }
-//            }
 //
 //            float dX = maxX-minX;
 //            float dY = maxY-minY;
@@ -330,10 +258,11 @@ public class CompositionView extends View {
 
 
             //translate for moving the canvas
+
             canvas.translate(initX, initY);
             //zoom scale
+            canvas.translate(offsetX, offsetY);
             canvas.scale(scaleFactor, scaleFactor);
-            //canvas.translate(offsetX,offsetY);
 
             for (Edge e : comp.getEdgeList()) {
                 Node source = e.getIn();
@@ -343,15 +272,15 @@ public class CompositionView extends View {
                 final CompatibilityAnswer compatibilityN = e.getCompatibility();
 
                 // Draw the edge in a color indicating the compatibility
-                if(compatibilityN.isCompatible()){
+                if (compatibilityN.isCompatible()) {
                     //nodes are compatible
                     edgePaint.setColor(Color.GREEN);
-                }else{
-                    if(compatibilityN.getAlternatives() == null
-                            ||compatibilityN.getAlternatives().isEmpty()){
+                } else {
+                    if (compatibilityN.getAlternatives() == null
+                            || compatibilityN.getAlternatives().isEmpty()) {
                         //nodes are not compatible
                         edgePaint.setColor(Color.RED);
-                    }else{
+                    } else {
                         //nodes are not compatible, but there are alternatives
                         edgePaint.setColor(Color.YELLOW);
                     }
@@ -371,7 +300,7 @@ public class CompositionView extends View {
                 //Log.d("Node", "X: " + n.getX() + " Y: " + n.getY());
 
                 //The current node has been selected be a single tap event.
-                if(n == selectedNode){
+                if (n == selectedNode) {
                     canvas.drawCircle(n.getX(), n.getY(), initialLength, highlightPaint);
                 }
 
@@ -399,6 +328,18 @@ public class CompositionView extends View {
         }
 
         canvas.restore();
+
+
+    }
+
+    public static String listToString(List<String> list) {
+        StringBuilder sb = new StringBuilder();
+        for (String s : list) {
+            sb.append(s);
+            sb.append(", ");
+        }
+        String toReturn = sb.toString();
+        return toReturn.substring(0, toReturn.length() - 2);
     }
 
     @Override
@@ -418,6 +359,40 @@ public class CompositionView extends View {
         int minh = MeasureSpec.getSize(w) + paddingBot + paddingTop;
         int h = resolveSizeAndState(MeasureSpec.getSize(w), heightMeasureSpec, 0);
 
+
+        if (comp != null && comp.getNodeList() != null && !comp.getNodeList().isEmpty()) {
+            //Search for the maximal coordinates in the list of nodes.
+            maxX = 0;
+            maxY = 0;
+            minX = 0;
+            minY = 0;
+
+            for (Node n : comp.getNodeList()) {
+                int tX = n.getX();
+                int tY = n.getY();
+
+                if (tX > maxX) {
+                    maxX = tX;
+                }
+                if (tY > maxY) {
+                    maxY = tY;
+                }
+
+                if (tX < minX) {
+                    minX = tX;
+                }
+
+                if (tY < minY) {
+                    minY = tY;
+                }
+            }
+
+            initX = minX + w / 5;
+            initY = minY + h / 5;
+
+        }
+
+
         setMeasuredDimension(w, h);
     }
 
@@ -430,9 +405,9 @@ public class CompositionView extends View {
 
             scaleFactor *= detector.getScaleFactor();
 
-            float scaleChange = scaleFactor-oldScale;
-            offsetX = -detector.getFocusY()*scaleChange;
-            offsetY = -detector.getFocusX()*scaleChange;
+            float scaleChange = scaleFactor - oldScale;
+            offsetX = -focusPoint.x * scaleChange;
+            offsetY = -focusPoint.y * scaleChange;
 
             // Don't let the object get too small or too large.
             scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 5.0f));
@@ -440,6 +415,15 @@ public class CompositionView extends View {
             invalidate();
             return true;
         }
+
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector detector) {
+            focusPoint = new PointF(detector.getFocusX(), detector.getFocusY());
+
+            return true;
+        }
+
 
     }
 
