@@ -31,9 +31,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         }
     }
 
+    /**
+     * update the data set for this recyclerView
+     * @param compList list of compositions
+     */
     public void setCompList(List<Composition> compList){
-        this.compList = compList;
-        notifyDataSetChanged();
+        if(compList != null) {
+            this.compList = compList;
+            notifyDataSetChanged();
+        }
     }
 
 

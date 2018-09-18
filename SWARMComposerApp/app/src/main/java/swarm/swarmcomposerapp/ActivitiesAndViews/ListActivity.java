@@ -46,7 +46,6 @@ public class ListActivity extends AppCompatActivity implements IResponse {
         //load saved preferences such as email and server address
         preferences = getSharedPreferences(PREFERENCE_NAME, 0);
         String address = preferences.getString("SERVERADDRESS", null);
-        //LocalCache.getInstance().setServerAddress(LocalCache.TEST_SERVER);
         if (address == null) {
             //it's the very first start of the app
             showWelcomeScreen();
@@ -80,10 +79,8 @@ public class ListActivity extends AppCompatActivity implements IResponse {
 
         adapter_owned = new ListAdapter(cache.getCompositions(this, LocalCache.ListIdentifier.OWNED));
         recycler_owned.setAdapter(adapter_owned);
-        //adapter_public = new ListAdapter(cache.getCompositions(this, LocalCache.ListIdentifier.PUBLIC));
         adapter_public = new ListAdapter(null);
         recycler_public.setAdapter(adapter_public);
-        //adapter_viewable = new ListAdapter(cache.getCompositions(this, LocalCache.ListIdentifier.VIEWABLE));
         adapter_viewable = new ListAdapter(null);
         recycler_viewable.setAdapter(adapter_viewable);
 
@@ -126,9 +123,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
     private void updateList() {
         ArrayList<Composition> compList;
         compList = LocalCache.getInstance().getCompositions(this, LocalCache.ListIdentifier.PUBLIC);
-        if (compList == null) {
-            showLoading(true);
-        } else {
+        if(cache.hasData()) {
             adapter_public.setCompList(compList);
             compList = LocalCache.getInstance().getCompositions(this, LocalCache.ListIdentifier.VIEWABLE);
             tViewable.setVisibility(compList.isEmpty() ? View.GONE : View.VISIBLE);
@@ -136,8 +131,10 @@ public class ListActivity extends AppCompatActivity implements IResponse {
             compList = LocalCache.getInstance().getCompositions(this, LocalCache.ListIdentifier.OWNED);
             tOwned.setVisibility(compList.isEmpty() ? View.GONE : View.VISIBLE);
             adapter_owned.setCompList(compList);
+        } else {
+            //there are not compositions in any of the lists.
+            showLoading(true);
         }
-
     }
 
     /**

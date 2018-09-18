@@ -111,12 +111,13 @@ public class EspressoTests {
     public void testListView(){
         onView(isRoot()).perform(waitFor(3000));
         //check if public list has items, but the other three don't
-        onView(withId(R.id.my_recycler_view)).check(new RecyclerViewHasItemsAssertion(true));
-        onView(withId(R.id.my_recycler_view)).check(new RecyclerViewHasItemsAssertion(false));
-        onView(withId(R.id.my_recycler_view)).check(new RecyclerViewHasItemsAssertion(false));
-        onView(withId(R.id.my_recycler_view)).check(new RecyclerViewHasItemsAssertion(false));
+        onView(withId(R.id.recyclerView_public)).check(new RecyclerViewHasItemsAssertion(true));
+        onView(withId(R.id.recyclerView_viewable)).check(new RecyclerViewHasItemsAssertion(false));
+        onView(withId(R.id.recyclerView_owned)).check(new RecyclerViewHasItemsAssertion(false));
 
         //log in
+        onView(withId(R.id.textView3)).perform(click());
+        onView(withText(R.string.settings)).check(matches(isDisplayed()));
         onView(withId(R.id.button_login)).check(matches(isDisplayed()));
         onView(withId(R.id.text_username)).check(matches(isDisplayed()));
         onView(withId(R.id.text_password)).check(matches(isDisplayed()));
@@ -125,15 +126,14 @@ public class EspressoTests {
                 .perform(typeText(correct_username));
         onView(withId(R.id.text_password)).perform((typeText(correct_password)));
         onView(withId(R.id.button_login)).perform(click());
+        onView(withId(R.id.button_list)).perform(click());
         //user should be logged in by now
 
         onView(isRoot()).perform(waitFor(3000));
 
         //check if any of the non-public lists have items
-        onView(withId(R.id.my_recycler_view)).check(new RecyclerViewHasItemsAssertion(true));
-        onView(withId(R.id.my_recycler_view)).check(new RecyclerViewHasItemsAssertion(true));
-        onView(withId(R.id.my_recycler_view)).check(new RecyclerViewHasItemsAssertion(true));
-        onView(withId(R.id.my_recycler_view)).check(new RecyclerViewHasItemsAssertion(true));
+        onView(withId(R.id.recyclerView_public)).check(new RecyclerViewHasItemsAssertion(true));
+        onView(withId(R.id.recyclerView_owned)).check(new RecyclerViewHasItemsAssertion(true));
 
     }
 

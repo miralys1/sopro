@@ -165,8 +165,7 @@ public class LocalCache implements ICache {
      * @return
      */
     public ArrayList<Composition> getCompositions(IResponse caller, ListIdentifier listIdentifier) {
-        //TODO also hand over an enum which represents one of the four lists. Return the needed ArrayList. Only hardRefresh if public list is empty.
-        if (publicComps.isEmpty() && listIdentifier == ListIdentifier.PUBLIC) {
+        if (!hasData() && listIdentifier == ListIdentifier.PUBLIC) {
             hardRefresh(caller);
             return null;
         } else {
@@ -186,13 +185,12 @@ public class LocalCache implements ICache {
     public void hardRefresh(IResponse caller) {
         lastUpdate = System.currentTimeMillis();
         Log.i("AddressHardRefresh","Caller: "+caller.getClass().getName());
-        compositions = new ArrayList<>(); //TODO remove
+
         publicComps = new ArrayList<>();
         ownedComps = new ArrayList<>();
         viewableComps = new ArrayList<>();
-        //ActualRequests.actualCompListRequest(compositions, caller); //TODO remove
-        ActualRequests.actualCompListRequest(publicComps, ownedComps, viewableComps, caller);
 
+        ActualRequests.actualCompListRequest(publicComps, ownedComps, viewableComps, caller);
     }
 
 
@@ -213,6 +211,10 @@ public class LocalCache implements ICache {
 
     public enum ListIdentifier{
         PUBLIC, OWNED, VIEWABLE;
+    }
+
+    public boolean hasData(){
+        return((publicComps != null && !publicComps.isEmpty()) || (viewableComps != null && !viewableComps.isEmpty()) || (ownedComps != null && !ownedComps.isEmpty()));
     }
 
 }

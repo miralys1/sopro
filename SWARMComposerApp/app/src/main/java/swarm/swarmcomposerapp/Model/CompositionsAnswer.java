@@ -1,5 +1,7 @@
 package swarm.swarmcomposerapp.Model;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -30,8 +32,24 @@ public class CompositionsAnswer {
     }
 
     public List<Composition> getPublicComps() {
-        //TODO remove all items that are already in one of the other lists
-        return publicComps;
+        HashSet<Long> ids = new HashSet<>();
+
+        List<Composition> toReturn = new ArrayList<>();
+
+
+        /*
+
+         */
+        for (Composition c : owns) {
+           ids.add(c.getId());
+        }
+        for (Composition c : getViewable()) {
+           ids.add(c.getId());
+        }
+
+        addCompWithIdNotInSet(publicComps, ids, toReturn);
+
+        return toReturn;
     }
 
     public List<Composition> getOwns() { return owns; }

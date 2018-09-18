@@ -100,11 +100,9 @@ public class ActualRequests {
         } else {
             compAnswer = com.requestList();
         }
-        //  Log.i("Request", compAnswer.request().url().toString() + " by " + caller.getClass().getName());
+        Log.i("Request", compAnswer.request().url().toString() + " by " + caller.getClass().getName());
         final IResponse localCaller = caller;
-        //final ArrayList<Composition> publicCompsL = publicComps;
-        //final ArrayList<Composition> viewableCompsL = viewableComps; //TODO remove
-        //final ArrayList<Composition> ownedCompsL = ownedComps;
+
         compAnswer.enqueue(new Callback<CompositionsAnswer>() {
             @Override
             public void onResponse(Call<CompositionsAnswer> call,
