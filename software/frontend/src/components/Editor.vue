@@ -39,8 +39,9 @@
         </marker>
     </defs>
     <Link v-for="link in linkcoords"
-          :compability="link.compability"
+          :compatibility="link.compatibility"
           :params="params"
+          :dummy="false"
           :start="link.start"
           state="invalid"
           :end="link.end"
@@ -48,12 +49,14 @@
           @deleteLink="handleDeleteLink"
           @mouseup.self="mouseUp"
           @wheel.self="wheelEvent"
+          @gotComp="setLinkComp"
           />
 
     <!-- TODO endCords with end object -->
     <Link
         v-if="newLinkCords!==null"
         :params="params"
+        :dummy="true"
         :start="newLinkStart"
         :endCords="newLinkCords"
         style="z-index: 2;opacity: 0.4;"
@@ -140,14 +143,12 @@ export default {
         }
     },
     linkcoords: function () {
-        // TODO 50 replace with width / height of node
         return this.links.map( ls => ({
-            compability: ls.compability,
-            start: {x: this.nodes.find(n => n.id == ls.node1).x + 100,
-                    y: this.nodes.find(n => n.id == ls.node1).y + 100},
-            end:   {x: this.nodes.find(n => n.id == ls.node2).x + 100,
-                    y: this.nodes.find(n => n.id == ls.node2).y + 100},
-                    id: ls.id }))
+            compatibility: ls.compatibility,
+            start: this.nodes.find(n => n.id == ls.node1),
+            end: this.nodes.find(n => n.id == ls.node2),
+            id: ls.id
+        }))
     }
   },
   data () {
@@ -266,6 +267,11 @@ export default {
           this.nodes = this.nodes.filter(e => e.id != event)
           this.links = this.links.filter(e => e.node1 != event && e.node2 != event)
       },
+      setLinkComp: function (event) {
+          // console.log(event.comp)
+          this.links.find(e => (e.id + '-link')===event.id).compatibility = event.comp;
+          // this.links.map(e => (e.id + '-link')===event.id)
+      },
       startDrag: function (id) {
           console.log("start");
           this.dragLink = id;
@@ -276,6 +282,7 @@ export default {
             var n1 = this.dragLink;
             var n2 = id;
             this.dragLink = null;
+            // TODO use put
             if (this.links.find(e => e.node1 === n1 && e.node2 === n2)===undefined) {
                 this.links = this.links.concat({id: newId(this.links), node1: n1, node2: n2, compatibility: null});
             }
@@ -287,7 +294,7 @@ export default {
           var links = this.links.map(function (e) {
                   return {
                           id: e.id,
-                          compability: e.compability,
+                          compatibility: e.compatibility,
                           source: nodes.find(n => n.id == e.node1),
                           target: nodes.find(n => n.id == e.node2)
                   }
@@ -317,7 +324,7 @@ export default {
           .then(response => {
                     this.composition = response.data
                     this.nodes = this.composition.nodes //.map(e => ({id: e.id, x: e.x, y: e.y, sendService: e.sendService}))
-                    this.links = this.composition.edges.map(e => ({id: e.id, node1: e.source.id, node2: e.target.id}))
+                    this.links = this.composition.edges.map(e => ({id: e.id, node1: e.source.id, node2: e.target.id, compatibility: e.compatibility}))
                 }
                )
           .catch(error => console.log(error))
