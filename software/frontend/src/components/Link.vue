@@ -21,19 +21,15 @@ export default {
         params: Object,
         // start and end of link
         start: Object,
+        compability: Object,
         end: Object,
-        type: String,
-        state: String, // Should be either "valid", "invalid", "alternative"
-        format: Object, // Format Object through which Nodes are connected
-        // TEST: If state is invalid or alternative format should be null or undefined
-        alternatives: null,
 
         // if set we use this cords instead of the position of the second node
         endCords: Object
     },
     computed: {
         style: function () {
-            if(this.state!==null) {
+            if(this.compability!==null) {
                 switch (this.state) {
                 case "valid":
                     return {
@@ -57,7 +53,11 @@ export default {
                         strokeWidth: 20 * this.params.scale
                     }
                 }
-            }
+            } else
+                return {
+                        stroke: 'rgb(0,0,0)',
+                        strokeWidth: 20 * this.params.scale
+                }
         },
         x1: function () {
             // 100 magical value
@@ -85,8 +85,16 @@ export default {
     },
     data () {
         return {
+            comp: null
         }
     },
+    watch: {
+        compability: function () {
+            if(this.compability===null) {
+                this.comp
+            }
+        }
+    }
     methods: {
         deleteLink: function (event) {
             console.log("delete link")

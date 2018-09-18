@@ -39,6 +39,7 @@
         </marker>
     </defs>
     <Link v-for="link in linkcoords"
+          :compability="link.compability"
           :params="params"
           :start="link.start"
           state="invalid"
@@ -99,9 +100,9 @@ import Node from '@/components/Node'
 import Link from '@/components/Link'
 
 function newId(list) {
-    if (list===null || list===undefined || list.length===0) return 0;
-    console.log((e => e < 0 ? e-1 : e*-1) (Math.min(...list.map(obj => obj.id))))
-    return (e => e <= 0 ? e-1 : e*(-1)) (Math.min(...list.map(obj => obj.id)))
+    if (list===null || list===undefined || list.length===0) return 1;
+    // console.log((e => e < 0 ? e-1 : e*-1) (Math.min(...list.map(obj => obj.id))))
+    return (Math.max(...list.map(obj => obj.id)) + 1)
 }
 
 export default {
@@ -141,6 +142,7 @@ export default {
     linkcoords: function () {
         // TODO 50 replace with width / height of node
         return this.links.map( ls => ({
+            compability: ls.compability,
             start: {x: this.nodes.find(n => n.id == ls.node1).x + 100,
                     y: this.nodes.find(n => n.id == ls.node1).y + 100},
             end:   {x: this.nodes.find(n => n.id == ls.node2).x + 100,
@@ -280,18 +282,12 @@ export default {
           }
       },
       save: function (event) {
-          var nodes = this.nodes.map(function(e) {
-                  return {
-                      id: (e.id <= 0 ? 0 : e.id),
-                      x: e.x,
-                      y: e.y,
-                      sendService: e.sendService
-                  }
-              });
+          var nodes = this.nodes;
           var comps = this.composition;
           var links = this.links.map(function (e) {
                   return {
-                          id: (e.id <= 0 ? 0 : e.id),
+                          id: e.id,
+                          compability: e.compability,
                           source: nodes.find(n => n.id == e.node1),
                           target: nodes.find(n => n.id == e.node2)
                   }
