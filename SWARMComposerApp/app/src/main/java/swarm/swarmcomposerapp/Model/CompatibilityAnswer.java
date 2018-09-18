@@ -10,6 +10,19 @@ public class CompatibilityAnswer {
     private boolean isCompatible;
     @SerializedName("suitingFormats")
     List<String> suitingFormats;
+
+    public boolean isCompatible() {
+        return isCompatible;
+    }
+
+    public List<String> getSuitingFormats() {
+        return suitingFormats;
+    }
+
+    public List<Alternative> getAlternatives() {
+        return alternatives;
+    }
+
     @SerializedName("alternatives")
     List<Alternative> alternatives;
 

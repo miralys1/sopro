@@ -11,42 +11,132 @@ import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import swarm.swarmcomposerapp.Model.CompatibilityAnswer;
 import swarm.swarmcomposerapp.Model.Composition;
 import swarm.swarmcomposerapp.Model.Edge;
 import swarm.swarmcomposerapp.Model.Node;
 import swarm.swarmcomposerapp.R;
 
 /**
- * TODO: document your custom view class.
+ * Custom View for displaying a composition.
  */
 public class CompositionView extends View {
-    private String mExampleString; // TODO: use a default from R.string...
-    private int mExampleColor = Color.RED; // TODO: use a default from R.color...
-    private float mExampleDimension = 0; // TODO: use a default from R.dimen...
-    private Drawable mExampleDrawable;
 
-    private TextPaint mTextPaint;
-    private float mTextWidth;
-    private float mTextHeight;
-
+    //Padding instance vars
     private int paddingLeft;
     private int paddingRight;
     private int paddingTop;
     private int paddingBot;
 
-    private int initX;
-    private int initY;
+    //Paints for specifying how the view should draw objects
+    /**
+     * Paint for nodes and possible other objects.
+     */
+    private Paint drawPaint;
+    /**
+     * Paint of the edges
+     */
+    private Paint edgePaint;
+    /**
+     * Paint for highlighting objects.
+     */
+    private Paint highlightPaint;
 
-    private double zoom=1;
+    private float offsetX;
+    private float offsetY;
+
+    private float focusX;
+    private float focusY;
 
     private int contentWidth;
     private int contentHeight;
+
+    /**
+     * Scale factor for zooming on pinch
+     */
+    private float scaleFactor = 1.f;
+
+    private float initX = 100;
+    private float initY = 100;
+
+
+    /**
+     * Radius of nodes
+     */
+    private float radius = 100;
+
+    /**
+     * The currently selected Node
+     */
+    private Node selectedNode;
+
+    private final GestureDetector.SimpleOnGestureListener gestureListener
+            = new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2,
+                                float distanceX, float distanceY) {
+
+            initX -= distanceX;
+            initY -= distanceY;
+
+            invalidate();
+            return true;
+        }
+
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+
+            final List<Node> nodeList = comp.getNodeList();
+
+            if (comp != null && nodeList != null && !nodeList.isEmpty()) {
+                //float posX = (e.getX()-initX)/scaleFactor - offsetX;
+                //float posY = (e.getY()-initY)/scaleFactor - offsetY;
+
+                float posX = (e.getX()-initX)/scaleFactor;
+                float posY = (e.getY()-initY)/scaleFactor;
+                boolean set = false;
+
+                for (Node n : nodeList){
+                    float absX = Math.abs(n.getX() - posX);
+                    float absY = Math.abs(n.getY() - posY);
+                    double distance = Math.sqrt(absX*absX+absY*absY);
+                    Log.d("SingleTap","posX: "+posX+ " posY "+posY+ " node X "+n.getX()
+                            + " node Y "+n.getY()+ " dist "+distance+" radius "+radius*scaleFactor);
+
+                    //If the single tap occurs within a node select it
+                    //The first encountered node is selected
+                    if(distance <= radius){
+                        selectedNode = n;
+                        set = true;
+                        invalidate();
+                    }
+                }
+                if(!set){
+                    selectedNode = null;
+                    invalidate();
+                }
+            }
+            return true;
+
+        }
+
+
+    };
+
+    private final ScaleGestureDetector scaleDetec
+            = new ScaleGestureDetector(getContext(), new ScaleListener());
+    private final GestureDetector gestureDetec
+            = new GestureDetector(getContext(), gestureListener);
 
 
     public void setComp(Composition comp) {
@@ -81,40 +171,35 @@ public class CompositionView extends View {
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.CompositionView, defStyle, 0);
 
-        mExampleString = "bla";
-        mExampleColor = a.getColor(
-                R.styleable.CompositionView_exampleColor,
-                mExampleColor);
-        // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
-        // values that should fall on pixel boundaries.
-        mExampleDimension = a.getDimension(
-                R.styleable.CompositionView_exampleDimension,
-                mExampleDimension);
+        paddingLeft = getPaddingLeft();
+        paddingTop = getPaddingTop();
+        paddingRight = getPaddingRight();
+        paddingBot = getPaddingBottom();
 
-        if (a.hasValue(R.styleable.CompositionView_exampleDrawable)) {
-            mExampleDrawable = a.getDrawable(
-                    R.styleable.CompositionView_exampleDrawable);
-            mExampleDrawable.setCallback(this);
-        }
+        drawPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        drawPaint.setColor(Color.GRAY);
+        drawPaint.setStyle(Paint.Style.FILL);
 
-        a.recycle();
+        edgePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        edgePaint.setColor(Color.BLUE);
+        edgePaint.setStyle(Paint.Style.FILL);
+        edgePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        edgePaint.setStrokeWidth(4);
 
-        // Set up a default TextPaint object
-        mTextPaint = new TextPaint();
-        mTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-        mTextPaint.setTextAlign(Paint.Align.LEFT);
+        highlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        highlightPaint.setColor(Color.BLUE);
+        highlightPaint.setStyle(Paint.Style.STROKE);
+        highlightPaint.setStrokeWidth(3);
 
-        // Update TextPaint and text measurements from attributes
-        //invalidateTextPaintAndMeasurements();
+
     }
 
-    private void invalidateTextPaintAndMeasurements() {
-        mTextPaint.setTextSize(mExampleDimension);
-        mTextPaint.setColor(mExampleColor);
-        mTextWidth = mTextPaint.measureText(mExampleString);
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        scaleDetec.onTouchEvent(ev);
+        gestureDetec.onTouchEvent(ev);
 
-        Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
-        mTextHeight = fontMetrics.bottom;
+        return true;
     }
 
     public RectF[] createRectsForNodes(List<Node> nodes, int maxX, int maxY, int length) {
@@ -173,50 +258,104 @@ public class CompositionView extends View {
             pointer++;
         }
 
+
         return rects;
     }
 
 
+    public static String removePNGEnding(String urlPic) {
+
+        if (urlPic.endsWith(".png")) {
+            return (String) urlPic.subSequence(0, urlPic.length() - 4);
+
+        } else {
+            return urlPic;
+        }
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        canvas.save();
 
-        Paint drawPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        drawPaint.setColor(Color.GRAY);
-        drawPaint.setStyle(Paint.Style.FILL);
-
-        Paint edgePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        edgePaint.setColor(Color.BLUE);
-        edgePaint.setStyle(Paint.Style.FILL);
-        edgePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        edgePaint.setStrokeWidth(8);
-        canvas.translate(paddingLeft + contentWidth, paddingTop + contentHeight);
 
         int contentWidth = getWidth() - paddingLeft - paddingRight;
         int contentHeight = getHeight() - paddingTop - paddingBot;
-        Toast.makeText(getContext(), "Test", Toast.LENGTH_LONG).show();
 
 
         if (comp != null) {
-            Log.i("CompositionView", "Comp should be shown it includes " + comp.getNodeList().size() + " nodes");
-
 
             List<Node> nodes = comp.getNodeList();
 
 
-            int initialLength = 100;
+            int initialLength = (int)radius;
+            float halfLength = initialLength / (float) 2;
+
 
             //Search for the maximal coordinates in the list of nodes.
-            int maxX = 0;
-            int maxY = 0;
-            int minX = 0;
-            int minY = 0;
+//            int maxX = 0;
+//            int maxY = 0;
+//            int minX = 0;
+//            int minY = 0;
+//
+//            for (Node n : nodes) {
+//                int tX = n.getX();
+//                int tY = n.getY();
+//
+//                if (tX > maxX) {
+//                    maxX = tX;
+//                }
+//                if (tY > maxY) {
+//                    maxY = tY;
+//                }
+//
+//                if (tX < minX) {
+//                    minX = tX;
+//                }
+//
+//                if (tY < minY) {
+//                    minY = tY;
+//                }
+//            }
+//
+//            float dX = maxX-minX;
+//            float dY = maxY-minY;
+//
+//            float xS = contentWidth/dX;
+//            float xY = contentHeight/dY;
+//
+//            float bigger = xS>xY?xS : xY;
+//
+//            Log.i("Werte",""+maxX+" "+maxY );
+
+
+            //translate for moving the canvas
+            canvas.translate(initX, initY);
+            //zoom scale
+            canvas.scale(scaleFactor, scaleFactor);
+            //canvas.translate(offsetX,offsetY);
 
             for (Edge e : comp.getEdgeList()) {
                 Node source = e.getIn();
                 Node target = e.getOut();
 
-                float halfLength = initialLength / (float) 2;
+
+                final CompatibilityAnswer compatibilityN = e.getCompatibility();
+
+                // Draw the edge in a color indicating the compatibility
+                if(compatibilityN.isCompatible()){
+                    //nodes are compatible
+                    edgePaint.setColor(Color.GREEN);
+                }else{
+                    if(compatibilityN.getAlternatives() == null
+                            ||compatibilityN.getAlternatives().isEmpty()){
+                        //nodes are not compatible
+                        edgePaint.setColor(Color.RED);
+                    }else{
+                        //nodes are not compatible, but there are alternatives
+                        edgePaint.setColor(Color.YELLOW);
+                    }
+                }
 
 
                 canvas.drawLine(halfLength + source.getX(), halfLength + source.getY(),
@@ -225,105 +364,46 @@ public class CompositionView extends View {
 
             }
 
-            for (Node n : nodes) {
-                int tX = n.getX();
-                int tY = n.getY();
-
-                if (tX > maxX) {
-                    maxX = tX;
-                }
-                if (tY > maxY) {
-                    maxY = tY;
-                }
-
-                if (tX < minX) {
-                    minX = tX;
-                }
-
-                if (tY < minY) {
-                    minY = tY;
-                }
-            }
-
 
             for (Node n : nodes) {
+                //draw the current node as a filled, grey circle
                 canvas.drawCircle(n.getX(), n.getY(), initialLength, drawPaint);
-                Log.d("Node", "X: " + n.getX() + " Y: " + n.getY());
+                //Log.d("Node", "X: " + n.getX() + " Y: " + n.getY());
+
+                //The current node has been selected be a single tap event.
+                if(n == selectedNode){
+                    canvas.drawCircle(n.getX(), n.getY(), initialLength, highlightPaint);
+                }
 
                 /*
                   Attempt to get the resource of the image
                  */
                 int drawableID = getContext().getResources()
-                        .getIdentifier(n.getSendService().getPicture().toLowerCase(),
+                        .getIdentifier(removePNGEnding(n.getSendService().getPicture()).toLowerCase(),
                                 "drawable", getContext().getPackageName());
-                Log.d("Drawable",n.getSendService().getPicture().toLowerCase()+" id: "+drawableID);
+                //Log.d("Drawable", n.getSendService().getPicture().toLowerCase() + " id: " + drawableID);
 
                 //In the case that the drawableID is 0 the resource couldn't be found.
                 if (drawableID != 0) {
 
                     final Drawable drawable = getContext().getDrawable(drawableID);
 
-                    drawable.setBounds(0, 0, 150, 150);
-                    canvas.translate(n.getX() - 75, n.getY() - 75);
+                    drawable.setBounds(0, 0, (int) initialLength, (int) initialLength);
+                    canvas.translate(n.getX() - halfLength, n.getY() - halfLength);
                     drawable.draw(canvas);
-                    canvas.translate(-n.getX() + 75, -n.getY() + 75);
+                    canvas.translate(-n.getX() + halfLength, -n.getY() + halfLength);
                 }
             }
 
 
         }
 
-        if (false) {
-            List<Node> nodes = comp.getNodeList();
-
-
-            //Calculate an edge length that is small enough to place all nodes on the screen
-            //int length = contentHeight * contentWidth / (4 * nodes.size());
-
-
-            //Draw the edges
-            //TODO: Draw arrowheads
-            //TODO: Draw with compatibility
-            for (Edge e : comp.getEdgeList()) {
-                Node source = e.getIn();
-                Node target = e.getOut();
-
-                int sIndex = nodes.indexOf(source);
-                int tIndex = nodes.indexOf(target);
-                // RectF srect = rects[sIndex];
-                // RectF trect = rects[tIndex];
-                // float halfLength = length / (float) 2;
-//                float sMidX = srect.left + halfLength;
-//                float sMidY = srect.top + halfLength;
-//                float tMidX = trect.left + halfLength;
-//                float tMidY = trect.top + halfLength;
-
-//                canvas.drawLine(sMidX, sMidY, tMidX, tMidY, edgePaint);
-
-
-            }
-            // Draw the nodes as RoundRects
-            //TODO: Draw node images :)
-//            for (RectF r : rects) {
-//                canvas.drawRoundRect(r, length / (float) 4, length / (float) 4, drawPaint);
-//            }
-        }
-        // Draw the text.
-        canvas.drawText(mExampleString,
-                paddingLeft + (contentWidth - mTextWidth) / 2,
-                paddingTop + (contentHeight + mTextHeight) / 2,
-                mTextPaint);
-
-        // Draw the example drawable on top of the text.
-        if (mExampleDrawable != null) {
-            mExampleDrawable.setBounds(paddingLeft, paddingTop,
-                    paddingLeft + contentWidth, paddingTop + contentHeight);
-            mExampleDrawable.draw(canvas);
-        }
+        canvas.restore();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         paddingLeft = getPaddingLeft();
         paddingTop = getPaddingTop();
@@ -335,81 +415,32 @@ public class CompositionView extends View {
 
         // Whatever the width ends up being, ask for a height that would let the pie
         // get as big as it can
-        int minh = MeasureSpec.getSize(w) - (int) mTextWidth + paddingBot + paddingTop;
-        int h = resolveSizeAndState(MeasureSpec.getSize(w) - (int) mTextWidth, heightMeasureSpec, 0);
+        int minh = MeasureSpec.getSize(w) + paddingBot + paddingTop;
+        int h = resolveSizeAndState(MeasureSpec.getSize(w), heightMeasureSpec, 0);
 
         setMeasuredDimension(w, h);
     }
 
-    /**
-     * Gets the example string attribute value.
-     *
-     * @return The example string attribute value.
-     */
-    public String getExampleString() {
-        return mExampleString;
-    }
 
-    /**
-     * Sets the view's example string attribute value. In the example view, this string
-     * is the text to draw.
-     *
-     * @param exampleString The example string attribute value to use.
-     */
-    public void setExampleString(String exampleString) {
-        mExampleString = exampleString;
-        invalidateTextPaintAndMeasurements();
-    }
+    private class ScaleListener
+            extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            float oldScale = scaleFactor;
 
-    /**
-     * Gets the example color attribute value.
-     *
-     * @return The example color attribute value.
-     */
-    public int getExampleColor() {
-        return mExampleColor;
-    }
+            scaleFactor *= detector.getScaleFactor();
 
-    /**
-     * Sets the view's example color attribute value. In the example view, this color
-     * is the font color.
-     *
-     * @param exampleColor The example color attribute value to use.
-     */
-    public void setExampleColor(int exampleColor) {
-        mExampleColor = exampleColor;
-        invalidateTextPaintAndMeasurements();
-    }
+            float scaleChange = scaleFactor-oldScale;
+            offsetX = -detector.getFocusY()*scaleChange;
+            offsetY = -detector.getFocusX()*scaleChange;
 
-    /**
-     * Gets the example dimension attribute value.
-     *
-     * @return The example dimension attribute value.
-     */
-    public float getExampleDimension() {
-        return mExampleDimension;
-    }
+            // Don't let the object get too small or too large.
+            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 5.0f));
 
-    /**
-     * Sets the view's example dimension attribute value. In the example view, this dimension
-     * is the font size.
-     *
-     * @param exampleDimension The example dimension attribute value to use.
-     */
-    public void setExampleDimension(float exampleDimension) {
-        mExampleDimension = exampleDimension;
-        invalidateTextPaintAndMeasurements();
-    }
+            invalidate();
+            return true;
+        }
 
-
-    /**
-     * Sets the view's example drawable attribute value. In the example view, this drawable is
-     * drawn above the text.
-     *
-     * @param exampleDrawable The example drawable attribute value to use.
-     */
-    public void setExampleDrawable(Drawable exampleDrawable) {
-        mExampleDrawable = exampleDrawable;
     }
 
 
