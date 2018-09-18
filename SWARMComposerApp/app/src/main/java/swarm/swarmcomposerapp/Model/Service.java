@@ -24,6 +24,10 @@ public class Service {
     private List<Service> in;
     @SerializedName("formatOut")
     private List<Service> out;
+    @SerializedName("certified")
+    private String certified;
+
+
 
     /**
      * Constructs a service with all needed information.
@@ -54,6 +58,9 @@ public class Service {
 
     private long date;
 
+    public String getCertified() {
+        return certified;
+    }
 
     public void setDate(long date) {
         this.date = date;
