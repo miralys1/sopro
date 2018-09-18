@@ -2,7 +2,7 @@
 <div>
 
 <div>
-  <input type="text" class="search" placeholder="Suche.." v-model="searchedService" @keyup.enter="search">
+  <input type="text" class="search" placeholder="Suche.." v-model="searchedService" @keyup.enter="search" @click="serviceSelected=false">
   <br><br>
   <h3> {{this.msg}} </h3>
   <ul class="list-group list-group-flush" style="overflow-y: scroll; max-height:200px;">
@@ -59,6 +59,8 @@ methods: {
   },
 
   search() {
+
+  if(this.searchedService != "") {
     var options = {
     shouldSort: true,
     threshold: 0.6,
@@ -76,6 +78,7 @@ methods: {
 this.$search(this.searchedService, this.services, options).then(results => {
   this.foundServices = results
 })
+}
   }
 
 

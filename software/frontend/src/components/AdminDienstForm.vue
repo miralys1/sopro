@@ -48,8 +48,10 @@
         </b-form-input>
       </b-form-group>
 
-      <b-button class="small" style= "float: right;" @click = "deleteTag">-</b-button>
-      <b-button class="small" style= "float: right;" @click = "addTag">+</b-button>
+      <b-button-toolbar>
+      <b-button class="small"  @click = "deleteTag">-</b-button>
+      <b-button class="small"  @click = "addTag">+</b-button>
+      </b-button-toolbar>
 
       <br>
       <div v-for= "(tag,index) in form.tags">

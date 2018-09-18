@@ -2,8 +2,8 @@
   <div class = "out">
     <input class="search" type="text" placeholder="Suche.." v-model="searchedUser" @keyup.enter="search">
     <br><br>
-    <div class="list-group list-group-flush" style="overflow:scroll;">
-    <button type="button" class="list-group-item list-group-item-action" style="display: inline-block" v-for="(user,index) in users" @click="onClick(index)">
+    <div class="list-group list-group-flush" style="overflow-y:scroll; max-height: 100px;">
+    <button type="button" class="list-group-item list-group-item-action" style="display: inline-block; margin: auto auto; min-height: 10vh;" v-for="(user,index) in users" @click="onClick(index)">
       {{user.firstName}} {{user.lastName}}
     </button>
   </div>
@@ -147,7 +147,7 @@ methods: {
   search (evt) {
    this.users = [];
 
-   this.axios.get('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/users', this.searchedUser)
+   this.axios.get('http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/users?search='+ this.searchedUser)
             .then(response =>
             this.users = response.data
                 )
