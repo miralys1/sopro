@@ -122,9 +122,9 @@ public class CompController {
 		if (dComp == null || !compRepo.findById(dComp.getId()).isPresent()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
+
 		Optional<Composition> opComp = compRepo.findById(dComp.getId());
-		
+
 		User user = userRepo.findByEmail(principal.getName());
 		// User is not logged in or not authorized
 		if (principal == null || !isViewerEditor(user, opComp.get())) {
@@ -132,12 +132,8 @@ public class CompController {
 		}
 
 		Composition saveComp = dComp.createComposition(user);
-//		Composition emptyComp = new Composition(saveComp.getOwner(), saveComp.getName(), saveComp.isPublic(), new ArrayList<>(), new ArrayList<>());
-//		emptyComp.setId(saveComp.getId());
-//		compRepo.save(emptyComp);
-		
+
 		setIdsForComp(saveComp);
-		compRepo.deleteById(saveComp.getId());
 		compRepo.save(saveComp);
 
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -169,6 +165,8 @@ public class CompController {
 	// TODO: in Util Klasse auslagern
 
 	private void setIdsForComp(Composition saveComp) {
+		nodeRepo.saveAll(saveComp.getNodes());
+
 		for (CompositionEdge e : saveComp.getEdges()) {
 			for (CompositionNode n : saveComp.getNodes()) {
 				if (n.getX() == e.getSource().getX() && n.getY() == e.getSource().getY()
@@ -182,7 +180,6 @@ public class CompController {
 			}
 		}
 
-		nodeRepo.saveAll(saveComp.getNodes());
 		edgeRepo.saveAll(saveComp.getEdges());
 	}
 
