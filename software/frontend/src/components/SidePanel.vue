@@ -9,11 +9,11 @@
             :rows="1"
             :max-rows="2">
         </b-form-textarea>
-        <b-container>
+        <b-container class="nodegrid">
         <b-row>
-          <b-col v-for="service in filteredServices" >
+          <b-col v-for="service in result" >
             <Node :params="{originX: 0, originY: 0, scale: 0.9}"
-                    :noHandles="true"
+                    :noHandles="false"
                     :service="service"
                     :key="service.id"
                     :dummy="true"
@@ -36,9 +36,9 @@ export default {
     components: {
         Node
     },
-    props: [
-        'services'
-    ],
+    props: {
+        services: Array
+    },
     computed: {
         sideStyle: function () {
             return {
@@ -47,15 +47,35 @@ export default {
                 width:  500 + 'px',
                 height: 92 + 'vh'
             }
-        },
-        filteredServices: function () {
-            // TODO implement fuzzy search (fuzzy.io)
-            return this.services;
+        }
+    },
+    watch: {
+        query: function () {
+            console.log(this.query);
+            if(this.query=='') this.result = this.services;
+            else return this.$search(this.query, this.services, this.options)
+                        .then(e => this.result = e);
         }
     },
     data () {
         return {
-            query: ''
+            query: '',
+            result: this.services,
+
+            options: {
+                shouldSort: true,
+                threshold: 0.6,
+                location: 0,
+                distance: 100,
+                maxPatternLength: 32,
+                minMatchCharLength: 1,
+                keys: [
+                    "name",
+                    "organisation",
+                    "formatIn.type",
+                    "formatOut.type"
+                ]
+            }
         }
     },
     methods: {
@@ -98,5 +118,9 @@ export default {
 /* .slide-fade-leave-active below version 2.1.8 */ {
   transform: translateX(10px);
   opacity: 0;
+}
+
+.nodegrid {
+    margin-top: 20px;
 }
 </style>

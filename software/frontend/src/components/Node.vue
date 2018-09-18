@@ -1,10 +1,10 @@
 <template>
-    <div class="node" :style="nodeStyle" @mousedown.self="mouseDown">
+    <div class="node" :style="nodeStyle" @mousedown.self="mouseDown" @click.ctrl="deleteNode">
        <div class="noselect servicename" pointer-events="none" @mousedown.self="mouseDown">
          {{ service.name }}
        </div>
-       <div v-if="!noHandles" class="noselect draghandle"
-            @mousedown.self="startDrag"
+       <div v-if="!noHandles" class="noselect draghandle" :style="dragStyle"
+            @mousedown.self="dummy ? mouseDown($event) : startDrag($event)"
             @mouseup="endDrag"/>
        <b-btn v-if="!dummy"
               variant="primary"
@@ -79,18 +79,30 @@ export default {
                 width:  this.width + 'px',
                 height: this.height + 'px',
                 transform: 'scale(' + this.params.scale + ')',
+                transformOrigin: '0 0'
+            }
+        },
+        dragStyle: function () {
+            return {
+                backgroundImage: 'url(/static/logos/' + this.service.logo + ')',
+                backgroundSize: 'contain'
             }
         }
     },
     methods: {
       mouseDown: function (event) {
+          console.log('mouse Down')
           this.$emit('mouseDown', {x: this.ix, y: this.iy, id: this.$vnode.key, serviceId: this.service.id, clientX: event.clientX, clientY: event.clientY});
       },
       startDrag: function (event) {
+          console.log('start Drag')
           this.$emit('startDrag', this.$vnode.key);
       },
       endDrag: function (event) {
           this.$emit('endDrag', this.$vnode.key);
+      },
+      deleteNode: function (event) {
+          this.$emit('deleteNode', this.$vnode.key);
       }
     }
 }
@@ -99,17 +111,12 @@ export default {
 <style scoped>
 .node {
   border: 4px solid black;
-  border-radius: 30px;
-  background: #bbd2f7;
+  border-radius: 20px;
+  background: #ececec;
   opacity: 1;
   cursor: grab;
   box-sizing: border-box;
   box-shadow: 0px 4px 3px #101010;
-
-  /* background-image: url("https://www.webdesignerdepot.com/cdn-origin/uploads/circular_logos/NASA.jpg"); */
-  /* /\* background-size: cover; *\/ */
-  /* background-position: 50% 50%; */
-  /* background-repeat: no-repeat; */
 }
 
 .node:active {
@@ -140,13 +147,13 @@ export default {
 }
 
 .draghandle {
-    background: lightblue;
+    background: #9a9a9a;
     margin: 0 auto;
-    margin-top: 40px;
+    margin-top: 10px;
     border: 2px solid black;
-    border-radius: 100%;
-    width:  60px;
-    height: 60px;
+    border-radius: 5px;
+    width:  120px;
+    height: 120px;
 }
 .draghandle:active {
     background: orange;
