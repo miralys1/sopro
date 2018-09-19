@@ -5,7 +5,7 @@
     <b-tab title="Dienste aus JSON laden" active @click="toggle">
       <JsonEinlesen v-if="toggly"/>
     </b-tab>
-    <b-tab title="Dienst manuell bearbeiten" @click="toggle">
+    <b-tab title="Dienst manuell hinzufügen" @click="toggle">
       <AdminDienstForm />
     </b-tab>
     <b-tab title="Dienste bearbeiten" @click="toggleUpdate">

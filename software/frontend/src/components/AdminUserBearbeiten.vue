@@ -17,8 +17,7 @@
                     label-for="genTitle">
         <b-form-input id="genTitle"
                       type="text"
-                      v-model="user.title"
-                      required>
+                      v-model="user.title">
         </b-form-input>
       </b-form-group>
       <b-form-group id="FName"
@@ -55,7 +54,7 @@
         <b-form-select id="genAdmin"
                        :options="admin"
                        required
-                       v-model="user.isAdmin">
+                       v-model="user.admin">
         </b-form-select>
       </b-form-group>
 
@@ -89,7 +88,7 @@ data() {
     lastName: "",
     email:"",
     title:"",
-    isAdmin: false
+    admin: false
   },
   backupUser: {
     id: "",
@@ -97,27 +96,10 @@ data() {
     lastName: "",
     email:"",
     title:"",
-    isAdmin: false
+    admin: false
   },
 
-  users: [
-     {
-      id: "1",
-      firstName: "Anna",
-      lastName: "Müller",
-      email:"Bla@bla",
-      title:"Frau",
-      isAdmin: true
-    },
-     {
-      id: "2",
-      firstName: "Ben",
-      lastName: "Bär",
-      email:"jj@kk",
-      title:"Herr",
-      isAdmin: false
-    },
-  ],
+  users: [],
 
   admin: [
   { text: 'Nein', value: false },
@@ -156,10 +138,9 @@ methods: {
 
   search (evt) {
 
-  if(this.searchedUser != ""){
+
    this.showList = true;
    this.showForm = false;
-   //this.users = [];
 
    this.axios.get('/users?search='+ this.searchedUser)
             .then(response =>
@@ -169,7 +150,7 @@ methods: {
              alert("Fehler");
             console.log(error);
                 });
-    }
+
 
   },
 
