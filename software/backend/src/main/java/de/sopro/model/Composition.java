@@ -170,7 +170,7 @@ public class Composition {
 		}
 		
 		DetailComp dComp = new DetailComp(this.id, this.owner.createSimpleUser(), this.name, editable, nodes, edges);
-		dComp.setOwner(owner);
+		dComp.setIsOwner(owner);
 		return dComp;
 	}
 
