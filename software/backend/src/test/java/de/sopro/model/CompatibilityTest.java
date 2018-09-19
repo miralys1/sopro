@@ -28,7 +28,7 @@ public class CompatibilityTest {
 
 	@Autowired
 	FormatRepository formatRepo;
-	
+
 	@Autowired
 	TagRepository tagRepo;
 
@@ -181,7 +181,8 @@ public class CompatibilityTest {
 		assertFalse(answer.isCompatible());
 		assertTrue(answer.getSuitingFormats().size() == 0);
 		assertTrue(answer.getCompatibleServices().size() == 1);
-//				&& answer.getCompatibleServices().get(0).getNames().get(0).equals("FBX-IFC Converter"));
+		// && answer.getCompatibleServices().get(0).getNames().get(0).equals("FBX-IFC
+		// Converter"));
 
 		serviceRepo.delete(s1);
 		serviceRepo.delete(s2);
@@ -195,19 +196,20 @@ public class CompatibilityTest {
 	// // // // // // //
 	// Helper Methods //
 	// // // // // // //
-	
+
 	private Service createService2(List<Tag> tags, Format fIn) {
 		List<Format> formatIn = new ArrayList<>();
 		List<Format> formatOut = new ArrayList<>();
 		formatIn.add(fIn);
-		return new Service("3D-Modeller", "3", tags, "IGD", 1531573788, "IGD_Modeller.png", formatIn, formatOut);
+		return new Service("3D-Modeller", "3", tags, "IGD", 1531573788, "IGD_Modeller.png", true, formatIn, formatOut);
 	}
 
 	private Service createService1(List<Tag> tags, Format fOut) {
 		List<Format> formatIn = new ArrayList<>();
 		List<Format> formatOut = new ArrayList<>();
 		formatOut.add(fOut);
-		return new Service("TP Modeller", "1.0", tags, "TP", 153443388, "TP_Modeller_10.png", formatIn, formatOut);
+		return new Service("TP Modeller", "1.0", tags, "TP", 153443388, "TP_Modeller_10.png", true, formatIn,
+				formatOut);
 	}
 
 	private Service createConverter(List<Tag> tags, Format fOut, Format fIn) {
@@ -218,7 +220,7 @@ public class CompatibilityTest {
 		Tag t = new Tag("Converter");
 		tagRepo.save(t);
 		tags.add(t);
-		return new Service("FBX-IFC Converter", "1.0", tags, "BIM Converter", 1490965788, "Converter_FBX_IFC.png",
+		return new Service("FBX-IFC Converter", "1.0", tags, "BIM Converter", 1490965788, "Converter_FBX_IFC.png", true,
 				formatIn, formatOut);
 	}
 
