@@ -11,16 +11,17 @@
       <b-row class="comprow">
         <b-col v-for="comp in ownComps"
                :key="comp.id"
-               class="compcol round"
-               cols="2">
-          <router-link class="link" :to="{
+               class="compcol round link"
+               cols="2"
+               @click="open">
+          <!-- <router-link class="link" :to="{
             name: 'Editor',
             params: { compId: comp.id }
-          }">
+          }"> -->
             <div style="width: 200px; height: 150px">
               <span class="title">{{comp.name}} <br/></span>
             </div>
-          </router-link>
+          <!-- </router-link> -->
         </b-col>
       </b-row>
     </b-container>
