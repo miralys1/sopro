@@ -8,17 +8,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
-import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import de.sopro.model.send.DetailUser;
 import de.sopro.model.send.SimpleUser;
 
 @Entity
 public class User {
+
+	public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,7 +30,7 @@ public class User {
 	@NotBlank
 	private String email;
 
-	private boolean isAdmin;
+	private boolean admin;
 
 	@NotBlank
 	private String firstname;
@@ -37,6 +40,11 @@ public class User {
 
 	@NotBlank
 	private String title;
+
+	@NotBlank
+	private String password;
+
+	private String [] roles;
 
 	// CascadeType.ALL => if you delete an User then all compositions associated
 	// with that User also be deleted
@@ -59,7 +67,7 @@ public class User {
 		this.lastname = lastname;
 		this.email = email;
 		this.title = title;
-		this.isAdmin = isAdmin;
+		this.admin = isAdmin;
 		this.ownsComp = new ArrayList<Composition>();
 		this.viewableComps = new ArrayList<Composition>();
 		this.editableComps = new ArrayList<Composition>();
@@ -82,11 +90,11 @@ public class User {
 	}
 
 	public boolean isAdmin() {
-		return isAdmin;
+		return admin;
 	}
 
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 
 	public String getFirstName() {
@@ -137,6 +145,22 @@ public class User {
 		this.editableComps = editable;
 	}
 
+	public String getPassword(){
+		return password;
+	}
+	
+	public void setPassword(String password){
+		this.password = PASSWORD_ENCODER.encode(password);
+	}
+
+	public String[] getRole(){
+		return roles;
+	}
+
+	public void setRole(String[] roles){
+		this.roles = roles;
+	}
+
 	public String getFullName() {
 		return firstname + " " + lastname;
 	}
@@ -146,7 +170,7 @@ public class User {
 	}
 
 	public DetailUser createDetailUser() {
-		return new DetailUser(this.email, this.title, this.isAdmin, this.firstname, this.lastname, this.id);
+		return new DetailUser(this.email, this.title, this.admin, this.firstname, this.lastname, this.id);
 	}
 
 	public String toString() {

@@ -57,7 +57,7 @@ public class Compatibility {
 				// Get the intersection
 				List<String> intersect1 = intersect(s1.getFormatOut(), service.getFormatIn());
 				List<String> intersect2 = intersect(service.getFormatOut(), s2.getFormatIn());
-				boolean converter = service.getTags().contains(CONVERTER_TAG);
+				boolean converter = myContains(service.getTags(), CONVERTER_TAG);
 
 				if (converter && !intersect1.isEmpty() && !intersect2.isEmpty()) {
 
@@ -83,7 +83,19 @@ public class Compatibility {
 
 	}
 
-	/**
+	private boolean myContains(List<Tag> tags, Tag converterTag) {
+    
+	  for(Tag tag : tags) {
+	    if(tag.equals(converterTag)) {
+	      return true;
+	    }
+	  }
+	  
+	  return false;
+	  
+  }
+
+  /**
 	 * computes the intersection of two given lists
 	 * 
 	 * @param list1

@@ -4,7 +4,7 @@
 
         <groupId>de.se.105b</groupId>
         <artifactId>composer</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1-AUTH</version>
         <packaging>war</packaging>
         <name>SWARM Composer</name>
         <description>Composer component of the SWARM Ecosystem</description>
@@ -100,6 +100,17 @@
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-starter-tomcat</artifactId>
                         <scope>provided</scope>
+                </dependency>
+
+                <dependency>
+                	<groupId>org.springframework.security</groupId>
+                        <artifactId>spring-security-web</artifactId>
+                        <version>5.0.8.RELEASE</version>
+                </dependency>
+                <dependency>
+                        <groupId>org.springframework.security</groupId>
+                        <artifactId>spring-security-config</artifactId>
+                        <version>5.0.8.RELEASE</version>
                 </dependency>
 
         </dependencies>

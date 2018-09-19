@@ -4,25 +4,25 @@ import java.util.List;
 
 public class CompatibilityAnswer {
 
-	private boolean isCompatible;
+	private boolean compatible;
 
 	private List<String> suitingFormats;
 
 	List<Alternative> compatibleServices;
 
-	public CompatibilityAnswer(boolean isCompatible, List<String> suitingFormats,
+	public CompatibilityAnswer(boolean compatible, List<String> suitingFormats,
 			List<Alternative> compatibleServices) {
-		this.isCompatible = isCompatible;
+		this.compatible = compatible;
 		this.suitingFormats = suitingFormats;
 		this.compatibleServices = compatibleServices;
 	}
 
 	public boolean isCompatible() {
-		return isCompatible;
+		return compatible;
 	}
 
-	public void setCompatible(boolean isCompatible) {
-		this.isCompatible = isCompatible;
+	public void setCompatible(boolean compatible) {
+		this.compatible = compatible;
 	}
 
 	public List<String> getSuitingFormats() {
@@ -42,7 +42,7 @@ public class CompatibilityAnswer {
 	}
 
 	public String toString() {
-		String s = isCompatible ? "Services are compatible" : "Services are not compatible";
+		String s = compatible ? "Services are compatible" : "Services are not compatible";
 		return s;
 	}
 }
