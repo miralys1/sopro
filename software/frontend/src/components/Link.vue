@@ -1,13 +1,9 @@
 <template>
   <path
     :d="svgPath"
-    marker-mid="url(#arrow)"
+    :marker-mid="'url(#arrow-' + state + ')'"
     @click.ctrl="deleteLink"
     :style="style">
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="2" orient="auto-start-reverse" markerUnits="strokeWidth">
-        <text x="0" y="0" class="small">FBX</text>
-        <path d="M0,0 L0,4 L3,2 z" :fill="(state==="invalid" ? '#dc3545' : '#28a745')" />
-    </marker>
   </path>
 </template>
 
@@ -19,9 +15,10 @@ export default {
     props: {
         // containing origin and more
         params: Object,
+        dummy: Boolean,
         // start and end of link
         start: Object,
-        compability: Object,
+        compatibility: Object,
         end: Object,
 
         // if set we use this cords instead of the position of the second node
@@ -29,53 +26,46 @@ export default {
     },
     computed: {
         style: function () {
-            if(this.compability!==null) {
-                switch (this.state) {
-                case "valid":
-                    return {
-                        stroke: '#28a745',
-                        strokeWidth: 20 * this.params.scale
-                    }
-                case "invalid":
-                    return {
-                        stroke: '#dc3545',
-                        strokeWidth: 20 * this.params.scale,
-                        // filter: "url(#glow)"
-                    }
-                case "alternative":
-                    return {
-                        stroke: '#ffc107',
-                        strokeWidth: 20 * this.params.scale
-                    }
-                default:
-                    return {
-                        stroke: 'rgb(70,70,70)',
-                        strokeWidth: 20 * this.params.scale
-                    }
+            return {
+                stroke: this.color,
+                strokeWidth: 20 * this.params.scale
+            }
+        },
+        color: function () {
+            return (this.state==='compatible'  ? '#28a745'
+                    : (this.state==='alternative'  ? '#ffc107'
+                    : (this.state==='incompatible' ? '#dc3545'
+                    : '#000000')))
+        },
+        // TODO Enum
+        state: function () {
+            if(!this.dummy && this.compatibility!==null) {
+                if (this.compatibility.compatible) {
+                    return 'compatible'
+                } else if (this.compatibility.compatibleServices.length > 0)
+                    return 'alternative'
+                else {
+                    return 'incompatible'
                 }
-            } else
-                return {
-                        stroke: 'rgb(0,0,0)',
-                        strokeWidth: 20 * this.params.scale
-                }
+            } else return 'non'
         },
         x1: function () {
             // 100 magical value
-            return this.params.originX + this.params.scale * this.start.x
+            return this.params.originX + this.params.scale * (this.start.x + 100);
         },
         x2: function () {
-            return (this.endCords
+            return this.endCords
                     ? this.endCords.x
-                    : this.params.originX + this.params.scale * this.end.x);
+                    : this.params.originX + this.params.scale * (this.end.x + 100);
 
         },
         y1: function () {
-            return this.params.originY + this.params.scale * this.start.y;
+            return this.params.originY + this.params.scale * (this.start.y + 100);
         },
         y2: function () {
             return (this.endCords
                     ? this.endCords.y - 80
-                    : this.params.originY + this.params.scale * this.end.y);
+                    : this.params.originY + this.params.scale * (this.end.y  + 100));
         },
         svgPath: function () {
             return "M " + this.x1 + ',' + this.y1 +
@@ -85,28 +75,20 @@ export default {
     },
     data () {
         return {
-            comp: null
-        }
-    },
-    // watch: {
-    //     compability: function () {
-    //         if(this.compability===null) {
-    //             this.comp
-    //         }
-    //     }
-    // },
-    methods: {
-        deleteLink: function (event) {
-            console.log("delete link")
-            this.$emit('deleteLink', this.$vnode.key)
-        },
-        checkCompability: function (event) {
-            axios.get()
+            comp: this.compatibility
         }
     },
     mounted () {
+        if(!this.dummy && this.compatibility===null) {
+            this.axios.get('/services/' + this.start.sendService.id + '/' +  this.end.sendService.id)
+                .then(response => this.$emit('gotComp', {id: this.$vnode.key, comp: response.data}))
+                .catch(error => console.log(error))
+        }
     },
-    beforeDestroy () {
+    methods: {
+        deleteLink: function (event) {
+            this.$emit('deleteLink', this.$vnode.key)
+        }
     }
 }
 </script>
