@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -52,7 +53,7 @@ public class CompositionView extends View {
     private float offsetY;
     private Matrix inverse;
 
-    private PointF focusPoint = new PointF(0,0);
+    private PointF focusPoint = new PointF(0, 0);
 
 
     /**
@@ -142,8 +143,8 @@ public class CompositionView extends View {
         public boolean onScroll(MotionEvent e1, MotionEvent e2,
                                 float distanceX, float distanceY) {
 
-            initX -= distanceX/scaleFactor;
-            initY -= distanceY/scaleFactor;
+            initX -= distanceX / scaleFactor;
+            initY -= distanceY / scaleFactor;
 
             invalidate();
 
@@ -231,7 +232,10 @@ public class CompositionView extends View {
     public boolean onTouchEvent(MotionEvent ev) {
 
         scaleDetec.onTouchEvent(ev);
-        gestureDetec.onTouchEvent(ev);
+        if (!scaleDetec.isInProgress()) {
+
+            gestureDetec.onTouchEvent(ev);
+        }
 
 
         return true;
@@ -288,8 +292,8 @@ public class CompositionView extends View {
             //translate for moving the canvas
             //scale for zooming
             Matrix matrix = new Matrix();
-            matrix.postTranslate(initX,initY);
-            matrix.postScale(scaleFactor, scaleFactor, focusPoint.x,focusPoint.y);
+            matrix.postTranslate(initX, initY);
+            matrix.postScale(scaleFactor, scaleFactor, focusPoint.x, focusPoint.y);
 
 
             canvas.concat(matrix);
@@ -299,7 +303,11 @@ public class CompositionView extends View {
             for (Edge e : comp.getEdgeList()) {
                 Node source = e.getIn();
                 Node target = e.getOut();
+                float sX = source.getX();
+                float sY = source.getY();
 
+                float tX = target.getX();
+                float tY = target.getY();
 
                 final CompatibilityAnswer compatibilityN = e.getCompatibility();
 
@@ -319,9 +327,42 @@ public class CompositionView extends View {
                 }
 
                 //Draw an edge as a line styled by edgePaint
-                canvas.drawLine(source.getX(), source.getY(),
-                        target.getX(), target.getY(), edgePaint);
+                canvas.drawLine(sX, sY, tX, tY, edgePaint);
 
+                float vX = tX - sX;
+                float vY = tY - sY;
+                float vLength = (float)Math.sqrt(vX*vX+vY*vY);
+                float vXNormed = vX/vLength;
+                float vYNormed = vY/vLength;
+
+                float xMid = sX + vX * 0.5f;
+                float yMid = sY + vY * 0.5f;
+
+               float edgeAngle =(float) Math.toDegrees(Math.acos(vX/(Math.sqrt(vX*vX+vY*vY))));
+
+                float arrowHeadBaseLine = initialLength / 8;
+                float baseLineHalf = arrowHeadBaseLine / 2;
+
+                Path arrowHead = new Path();
+                arrowHead.moveTo(xMid, yMid);
+                arrowHead.lineTo(xMid-vY/vLength*baseLineHalf, yMid+vX/vLength*baseLineHalf);
+                arrowHead.lineTo(xMid+vXNormed*arrowHeadBaseLine,yMid+vYNormed*arrowHeadBaseLine);
+                arrowHead.lineTo(xMid+vY/vLength*baseLineHalf, yMid-vX/vLength*baseLineHalf);
+                arrowHead.lineTo(xMid,yMid);
+                canvas.drawPath(arrowHead,edgePaint);
+
+
+//                arrowHead.lineTo(xMid + baseLineHalf, yMid);
+//                arrowHead.lineTo(xMid, yMid - arrowHeadBaseLine);
+//                arrowHead.lineTo(xMid - baseLineHalf, yMid);
+//                arrowHead.lineTo(xMid, yMid);
+//                arrowHead.close();
+//                Matrix arrowMatrix = new Matrix();
+//                arrowMatrix.postRotate(edgeAngle);
+//                //arrowHead.transform(arrowMatrix);
+//                canvas.rotate(edgeAngle);
+//                canvas.drawPath(arrowHead,edgePaint);
+//                canvas.rotate(-edgeAngle);
 
             }
 
