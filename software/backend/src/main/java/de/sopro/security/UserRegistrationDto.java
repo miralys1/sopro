@@ -23,7 +23,16 @@ public class UserRegistrationDto{
     @NotEmpty
     private String email;
 
-    
+    public UserRegistrationDto(@NotEmpty String firstName, @NotEmpty String lastName,
+                               @NotEmpty String password, @NotNull String title,
+                               @Email @NotEmpty String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.title = title;
+        this.email = email;
+    }
+
     public void setFirstName(String firstName){
         this.firstName= firstName;
     }
