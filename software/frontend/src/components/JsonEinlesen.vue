@@ -66,6 +66,7 @@ export default {
           if(srvs.organisation == null  || srvs.organisation == "") {errMsg = errMsg + "\n eine Organisation"; unvalid = true}
           if(srvs.version == null  || srvs.version == "") {errMsg = errMsg + "\n eine Version"; unvalid = true}
           if(srvs.date == null) {errMsg = errMsg + "\n ein Datum"; unvalid = true}
+          if(srvs.certified == null || srvs.certified == "") {errMsg = errMsg + "\n eine Zertifizierung"; unvalid = true}
           if(srvs.logo == null  || srvs.logo == "") {errMsg = errMsg + "\n ein Logo"; unvalid = true}
           if(srvs.tags == null || srvs.tags.length == 0) {errMsg = errMsg + "\n mindestens ein Tag"; unvalid = true}
           if((srvs.formatIn == null || srvs.formatIn.length == 0) && (srvs.formatOut == null || srvs.formatOut.length == 0))
@@ -90,9 +91,15 @@ export default {
     sendJson: function() {
 
       if(!this.unvalid){
-      this.axios.post('/services', this.text)
-           .then(function (response) { alert(response);})
-           .catch(function (error) {alert(error);});
+      this.axios({
+        url: '/services',
+        method: 'post',
+        data: this.services,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(function (response) { alert('Dienste erfolgreich eingelesen');})
+           .catch(function (error) {alert('Irgendetwas ist schief gelaufen');});
       this.show = false;
       } else {
         alert("Die gelesene Datei ist nicht gültig.");
