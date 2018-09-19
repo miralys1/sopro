@@ -62,11 +62,11 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 			// Add person with single hosted events and no visited events
 			User dark = new User("drake", "dunkel", "d@d.de", "Dr.", true);
 			dark.setPassword("123");
-			dark.setRole(new String[] {"ADMIN"});
+			dark.setRole(new String[] { "ADMIN" });
 
 			User dum = new User("dummi", "dumm", "du@d.com", "Prof.", false);
 			dum.setPassword("password");
-			dum.setRole(new String[] {"USER"});
+			dum.setRole(new String[] { "USER" });
 
 			userRepo.save(dark);
 			userRepo.save(dum);
@@ -80,7 +80,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 			String[][] fos = { { "IFC", "2x0", "strict" }, { "DWG", "5", "strict" } };
 			List<Format> formatOut = createFormatList(fos);
 
-			Service s1 = new Service("TP Modeller", "1.0", tags, "TP", 153443388, "TP_Modeller_10.png", formatIn,
+			Service s1 = new Service("TP Modeller", "1.0", tags, "TP", 153443388, "TP_Modeller_10.png", true, formatIn,
 					formatOut);
 
 			serviceRepo.save(s1);
@@ -94,7 +94,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 			String[][] fos2 = { { "IFC", "2x0", "strict" }, { "DWG", "5", "flexible" } };
 			formatOut = createFormatList(fos2);
 
-			Service s2 = new Service("3D-Modeller", "3", tags, "IGD", 1531573788, "IGD_Modeller.png", formatIn,
+			Service s2 = new Service("3D-Modeller", "3", tags, "IGD", 1531573788, "IGD_Modeller.png", false, formatIn,
 					formatOut);
 
 			serviceRepo.save(s2);
