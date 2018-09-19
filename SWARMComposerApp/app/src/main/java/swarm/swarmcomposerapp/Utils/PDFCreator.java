@@ -163,7 +163,7 @@ public class PDFCreator {
                 canvas.drawText(context.getText(R.string.suitable).toString()+": "+formats.substring(0, formats.length()-2), PADDING+WIDTH/2, offset_top, paint_text);
             } else {
                 //incompatible or alternatives
-                if(temp.getCompatibility().getAlternatives() == null){
+                if(temp.getCompatibility().getAlternatives() == null || temp.getCompatibility().getAlternatives().isEmpty()){
                     //incompatible
                     canvas.drawText(context.getText(R.string.ic_incompatible).toString(), PADDING, offset_top, paint_incompatible);
                     canvas.drawText(context.getText(R.string.alternative).toString()+": "+context.getText(R.string.none).toString(), PADDING+WIDTH/2, offset_top, paint_text);

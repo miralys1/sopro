@@ -9,10 +9,10 @@ public class Alternative {
         return names;
     }
 
-    @SerializedName("name")
+    @SerializedName("names")
     List<String> names;
-    @SerializedName("version")
+    @SerializedName("versions")
     List<String> versions;
-    @SerializedName("id")
+    @SerializedName("ids")
     List<String> ids;
 }

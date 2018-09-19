@@ -68,12 +68,21 @@
 
     <string name="d_instructions_title">Instructions</string>
     <string name="d_instructions_text">
-        To connect to a server, type in the address like 123.456.1.123:1234.
+        To connect to a server, please enter the address.
         In order to see private compositions, please log in with your credentials.
+        When looking at the list, tap on an entry in one of the lists to open the detail view.
+        There you can inspect the composition. Tap on single services to get more information.
+        You can also share the composition as a PDF containing the image and useful information.
+        The file will be safed in the Downloads directory of your device.
+        All data requested from the server is saved on your device until you close the app.
+        If you want the latest data, tap the reload icon on the list page.
     </string>
     <string name="d_welcome_title">Welcome!</string>
     <string name="d_welcome_button">Open Settings</string>
-    <string name="d_welcome_text">"Hello! You will find a list of public compositions, once you have updated the server address on the settings page.\n        In order to see your own compositions or those shared with you, please log in on the settings page.\n        You can find the settings page by tapping on the icon at the top right of the current screen.\n    "</string>
+    <string name="d_welcome_text">Hello! You\'ll need to enter server address in order to see public compositions.
+        If you are looking for a private composition, please log in.
+        You can do those things on the settings page.
+        There, you\'ll find instructions on how to use the app, too.</string>
     <string name="d_detailviewguide_title">Guide</string>
     <string name="d_detailviewguide_text">Instructions</string>
 
@@ -84,9 +93,12 @@
     <string name="err_text_serveraddressmissing">Server address missing.</string>
     <string name="err_text_logout">Logout failed.</string>
     <string name="err_text_login">Login failed.</string>
-    <string name="err_text_serveraddress">Server connection failed while testing changed server address.</string>
-    <string name="err_text_list">Server connection failed when requesting list.</string>
-    <string name="err_text_detail">Server connection failed when requesting details.</string>
-    <string name="err_text_illegalserveraddress">Illegal server address.</string>
+    <string name="err_text_serveraddress">Server connection failed while testing changed server address.
+        Please check your internet connection and the correctness of the server address you\'ve entered.</string>
+    <string name="err_text_list">Server connection failed while requesting the list.
+        Please check your internet connection as well as the status of your sever.</string>
+    <string name="err_text_detail">Server connection failed when requesting composition details.
+        Please check your internet connection as well as the status of your sever.</string>
+    <string name="err_text_illegalserveraddress">The server address you\'ve entered is in an illegal format.</string>
 
 </resources>
