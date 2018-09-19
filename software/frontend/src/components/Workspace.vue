@@ -13,15 +13,11 @@
                :key="comp.id"
                class="compcol round link"
                cols="2"
-               @click="open">
-          <!-- <router-link class="link" :to="{
-            name: 'Editor',
-            params: { compId: comp.id }
-          }"> -->
-            <div style="width: 200px; height: 150px">
-              <span class="title">{{comp.name}} <br/></span>
-            </div>
-          <!-- </router-link> -->
+               @click.self="open(comp.id)">
+          <span class="title" @click="open(comp.id)">{{comp.name}}</span>
+          <b-btn class="deletebtn" variant="danger" @click="uwudelete(comp.id)">
+            <v-icon name="trash" />
+          </b-btn>
         </b-col>
       </b-row>
     </b-container>
@@ -31,16 +27,11 @@
         <b-col v-for="comp in editableComps"
                :key="comp.id"
                class="compcol round"
-               cols="2">
-          <router-link class="link" :to="{
-                 name: 'Editor',
-                 params: { compId: comp.id }
-               }">
-            <div style="width: 200px; height: 150px">
+               cols="2"
+               @click="open(comp.id)">
+
               <span class="title">{{comp.name}} <br/></span>
               <span class="author">{{comp.owner.fullName}} <br /></span>
-            </div>
-          </router-link>
         </b-col>
       </b-row>
     </b-container>
@@ -50,16 +41,10 @@
         <b-col v-for="comp in viewableComps"
                :key="comp.id"
                class="compcol round"
-               cols="2">
-          <router-link class="link" :to="{
-                  name: 'Editor',
-                  params: { compId: comp.id }
-                }">
-            <div style="width: 200px; height: 150px">
+               cols="2"
+               @click="open(comp.id)">
               <span class="title">{{comp.name}} <br/></span>
               <span class="author">{{comp.owner.fullName}} <br /></span>
-            </div>
-          </router-link>
         </b-col>
       </b-row>
     </b-container>
@@ -69,16 +54,10 @@
         <b-col v-for="comp in publicComps"
                :key="comp.id"
                class="compcol round"
-               cols="2">
-          <router-link class="link" :to="{
-                  name: 'Editor',
-                  params: { compId: comp.id }
-                }">
-            <div style="width: 200px; height: 150px">
+               cols="2"
+               @click="open(comp.id)">
               <span class="title">{{comp.name}} <br/></span>
               <span class="author">{{comp.owner.fullName}} <br /></span>
-            </div>
-          </router-link>
         </b-col>
       </b-row>
     </b-container>
@@ -114,6 +93,21 @@ export default {
         alert('Komposition erfolgreich erstellt')
       })
       .catch(err => alert('Komposition erstellen fehlgeschlagen'))
+    },
+    open(id) {
+      this.$router.push({
+              name: 'Editor',
+              params: { compId: id }
+            })
+    },
+    uwudelete(id) {
+      this.axios({
+        method: 'delete',
+        url: '/compositions/' + id
+      }).then(res => {
+        alert('Kompowosition ' + id + ' uwurde gelöscht');
+        this.ownComps = this.ownComps.filter(comp => comp.id !== id);
+      }).catch(err => alert('Oopsie someeeething went wrong uwu'))
     }
   },
   mounted() {
@@ -163,10 +157,16 @@ h3 {
   font-size: 20px;
   font-weight: bold
 }
+.deletebtn {
+  position: absolute;
+  bottom: 5%;
+  right: 5%;
+}
 .link {
   color: black;
 }
 .link:hover {
+  cursor: pointer;
   color: black;
   color: blue;
   text-decoration: none;
