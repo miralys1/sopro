@@ -20,7 +20,7 @@ public class Compatibility {
 
 	private static final String FLEXIBLE_MARKER = "flexible";
 	private static final String VERSION_DELIMS = "xX.";
-	private static final Tag CONVERTER_TAG = new Tag("converter");
+	private static final Tag CONVERTER_TAG = new Tag("Converter");
 
 	/**
 	 * Checks if two services given by their IDs are compatible.
