@@ -99,6 +99,29 @@ public class UserController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	@RequestMapping(value="/users/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteUser(@PathVariable long id, Principal principal){
+		
+		if(principal == null){
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+
+		User user = userRepo.findByEmail(principal.getName());
+		if(!(user.getId() == id || user.isAdmin())){
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+
+		Optional<User> delUser = userRepo.findById(id);
+		if(!delUser.isPresent()){
+			return ResponseEntity.badRequest().build();
+		}
+
+		userRepo.delete(delUser.get());
+
+		return ResponseEntity.ok().build();
+	}
+
+
 	@RequestMapping(value = "/users", method = RequestMethod.POST)
 	public ResponseEntity<Void> register(@RequestBody User user) {
 		user.setAdmin(false);
