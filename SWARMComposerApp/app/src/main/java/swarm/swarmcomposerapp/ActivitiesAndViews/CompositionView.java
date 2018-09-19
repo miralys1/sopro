@@ -27,7 +27,7 @@ import swarm.swarmcomposerapp.Model.Node;
 import swarm.swarmcomposerapp.R;
 
 /**
- * Custom View for displaying a composition.
+ * Custom View for displaying a composition. It should usually be embed in a DetailActivity.
  */
 public class CompositionView extends View {
 
@@ -53,8 +53,15 @@ public class CompositionView extends View {
 
     private float offsetX;
     private float offsetY;
+
+    /**
+     * Inverted View Matrix of the last call of onDraw().
+     */
     private Matrix inverse;
 
+    /**
+     * Stores the user's desired point of focus.
+     */
     private PointF focusPoint = new PointF(0, 0);
 
 
@@ -88,6 +95,7 @@ public class CompositionView extends View {
     private int maxY = 0;
     private int minX = 0;
     private int minY = 0;
+    private boolean onStartUp = true;
 
     /**
      * Returns the currently selected Node. Attention: It returns NULL if no node is selected.
@@ -113,8 +121,17 @@ public class CompositionView extends View {
      * This is the compositions that is drawn by the CompositionView.
      */
     private Composition comp;
+
+    /**
+     * The parent of a CompositionView
+     * Normal instances of CompositionViews are meant to be used inside of a DetailActivity.
+     */
     private DetailActivity parent;
 
+    /**
+     * Sets the parent of a CompositionView.
+     * Normal instances of CompositionViews are meant to be used inside of a DetailActivity.
+     */
     public void setParentActivity(DetailActivity parent) {
         this.parent = parent;
     }
@@ -132,12 +149,6 @@ public class CompositionView extends View {
     public CompositionView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
-    }
-
-    public CompositionView(Context context, AttributeSet attrs, Composition comp) {
-        super(context, attrs);
-        init(attrs, 0);
-        this.comp = comp;
     }
 
 
@@ -158,7 +169,11 @@ public class CompositionView extends View {
             return true;
         }
 
-
+        /**
+         * This EventHandling is needed for selecting nodes.
+         * @param e
+         * @return
+         */
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
 
@@ -200,13 +215,22 @@ public class CompositionView extends View {
     private final GestureDetector gestureDetec
             = new GestureDetector(getContext(), gestureListener);
 
-
+    /**
+     * SetComp() assigns a Composition Object to the CompositionView.
+     *
+     * @param comp
+     */
     public void setComp(Composition comp) {
         this.comp = comp;
 
     }
 
-
+    /**
+     * init() is meant for initializing crucial variables and settings of the CompositionView.
+     *
+     * @param attrs
+     * @param defStyle
+     */
     private void init(AttributeSet attrs, int defStyle) {
         // Load attributes
         final TypedArray a = getContext().obtainStyledAttributes(
@@ -231,7 +255,6 @@ public class CompositionView extends View {
         highlightPaint.setColor(Color.BLUE);
         highlightPaint.setStyle(Paint.Style.STROKE);
         highlightPaint.setStrokeWidth(3);
-
 
     }
 
@@ -302,12 +325,13 @@ public class CompositionView extends View {
             Matrix matrix = new Matrix();
             matrix.postTranslate(initX, initY);
             matrix.postScale(scaleFactor, scaleFactor, focusPoint.x, focusPoint.y);
-
-
             canvas.concat(matrix);
+
+            //Invert the matrix and store it for later reverse calculations
             inverse = new Matrix(matrix);
             inverse.invert(inverse);
 
+            //Draw the edges - drawing the edges first eases the task.
             for (Edge e : comp.getEdgeList()) {
                 Node source = e.getIn();
                 Node target = e.getOut();
@@ -337,44 +361,17 @@ public class CompositionView extends View {
                 //Draw an edge as a line styled by edgePaint
                 canvas.drawLine(sX, sY, tX, tY, edgePaint);
 
+                //Draw an arrowhead in the mid of the vector from the centre of source to centre of target
                 float vX = tX - sX;
                 float vY = tY - sY;
-                float vLength = (float)Math.sqrt(vX*vX+vY*vY);
-                float vXNormed = vX/vLength;
-                float vYNormed = vY/vLength;
+                canvas.drawPath(drawArrowInDirectionOfVector(vX, vY,
+                        initialLength / 8, sX + vX * 0.5f, sY + vY * 0.5f)
+                        , edgePaint);
 
-                float xMid = sX + vX * 0.5f;
-                float yMid = sY + vY * 0.5f;
-
-               float edgeAngle =(float) Math.toDegrees(Math.acos(vX/(Math.sqrt(vX*vX+vY*vY))));
-
-                float arrowHeadBaseLine = initialLength / 8;
-                float baseLineHalf = arrowHeadBaseLine / 2;
-
-                Path arrowHead = new Path();
-                arrowHead.moveTo(xMid, yMid);
-                arrowHead.lineTo(xMid-vY/vLength*baseLineHalf, yMid+vX/vLength*baseLineHalf);
-                arrowHead.lineTo(xMid+vXNormed*arrowHeadBaseLine,yMid+vYNormed*arrowHeadBaseLine);
-                arrowHead.lineTo(xMid+vY/vLength*baseLineHalf, yMid-vX/vLength*baseLineHalf);
-                arrowHead.lineTo(xMid,yMid);
-                canvas.drawPath(arrowHead,edgePaint);
-
-
-//                arrowHead.lineTo(xMid + baseLineHalf, yMid);
-//                arrowHead.lineTo(xMid, yMid - arrowHeadBaseLine);
-//                arrowHead.lineTo(xMid - baseLineHalf, yMid);
-//                arrowHead.lineTo(xMid, yMid);
-//                arrowHead.close();
-//                Matrix arrowMatrix = new Matrix();
-//                arrowMatrix.postRotate(edgeAngle);
-//                //arrowHead.transform(arrowMatrix);
-//                canvas.rotate(edgeAngle);
-//                canvas.drawPath(arrowHead,edgePaint);
-//                canvas.rotate(-edgeAngle);
 
             }
 
-
+            //Draw the nodes
             for (Node n : nodes) {
                 //draw the current node as a filled, grey circle
                 canvas.drawCircle(n.getX(), n.getY(), initialLength, drawPaint);
@@ -412,6 +409,47 @@ public class CompositionView extends View {
 
     }
 
+    /**
+     * Creates a Path resembling an arrowhead that is pointed in the direction of a vector
+     * specified by (vectorX,vectorY).
+     * Its baseline is centred on (startX,startY).
+     *
+     * @param vectorX
+     * @param vectorY
+     * @param arrowHeadBaseLine
+     * @param startX
+     * @param startY
+     * @return
+     */
+    private Path drawArrowInDirectionOfVector(float vectorX, float vectorY, float arrowHeadBaseLine,
+                                              float startX, float startY) {
+
+        float vLength = (float) Math.sqrt(vectorX * vectorX + vectorY * vectorY);
+        float vXNormed = vectorX / vLength;
+        float vYNormed = vectorY / vLength;
+
+        float baseLineHalf = arrowHeadBaseLine / 2;
+
+        Path arrowHead = new Path();
+
+        arrowHead.moveTo(startX, startY);
+        arrowHead.lineTo(startX - vectorY / vLength * baseLineHalf,
+                startY + vectorX / vLength * baseLineHalf);
+
+        arrowHead.lineTo(startX + vXNormed * arrowHeadBaseLine,
+                startY + vYNormed * arrowHeadBaseLine);
+
+        arrowHead.lineTo(startX + vectorY / vLength * baseLineHalf,
+                startY - vectorX / vLength * baseLineHalf);
+        arrowHead.lineTo(startX, startY);
+
+        arrowHead.close();
+
+        return arrowHead;
+
+    }
+
+
     public static String listToString(List<String> list) {
         StringBuilder sb = new StringBuilder();
         for (String s : list) {
@@ -422,6 +460,12 @@ public class CompositionView extends View {
         return toReturn.substring(0, toReturn.length() - 2);
     }
 
+    /**
+     * OnMeasure() is always called when the size of the CompositionView is forced to change.
+     *
+     * @param widthMeasureSpec
+     * @param heightMeasureSpec
+     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -442,10 +486,10 @@ public class CompositionView extends View {
 
         if (comp != null && comp.getNodeList() != null && !comp.getNodeList().isEmpty()) {
             //Search for the maximal coordinates in the list of nodes.
-            maxX = 0;
-            maxY = 0;
-            minX = 0;
-            minY = 0;
+            maxX = Integer.MIN_VALUE;
+            maxY = Integer.MIN_VALUE;
+            minX = Integer.MAX_VALUE;
+            minY = Integer.MAX_VALUE;
 
             for (Node n : comp.getNodeList()) {
                 int tX = n.getX();
@@ -466,16 +510,23 @@ public class CompositionView extends View {
                     minY = tY;
                 }
             }
-            Log.i("DRAW", "minX: "+minX+", maxX: "+maxX+", minY: "+ minY+", maxY"+maxY);
+            Log.i("DRAW", "minX: " + minX + ", maxX: " + maxX + ", minY: " + minY + ", maxY" + maxY);
 
-            initX = minX + w / 5;
-            initY = minY + h / 5;
+
+            if(onStartUp) {
+                initX = minX + w / 5;
+                initY = minY + h / 5;
+                onStartUp = false;
+            }
+
 
         }
 
 
         setMeasuredDimension(w, h);
     }
+
+
 
 
     /**

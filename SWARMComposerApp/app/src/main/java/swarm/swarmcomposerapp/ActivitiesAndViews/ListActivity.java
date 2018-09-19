@@ -88,7 +88,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
         addRecyclerTouchListener(recycler_viewable, 1);
         addRecyclerTouchListener(recycler_public, 2);
 
-        Intent start = new Intent(getApplicationContext(),MainActivity.class);
+        //Intent start = new Intent(getApplicationContext(),MainActivity.class);
         //startActivity(start);
     }
 
