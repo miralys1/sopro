@@ -104,8 +104,7 @@
                         :label-for="'InputVersion'+ index">
             <b-form-input :id="'InputVersion'+ index"
                           type="text"
-                          v-model="inputFormat.version"
-                          required>
+                          v-model="inputFormat.version">
             </b-form-input>
           </b-form-group>
 
@@ -141,8 +140,7 @@
                         :label-for="'OutputVersion'+ index">
             <b-form-input :id="'OutputVersion'+ index"
                           type="text"
-                          v-model="outputFormat.version"
-                          required>
+                          v-model="outputFormat.version">
             </b-form-input>
           </b-form-group>
 
@@ -239,7 +237,7 @@ export default {
 
         if(this.pedit) {
 
-        alert(JSON.stringify(this.form));
+
         this.axios({
           url: '/services/' + this.form.id,
           method: 'put',
@@ -247,24 +245,20 @@ export default {
           headers: {
             "Content-Type": "application/json"
           }
-        }).then(function (response) { alert(response);})
+        }).then(response => { alert("Erfolg"); this.$emit('noForm');})
           .catch(function (error) {alert(error);});
 
         } else {
         this.form.date = Date.now();
-        alert(this.form.date);
-
-
-        alert(JSON.stringify(this.form));
 
         this.axios({
           url: '/services',
           method: 'post',
-          data: this.form,
+          data: [this.form],
           headers: {
             "Content-Type": "application/json"
           }
-        }).then(function (response) { alert(response);})
+        }).then(response => { alert("Erfolgreich gespeichert"); this.onReset(evt);})
           .catch(function (error) {alert(error);});
         }
 

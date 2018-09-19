@@ -1,5 +1,14 @@
 <template>
 <div>
+  <b-form-group >
+     <b-form-radio-group id="btnradios"
+                         buttons
+                         button-variant="outline-primary"
+                         size="lg"
+                         v-model="cert"
+                         :options="certOptions"
+                         name="radioBtnOutline" />
+   </b-form-group>
 
 <div>
   <input type="text" class="search" placeholder="Suche.." v-model="searchedService" @keyup.enter="search" @click="serviceSelected=false">
@@ -12,7 +21,7 @@
 </ul>
 </div
 <br><br>
-<AdminDienstForm v-if="serviceSelected" v-bind:pform=selectedService v-bind:pedit='true'/>
+<AdminDienstForm v-if="serviceSelected" v-bind:pform=selectedService v-bind:pedit='true' v-on:noForm="serviceSelected = false"/>
 
 </div>
 
@@ -30,7 +39,28 @@ watch: {
   },
   searchedService: function() {
     if(this.searchedService == ""){
-      this.foundServices = this.services;
+      this.foundServices = this.preSearched;
+    }
+  },
+
+  cert: function() {
+    if(this.cert == 1) {
+      this.preSearched = this.services;
+      this.foundServices = this.preSearched;
+      this.serviceSelected = false;
+      this.search();
+    }
+    if(this.cert == 2) {
+      this.preSearched = this.services.filter(object => object.certified == "true");
+      this.foundServices = this.preSearched;
+      this.serviceSelected = false;
+      this.search();
+    }
+    if(this.cert == 3) {
+      this.preSearched = this.services.filter(object => object.certified == "false");
+      this.foundServices = this.preSearched;
+      this.serviceSelected = false;
+      this.search();
     }
   }
     },
@@ -49,16 +79,17 @@ methods: {
     this.axios.get('/services')
              .then(response => {
              this.services = response.data;
-             this.foundServices = this.services;}
+             this.preSearched = this.services
+             this.foundServices = this.preSearched;
+             this.cert= 1;}
                  )
              .catch(function (error) {
-              alert("Fehler");
-             console.log(error);
+              alert("Fehler beim Abfragen der Dienste vom Server.");
+
                  });
   },
 
   search() {
-
   if(this.searchedService != "") {
     var options = {
     shouldSort: true,
@@ -74,7 +105,7 @@ methods: {
     "formatOut.type"
     ]
 };
-this.$search(this.searchedService, this.services, options).then(results => {
+this.$search(this.searchedService, this.preSearched, options).then(results => {
   this.foundServices = results
 })
 }
@@ -84,8 +115,14 @@ this.$search(this.searchedService, this.services, options).then(results => {
 },
 
 
+
  data() {
    return{
+     preSearched: [],
+     certOptions: [
+       {text: "Alle", value: 1},{text: "Zertifizierte", value: 2},{text: "Nicht Zertifizierte", value:3}
+     ],
+     cert: 1,
      searchedService: "",
      serviceSelected: false,
      selectedService: {
@@ -115,9 +152,8 @@ this.$search(this.searchedService, this.services, options).then(results => {
        }
      ]
    },
-     services: [{name: "johanna", version: "h", organisation: "adesso", formatIn:[{type: "pdf"}, {type: "axio"}]},{name: "susanne", version: "h", organisation: "pudel"},
-      {name: "franzi", version: "h", organisation: "katze", formatIn:[{type: "axios"}, {type: "pdf"}]},{name: "philip", version: "h", organisation: "google"}],
-     msg: "Dienste",
+     services: [],
+    msg: "Dienste",
     foundServices: this.services,
    }
 
