@@ -62,19 +62,23 @@
       <b-button class="small" style="float: right;"  @click = "addTag">+</b-button>
 
 
-      <br>
+      <br> <br>
       <div v-for= "(tag,index) in form.tags">
-       <!-- <b-form> -->
-        <b-form-group :id="'GeneralTag' + index"
-                      label="Tag:"
-                      :label-for="'genTag' + index">
+
+        <b-input-group prepend="Tag">
           <b-form-input :id="'genTag' + index"
                         type="text"
                         v-model="form.tags[index]"
                         required>
           </b-form-input>
-        </b-form-group>
+          <b-input-group-append>
+            <b-dropdown id="ddown-buttons" text="Vorschlag" v-on:show="selectTags(index)">
+               <b-dropdown-item-button v-for="(tag,id) in tagSelection"> {{tagSelection[id]}} </b-dropdown-item-button>
+            </b-dropdown>
 
+    </b-input-group-append>
+  </b-input-group>
+      <br>
       </div>
 
      <br>
@@ -220,6 +224,8 @@ export default {
 
   data () {
     return {
+       tagSelection: [],
+       tags:["first", "second", "third", "sixed"],
        form: JSON.parse(JSON.stringify(this.pform)),
         comps: [
         { text: 'Wählen Sie aus', value: "" },
@@ -231,6 +237,26 @@ export default {
     }
   },
   methods: {
+
+    selectTags(index) {
+
+      alert("selectTags called with " + index);
+
+      var options = {
+      shouldSort: true,
+      threshold: 0.6,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: []
+  };
+  this.$search(this.form.tags[index], this.tags, options).then(results => {
+    this.tagSelection = results
+  })
+
+},
+
     onDelete () {
 
       this.axios.delete('/services/'+ this.form.id)
