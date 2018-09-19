@@ -1,13 +1,15 @@
 <template>
   <div class="wideform form-group">
 
+                     <!-- vunchecked-value="false" -->
+                     <!-- value="true" -->
   <b-form-group
       id="editorsettings"
       label="Settings"
       label-for="input1">
     <b-form-checkbox id="origincheckbox"
-                     value="accepted"
-                     unchecked-value="not_accepted">
+                     v-model="showOrigin"
+                     >
       Show Origin
     </b-form-checkbox>
   </b-form-group>
@@ -15,16 +17,19 @@
   <b-form-group
       v-if="owner"
       id="editorsettings"
-      @submit="onSubmit"
-      @reset="onReset"
+      @submit="addUser"
       label="Permissions"
       label-for="input1">
-    <b-form-input v-model="useremail"
-                  type="text"
-                  class="emailinput"
-                  @submit="addUser"
-                  placeholder="Enter email of user to add"></b-form-input>
-    <div>
+      <b-form-input v-model="useremail"
+                    type="email"
+                    required
+                    class="emailinput"
+                    placeholder="Enter email of user to add">
+      </b-form-input>
+      <b-button size="sm" variant="success" @click="addUser">
+        <v-icon name="plus"/>
+      </b-button>
+      <div>
         <ul class="list-group">
           <li v-for="user in editors"
               class="list-group-item">
@@ -34,7 +39,7 @@
               class="list-group-item">
           </li>
         </ul>
-    </div>
+      </div>
   </b-form-group>
   </div>
 </template>
@@ -45,20 +50,25 @@ export default {
         compId: Number,
         owner: Boolean
     },
+    computed: {
+        config () {
+            return {
+               showOrigin: this.showOrigin
+            }
+        }
+    },
     data () {
         return {
             useremail: '',
             editors: [],
             viewer: [],
-
-            options: {
-               showOrigin: false
-            }
+            showOrigin: false
         }
     },
     methods: {
         addUser () {
-            this.axios.put('/compositions/' + this.compId + '/users')
+            alert('added new user')
+            this.axios.post('/compositions/' + this.compId + '/users')
                 .then(response => {
                     console.log(response)
                 })
@@ -68,8 +78,10 @@ export default {
         },
     },
     watch: {
-        options () {
-            this.$emit("optionsChanged", this.options)
+        config () {
+            console.log('config changed');
+            console.log(this.config);
+            this.$emit("optionsChanged", this.config)
         }
     },
     mounted () {

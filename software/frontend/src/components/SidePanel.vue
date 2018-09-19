@@ -2,7 +2,7 @@
 <transition name="slide-fade">
     <div class="noselect sidebar" :style="sideStyle">
       <div>
-        <b-button class="filterbutton" @click="scale+=0.5" variant="primary">
+        <b-button class="filterbutton" @click="scale+=0.5" variant="primary" size="sm">
             <v-icon
             name="filter"
             scale="1.7"
@@ -128,9 +128,9 @@ export default {
 
 .inputfield {
     position: relative;
-    width: 80%;
+    width: 70%;
     margin-top: 5px;
-    margin-left: 40px;
+    margin-left: 70px;
 }
 
 .slide-fade-enter-active {

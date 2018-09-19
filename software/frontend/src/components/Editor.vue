@@ -19,8 +19,8 @@
           @endDrag="endDrag">
     </Node>
 
-    <!-- TODO Remove! -->
     <div
+        v-if="options.showOrigin"
         id="origin"
         :style="originStyle"
         class="noselect"
@@ -121,7 +121,10 @@
           scale="1.7"
           />
       </span>
-      <EditorSettings :compId="$route.params.compId" :owner="isOwner"/>
+      <EditorSettings
+        :compId="$route.params.compId"
+        :owner="isOwner"
+        @optionsChanged="options=$event"/>
     </b-dropdown>
   </b-button-group>
   </b-button-toolbar>
@@ -193,7 +196,11 @@ export default {
           dragCanvas: false,
           dragNode: null,
           dragLink: null,
+
           sidePanelShow: true,
+          options: {
+              showOrigin: true,
+          },
 
           insertingNode: false,
 

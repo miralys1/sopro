@@ -3,8 +3,12 @@
     :d="svgPath"
     :marker-mid="'url(#arrow-' + state + ')'"
     @click.ctrl="deleteLink"
+    @click="extraInfo"
     :style="style">
   </path>
+  <b-modal id="modal1" title="Bootstrap-Vue">
+    <p class="my-4">Hello from modal!</p>
+  </b-modal>
 </template>
 
 <script>
@@ -88,6 +92,11 @@ export default {
     methods: {
         deleteLink: function (event) {
             this.$emit('deleteLink', this.$vnode.key)
+        },
+        extraInfo: function (event) {
+            if(this.state==='alternative') {
+                console.log(this.compatibility.compatibleServices)
+            }
         }
     }
 }
