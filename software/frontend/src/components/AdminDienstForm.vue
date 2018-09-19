@@ -180,12 +180,13 @@ export default {
   watch: {
 
     pform: function () {
+      alert("watch pform");
       this.form = JSON.parse(JSON.stringify(this.pform));
-      this.update();
+      this.tagUpdate();
     },
 
     tupdate: function() {
-      this.update();
+      this.tagUpdate();
 
     }
     },
@@ -250,7 +251,7 @@ export default {
   },
   methods: {
 
-    update() {
+    tagUpdate() {
       this.axios.get('/tags')
                .then(response => {
                this.tags = response.data;}
@@ -293,7 +294,7 @@ export default {
                .then(response => {
                alert("Dienst wurde gelöscht");
                this.$emit('noForm');
-               this.update();}
+               this.tagUpdate();}
                    )
                .catch(function (error) {
                 alert("Fehler beim Löschen");
@@ -317,7 +318,7 @@ export default {
           headers: {
             "Content-Type": "application/json"
           }
-        }).then(response => { alert("Erfolg"); this.$emit('noForm'); this.update();})
+        }).then(response => { alert("Erfolg"); this.$emit('noForm'); this.tagUpdate();})
           .catch(function (error) {alert(error);});
 
         } else {
@@ -330,7 +331,7 @@ export default {
           headers: {
             "Content-Type": "application/json"
           }
-        }).then(response => { alert("Erfolgreich gespeichert"); this.onReset(evt); this.update();})
+        }).then(response => { alert("Erfolgreich gespeichert"); this.onReset(evt); this.tagUpdate();})
           .catch(function (error) {alert(error);});
         }
 
