@@ -25,7 +25,7 @@ public class AuthentificationController {
 
 	// required repositories
 	@Autowired
-	UserRepository userRepo;
+	private UserRepository userRepo;
 
 	/**
 	 * returns information about the current logged in user
