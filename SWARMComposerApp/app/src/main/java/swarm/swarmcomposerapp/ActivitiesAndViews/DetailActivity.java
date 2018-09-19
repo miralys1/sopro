@@ -36,6 +36,8 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
     private int listID;
     private LocalCache cache = LocalCache.getInstance();
 
+    private boolean noNodes = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,44 +61,44 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
         compositionView.setParentActivity(this);
 
         listID = intent.getIntExtra("LIST_ID", -1);
-        Log.i("DETAIL", "called position "+position+" of list "+listID);
+        Log.i("DETAIL", "called position " + position + " of list " + listID);
         try {
             comp = cache.getCompAtPos(position, this, listID);
-        } catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             goBackToList(null);
         }
-        if(comp != null&& comp.getNodeList() != null && comp.getEdgeList() != null){
+        if (comp != null && comp.getNodeList() != null && comp.getEdgeList() != null) {
             //the needed composition details are not stored in the LocalCache yet; a request has been sent by LocalCache
             showLoading(false);
             tTitle.setText(comp.getName());
             tOwner.setText(comp.getOwner().getFullName());
-            col1.setText(getText(R.string.lastupdate)+" "+dateFormat.format(comp.getLastUpdate()));
+            col1.setText(getText(R.string.lastupdate) + " " + dateFormat.format(comp.getLastUpdate()));
             compositionView.setComp(comp);
         } else {
             showLoading(true);
         }
     }
 
-    public void onNodeSelected(Node node){
-        String col1text = getText(R.string.lastupdate)+": ";
+    public void onNodeSelected(Node node) {
+        String col1text = getText(R.string.lastupdate) + ": ";
         String col2text = "";
         String col3text = "";
         String col4text = "";
-        if(node != null) {
+        if (node != null) {
             col1text = getText(R.string.service_name) + ": \n" + getText(R.string.service_organisation) + ": \n"
-                            +getText(R.string.service_version) + ": \n"+getText(R.string.service_date)
-                            + ": \n"+getText(R.string.service_certified) + ": \n"+col1text;
+                    + getText(R.string.service_version) + ": \n" + getText(R.string.service_date)
+                    + ": \n" + getText(R.string.service_certified) + ": \n" + col1text;
 
             Service service = node.getSendService();
-            col2text +=  service.getServiceName()+"\n";
-            col2text +=  service.getOrganisation()+"\n";
-            col2text +=  service.getVersion()+"\n";
-            col2text +=  dateFormat.format(service.getDate())+"\n";
-            if(service.getCertified() != null && service.getCertified().equals("true")){
-                col2text +=  getText(R.string.service_certified_yes)+"\n";
+            col2text += service.getServiceName() + "\n";
+            col2text += service.getOrganisation() + "\n";
+            col2text += service.getVersion() + "\n";
+            col2text += dateFormat.format(service.getDate()) + "\n";
+            if (service.getCertified() != null && service.getCertified().equals("true")) {
+                col2text += getText(R.string.service_certified_yes) + "\n";
             } else {
-                col2text +=  getText(R.string.service_certified_no)+"\n";
+                col2text += getText(R.string.service_certified_no) + "\n";
             }
         }
         col2text += dateFormat.format(comp.getLastUpdate());
@@ -108,9 +110,10 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
 
     /**
      * changes the views to display a loading bar and text
+     *
      * @param activate turn loading view on
      */
-    private void showLoading(boolean activate){
+    private void showLoading(boolean activate) {
         tLoading.setVisibility(activate ? View.VISIBLE : View.GONE);
         col1.setVisibility(activate ? View.GONE : View.VISIBLE);
         col2.setVisibility(activate ? View.GONE : View.VISIBLE);
@@ -121,23 +124,24 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
         compositionView.setVisibility(activate ? View.GONE : View.VISIBLE);
     }
 
-    public void goBackToList(View v){
+    public void goBackToList(View v) {
         super.onBackPressed();
     }
 
     /**
      * creates document via PDFCreator and opens dialog for user to send it
+     *
      * @param v
      */
-    public void sendComposition(View v){
+    public void sendComposition(View v) {
         //TODO create PDF, open share_dialog
-        if(comp != null) {
+        if (comp != null) {
             String path = PDFCreator.createPDF(this, this, comp);
             openShareDialog(path);
         }
     }
 
-    private void openShareDialog(String path){
+    private void openShareDialog(String path) {
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("application/pdf");
 
@@ -148,7 +152,7 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         //permission to write to storage has been granted
         String path = PDFCreator.createPDF(this, this, comp);
         openShareDialog(path);
@@ -156,25 +160,38 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
 
     @Override
     public void notify(boolean successful) {
-        if(successful){
+        if (successful && !noNodes && comp != null) {
             //needed composition details are in LocalCache now
             comp = cache.getCompAtPos(position, this, listID);
-            if(comp == null){
-                //TODO handle fatal event
-                Toast.makeText(getApplicationContext(), getText(R.string.err_text_detail), Toast.LENGTH_SHORT).show();
-                goBackToList(null);
+//            if (comp == null) {
+//                //TODO handle fatal event
+//                Toast.makeText(getApplicationContext(), getText(R.string.err_text_detail), Toast.LENGTH_SHORT).show();
+//                goBackToList(null);
+//                return;
+//            }
+
+            if (comp.getNodeList() == null || comp.getNodeList().isEmpty()) {
+                noNodes = true;
             }
 
             tTitle.setText(comp.getName());
             tOwner.setText(comp.getOwner().getFullName());
-            col1.setText(getText(R.string.lastupdate)+" "+dateFormat.format(comp.getLastUpdate()));
-            Log.i("DetailActivity","View should receive Comp with "+comp.getNodeList().size()+" nodes");
+            col1.setText(getText(R.string.lastupdate) + " " + dateFormat.format(comp.getLastUpdate()));
+            Log.i("DetailActivity", "View should receive Comp with " + comp.getNodeList().size() + " nodes");
             compositionView.setComp(comp);
         } else {
-            //server communication failed
-            //TODO show error message
-            Toast.makeText(getApplicationContext(), "server connection failed when requesting details", Toast.LENGTH_SHORT).show();
+            if (noNodes) {
+                Toast.makeText(getApplicationContext(), "There are no nodes within this composition", Toast.LENGTH_SHORT).show();
+
+            } else {
+
+                //server communication failed
+                //TODO show error message
+                Toast.makeText(getApplicationContext(), "server connection failed when requesting details", Toast.LENGTH_SHORT).show();
+            }
         }
         showLoading(false);
     }
+
+
 }

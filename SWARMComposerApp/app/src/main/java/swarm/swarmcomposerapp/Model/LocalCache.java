@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import swarm.swarmcomposerapp.ActivitiesAndViews.IResponse;
 import swarm.swarmcomposerapp.Utils.ActualRequests;
@@ -47,13 +48,13 @@ public class LocalCache implements ICache {
         return serverAddress;
     }
 
-    public String getLastUpdate(){
+    public String getLastUpdate() {
         return dateFormat.format(new Date(lastUpdate));
     }
 
     public void setServerAddress(String serverAddress) {
         this.serverAddress = serverAddress;
-        Log.i("ServerAddressLocalCache","set to: "+serverAddress);
+        Log.i("ServerAddressLocalCache", "set to: " + serverAddress);
         RetrofitClients.newRetrofitInstance(serverAddress);
         ActualRequests.refreshServerCommunication();
     }
@@ -101,47 +102,83 @@ public class LocalCache implements ICache {
      */
     public Composition getCompAtPos(int pos, IResponse caller, int listID) throws IllegalArgumentException {
 
-        /*
-        if (compositions.size() < pos) {
-            throw new IllegalArgumentException("This request would lead to an index out of " +
-                    "bounds exception!");
-        }
-        */
+//        if (compositions.size() < pos) {
+//            throw new IllegalArgumentException("This request would lead to an index out of " +
+//                    "bounds exception!");
+//        }
 
         if (pos < 0) {
             throw new IllegalArgumentException("Something went wrong: A list has no positions < 0.");
         }
 
 
-        Log.i("DETAIL", "in cache: getCompAtPos "+ pos + " in list "+listID);
-        switch(listID) {
+        Log.i("DETAIL", "in cache: getCompAtPos " + pos + " in list " + listID);
+        switch (listID) {
             case 2:
-                final Composition tempPublicComp = publicComps.get(pos);
-                if (tempPublicComp.getNodeList() == null || tempPublicComp.getNodeList().isEmpty()) {
-                    ActualRequests.actualCompDetailsRequest(tempPublicComp, caller);
-                    return null;
-                } else {
-                    return tempPublicComp;
-                }
+                posChecker(publicComps, pos);
+                return compositionRetrieveHelper(publicComps, pos, caller);
+
+//                final Composition tempPublicComp = publicComps.get(pos);
+//                if (tempPublicComp.getNodeList() == null || tempPublicComp.getNodeList().isEmpty()) {
+//                    ActualRequests.actualCompDetailsRequest(tempPublicComp, caller);
+//                    return null;
+//                } else {
+//                    return tempPublicComp;
+//                }
             case 1:
-                final Composition tempViewableComp = viewableComps.get(pos);
-                if (tempViewableComp.getNodeList() == null || tempViewableComp.getNodeList().isEmpty()) {
-                    ActualRequests.actualCompDetailsRequest(tempViewableComp, caller);
-                    return null;
-                } else {
-                    return tempViewableComp;
-                }
+                posChecker(viewableComps, pos);
+                return compositionRetrieveHelper(viewableComps, pos, caller);
+
+//                final Composition tempViewableComp = viewableComps.get(pos);
+//                if (tempViewableComp.getNodeList() == null || tempViewableComp.getNodeList().isEmpty()) {
+//                    ActualRequests.actualCompDetailsRequest(tempViewableComp, caller);
+//                    return null;
+//                } else {
+//                    return tempViewableComp;
+//                }
             case 0:
-                final Composition tempOwnedComp = ownedComps.get(pos);
-                if (tempOwnedComp.getNodeList() == null || tempOwnedComp.getNodeList().isEmpty()) {
-                    ActualRequests.actualCompDetailsRequest(tempOwnedComp, caller);
-                    return null;
-                } else {
-                    return tempOwnedComp;
-                }
+                posChecker(ownedComps, pos);
+                return compositionRetrieveHelper(ownedComps, pos, caller);
+//                final Composition tempOwnedComp = ownedComps.get(pos);
+//                if (tempOwnedComp.getNodeList() == null || tempOwnedComp.getNodeList().isEmpty()) {
+//                    ActualRequests.actualCompDetailsRequest(tempOwnedComp, caller);
+//                    return null;
+//                } else {
+//                    return tempOwnedComp;
+//                }
+            default:
+                return null;
         }
-        return null;
     }
+
+    /**
+     * Checks if the demanded position exceeds the range of a List
+     *
+     * @param list
+     * @param pos
+     */
+    public static void posChecker(ArrayList list, int pos) {
+        if (list.size() - 1 < pos) {
+            throw new IllegalArgumentException("This request would lead to an index out of " +
+                    "bounds exception!");
+        }
+    }
+
+    public Composition compositionRetrieveHelper(List<Composition> specificCompList, int pos, IResponse caller) {
+        final Composition tempOwnedComp = specificCompList.get(pos);
+        if (tempOwnedComp.getNodeList() == null || tempOwnedComp.getNodeList().isEmpty()) {
+            ActualRequests.actualCompDetailsRequest(tempOwnedComp, caller);
+
+            //Comp is not detailed, but this is the matter of the detail activity
+            return tempOwnedComp;
+        } else {
+            //Comp is detailed
+            return tempOwnedComp;
+        }
+
+
+    }
+
 
     /**
      * Returns the compositions.
@@ -169,10 +206,13 @@ public class LocalCache implements ICache {
             hardRefresh(caller);
             return null;
         } else {
-            switch(listIdentifier){
-                case PUBLIC: return publicComps;
-                case OWNED: return ownedComps;
-                case VIEWABLE: return viewableComps;
+            switch (listIdentifier) {
+                case PUBLIC:
+                    return publicComps;
+                case OWNED:
+                    return ownedComps;
+                case VIEWABLE:
+                    return viewableComps;
             }
         }
         return compositions;
@@ -184,7 +224,7 @@ public class LocalCache implements ICache {
      */
     public void hardRefresh(IResponse caller) {
         lastUpdate = System.currentTimeMillis();
-        Log.i("AddressHardRefresh","Caller: "+caller.getClass().getName());
+        Log.i("AddressHardRefresh", "Caller: " + caller.getClass().getName());
 
         publicComps = new ArrayList<>();
         ownedComps = new ArrayList<>();
@@ -209,12 +249,12 @@ public class LocalCache implements ICache {
         return instance;
     }
 
-    public enum ListIdentifier{
+    public enum ListIdentifier {
         PUBLIC, OWNED, VIEWABLE;
     }
 
-    public boolean hasData(){
-        return((publicComps != null && !publicComps.isEmpty()) || (viewableComps != null && !viewableComps.isEmpty()) || (ownedComps != null && !ownedComps.isEmpty()));
+    public boolean hasData() {
+        return ((publicComps != null && !publicComps.isEmpty()) || (viewableComps != null && !viewableComps.isEmpty()) || (ownedComps != null && !ownedComps.isEmpty()));
     }
 
 }
