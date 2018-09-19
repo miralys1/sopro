@@ -15,6 +15,7 @@ public class DetailComp extends SimpleComp {
 
 	private List<Node> nodes;
 	private List<Edge> edges;
+	private boolean owner;
 
 	@JsonCreator
 	public DetailComp(@JsonProperty("id") long id, @JsonProperty("owner") SimpleUser owner,
@@ -24,6 +25,15 @@ public class DetailComp extends SimpleComp {
 		this.nodes = nodes;
 		this.edges = edges;
 	}
+
+	public void setOwner(boolean owner){
+		this.owner= owner;
+	}
+
+	public boolean isOwner(){
+		return owner;
+	}
+
 
 	public List<Node> getNodes() {
 		return nodes;

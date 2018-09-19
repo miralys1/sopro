@@ -147,8 +147,11 @@ public class Composition {
 	// TODO: userID �bergeben?
 	public DetailComp createDetailComp(long userID) {
 		boolean editable = false;
+		boolean owner = false;
 		if(userID == getOwner().getId()){
 			editable = true;
+			owner = true;
+			
 		}else {
 			for (User user : editors) {
 				if (user.getId() == userID) {
@@ -166,7 +169,9 @@ public class Composition {
 			edges.add(edge.createEdge());
 		}
 		
-		return new DetailComp(this.id, this.owner.createSimpleUser(), this.name, editable, nodes, edges);
+		DetailComp dComp = new DetailComp(this.id, this.owner.createSimpleUser(), this.name, editable, nodes, edges);
+		dComp.setOwner(owner);
+		return dComp;
 	}
 
 	public UserAuthorizations createUserAuths() {
