@@ -77,7 +77,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -99,7 +100,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView_owned"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:paddingLeft="15dp"
@@ -123,7 +124,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView_viewable"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:paddingLeft="15dp"
@@ -144,12 +145,15 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView_public"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
+                android:scrollbars="vertical">
+
+            </android.support.v7.widget.RecyclerView>
+
         </LinearLayout>
     </ScrollView>
 
@@ -158,5 +162,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/lastupdate" />
+
 
 </LinearLayout>

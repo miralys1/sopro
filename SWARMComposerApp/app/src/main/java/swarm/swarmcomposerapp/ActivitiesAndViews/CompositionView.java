@@ -1,5 +1,6 @@
 package swarm.swarmcomposerapp.ActivitiesAndViews;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -111,6 +112,11 @@ public class CompositionView extends View {
      * This is the compositions that is drawn by the CompositionView.
      */
     private Composition comp;
+    private DetailActivity parent;
+
+    public void setParentActivity(DetailActivity parent) {
+        this.parent = parent;
+    }
 
     public CompositionView(Context context) {
         super(context);
@@ -182,6 +188,7 @@ public class CompositionView extends View {
                     selectedNode = null;
                     invalidate();
                 }
+                parent.onNodeSelected(selectedNode);
             }
             return true;
         }
@@ -458,6 +465,7 @@ public class CompositionView extends View {
                     minY = tY;
                 }
             }
+            Log.i("DRAW", "minX: "+minX+", maxX: "+maxX+", minY: "+ minY+", maxY"+maxY);
 
             initX = minX + w / 5;
             initY = minY + h / 5;
