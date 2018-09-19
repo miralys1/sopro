@@ -2,6 +2,7 @@ package de.sopro.controller.rest;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,10 +24,12 @@ import de.sopro.model.User;
 import de.sopro.model.send.CompLists;
 import de.sopro.model.send.DetailComp;
 import de.sopro.model.send.Edge;
+import de.sopro.model.send.Node;
 import de.sopro.model.send.SimpleComp;
 import de.sopro.repository.CompositionEdgeRepository;
 import de.sopro.repository.CompositionNodeRepository;
 import de.sopro.repository.CompositionRepository;
+import de.sopro.repository.ServiceRepository;
 import de.sopro.repository.UserRepository;
 
 @RestController
@@ -40,6 +43,8 @@ public class CompController {
 	private CompositionNodeRepository nodeRepo;
 	@Autowired
 	private CompositionEdgeRepository edgeRepo;
+	@Autowired
+	private ServiceRepository serviceRepo;
 
 	@Autowired
 	private Compatibility compa;
@@ -131,12 +136,63 @@ public class CompController {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
-		Composition saveComp = dComp.createComposition(user);
+		Composition newComp = createNewComp(dComp);
+		if (newComp == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 
-		setIdsForComp(saveComp);
-		compRepo.save(saveComp);
+		newComp.setId(dComp.getId());
+		compRepo.save(newComp);
+
+		// Composition saveComp = dComp.createComposition(user);
+		// setIdsForComp(saveComp);
+		// compRepo.save(saveComp);
 
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	private Composition createNewComp(DetailComp dComp) {
+		HashMap<Long, CompositionNode> nodeIds = new HashMap<>();
+		List<CompositionNode> nodes = new ArrayList<>();
+		List<CompositionEdge> edges = new ArrayList<>();
+		for (Node n : dComp.getNodes()) {
+			long oldId = n.getId();
+			CompositionNode node = new CompositionNode(n.getX(), n.getY(),
+					serviceRepo.findById(n.getSendService().getId()).get());
+			nodes.add(node);
+			nodeRepo.save(node);
+			nodeIds.put(oldId, node);
+		}
+		for (Edge e : dComp.getEdges()) {
+			long sourceId = e.getSource().getId();
+			long targetId = e.getTarget().getId();
+			if (!nodeIds.containsKey(sourceId) || !nodeIds.containsKey(targetId)) {
+				return null;
+			}
+			CompositionNode source = nodeIds.get(sourceId);
+			CompositionNode target = nodeIds.get(targetId);
+
+			CompositionEdge edge = new CompositionEdge(source, target);
+			edges.add(edge);
+			edgeRepo.save(edge);
+		}
+
+		if (!userRepo.findById(dComp.getOwner().getId()).isPresent()) {
+			return null;
+		}
+
+		Composition comp = new Composition(userRepo.findById(dComp.getOwner().getId()).get(), dComp.getName(),
+				dComp.isEditable(), nodes, edges);
+
+		Optional<Composition> opComp = compRepo.findById(dComp.getId());
+		if (!opComp.isPresent()) {
+			return null;
+		}
+		Composition saveComp = opComp.get();
+		comp.setEditors(saveComp.getEditors());
+		comp.setViewers(saveComp.getViewers());
+
+		return comp;
 	}
 
 	@RequestMapping(value = "/compositions/{id}", method = RequestMethod.DELETE)
