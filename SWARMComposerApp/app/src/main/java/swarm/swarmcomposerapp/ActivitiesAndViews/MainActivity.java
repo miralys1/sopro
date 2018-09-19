@@ -23,10 +23,11 @@ public class MainActivity extends AppCompatActivity implements IResponse {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Service test = new Service("test","1.0","Super","igd_modeller.png",2,2,null,null,null);
+        Service test2 = new Service("test","1.0","Super","scheduler.png",2,2,null,null,null);
 
         Node n1 = new Node(10,10,test);
-        Node n2 = new Node(300,300,test);
-        Node n3 = new Node(400,400,test);
+        Node n2 = new Node(300,300,test2);
+        Node n3 = new Node(400,10,test);
         Edge e1 = new Edge(n1,n2,new CompatibilityAnswer(true,null,null));
         Edge e3 = new Edge(n1,n3,new CompatibilityAnswer(false,null,null));
         final ArrayList<Edge> edges2 = new ArrayList<>();

@@ -31,7 +31,8 @@ public class Servertest {
     @Test
     public void test2() throws IOException {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://134.245.1.240:9061/composer-0.0.1-AUTH/").addConverterFactory(GsonConverterFactory.create())
+                .baseUrl("http://134.245.1.240:9061/")
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
         final ServerCommunication com = retrofit.create(ServerCommunication.class);
         final HashMap<Long, Service> serviceLookUpL = new HashMap<Long, Service>();

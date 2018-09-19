@@ -2,31 +2,25 @@ package swarm.swarmcomposerapp.ActivitiesAndViews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.Log;
+
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import swarm.swarmcomposerapp.Model.CompatibilityAnswer;
 import swarm.swarmcomposerapp.Model.Composition;
 import swarm.swarmcomposerapp.Model.Edge;
 import swarm.swarmcomposerapp.Model.Node;
-import swarm.swarmcomposerapp.Model.Service;
 import swarm.swarmcomposerapp.R;
 
 /**
@@ -56,8 +50,9 @@ public class CompositionView extends View {
 
     private float offsetX;
     private float offsetY;
+    private Matrix inverse;
 
-    private PointF focusPoint;
+    private PointF focusPoint = new PointF(0,0);
 
 
     /**
@@ -162,19 +157,19 @@ public class CompositionView extends View {
             final List<Node> nodeList = comp.getNodeList();
 
             if (comp != null && nodeList != null && !nodeList.isEmpty()) {
-                float posX = (e.getX() - initX - offsetX) / scaleFactor;
-                float posY = (e.getY() - initY - offsetY) / scaleFactor;
+                e.transform(inverse);
+//                float posX = (e.getX() - initX ) / scaleFactor;
+//                float posY = (e.getY() - initY ) / scaleFactor;
 
-                //float posX = (e.getX()-initX)/scaleFactor;
-                //float posY = (e.getY()-initY)/scaleFactor;
+                float posX = e.getX();
+                float posY = e.getY();
+
                 boolean set = false;
 
                 for (Node n : nodeList) {
                     float absX = Math.abs(n.getX() - posX);
                     float absY = Math.abs(n.getY() - posY);
                     double distance = Math.sqrt(absX * absX + absY * absY);
-                    Log.d("SingleTap", "posX: " + posX + " posY " + posY + " node X " + n.getX()
-                            + " node Y " + n.getY() + " dist " + distance + " radius " + radius * scaleFactor);
 
                     //If the single tap occurs within a node select it
                     //The first encountered node is selected
@@ -185,17 +180,13 @@ public class CompositionView extends View {
                     }
                 }
 
-
                 if (!set) {
                     selectedNode = null;
                     invalidate();
                 }
             }
             return true;
-
         }
-
-
     };
 
     private final ScaleGestureDetector scaleDetec
@@ -206,6 +197,7 @@ public class CompositionView extends View {
 
     public void setComp(Composition comp) {
         this.comp = comp;
+
     }
 
 
@@ -298,10 +290,17 @@ public class CompositionView extends View {
 
             //translate for moving the canvas
 
-            canvas.translate(initX, initY);
-            //zoom scale
-            canvas.translate(offsetX, offsetY);
-            canvas.scale(scaleFactor, scaleFactor);
+            Matrix matrix = new Matrix();
+            matrix.postTranslate(initX,initY);
+            matrix.postScale(scaleFactor, scaleFactor, focusPoint.x,focusPoint.y);
+            canvas.concat(matrix);
+            inverse = new Matrix(matrix);
+            inverse.invert(inverse);
+//            canvas.translate(initX, initY);
+//            //zoom scale
+//            canvas.scale(scaleFactor, scaleFactor, focusPoint.x,focusPoint.y);
+
+            //canvas.translate(offsetX, offsetY);
 
             for (Edge e : comp.getEdgeList()) {
                 Node source = e.getIn();
@@ -326,8 +325,8 @@ public class CompositionView extends View {
                 }
 
                 //Draw an edge as a line styled by edgePaint
-                canvas.drawLine(halfLength + source.getX(), halfLength + source.getY(),
-                        halfLength + target.getX(), halfLength + target.getY(), edgePaint);
+                canvas.drawLine(source.getX(), source.getY(),
+                        target.getX(), target.getY(), edgePaint);
 
 
             }
@@ -349,7 +348,6 @@ public class CompositionView extends View {
                 int drawableID = getContext().getResources()
                         .getIdentifier(removePNGEnding(n.getSendService().getPicture()).toLowerCase(),
                                 "drawable", getContext().getPackageName());
-                //Log.d("Drawable", n.getSendService().getPicture().toLowerCase() + " id: " + drawableID);
 
                 //In the case that the drawableID is 0 the resource couldn't be found.
                 if (drawableID != 0) {
