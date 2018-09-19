@@ -178,12 +178,23 @@ export default {
     },
 
   watch: {
+
     pform: function () {
-      this.form = JSON.parse(JSON.stringify(this.pform))
-      }
+      this.form = JSON.parse(JSON.stringify(this.pform));
+      this.update();
+    },
+
+    tupdate: function() {
+      this.update();
+
+    }
     },
 
   props: {
+    tupdate:{
+      type: Boolean,
+      default: false,
+    },
     pedit:{
       type: Boolean,
       default: false,
@@ -239,6 +250,18 @@ export default {
   },
   methods: {
 
+    update() {
+      this.axios.get('/tags')
+               .then(response => {
+               this.tags = response.data;}
+                   )
+               .catch(function (error) {
+                alert("Fehler beim Laden der Tags. Es werden keine Tags vorgeschlagen.");
+
+                   });
+
+    },
+
     dropdownClick(index,id){
       this.form.tags[index] = this.tagSelection[id].name;
 
@@ -269,7 +292,8 @@ export default {
       this.axios.delete('/services/'+ this.form.id)
                .then(response => {
                alert("Dienst wurde gelöscht");
-               this.$emit('noForm');}
+               this.$emit('noForm');
+               this.update();}
                    )
                .catch(function (error) {
                 alert("Fehler beim Löschen");
@@ -293,7 +317,7 @@ export default {
           headers: {
             "Content-Type": "application/json"
           }
-        }).then(response => { alert("Erfolg"); this.$emit('noForm');})
+        }).then(response => { alert("Erfolg"); this.$emit('noForm'); this.update();})
           .catch(function (error) {alert(error);});
 
         } else {
@@ -306,7 +330,7 @@ export default {
           headers: {
             "Content-Type": "application/json"
           }
-        }).then(response => { alert("Erfolgreich gespeichert"); this.onReset(evt);})
+        }).then(response => { alert("Erfolgreich gespeichert"); this.onReset(evt); this.update();})
           .catch(function (error) {alert(error);});
         }
 
