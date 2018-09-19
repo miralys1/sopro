@@ -188,4 +188,10 @@ public class ServiceController {
 		return new ResponseEntity<>(answer, HttpStatus.OK);
 	}
 
+
+	@RequestMapping(value="/tags", method=RequestMethod.GET)
+	public ResponseEntity<Iterable<Tag>> getTags(){
+		return new ResponseEntity<>(tagRepo.findAll(),HttpStatus.OK);
+	}
+
 }
