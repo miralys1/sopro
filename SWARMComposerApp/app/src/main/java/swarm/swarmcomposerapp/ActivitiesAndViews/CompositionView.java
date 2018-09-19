@@ -142,8 +142,8 @@ public class CompositionView extends View {
         public boolean onScroll(MotionEvent e1, MotionEvent e2,
                                 float distanceX, float distanceY) {
 
-            initX -= distanceX;
-            initY -= distanceY;
+            initX -= distanceX/scaleFactor;
+            initY -= distanceY/scaleFactor;
 
             invalidate();
 
@@ -158,9 +158,6 @@ public class CompositionView extends View {
 
             if (comp != null && nodeList != null && !nodeList.isEmpty()) {
                 e.transform(inverse);
-//                float posX = (e.getX() - initX ) / scaleFactor;
-//                float posY = (e.getY() - initY ) / scaleFactor;
-
                 float posX = e.getX();
                 float posY = e.getY();
 
@@ -289,18 +286,15 @@ public class CompositionView extends View {
 
 
             //translate for moving the canvas
-
+            //scale for zooming
             Matrix matrix = new Matrix();
             matrix.postTranslate(initX,initY);
             matrix.postScale(scaleFactor, scaleFactor, focusPoint.x,focusPoint.y);
+
+
             canvas.concat(matrix);
             inverse = new Matrix(matrix);
             inverse.invert(inverse);
-//            canvas.translate(initX, initY);
-//            //zoom scale
-//            canvas.scale(scaleFactor, scaleFactor, focusPoint.x,focusPoint.y);
-
-            //canvas.translate(offsetX, offsetY);
 
             for (Edge e : comp.getEdgeList()) {
                 Node source = e.getIn();
@@ -445,11 +439,7 @@ public class CompositionView extends View {
 
             scaleFactor *= detector.getScaleFactor();
 
-            float scaleChange = scaleFactor - oldScale;
-            offsetX = -focusPoint.x * scaleChange;
-            offsetY = -focusPoint.y * scaleChange;
-
-            // Don't let the object get too small or too large.
+            //Set a minimum and maximum for scaling
             scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 5.0f));
 
             invalidate();
