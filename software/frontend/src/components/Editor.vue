@@ -15,7 +15,7 @@
           @startDrag="startDrag"
           @mouseDown="startNodeDrag"
           @deleteNode="handleDeleteNode"
-          @wheel.self="wheelEvent"
+          @wheel="wheelEvent"
           @endDrag="endDrag">
     </Node>
 
@@ -33,7 +33,7 @@
          height="100%"
          @mousedown.self="mouseDown"
          @mouseup.self="mouseUp"
-         @wheel.self="wheelEvent">
+         @wheel="wheelEvent">
     <defs>
         <marker id="arrow-compatible" markerWidth="10" markerHeight="10" refX="0" refY="2" orient="auto-start-reverse" markerUnits="strokeWidth">
         <path d="M0,0 L0,4 L3,2 z" fill="#28a745" />
@@ -91,7 +91,7 @@
     </b-button>
   </b-button-group>
   <b-button-group class="mx-1">
-    <b-button @click="scale+=0.5" variant="primary">
+    <b-button @click="zoom(0.2)" variant="primary">
         <v-icon
           name="search-plus"
           scale="1.7"
@@ -100,7 +100,7 @@
     <b-button @click="scale=1" variant="primary">
       reset
     </b-button>
-    <b-button @click="scale-=0.5" variant="primary">
+    <b-button @click="zoom(-0.2)" variant="primary">
         <v-icon
           name="search-minus"
           scale="1.7"
@@ -114,12 +114,15 @@
           scale="1.7"
         />
     </b-button>
-    <b-button variant="info">
-        <v-icon
+    <b-dropdown id="ddown-right" class="mx-1" right>
+      <span slot="text">
+          <v-icon
           name="cog"
           scale="1.7"
-        />
-    </b-button>
+          />
+      </span>
+      <EditorSettings :compId="$route.params.compId" :owner="isOwner"/>
+    </b-dropdown>
   </b-button-group>
   </b-button-toolbar>
 
@@ -137,6 +140,7 @@
 import SidePanel from '@/components/SidePanel'
 import Node from '@/components/Node'
 import Link from '@/components/Link'
+import EditorSettings from '@/components/EditorSettings'
 
 function newId(list) {
     if (list===null || list===undefined || list.length===0) return 1;
@@ -145,7 +149,7 @@ function newId(list) {
 
 export default {
   components: {
-    Link, SidePanel, Node
+    Link, SidePanel, Node, EditorSettings
   },
     // TODO Short style syntax save () { ... }
   computed: {
@@ -193,6 +197,7 @@ export default {
 
           insertingNode: false,
 
+          isOwner: false,
           newNodeX: 0,
           newNodeY: 0,
           newNodeId: null,
@@ -218,9 +223,12 @@ export default {
   methods: {
       wheelEvent: function (event) {
           console.log("scale: " + this.scale)
-          if(this.scale + 5/event.deltaY >= 0.15
-             && this.scale + 5/event.deltaY <= 7) {
-                this.scale = this.scale + 5/event.deltaY;
+          this.zoom(5/event.deltaY);
+      },
+      zoom: function (factor) {
+          if(this.scale + factor >= 0.15
+             && this.scale + factor <= 7) {
+                this.scale = this.scale + factor;
           }
       },
       mouseDown: function (event) {
@@ -315,7 +323,6 @@ export default {
           var links = this.links.map(function (e) {
                   return {
                           id: e.id,
-                          compatibility: e.compatibility,
                           source: nodes.find(n => n.id == e.node1),
                           target: nodes.find(n => n.id == e.node2)
                   }
@@ -343,6 +350,7 @@ export default {
 
     this.axios.get('/compositions/' + this.$route.params.compId)
           .then(response => {
+                    this.isOwner = response.data.owner;
                     this.composition = response.data
                     this.nodes = this.composition.nodes //.map(e => ({id: e.id, x: e.x, y: e.y, sendService: e.sendService}))
                     this.links = this.composition.edges.map(e => ({id: e.id, node1: e.source.id, node2: e.target.id, compatibility: e.compatibility}))
@@ -351,13 +359,11 @@ export default {
           .catch(error => console.log(error))
 
     document.documentElement.addEventListener('mousemove', this.mouseMove, true)
-    // document.documentElement.addEventListener('mouseup', this.mouseUp, true)
     this.originX = this.$el.clientWidth / 2
     this.originY = this.$el.clientHeight / 2
   },
   beforeDestroy () {
     document.documentElement.removeEventListener('mousemove', this.mouseMove, true)
-    // document.documentElement.removeEventListener('mouseup', this.mouseUp, true)
   }
 }
 </script>
