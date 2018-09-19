@@ -14,9 +14,7 @@ public class UserRegistrationDto{
 
     @NotEmpty
     private String password;
-
-
-    @NotNull
+    
     private String title;
 
     @Email
