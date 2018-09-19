@@ -1,14 +1,23 @@
 <template>
 <transition name="slide-fade">
     <div class="noselect sidebar" :style="sideStyle">
-      <b-form-textarea
-            id="queryfield"
-            v-model="query"
-            placeholder="Filter for tags, names, format..."
-            :no-resize="true"
-            :rows="1"
-            :max-rows="2">
-        </b-form-textarea>
+      <div>
+        <b-button class="filterbutton" @click="scale+=0.5" variant="primary">
+            <v-icon
+            name="filter"
+            scale="1.7"
+            />
+        </b-button>
+        <div class="inputfield">
+            <b-form-textarea
+                v-model="query"
+                placeholder="Filter for tags, names, format..."
+                :no-resize="true"
+                :rows="1"
+                :max-rows="2">
+            </b-form-textarea>
+        </div>
+      </div>
         <b-container class="nodegrid">
         <b-row>
           <b-col v-for="service in result" >
@@ -47,13 +56,15 @@ export default {
                 width:  500 + 'px',
                 height: 92 + 'vh'
             }
+        },
+        filteredServices: function () {
+            return this.certifiedOnly ? this.services.filter(e => e.certified) : this.services
         }
     },
     watch: {
         query: function () {
-            console.log(this.query);
-            if(this.query=='') this.result = this.services;
-            else return this.$search(this.query, this.services, this.options)
+            if(this.query=='') this.result = this.filteredServices;
+            else return this.$search(this.query, this.filteredServices, this.options)
                         .then(e => this.result = e);
         }
     },
@@ -61,6 +72,7 @@ export default {
         return {
             query: '',
             result: this.services,
+            certifiedOnly: false,
 
             options: {
                 shouldSort: true,
@@ -106,6 +118,19 @@ export default {
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently
                                 supported by Chrome and Opera */
+}
+
+.filterbutton {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+}
+
+.inputfield {
+    position: relative;
+    width: 80%;
+    margin-top: 5px;
+    margin-left: 40px;
 }
 
 .slide-fade-enter-active {

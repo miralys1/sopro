@@ -29,26 +29,17 @@ import de.sopro.repository.UserRepository;
 @SpringBootApplication
 public class SpringBootWebApplication extends SpringBootServletInitializer implements CommandLineRunner {
 
+	// repositories that are needed
 	@Autowired
-	UserRepository userRepo;
-
+	private UserRepository userRepo;
 	@Autowired
-	ServiceRepository serviceRepo;
-
+	private ServiceRepository serviceRepo;
 	@Autowired
-	TagRepository tagRepo;
-
+	private TagRepository tagRepo;
 	@Autowired
-	FormatRepository formatRepo;
-
+	private FormatRepository formatRepo;
 	@Autowired
-	CompositionNodeRepository compNodeRepo;
-
-	@Autowired
-	CompositionEdgeRepository compEdgeRepo;
-
-	@Autowired
-	CompositionRepository compRepo;
+	private CompositionRepository compRepo;
 
 	@Autowired
 	UserService userservice;
@@ -59,17 +50,15 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 
 	@Override
 	public void run(String... arg0) throws Exception {
-		// Add code that should be run when the application starts
-		// (e. g., populate empty repositories with example data)
-
+		// populate empty repositories with example data
 		if (userRepo.count() == 0) {
 
-			// Add person with single hosted events and no visited events
 			UserRegistrationDto dark = new UserRegistrationDto("drake",
 					"dunkel", "123", "Dr.", "d@d.de");
 			User user = userservice.save(dark);
 			user.setAdmin(true);
 			userRepo.save(user);
+			// add users
 
 			UserRegistrationDto dum = new UserRegistrationDto("dummi", "dumm",
 					"password",
@@ -77,34 +66,41 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 
 			userservice.save(dum);
 
+			// add tags
 			String[] ts = { "3D", "Modeller", "Visualisierung", "Modellierung" };
 			List<Tag> tags = createTagList(ts);
 
+			// add formats
 			String[][] fis = { { "IFC", "2x0", "strict" }, { "BCF", "1.0", "strict" } };
 			List<Format> formatIn = createFormatList(fis);
 
 			String[][] fos = { { "IFC", "2x0", "strict" }, { "DWG", "5", "strict" } };
 			List<Format> formatOut = createFormatList(fos);
 
+			// add service
 			Service s1 = new Service("TP Modeller", "1.0", tags, "TP", 153443388, "TP_Modeller_10.png", true, formatIn,
 					formatOut);
 
 			serviceRepo.save(s1);
 
+			// add tags
 			String[] ts2 = { "3D", "Modeller", "IFC" };
 			tags = createTagList(ts2);
 
+			// add formats
 			String[][] fis2 = { { "IFC", "2x0", "strict" }, { "gbXML", "2", "strict" } };
 			formatIn = createFormatList(fis2);
 
 			String[][] fos2 = { { "IFC", "2x0", "strict" }, { "DWG", "5", "flexible" } };
 			formatOut = createFormatList(fos2);
 
+			// add service
 			Service s2 = new Service("3D-Modeller", "3", tags, "IGD", 1531573788, "IGD_Modeller.png", false, formatIn,
 					formatOut);
 
 			serviceRepo.save(s2);
 
+			// create Composition
 			CompositionNode n1 = new CompositionNode(5, 5, s1);
 			CompositionNode n2 = new CompositionNode(50, 50, s2);
 
@@ -126,6 +122,14 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 		}
 	}
 
+	/**
+	 * saves and creates a list of formats given by {@code fis}
+	 * 
+	 * @param fis
+	 *            array that contains the formats that should be saved given as
+	 *            three Strings
+	 * @return a list of formats
+	 */
 	private List<Format> createFormatList(String[][] fis) {
 		List<Format> formats = new ArrayList<>();
 		for (String[] s : fis) {
@@ -141,6 +145,13 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 		return formats;
 	}
 
+	/**
+	 * saves and creates a list of tags given by {@code ts}
+	 * 
+	 * @param ts
+	 *            array that contains the strings that should be saved as tags
+	 * @return a list of tags
+	 */
 	private List<Tag> createTagList(String[] ts) {
 		List<Tag> tags = new ArrayList<>();
 		for (String s : ts) {

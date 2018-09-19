@@ -21,7 +21,7 @@
 </ul>
 </div
 <br><br>
-<AdminDienstForm v-if="serviceSelected" v-bind:pform=selectedService v-bind:pedit='true' v-on:noForm="serviceSelected = false"/>
+<AdminDienstForm v-if="serviceSelected" v-bind:pform=selectedService v-bind:pedit='true' v-on:noForm="mupdate"/>
 
 </div>
 
@@ -76,6 +76,7 @@ methods: {
   },
 
   mupdate(){
+    this.serviceSelected = false;
     this.axios.get('/services')
              .then(response => {
              this.services = response.data;

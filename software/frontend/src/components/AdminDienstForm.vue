@@ -1,8 +1,10 @@
 <template>
   <div class = "out">
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+      <b-button variant="danger" style="float:left;" v-if="pedit" v-on:click="onDelete">Löschen</b-button>
       <b-button type="submit" variant="primary" style="float:right;margin-left: 0.5vw;">Speichern</b-button>
-      <b-button type="reset" variant="danger" style="float:right;">Reset</b-button>
+      <b-button type="reset" variant="warning" style="float:right;">Reset</b-button>
+      <br><br>
       <h4>Dienst Informationen</h4>
       <b-form-group id="GeneralName"
                     label="Name:"
@@ -229,6 +231,19 @@ export default {
     }
   },
   methods: {
+    onDelete () {
+
+      this.axios.delete('/services/'+ this.form.id)
+               .then(response => {
+               alert("Dienst wurde gelöscht");
+               this.$emit('noForm');}
+                   )
+               .catch(function (error) {
+                alert("Fehler beim Löschen");
+               console.log(error);
+                   });
+
+    },
     onSubmit (evt) {
       evt.preventDefault();
 
