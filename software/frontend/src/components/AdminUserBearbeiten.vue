@@ -1,16 +1,20 @@
 <template>
   <div class = "out">
+
     <input class="search" type="text" placeholder="Suche.." v-model="searchedUser" @keyup.enter="search">
+
     <br><br>
-    <div v-if="showList" class="list-group list-group-flush" style="overflow-y:scroll; max-height: 100px;">
+    <div v-if="showList" class="list-group list-group-flush" style="overflow-y:scroll; max-height: 200px;">
     <button type="button" class="list-group-item list-group-item-action" style="display: inline-block; margin: auto auto; min-height: 10vh;" v-for="(user,index) in users" @click="onClick(index)">
       {{user.firstName}} {{user.lastName}}
     </button>
   </div>
   <br><br>
     <b-form @submit="onSubmit" @reset="onReset" v-if="showForm">
+      <b-button variant="danger" style="float:left;" v-on:click="onDelete">Löschen</b-button>
       <b-button type="submit" variant="primary" style="float:right ;margin-left: 0.5vw;">Speichern</b-button>
-      <b-button type="reset" variant="danger" style="float:right;">Reset</b-button>
+      <b-button type="reset" variant="warning" style="float:right;">Reset</b-button>
+      <br><br>
       <h4>Benutzer Information</h4>
       <b-form-group id="title"
                     label="Anrede:"
@@ -111,19 +115,32 @@ showList: false,
 },
 
 methods: {
+
+  onDelete(){
+    this.axios.delete('/users/'+ this.user.id)
+             .then(response => {
+             alert("User wurde gelöscht");
+             this.showForm= false;
+           this.search();}
+                 )
+             .catch(function (error) {
+              alert("Fehler beim Löschen");
+                 });
+
+  },
   onSubmit (evt) {
 
       evt.preventDefault();
 
       this.axios({
-        url: '/users',
-        method: 'post',
+        url: '/users/'+this.user.id,
+        method: 'put',
         data: this.user,
         headers: {
           "Content-Type": "application/json"
         }
-      }).then(function (response) { alert(response);})
-        .catch(function (error) {alert(error);});
+      }).then(response => { alert("Erfolgreich geändert.");this.showForm= false; this.search();})
+        .catch(error => {alert(error);});
 
   },
 
@@ -132,13 +149,11 @@ methods: {
     /* Reset our form values */
      this.user = JSON.parse(JSON.stringify(this.backupUser));
 
-    this.show = false;
-    this.$nextTick(() => { this.show = true });
+    this.showForm = false;
+    this.$nextTick(() => { this.showForm = true });
   },
 
-  search (evt) {
-
-
+  search () {
    this.showList = true;
    this.showForm = false;
 

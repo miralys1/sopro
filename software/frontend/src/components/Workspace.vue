@@ -104,7 +104,10 @@ export default {
       this.axios({
         url: '/compositions',
         method: 'post',
-        data: this.name
+        data: this.name,
+        headers: {
+          'Content-Type': 'application/json'
+        }
       }).then(res => {
         this.$router.push('/editor/' + res.data)
         alert('Komposition erfolgreich erstellt')
