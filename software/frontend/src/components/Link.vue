@@ -1,13 +1,9 @@
 <template>
   <path
     :d="svgPath"
-    marker-mid="url(#arrow)"
+    :marker-mid="'url(#arrow-' + state + ')'"
     @click.ctrl="deleteLink"
     :style="style">
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="2" orient="auto-start-reverse" markerUnits="strokeWidth">
-        <text x="0" y="0" class="small">FBX</text>
-        <path d="M0,0 L0,4 L3,2 z" :fill="(state==="invalid" ? '#dc3545' : '#28a745')" />
-    </marker>
   </path>
 </template>
 
@@ -30,28 +26,28 @@ export default {
     },
     computed: {
         style: function () {
+            return {
+                stroke: this.color,
+                strokeWidth: 20 * this.params.scale
+            }
+        },
+        color: function () {
+            return (this.state==='compatible'  ? '#28a745'
+                    : (this.state==='alternative'  ? '#ffc107'
+                    : (this.state==='incompatible' ? '#dc3545'
+                    : '#000000')))
+        },
+        // TODO Enum
+        state: function () {
             if(!this.dummy && this.compatibility!==null) {
                 if (this.compatibility.compatible) {
-                    return {
-                        stroke: '#28a745',
-                        strokeWidth: 20 * this.params.scale
-                    }
-                } else if (this.compatibility.compatibleServices)
-                    return {
-                        stroke: '#dc3545',
-                        strokeWidth: 20 * this.params.scale,
-                    }
+                    return 'compatible'
+                } else if (this.compatibility.compatibleServices.length > 0)
+                    return 'alternative'
                 else {
-                    return {
-                        stroke: '#ffc107',
-                        strokeWidth: 20 * this.params.scale
-                    }
+                    return 'incompatible'
                 }
-            } else
-                return {
-                        stroke: 'rgb(0,0,0)',
-                        strokeWidth: 20 * this.params.scale
-                }
+            } else return 'non'
         },
         x1: function () {
             // 100 magical value
@@ -79,11 +75,10 @@ export default {
     },
     data () {
         return {
-            state: 'eval'
+            comp: this.compatibility
         }
     },
     mounted () {
-        console.log(this.compatibility)
         if(!this.dummy && this.compatibility===null) {
             this.axios.get('/services/' + this.start.sendService.id + '/' +  this.end.sendService.id)
                 .then(response => this.$emit('gotComp', {id: this.$vnode.key, comp: response.data}))
@@ -92,7 +87,6 @@ export default {
     },
     methods: {
         deleteLink: function (event) {
-            console.log('delete link')
             this.$emit('deleteLink', this.$vnode.key)
         }
     }

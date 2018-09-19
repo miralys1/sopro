@@ -1,6 +1,6 @@
 <template>
 <!-- Owner: 52 -->
-<!-- self prevents that both canvas and nodes are dragged at the same time -->
+<!-- TODO self prevents that both canvas and nodes are dragged at the same time -->
 <div class="editor"
      @mousedown.self="mouseDown"
      @mouseup="mouseUp"
@@ -15,6 +15,7 @@
           @startDrag="startDrag"
           @mouseDown="startNodeDrag"
           @deleteNode="handleDeleteNode"
+          @wheel.self="wheelEvent"
           @endDrag="endDrag">
     </Node>
 
@@ -34,8 +35,20 @@
          @mouseup.self="mouseUp"
          @wheel.self="wheelEvent">
     <defs>
-        <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="2" orient="auto-start-reverse" markerUnits="strokeWidth">
+        <marker id="arrow-compatible" markerWidth="10" markerHeight="10" refX="0" refY="2" orient="auto-start-reverse" markerUnits="strokeWidth">
+        <path d="M0,0 L0,4 L3,2 z" fill="#28a745" />
+        </marker>
+
+        <marker id="arrow-alternative" markerWidth="10" markerHeight="10" refX="0" refY="2" orient="auto-start-reverse" markerUnits="strokeWidth">
+        <path d="M0,0 L0,4 L3,2 z" fill="#ffc107" />
+        </marker>
+
+        <marker id="arrow-incompatible" markerWidth="10" markerHeight="10" refX="0" refY="2" orient="auto-start-reverse" markerUnits="strokeWidth">
         <path d="M0,0 L0,4 L3,2 z" fill="#dc3545" />
+        </marker>
+
+        <marker id="arrow-non" markerWidth="10" markerHeight="10" refX="0" refY="2" orient="auto-start-reverse" markerUnits="strokeWidth">
+        <path d="M0,0 L0,4 L3,2 z" fill="#000000" />
         </marker>
     </defs>
     <Link v-for="link in linkcoords"
@@ -43,7 +56,6 @@
           :params="params"
           :dummy="false"
           :start="link.start"
-          state="invalid"
           :end="link.end"
           :key="link.id + '-link'"
           @deleteLink="handleDeleteLink"
@@ -57,7 +69,7 @@
         v-if="newLinkCords!==null"
         :params="params"
         :dummy="true"
-        :start="newLinkStart"
+        :start="nodes.find(e => e.id === dragLink)"
         :endCords="newLinkCords"
         style="z-index: 2;opacity: 0.4;"
     />
@@ -69,23 +81,47 @@
         :services="services"
         @newNode="createNewNode"
   />
-  <b-button-toolbar style="position:absolute;top:10px;left:80vw" key-nav aria-label="Editor toolbar">
+  <b-button-toolbar style="position:absolute;top:10px;right: 40px;" key-nav aria-label="Editor toolbar">
   <b-button-group class="mx-1">
-      <b-button :pressed.sync="sidePanelShow" variant="primary">toggle Sidebar</b-button>
-      <b-button @click="scale=1" variant="primary">reset zoom</b-button>
+    <b-button :pressed.sync="sidePanelShow" variant="primary">
+        <v-icon
+          name="columns"
+          scale="1.7"
+        />
+    </b-button>
   </b-button-group>
   <b-button-group class="mx-1">
-      <b-button @click="save" variant="success">Save and Exit</b-button>
+    <b-button @click="scale+=0.5" variant="primary">
+        <v-icon
+          name="search-plus"
+          scale="1.7"
+        />
+    </b-button>
+    <b-button @click="scale=1" variant="primary">
+      reset
+    </b-button>
+    <b-button @click="scale-=0.5" variant="primary">
+        <v-icon
+          name="search-minus"
+          scale="1.7"
+        />
+    </b-button>
+  </b-button-group>
+  <b-button-group class="mx-1">
+    <b-button @click="save" variant="success">
+        <v-icon
+          name="save"
+          scale="1.7"
+        />
+    </b-button>
+    <b-button variant="info">
+        <v-icon
+          name="cog"
+          scale="1.7"
+        />
+    </b-button>
   </b-button-group>
   </b-button-toolbar>
-        <b-form-textarea
-            style="position:absolute;top:40px;left:40px"
-            id="queryfield"
-            v-model="query"
-            placeholder="Filter for tags,names,format..."
-            :rows="1"
-            :max-rows="2"
-  </b-form-textarea>
 
   <Node
       v-if="insertingNode"
@@ -104,7 +140,6 @@ import Link from '@/components/Link'
 
 function newId(list) {
     if (list===null || list===undefined || list.length===0) return 1;
-    // console.log((e => e < 0 ? e-1 : e*-1) (Math.min(...list.map(obj => obj.id))))
     return (Math.max(...list.map(obj => obj.id)) + 1)
 }
 
@@ -121,10 +156,6 @@ export default {
             backgroundSize: 100*this.scale + 'px ' + 100*this.scale + 'px',
             backgroundPosition: x + 'px ' + y + 'px'
         }
-    },
-    newLinkStart: function () {
-        var n = this.nodes.find(e => e.id === this.dragLink)
-        return {x: n.x + 100, y: n.y + 100}
     },
     originStyle: function () {
         return {
@@ -198,14 +229,12 @@ export default {
           this.lastY=event.clientY;
       },
       mouseUp: function(event) {
-          console.log("Mouse Up")
           this.dragCanvas=false;
           this.dragNode=null;
           this.newLinkCords = null;
           this.dragLink=null;
           if(this.insertingNode) {
             // TODO real ids
-            console.log("new node inserted")
             this.nodes = this.nodes.concat({id: newId(this.nodes),
                 sendService: (this.services.find(e => e.id==this.newNodeId)),
                 x: (event.clientX - this.originX)*1/this.scale,
@@ -230,8 +259,6 @@ export default {
           if(this.dragNode!==null) {
               var newX = (event.clientX*(1/this.scale) - this.ofX)
               var newY = (event.clientY*(1/this.scale) - this.ofY)
-              // console.log(event.x + ' ' + event.y + ' ' + this.dragNode);
-              this.nodes.map(e => console.log(' ' + e.x))
               this.nodes = this.nodes.map(el =>
                                 el.id != this.dragNode
                                 ? el
@@ -247,13 +274,11 @@ export default {
           }
       },
       startNodeDrag: function (event) {
-          console.log("dragged new node " + event.x + ' ' + event.y)
           this.ofX = event.clientX*(1/this.scale) - event.x;
           this.ofY = event.clientY*(1/this.scale) - event.y;
           this.dragNode=event.id;
       },
       createNewNode: function (event) {
-          console.log("Creating new node")
           this.newNodeX = (event.clientX*(1/this.scale))
           this.newNodeY = ((event.clientY - 80) *(1/this.scale))
           this.newNodeId = event.serviceId
@@ -268,17 +293,13 @@ export default {
           this.links = this.links.filter(e => e.node1 != event && e.node2 != event)
       },
       setLinkComp: function (event) {
-          // console.log(event.comp)
           this.links.find(e => (e.id + '-link')===event.id).compatibility = event.comp;
-          // this.links.map(e => (e.id + '-link')===event.id)
       },
       startDrag: function (id) {
-          console.log("start");
           this.dragLink = id;
       },
       endDrag: function (id) {
           if (this.dragLink!==null) {
-            console.log("end");
             var n1 = this.dragLink;
             var n2 = id;
             this.dragLink = null;
