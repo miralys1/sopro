@@ -27,6 +27,14 @@
     <string name="service_certified">Ziertifiziert</string>
     <string name="service_certified_yes">ja</string>
     <string name="service_certified_no">nein</string>
+    <string name="services">Dienste</string>
+    <string name="textual">Textuelle Darstellung</string>
+    <string name="edges">Verbindungen</string>
+    <string name="none">keine</string>
+    <string name="alternative">Alternative</string>
+    <string name="suitable">mögliche Formate</string>
+    <string name="compatible">kompatibel</string>
+    <string name="incompatible">inkompatibel</string>
 
     <string name="d_button_close">Schließen</string>
     <string name="d_instructions_title">Anleitung</string>

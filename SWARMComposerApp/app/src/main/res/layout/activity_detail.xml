@@ -149,9 +149,10 @@
                 android:id="@+id/text_col3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/font_awesome"
                 android:paddingLeft="15dp"
                 android:textColor="@color/textColorPrimary"
-                android:textSize="16sp" />
+                android:textSize="19sp" />
 
             <TextView
                 android:id="@+id/text_col4"

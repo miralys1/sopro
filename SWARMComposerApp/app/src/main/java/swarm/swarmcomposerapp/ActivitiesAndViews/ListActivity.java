@@ -128,6 +128,8 @@ public class ListActivity extends AppCompatActivity implements IResponse {
     private void updateList() {
         ArrayList<Composition> compList;
         compList = LocalCache.getInstance().getCompositions(this, LocalCache.ListIdentifier.PUBLIC);
+        tPublic.setVisibility((compList == null || compList.isEmpty()) ? View.GONE : View.VISIBLE);
+
         if(cache.hasData()) {
             adapter_public.setCompList(compList);
             compList = LocalCache.getInstance().getCompositions(this, LocalCache.ListIdentifier.VIEWABLE);
@@ -174,6 +176,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
             //overview data is now available at LocalCache
             ArrayList<Composition> compList;
             compList = LocalCache.getInstance().getCompositions(this, LocalCache.ListIdentifier.PUBLIC);
+            tPublic.setVisibility((compList == null || compList.isEmpty()) ? View.GONE : View.VISIBLE);
             if(compList == null){
                 //TODO handle fatal event
                 Toast.makeText(getApplicationContext(), getText(R.string.err_text_detail), Toast.LENGTH_SHORT).show();

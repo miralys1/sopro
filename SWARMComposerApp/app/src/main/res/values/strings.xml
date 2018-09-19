@@ -31,6 +31,16 @@
     <string name="service_certified_yes">yes</string>
     <string name="service_certified_no">no</string>
 
+    <!-- Strings for pdf -->
+    <string name="services">Services</string>
+    <string name="textual">Textual Representation</string>
+    <string name="edges">Connections</string>
+    <string name="none">none</string>
+    <string name="alternative">alternative</string>
+    <string name="suitable">suitable formats</string>
+    <string name="compatible">compatible</string>
+    <string name="incompatible">incompatible</string>
+
     <!-- Icons encoded as strings -->
     <string name="ic_settings" translatable="false">&#xf085;</string>
     <string name="ic_settings2" translatable="false">&#xf013;</string>

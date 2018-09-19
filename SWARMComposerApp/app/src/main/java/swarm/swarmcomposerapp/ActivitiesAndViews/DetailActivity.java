@@ -2,9 +2,12 @@ package swarm.swarmcomposerapp.ActivitiesAndViews;
 
 import android.app.ActivityManager;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -15,6 +18,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import swarm.swarmcomposerapp.Model.Composition;
+import swarm.swarmcomposerapp.Model.Edge;
 import swarm.swarmcomposerapp.Model.LocalCache;
 import swarm.swarmcomposerapp.Model.Node;
 import swarm.swarmcomposerapp.Model.Service;
@@ -92,17 +96,33 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
             col2text +=  service.getServiceName()+"\n";
             col2text +=  service.getOrganisation()+"\n";
             col2text +=  service.getVersion()+"\n";
-            col2text +=  dateFormat.format(service.getDate())+"\n";
+            col2text +=  dateFormat.format(service.getDate()*1000)+"\n";
             if(service.getCertified() != null && service.getCertified().equals("true")){
                 col2text +=  getText(R.string.service_certified_yes)+"\n";
             } else {
                 col2text +=  getText(R.string.service_certified_no)+"\n";
             }
+            for(Edge e : comp.getEdgeList()){
+                if(e.getOut().getServiceID() == node.getServiceID()){
+                    col4text += e.getIn().getSendService().getServiceName()+"\n";
+                    if(e.getCompatibility().isCompatible()){
+                        //compatible
+                        col3text+="<font color='green'>"+getText(R.string.ic_compatible)+"</font><br>";
+                    } else if (e.getCompatibility().getAlternatives() == null){
+                        //incompatible
+                        col3text+="<font color='red'>"+getText(R.string.ic_incompatible)+"</font><br>";
+                    } else {
+                        //alternative
+                        col3text+="<font color='yellow'>"+getText(R.string.ic_alternative)+"</font><br>";
+                    }
+                }
+            }
+
         }
         col2text += dateFormat.format(comp.getLastUpdate());
         col1.setText(col1text);
         col2.setText(col2text);
-        col3.setText(col3text);
+        col3.setText(Html.fromHtml(col3text));
         col4.setText(col4text);
     }
 
@@ -132,9 +152,32 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
     public void sendComposition(View v){
         //TODO create PDF, open share_dialog
         if(comp != null) {
-            String path = PDFCreator.createPDF(this, this, comp);
+
+            String path = PDFCreator.createPDF(this, this, comp, getBitmapFromView(compositionView));
             openShareDialog(path);
         }
+    }
+
+    private Bitmap getBitmapFromView(View view) {
+        //Define a bitmap with the same size as the view
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+        //Bind a canvas to it
+        Canvas canvas = new Canvas(returnedBitmap);
+        /*
+        //Get the view's background
+        Drawable bgDrawable =view.getBackground();
+        if (bgDrawable!=null) {
+            //has background drawable, then draw it on the canvas
+            bgDrawable.draw(canvas);
+        }   else{
+            //does not have background drawable, then draw white background on the canvas
+            canvas.drawColor(Color.WHITE);
+        }
+        */
+        // draw the view on the canvas
+        view.draw(canvas);
+        //return the bitmap
+        return returnedBitmap;
     }
 
     private void openShareDialog(String path){
@@ -150,7 +193,7 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
         //permission to write to storage has been granted
-        String path = PDFCreator.createPDF(this, this, comp);
+        String path = PDFCreator.createPDF(this, this, comp, getBitmapFromView(compositionView));
         openShareDialog(path);
     }
 
