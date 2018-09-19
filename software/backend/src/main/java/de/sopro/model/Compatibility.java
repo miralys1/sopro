@@ -86,7 +86,7 @@ public class Compatibility {
 	private boolean myContains(List<Tag> tags, Tag converterTag) {
     
 	  for(Tag tag : tags) {
-	    if(tag.equals(converterTag)) {
+	    if(tag.getName().equals(converterTag.getName())) {
 	      return true;
 	    }
 	  }
