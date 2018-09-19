@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,8 +21,6 @@ import de.sopro.model.send.SimpleUser;
 
 @Entity
 public class User {
-
-	public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,7 +37,7 @@ public class User {
 	@NotBlank
 	private String lastname;
 
-	@NotBlank
+	@NotNull
 	private String title;
 
 	@NotBlank
@@ -150,14 +149,14 @@ public class User {
 	}
 	
 	public void setPassword(String password){
-		this.password = PASSWORD_ENCODER.encode(password);
+		this.password = password;
 	}
 
-	public String[] getRole(){
+	public String[] getRoles(){
 		return roles;
 	}
 
-	public void setRole(String[] roles){
+	public void setRoles(String[] roles){
 		this.roles = roles;
 	}
 

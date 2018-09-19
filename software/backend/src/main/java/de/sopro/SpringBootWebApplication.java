@@ -62,11 +62,9 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 			// Add person with single hosted events and no visited events
 			User dark = new User("drake", "dunkel", "d@d.de", "Dr.", true);
 			dark.setPassword("123");
-			dark.setRole(new String[] { "ADMIN" });
 
 			User dum = new User("dummi", "dumm", "du@d.com", "Prof.", false);
 			dum.setPassword("password");
-			dum.setRole(new String[] { "USER" });
 
 			userRepo.save(dark);
 			userRepo.save(dum);

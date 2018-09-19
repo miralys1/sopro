@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,18 +17,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.sopro.model.Service;
 import de.sopro.model.User;
 import de.sopro.model.send.DetailUser;
-import de.sopro.model.send.SendService;
 import de.sopro.model.send.SimpleUser;
 import de.sopro.repository.UserRepository;
+import de.sopro.security.UserRegistrationDto;
+import de.sopro.security.UserService;
 
 @RestController
 public class UserController {
 
 	@Autowired
 	private UserRepository userRepo;
+
+	@Autowired
+	UserService userService;
 
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	public ResponseEntity<Iterable<SimpleUser>> getUsers(
@@ -123,10 +128,17 @@ public class UserController {
 
 
 	@RequestMapping(value = "/users", method = RequestMethod.POST)
-	public ResponseEntity<Void> register(@RequestBody User user) {
-		user.setAdmin(false);
-		user.setPassword(user.getPassword());
-		userRepo.save(user);
+	public ResponseEntity<Void> register(@RequestBody @Valid UserRegistrationDto userDto) {
+
+		User existing = userService.findByEmail(userDto.getEmail());
+
+		if(existing != null){
+			return ResponseEntity.badRequest().build();
+		}
+
+		userService.save(userDto);
+
+
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
