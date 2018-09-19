@@ -32,12 +32,18 @@ export default {
       alert('Willkommen ' + this.user.fullName + '!')
     },
     logout() {
-      this.user.loggedIn = false
-      this.user.id = -1
-      this.user.isAdmin = false
-      this.user.fullName = ''
-      this.$router.push('/')
-      alert('Sie wurden erfolgreich ausgeloggt!')
+      this.axios({
+        method: 'get',
+        url: '/logout'
+      }).then(res => {
+        this.user.loggedIn = false
+        this.user.id = -1
+        this.user.isAdmin = false
+        this.user.fullName = ''
+        this.$router.push('/')
+        alert('Sie wurden erfolgreich ausgeloggt!')
+      }).catch(res => alert('Etwas ist schiefgelaufen'))
+
     }
   },
   mounted() {
