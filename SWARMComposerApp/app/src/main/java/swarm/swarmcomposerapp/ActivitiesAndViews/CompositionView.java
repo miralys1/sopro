@@ -3,31 +3,27 @@ package swarm.swarmcomposerapp.ActivitiesAndViews;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PointF;
-import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
 import android.util.AttributeSet;
+
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import swarm.swarmcomposerapp.Model.CompatibilityAnswer;
 import swarm.swarmcomposerapp.Model.Composition;
 import swarm.swarmcomposerapp.Model.Edge;
 import swarm.swarmcomposerapp.Model.Node;
-import swarm.swarmcomposerapp.Model.Service;
 import swarm.swarmcomposerapp.R;
 
 /**
@@ -57,8 +53,9 @@ public class CompositionView extends View {
 
     private float offsetX;
     private float offsetY;
+    private Matrix inverse;
 
-    private PointF focusPoint;
+    private PointF focusPoint = new PointF(0, 0);
 
 
     /**
@@ -153,8 +150,8 @@ public class CompositionView extends View {
         public boolean onScroll(MotionEvent e1, MotionEvent e2,
                                 float distanceX, float distanceY) {
 
-            initX -= distanceX;
-            initY -= distanceY;
+            initX -= distanceX / scaleFactor;
+            initY -= distanceY / scaleFactor;
 
             invalidate();
 
@@ -168,19 +165,16 @@ public class CompositionView extends View {
             final List<Node> nodeList = comp.getNodeList();
 
             if (comp != null && nodeList != null && !nodeList.isEmpty()) {
-                float posX = (e.getX() - initX - offsetX) / scaleFactor;
-                float posY = (e.getY() - initY - offsetY) / scaleFactor;
+                e.transform(inverse);
+                float posX = e.getX();
+                float posY = e.getY();
 
-                //float posX = (e.getX()-initX)/scaleFactor;
-                //float posY = (e.getY()-initY)/scaleFactor;
                 boolean set = false;
 
                 for (Node n : nodeList) {
                     float absX = Math.abs(n.getX() - posX);
                     float absY = Math.abs(n.getY() - posY);
                     double distance = Math.sqrt(absX * absX + absY * absY);
-                    Log.d("SingleTap", "posX: " + posX + " posY " + posY + " node X " + n.getX()
-                            + " node Y " + n.getY() + " dist " + distance + " radius " + radius * scaleFactor);
 
                     //If the single tap occurs within a node select it
                     //The first encountered node is selected
@@ -191,7 +185,6 @@ public class CompositionView extends View {
                     }
                 }
 
-
                 if (!set) {
                     selectedNode = null;
                     invalidate();
@@ -199,10 +192,7 @@ public class CompositionView extends View {
                 parent.onNodeSelected(selectedNode);
             }
             return true;
-
         }
-
-
     };
 
     private final ScaleGestureDetector scaleDetec
@@ -213,6 +203,7 @@ public class CompositionView extends View {
 
     public void setComp(Composition comp) {
         this.comp = comp;
+
     }
 
 
@@ -249,7 +240,12 @@ public class CompositionView extends View {
     public boolean onTouchEvent(MotionEvent ev) {
 
         scaleDetec.onTouchEvent(ev);
-        gestureDetec.onTouchEvent(ev);
+        if (!scaleDetec.isInProgress()) {
+
+            gestureDetec.onTouchEvent(ev);
+        }
+
+
         return true;
     }
 
@@ -302,16 +298,24 @@ public class CompositionView extends View {
 
 
             //translate for moving the canvas
+            //scale for zooming
+            Matrix matrix = new Matrix();
+            matrix.postTranslate(initX, initY);
+            matrix.postScale(scaleFactor, scaleFactor, focusPoint.x, focusPoint.y);
 
-            canvas.translate(initX, initY);
-            //zoom scale
-            canvas.translate(offsetX, offsetY);
-            canvas.scale(scaleFactor, scaleFactor);
+
+            canvas.concat(matrix);
+            inverse = new Matrix(matrix);
+            inverse.invert(inverse);
 
             for (Edge e : comp.getEdgeList()) {
                 Node source = e.getIn();
                 Node target = e.getOut();
+                float sX = source.getX();
+                float sY = source.getY();
 
+                float tX = target.getX();
+                float tY = target.getY();
 
                 final CompatibilityAnswer compatibilityN = e.getCompatibility();
 
@@ -331,9 +335,42 @@ public class CompositionView extends View {
                 }
 
                 //Draw an edge as a line styled by edgePaint
-                canvas.drawLine(halfLength + source.getX(), halfLength + source.getY(),
-                        halfLength + target.getX(), halfLength + target.getY(), edgePaint);
+                canvas.drawLine(sX, sY, tX, tY, edgePaint);
 
+                float vX = tX - sX;
+                float vY = tY - sY;
+                float vLength = (float)Math.sqrt(vX*vX+vY*vY);
+                float vXNormed = vX/vLength;
+                float vYNormed = vY/vLength;
+
+                float xMid = sX + vX * 0.5f;
+                float yMid = sY + vY * 0.5f;
+
+               float edgeAngle =(float) Math.toDegrees(Math.acos(vX/(Math.sqrt(vX*vX+vY*vY))));
+
+                float arrowHeadBaseLine = initialLength / 8;
+                float baseLineHalf = arrowHeadBaseLine / 2;
+
+                Path arrowHead = new Path();
+                arrowHead.moveTo(xMid, yMid);
+                arrowHead.lineTo(xMid-vY/vLength*baseLineHalf, yMid+vX/vLength*baseLineHalf);
+                arrowHead.lineTo(xMid+vXNormed*arrowHeadBaseLine,yMid+vYNormed*arrowHeadBaseLine);
+                arrowHead.lineTo(xMid+vY/vLength*baseLineHalf, yMid-vX/vLength*baseLineHalf);
+                arrowHead.lineTo(xMid,yMid);
+                canvas.drawPath(arrowHead,edgePaint);
+
+
+//                arrowHead.lineTo(xMid + baseLineHalf, yMid);
+//                arrowHead.lineTo(xMid, yMid - arrowHeadBaseLine);
+//                arrowHead.lineTo(xMid - baseLineHalf, yMid);
+//                arrowHead.lineTo(xMid, yMid);
+//                arrowHead.close();
+//                Matrix arrowMatrix = new Matrix();
+//                arrowMatrix.postRotate(edgeAngle);
+//                //arrowHead.transform(arrowMatrix);
+//                canvas.rotate(edgeAngle);
+//                canvas.drawPath(arrowHead,edgePaint);
+//                canvas.rotate(-edgeAngle);
 
             }
 
@@ -354,7 +391,6 @@ public class CompositionView extends View {
                 int drawableID = getContext().getResources()
                         .getIdentifier(removePNGEnding(n.getSendService().getPicture()).toLowerCase(),
                                 "drawable", getContext().getPackageName());
-                //Log.d("Drawable", n.getSendService().getPicture().toLowerCase() + " id: " + drawableID);
 
                 //In the case that the drawableID is 0 the resource couldn't be found.
                 if (drawableID != 0) {
@@ -453,11 +489,7 @@ public class CompositionView extends View {
 
             scaleFactor *= detector.getScaleFactor();
 
-            float scaleChange = scaleFactor - oldScale;
-            offsetX = -focusPoint.x * scaleChange;
-            offsetY = -focusPoint.y * scaleChange;
-
-            // Don't let the object get too small or too large.
+            //Set a minimum and maximum for scaling
             scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 5.0f));
 
             invalidate();
