@@ -63,7 +63,7 @@
 
 
       <br> <br>
-      <div v-for= "(tag,index) in form.tags">
+      <div v-for= "(tag,index) in form.tags" v-if = "showTag">
 
         <b-input-group prepend="Tag">
           <b-form-input :id="'genTag' + index"
@@ -73,7 +73,7 @@
           </b-form-input>
           <b-input-group-append>
             <b-dropdown id="ddown-buttons" text="Vorschlag" v-on:show="selectTags(index)">
-               <b-dropdown-item-button v-for="(tag,id) in tagSelection"> {{tagSelection[id]}} </b-dropdown-item-button>
+               <b-dropdown-item-button v-for="(tag,id) in tagSelection" v-on:click="dropdownClick(index,id)"> {{tagSelection[id].name}} </b-dropdown-item-button>
             </b-dropdown>
 
     </b-input-group-append>
@@ -224,8 +224,9 @@ export default {
 
   data () {
     return {
+      showTag: true,
        tagSelection: [],
-       tags:["first", "second", "third", "sixed"],
+       tags:[{name: "first"},{name: "second"},{name: "third"},{name: "fourth"}],
        form: JSON.parse(JSON.stringify(this.pform)),
         comps: [
         { text: 'Wählen Sie aus', value: "" },
@@ -238,9 +239,15 @@ export default {
   },
   methods: {
 
-    selectTags(index) {
+    dropdownClick(index,id){
+      this.form.tags[index] = this.tagSelection[id].name;
 
-      alert("selectTags called with " + index);
+      this.showTag = false;
+      this.$nextTick(() => { this.showTag = true });
+
+    },
+
+    selectTags(index) {
 
       var options = {
       shouldSort: true,
@@ -249,7 +256,7 @@ export default {
       distance: 100,
       maxPatternLength: 32,
       minMatchCharLength: 1,
-      keys: []
+      keys: ["name"]
   };
   this.$search(this.form.tags[index], this.tags, options).then(results => {
     this.tagSelection = results
