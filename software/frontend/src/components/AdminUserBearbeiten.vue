@@ -134,8 +134,8 @@ methods: {
       evt.preventDefault();
 
       this.axios({
-        url: '/users',
-        method: 'post',
+        url: '/users/'+this.user.id,
+        method: 'put',
         data: this.user,
         headers: {
           "Content-Type": "application/json"

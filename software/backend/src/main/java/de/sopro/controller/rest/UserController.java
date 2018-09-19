@@ -73,12 +73,12 @@ public class UserController {
 	public ResponseEntity<Void> editUser(Principal principal, @PathVariable long id,
 			@RequestBody DetailUser detailUser) {
 		if (principal == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
 		User loggedUser = userRepo.findByEmail(principal.getName());
 		if (loggedUser == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
 		if (!loggedUser.isAdmin() && loggedUser.getId() != id) {
@@ -91,8 +91,11 @@ public class UserController {
 		}
 
 		User oldUser = user.get();
-		User newUser = detailUser.createUser(oldUser.getPassword());
-		userRepo.save(newUser);
+		oldUser.setFirstName(detailUser.getFirstName());
+		oldUser.setLastName(detailUser.getLastName());
+		oldUser.setEmail(detailUser.getEmail());
+		oldUser.setTitle(detailUser.getTitle());
+		userRepo.save(oldUser);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
