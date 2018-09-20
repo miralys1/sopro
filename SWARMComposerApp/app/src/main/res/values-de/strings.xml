@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SWARM Composer</string>
+    <string name="settings">Einstellungen</string>
+    <string name="publicComps">Öffentliche Kompositionen</string>
+    <string name="viewableComps">Geteilte Kompositionen</string>
+    <string name="ownedComps">Eigene Kompositionen</string>
+    <string name="loading">Lädt...</string>
+    <string name="pdf_saved">PDF gespeichert!</string>
+    <string name="pdf_share">PDF senden</string>
+    <string name="compositions">Kompositionen</string>
+    <string name="login">Einloggen</string>
+    <string name="logged_in_as">"Eingeloggt als "</string>
+    <string name="logout">Ausloggen</string>
+    <string name="email">E-Mail-Adresse</string>
+    <string name="password">Passwort</string>
+    <string name="update">Aktualisieren</string>
+    <string name="webaddress">Serveradresse</string>
+    <string name="webaddress_change">Serveradresse ändern</string>
+    <string name="lastupdate">"Stand"</string>
+
+    <string name="service">Dienst</string>
+    <string name="service_name">Name</string>
+    <string name="service_organisation">Organisation</string>
+    <string name="service_version">Version</string>
+    <string name="service_date">Datum</string>
+    <string name="service_certified">Zertifiziert</string>
+    <string name="service_certified_yes">ja</string>
+    <string name="service_certified_no">nein</string>
+    <string name="services">Dienste</string>
+    <string name="textual">Textuelle Darstellung</string>
+    <string name="edges">Verbindungen</string>
+    <string name="none">keine</string>
+    <string name="alternative">Alternative</string>
+    <string name="suitable">mögliche Formate</string>
+    <string name="compatible">kompatibel</string>
+    <string name="incompatible">inkompatibel</string>
+
+    <string name="d_button_close">Schließen</string>
+    <string name="d_instructions_title">Anleitung</string>
+    <string name="d_instructions_text">
+        Um die Verbindung zu einem Sever herzustellen, geben Sie bitte die Adresse ein.
+        Um private Kompositionen zu sehen, müssen Sie sich einloggen.
+        In der Listenansicht, tippen Sie auf einen Eintrag, um die Komposition in der Detailansicht zu öffnen.
+        Dort können Sie die Komposition genauer betrachten.
+        Sie können einzelne Dienste antippen, um mehr Informationen zu erhalten.
+        Außerdem können Sie die Komposition als PDF speichern und verschicken.
+        Das Dokument wird im internen Speicher Ihres Gerätes gespeichert und enthält die Komposition als Bild sowie nützliche Informationen.
+        Alle vom Server erhaltenen Daten werden bis zum Beenden der App zwischengespeichert.
+        Wenn Sie die aktuellsten Versionen der Kompositionen laden möchten, tippen Sie bitte auf das Symbol oben links in der Listenansicht.
+    </string>
+    <string name="d_welcome_title">Willkommen!</string>
+    <string name="d_welcome_button">Einstellungen öffnen</string>
+    <string name="d_welcome_text">
+        Guten Tag! Um öffentliche Kompositionen zu sehen, müssen Sie eine Serveradresse einstellen.
+        Wenn Sie private Kompositionen suchen, loggen Sie sich bitte ein.
+        Beides können Sie in den Einstellungen tun. Dort finden Sie auch eine Anleitung zur Nutzung der App.
+    </string>
+    <string name="d_detailviewguide_title">Anleitung</string>
+    <string name="err_title">Fehler!</string>
+    <string name="err_nonodes">Diese Komposition ist leer.</string>
+    <string name="err_text">Ein Fehler ist aufgetreten.</string>
+    <string name="err_text_emailpasswordmissing">Die E-Mail-Adresse oder das Passwort fehlen.</string>
+    <string name="err_text_serveraddressmissing">Bitte eine Serveradresse eingeben.</string>
+    <string name="err_text_logout">Das Ausloggen ist fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung sowie den Status des Servers.</string>
+    <string name="err_text_login">Das Einloggen ist fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung sowie den Status des Servers und die Korrekthet der eingegebenen Einloggdaten.</string>
+    <string name="err_text_filesave">Das Speichern und Senden der PDF ist fehlgeschlagen.</string>
+    <string name="err_text_serveraddress">Die Kommunikation mit dem Server unter der neuen Adresse ist fehlgeschlagen.
+        Bitte überprüfen Sie Ihre Internetverbindung sowie die Korrektheit der eingegebenen Serveradresse.</string>
+    <string name="err_text_list">Die Kommunikation mit dem Server ist während der Abfrage der Übersichtsliste fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung sowie den Status des Servers.</string>
+    <string name="err_text_detail">Die Kommunikation mit dem Server ist während der Abfrage der Kompositionsdetails fehlgeschlagen.Bitte überprüfen Sie Ihre Internetverbindung sowie den Status des Servers.</string>
+    <string name="err_text_illegalserveraddress">Die eingegebene Serveradresse ist in einem ungültigen Format.</string>
+
+
+</resources>

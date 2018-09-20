@@ -1,0 +1,108 @@
+<resources>
+    <string name="app_name" translatable="false">SWARM Composer</string>
+    <string name="app_label" translatable="false">Composer</string>
+
+    <!-- Strings for standard text fields -->
+    <string name="settings">Settings</string>
+    <string name="publicComps">Public Compositions</string>
+    <string name="viewableComps">Shared Compositions</string>
+    <string name="ownedComps">Your Own Compositions</string>
+    <string name="loading">Loading...</string>
+    <string name="pdf_saved">PDF saved!</string>
+    <string name="pdf_share">Send PDF</string>
+    <string name="compositions">Compositions</string>
+    <string name="login">Log in</string>
+    <string name="logged_in_as">Logged in as </string>
+    <string name="logout">Log out</string>
+    <string name="email">Email Address</string>
+    <string name="password">Password</string>
+    <string name="update">Update</string>
+    <string name="webaddress">Web Adress</string>
+    <string name="webaddress_change">Update web adress</string>
+    <string name="lastupdate">Last updated</string>
+
+    <!-- Strings for info text in DetailActivity -->
+    <string name="service">Service</string>
+    <string name="service_name">Name</string>
+    <string name="service_organisation">Organisation</string>
+    <string name="service_version">Version</string>
+    <string name="service_date">Date</string>
+    <string name="service_certified">Certified</string>
+    <string name="service_certified_yes">yes</string>
+    <string name="service_certified_no">no</string>
+
+    <!-- Strings for pdf -->
+    <string name="services">Services</string>
+    <string name="textual">Textual Representation</string>
+    <string name="edges">Connections</string>
+    <string name="none">none</string>
+    <string name="alternative">alternative</string>
+    <string name="suitable">suitable formats</string>
+    <string name="compatible">compatible</string>
+    <string name="incompatible">incompatible</string>
+
+    <!-- Icons encoded as strings -->
+    <string name="ic_settings" translatable="false">&#xf085;</string>
+    <string name="ic_settings2" translatable="false">&#xf013;</string>
+    <string name="ic_send" translatable="false">&#xf0e0;</string>
+    <string name="ic_list" translatable="false">&#xf0ca;</string>
+    <string name="ic_refresh" translatable="false">&#xf2f1;</string>
+    <string name="ic_refresh2" translatable="false">&#xf021;</string>
+    <string name="ic_compatible" translatable="false">&#xf00c;</string>
+    <string name="ic_incompatible" translatable="false">&#xf00d;</string>
+    <string name="ic_incompatible2" translatable="false">&#xf05e;</string>
+    <string name="ic_alternative" translatable="false">&#xf071;</string>
+    <string name="ic_alternative2" translatable="false">&#xf069;</string>
+    <string name="ic_alternative3" translatable="false">&#xf0e7;</string>
+    <string name="ic_help" translatable="false">&#xf059;</string>
+    <string name="ic_info" translatable="false">&#xf05a;</string>
+    <string name="ic_search" translatable="false">&#xf002;</string>
+    <string name="ic_graph" translatable="false">&#xf542;</string>
+    <string name="ic_public" translatable="false">&#xf0c0;</string>
+    <string name="ic_owner" translatable="false">&#xf007;</string>
+    <string name="ic_team" translatable="false">&#xf500;</string>
+    <string name="ic_addr" translatable="false">&#xf2bb;</string>
+
+    <!-- Text for dialog windows -->
+    <string name="d_button_close">Close</string>
+
+    <string name="d_instructions_title">Instructions</string>
+    <string name="d_instructions_text">
+        To connect to a server, please enter the address.
+        In order to see private compositions, please log in with your credentials.
+        When looking at the list, tap on an entry in one of the lists to open the detail view.
+        There you can inspect the composition. Tap on single services to get more information.
+        You can also share the composition as a PDF containing the image and useful information.
+        The file will be saved in the internal storage of your device.
+        All data requested from the server is saved on your device until you close the app.
+        If you want the latest data, tap the reload icon on the list page.
+    </string>
+    <string name="d_welcome_title">Welcome!</string>
+    <string name="d_welcome_button">Open Settings</string>
+    <string name="d_welcome_text">Hello! You\'ll need to enter server address in order to see public compositions.
+        If you are looking for a private composition, please log in.
+        You can do those things on the settings page.
+        There, you\'ll find instructions on how to use the app, too.</string>
+    <string name="d_detailviewguide_title">Guide</string>
+    <string name="d_detailviewguide_text">Instructions</string>
+
+    <!-- Text for error messages -->
+    <string name="err_title">An error occurred</string>
+    <string name="err_nonodes">There is nothing to see in this composition.</string>
+    <string name="err_text">There are no details about the error.</string>
+    <string name="err_text_emailpasswordmissing">Email or password missing.</string>
+    <string name="err_text_serveraddressmissing">Server address missing.</string>
+    <string name="err_text_logout">Logout failed. Please check your internet connection and the status of your server.</string>
+    <string name="err_text_login">Login failed.
+        Please check your internet connection as well as the status of your server
+        and the correctness of the credentials you\'ve entered.</string>
+    <string name="err_text_filesave">PDF export failed.</string>
+    <string name="err_text_serveraddress">Server connection failed while testing changed server address.
+        Please check your internet connection and the correctness of the server address you\'ve entered.</string>
+    <string name="err_text_list">Server connection failed while requesting the list.
+        Please check your internet connection as well as the status of your sever.</string>
+    <string name="err_text_detail">Server connection failed when requesting composition details.
+        Please check your internet connection as well as the status of your sever.</string>
+    <string name="err_text_illegalserveraddress">The server address you\'ve entered is in an illegal format.</string>
+
+</resources>

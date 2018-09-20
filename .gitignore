@@ -39,3 +39,6 @@ target/
 dist/
 
 .idea/
+SWARMComposerApp/\.idea/caches/build_file_checksums\.ser
+
+SWARMComposerApp/\.idea/
