@@ -36,8 +36,9 @@ entwurfsdoku/entwurfsdoku\.synctex\.gz
 *~
 \#*
 target/
-static/
 dist/
+
+.idea/
 SWARMComposerApp/\.idea/caches/build_file_checksums\.ser
 
 SWARMComposerApp/\.idea/
