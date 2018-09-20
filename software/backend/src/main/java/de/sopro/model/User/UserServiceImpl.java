@@ -1,18 +1,13 @@
-package de.sopro.security;
+package de.sopro.model.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import de.sopro.model.User;
 import de.sopro.repository.UserRepository;
 
 @Service

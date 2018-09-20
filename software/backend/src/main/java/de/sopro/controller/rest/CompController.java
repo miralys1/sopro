@@ -20,7 +20,7 @@ import de.sopro.model.Compatibility;
 import de.sopro.model.Composition;
 import de.sopro.model.CompositionEdge;
 import de.sopro.model.CompositionNode;
-import de.sopro.model.User;
+import de.sopro.model.User.User;
 import de.sopro.model.send.CompLists;
 import de.sopro.model.send.DetailComp;
 import de.sopro.model.send.Edge;

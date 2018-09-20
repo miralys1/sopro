@@ -1,4 +1,4 @@
-package de.sopro.security;
+package de.sopro.model.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
