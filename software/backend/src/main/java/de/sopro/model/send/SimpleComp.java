@@ -1,5 +1,8 @@
 package de.sopro.model.send;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,8 +15,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class SimpleComp {
 
 	/* required variables */
+	@NotNull
 	private SimpleUser owner;
 	private long id;
+	@NotBlank
 	private String name;
 	private boolean editable;
 

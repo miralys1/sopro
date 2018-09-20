@@ -33,7 +33,7 @@ public class UserRegistrationDto{
      * @param email email with which the new User wants to register
      */
     public UserRegistrationDto(@NotEmpty String firstName, @NotEmpty String lastName,
-                               @NotEmpty String password, @NotNull String title,
+                               @NotEmpty String password, String title,
                                @Email @NotEmpty String email) {
         this.firstName = firstName;
         this.lastName = lastName;

@@ -3,6 +3,8 @@ package de.sopro.model.send;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,6 +22,7 @@ public class SendService {
 
 	/* required variables */
 	private Long id;
+	@NotBlank
 	private String name;
 	private String version;
 	private List<String> tags;

@@ -108,6 +108,13 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
             serviceRepo.save(dummyService);
 
 
+
+			// create dummy Service
+
+			serviceRepo.save(new Service("Service nicht existent","",new ArrayList<>(), "",0,"service_not_found.png",false, new ArrayList<>(), new ArrayList<>()));
+
+
+
             // create Composition
             CompositionNode n1 = new CompositionNode(5, 5, s1);
             CompositionNode n2 = new CompositionNode(50, 50, s2);
