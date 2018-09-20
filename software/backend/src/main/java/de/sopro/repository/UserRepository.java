@@ -2,7 +2,7 @@ package de.sopro.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import de.sopro.model.User;
+import de.sopro.model.User.User;
 
 /**
  * Repository for Users

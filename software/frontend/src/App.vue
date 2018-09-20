@@ -40,8 +40,6 @@ export default {
         this.user.id = -1
         this.user.isAdmin = false
         this.user.fullName = ''
-        this.$router.push('/')
-        alert('Sie wurden erfolgreich ausgeloggt!')
       }).catch(res => alert('Etwas ist schiefgelaufen'))
 
     }
@@ -55,7 +53,6 @@ export default {
       this.user.id = res.data.id
       this.user.isAdmin = res.data.admin
       this.user.fullName = res.data.fullName
-      alert('Willkommen ' + this.user.fullName + '!')
     }).catch(function(err) {console.log(err)})
   }
 }

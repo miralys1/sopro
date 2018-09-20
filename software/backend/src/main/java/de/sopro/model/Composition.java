@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import de.sopro.model.User.User;
 import de.sopro.model.send.DetailComp;
 import de.sopro.model.send.Edge;
 import de.sopro.model.send.Node;
@@ -54,11 +55,11 @@ public class Composition {
 	private List<User> editors;
 
 	@NotNull
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CompositionNode> nodes;
 
 	@NotNull
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CompositionEdge> edges;
 
 	// Hibernate requires a no-arg constructor
@@ -185,9 +186,12 @@ public class Composition {
 		// user is allowed to edit the COmposition if he is the owner or have edit
 		// permissions
 		boolean editable = false;
+		boolean owner = false;
 		if (userID == getOwner().getId()) {
 			editable = true;
+			owner = true;
 		} else {
+
 			for (User user : editors) {
 				if (user.getId() == userID) {
 					editable = true;
@@ -205,7 +209,9 @@ public class Composition {
 			edges.add(edge.createEdge());
 		}
 
-		return new DetailComp(this.id, this.owner.createSimpleUser(), this.name, editable, nodes, edges);
+		DetailComp dComp = new DetailComp(this.id, this.owner.createSimpleUser(), this.name, editable, nodes, edges);
+		dComp.setIsOwner(owner);
+		return dComp;
 	}
 
 	/**

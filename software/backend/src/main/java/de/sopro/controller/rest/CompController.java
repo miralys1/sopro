@@ -20,14 +20,12 @@ import de.sopro.model.Compatibility;
 import de.sopro.model.Composition;
 import de.sopro.model.CompositionEdge;
 import de.sopro.model.CompositionNode;
-import de.sopro.model.User;
+import de.sopro.model.User.User;
 import de.sopro.model.send.CompLists;
 import de.sopro.model.send.DetailComp;
 import de.sopro.model.send.Edge;
 import de.sopro.model.send.Node;
 import de.sopro.model.send.SimpleComp;
-import de.sopro.repository.CompositionEdgeRepository;
-import de.sopro.repository.CompositionNodeRepository;
 import de.sopro.repository.CompositionRepository;
 import de.sopro.repository.ServiceRepository;
 import de.sopro.repository.UserRepository;
@@ -46,10 +44,6 @@ public class CompController {
 	private CompositionRepository compRepo;
 	@Autowired
 	private UserRepository userRepo;
-	@Autowired
-	private CompositionNodeRepository nodeRepo;
-	@Autowired
-	private CompositionEdgeRepository edgeRepo;
 	@Autowired
 	private ServiceRepository serviceRepo;
 
@@ -82,10 +76,19 @@ public class CompController {
 		// if user is logged in, editable, viewable, owning and public composition are
 		// shown
 
+		// the compositions the logged in user owns should not be in the public list
+		List<Composition> publicComps = compRepo.findByIsPublic(true);
+		List<Composition> newPublics = new ArrayList<>();
+		for (Composition comp : publicComps) {
+			if (comp.getOwner().getId() != user.getId()) {
+				newPublics.add(comp);
+			}
+		}
+
 		return new ResponseEntity<CompLists>(new CompLists(convertListToSimple(user.getOwnsComp(), user.getId()),
 				convertListToSimple(user.getEditable(), user.getId()),
-				convertListToSimple(user.getViewable(), user.getId()),
-				convertListToSimple(compRepo.findByIsPublic(true), user.getId())), HttpStatus.OK);
+				convertListToSimple(user.getViewable(), user.getId()), convertListToSimple(newPublics, user.getId())),
+				HttpStatus.OK);
 
 	}
 
@@ -229,6 +232,57 @@ public class CompController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	/**
+	 * Allows to change the public status of the Compostition
+	 * 
+	 * @param id
+	 *            id of the COmposition which public status should be set
+	 * @param principal
+	 *            contains information about the logged in user. {@code null} means
+	 *            nobody is logged in.
+	 * @param pub
+	 *            determines whether the Composition should be public or not
+	 * @return {@code HttpStatus.OK} on success
+	 */
+	@RequestMapping(value = "/compositions/{id}/public", method = RequestMethod.PUT)
+	public ResponseEntity<Void> setPublic(@PathVariable long id, Principal principal, @RequestBody boolean pub) {
+		Optional<Composition> opComp = compRepo.findById(id);
+		// composition must exist
+		if (!opComp.isPresent()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		Composition comp = opComp.get();
+
+		// logged in user must have the rights to deleted the composition
+		if (principal == null || userRepo.findByEmail(principal.getName()).getId() != comp.getOwner().getId()) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
+		comp.setPublic(pub);
+		compRepo.save(comp);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	/**
+	 * Allows to resuest the public status of the composition
+	 * 
+	 * @param id
+	 *            id of the composition which public status is requested
+	 * @return the public status of the composition
+	 */
+	@RequestMapping(value = "/compositions/{id}/public", method = RequestMethod.GET)
+	public ResponseEntity<Boolean> getPublic(@PathVariable long id) {
+		Optional<Composition> opComp = compRepo.findById(id);
+		// composition must exist
+		if (!opComp.isPresent()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		Composition comp = opComp.get();
+		return new ResponseEntity<>(comp.isPublic(), HttpStatus.OK);
+	}
+
 	/////////////////
 	// Helper Code //
 	/////////////////
@@ -252,7 +306,6 @@ public class CompController {
 			CompositionNode node = new CompositionNode(n.getX(), n.getY(),
 					serviceRepo.findById(n.getSendService().getId()).get());
 			nodes.add(node);
-			nodeRepo.save(node);
 			nodeIds.put(oldId, node);
 		}
 		// change Edge to CompositionEdges without ids
@@ -268,7 +321,6 @@ public class CompController {
 
 			CompositionEdge edge = new CompositionEdge(source, target);
 			edges.add(edge);
-			edgeRepo.save(edge);
 		}
 
 		// owner of the composition must exist
@@ -338,7 +390,7 @@ public class CompController {
 	 * @param comps
 	 *            list of Compositions that should be converted
 	 * @param userID
-	 *            id of the owner of the Compositions in {@code comps}
+	 *            id of the user that is logged in
 	 * @return a list of SimpleComp representing {@code comps}.
 	 */
 	private List<SimpleComp> convertListToSimple(Iterable<Composition> comps, long userID) {

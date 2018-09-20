@@ -3,6 +3,8 @@ package de.sopro.model.send;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,28 +12,51 @@ import de.sopro.model.Format;
 import de.sopro.model.Service;
 import de.sopro.model.Tag;
 
+/**
+ * A SendService represents a Service
+ * 
+ * @author HRS3-R.105B
+ *
+ */
 public class SendService {
 
+	/* required variables */
 	private Long id;
-
+	@NotBlank
 	private String name;
-
 	private String version;
-
 	private List<String> tags;
-
 	private String organisation;
-
 	private long date;
-
 	private String logo;
-
 	private String certified;
-
 	private List<Format> formatIn;
-
 	private List<Format> formatOut;
 
+	/**
+	 * creates a SendService with the given values
+	 * 
+	 * @param id
+	 *            id of the service that should be represented
+	 * @param name
+	 *            name of the service
+	 * @param version
+	 *            version of the service
+	 * @param tags
+	 *            tags of the service
+	 * @param organisation
+	 *            organization of the service
+	 * @param date
+	 *            date of the service
+	 * @param logo
+	 *            logo that should be used by the service
+	 * @param certified
+	 *            determines whether the service is certified
+	 * @param formatIn
+	 *            input formats of the service
+	 * @param formatOut
+	 *            output formats of the service
+	 */
 	@JsonCreator
 	public SendService(@JsonProperty("id") Long id, @JsonProperty("name") String name,
 			@JsonProperty("version") String version, @JsonProperty("tags") List<String> tags,
@@ -50,6 +75,7 @@ public class SendService {
 		this.formatOut = formatOut;
 	}
 
+	/* getter and setter */
 	public Long getId() {
 		return id;
 	}
@@ -130,12 +156,19 @@ public class SendService {
 		this.formatOut = out;
 	}
 
+	/**
+	 * converts the SendService to a Service
+	 * 
+	 * @return a Service that represents the SendService
+	 */
 	public Service createService() {
+		// convert tags to list of tags
 		List<Tag> tags = new ArrayList<>();
 		for (String tag : this.tags) {
 			tags.add(new Tag(tag));
 		}
 
+		// convert certified to boolean
 		boolean c = false;
 		if (certified.equals("true")) {
 			c = true;
@@ -146,6 +179,9 @@ public class SendService {
 		return s;
 	}
 
+	/**
+	 * converts the SendService to a String
+	 */
 	public String toString() {
 		return name;
 	}
