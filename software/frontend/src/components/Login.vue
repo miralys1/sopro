@@ -149,19 +149,19 @@
     </b-card>
   </div>
   <!-- modals as alerts -->
-  <b-modal no-fade ref="registerModal" hide-footer title="Registrierung">
+  <b-modal no-fade ref="registerModal" id="regMod" hide-footer title="Registrierung">
     <div class="d-block text-center">
       <h4>Erfolgreich registriert! <br /> Sie können sich jetzt einloggen.</h4>
     </div>
     <b-btn class="mt-3" variant="outline-info" block @click="hideRegisterModal">Zum Login</b-btn>
   </b-modal>
-  <b-modal no-fade ref="registerFailModal" hide-footer title="Registrierung">
+  <b-modal no-fade ref="registerFailModal" id="regFailMod" hide-footer title="Registrierung">
     <div class="d-block text-center">
       <h4>Registrierung fehlgeschlagen! <br /> Vielleicht ist die Email bereits vergeben oder versuchen Sie es später noch einmal.</h4>
     </div>
     <b-btn class="mt-3" variant="outline-info" block @click="hideRegisterFailModal">Zurück</b-btn>
   </b-modal>
-  <b-modal no-fade ref="loginFailModal" hide-footer title="Login">
+  <b-modal no-fade ref="loginFailModal" id="logFailMod" hide-footer title="Login">
     <div class="d-block text-center">
       <h4>Login fehlgeschlagen! <br /> Bitte versuchen Sie es noch einmal.</h4>
     </div>
