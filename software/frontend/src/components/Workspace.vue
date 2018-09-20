@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="show">
     <b-jumbotron class="jumbo" v-if="!user.loggedIn && publicComps.length == 0" header="Keine öffentlichen Kompositionen verfügbar :(" lead="Registrieren Sie sich jetzt, um Kompositionen zu erstellen">
       <b-btn variant="primary" :to="'Login'">Hier registrieren</b-btn>
     </b-jumbotron>
@@ -87,6 +87,7 @@ export default {
   },
   data() {
     return {
+      show: false,
       name: '',
       ownComps: [],
       editableComps: [],
@@ -124,6 +125,7 @@ export default {
       }).catch(err => alert('Oopsie someeeething went wrong uwu'))
     },
     getComps() {
+      this.show = false
       this.axios({
         url: '/compositions',
         method: 'get'
@@ -132,8 +134,13 @@ export default {
         this.editableComps = response.data.editable
         this.viewableComps = response.data.viewable
         this.publicComps = response.data.publicComps
+        this.show = true
       })
-      .catch(error => alert('Server nicht verfügbar'))
+      .catch(error => {
+        alert('Server nicht verfügbar');
+        this.show = true
+      })
+
     }
   },
   watch: {
