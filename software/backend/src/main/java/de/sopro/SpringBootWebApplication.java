@@ -3,6 +3,8 @@ package de.sopro;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.sopro.model.User.UserRegistrationDto;
+import de.sopro.model.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,9 +17,7 @@ import de.sopro.model.CompositionNode;
 import de.sopro.model.Format;
 import de.sopro.model.Service;
 import de.sopro.model.Tag;
-import de.sopro.model.User;
-import de.sopro.repository.CompositionEdgeRepository;
-import de.sopro.repository.CompositionNodeRepository;
+import de.sopro.model.User.User;
 import de.sopro.repository.CompositionRepository;
 import de.sopro.repository.FormatRepository;
 import de.sopro.repository.ServiceRepository;
@@ -27,121 +27,151 @@ import de.sopro.repository.UserRepository;
 @SpringBootApplication
 public class SpringBootWebApplication extends SpringBootServletInitializer implements CommandLineRunner {
 
-	@Autowired
-	UserRepository userRepo;
+    // repositories that are needed
+    @Autowired
+    private UserRepository userRepo;
+    @Autowired
+    private ServiceRepository serviceRepo;
+    @Autowired
+    private TagRepository tagRepo;
+    @Autowired
+    private FormatRepository formatRepo;
+    @Autowired
+    private CompositionRepository compRepo;
 
-	@Autowired
-	ServiceRepository serviceRepo;
+    @Autowired
+    UserService userservice;
 
-	@Autowired
-	TagRepository tagRepo;
 
-	@Autowired
-	FormatRepository formatRepo;
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(SpringBootWebApplication.class, args);
+    }
 
-	@Autowired
-	CompositionNodeRepository compNodeRepo;
+    @Override
+    public void run(String... arg0) throws Exception {
+        // populate empty repositories with example data
+        if (userRepo.count() == 0) {
 
-	@Autowired
-	CompositionEdgeRepository compEdgeRepo;
+            UserRegistrationDto dark = new UserRegistrationDto("drake",
+                    "dunkel", "123", "Dr.", "d@d.de");
+            User user = userservice.save(dark);
+            user.setAdmin(true);
+            userRepo.save(user);
+            // add users
 
-	@Autowired
-	CompositionRepository compRepo;
+            UserRegistrationDto dum = new UserRegistrationDto("dummi", "dumm",
+                    "password",
+                    "Prof.", "du@d.com");
 
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(SpringBootWebApplication.class, args);
-	}
+            userservice.save(dum);
 
-	@Override
-	public void run(String... arg0) throws Exception {
-		// Add code that should be run when the application starts
-		// (e. g., populate empty repositories with example data)
+            // add tags
+            String[] ts = {"3D", "Modeller", "Visualisierung", "Modellierung"};
+            List<Tag> tags = createTagList(ts);
 
-		if (userRepo.count() == 0) {
+            // add formats
+            String[][] fis = {{"IFC", "2x0", "strict"}, {"BCF", "1.0", "strict"}};
+            List<Format> formatIn = createFormatList(fis);
 
-			// Add person with single hosted events and no visited events
-			User dark = new User("drake", "dunkel", "d@d.de", "Dr.", true);
-			dark.setPassword("123");
-			dark.setRole(new String[] { "ADMIN" });
+            String[][] fos = {{"IFC", "2x0", "strict"}, {"DWG", "5", "strict"}};
+            List<Format> formatOut = createFormatList(fos);
 
-			User dum = new User("dummi", "dumm", "du@d.com", "Prof.", false);
-			dum.setPassword("password");
-			dum.setRole(new String[] { "USER" });
+            // add service
+            Service s1 = new Service("TP Modeller", "1.0", tags, "TP", 153443388, "TP_Modeller_10.png", true, formatIn,
+                    formatOut);
 
-			userRepo.save(dark);
-			userRepo.save(dum);
+            serviceRepo.save(s1);
 
-			String[] ts = { "3D", "Modeller", "Visualisierung", "Modellierung" };
-			List<Tag> tags = createTagList(ts);
+            // add tags
+            String[] ts2 = {"3D", "Modeller", "IFC"};
+            tags = createTagList(ts2);
 
-			String[][] fis = { { "IFC", "2x0", "strict" }, { "BCF", "1.0", "strict" } };
-			List<Format> formatIn = createFormatList(fis);
+            // add formats
+            String[][] fis2 = {{"IFC", "2x0", "strict"}, {"gbXML", "2", "strict"}};
+            formatIn = createFormatList(fis2);
 
-			String[][] fos = { { "IFC", "2x0", "strict" }, { "DWG", "5", "strict" } };
-			List<Format> formatOut = createFormatList(fos);
+            String[][] fos2 = {{"IFC", "2x0", "strict"}, {"DWG", "5", "flexible"}};
+            formatOut = createFormatList(fos2);
 
-			Service s1 = new Service("TP Modeller", "1.0", tags, "TP", 153443388, "TP_Modeller_10.png", true, formatIn,
-					formatOut);
+            // add service
+            Service s2 = new Service("3D-Modeller", "3", tags, "IGD", 1531573788, "IGD_Modeller.png", false, formatIn,
+                    formatOut);
 
-			serviceRepo.save(s1);
+            serviceRepo.save(s2);
 
-			String[] ts2 = { "3D", "Modeller", "IFC" };
-			tags = createTagList(ts2);
 
-			String[][] fis2 = { { "IFC", "2x0", "strict" }, { "gbXML", "2", "strict" } };
-			formatIn = createFormatList(fis2);
+            Service dummyService = new Service("Service nicht existent", "",
+                    new ArrayList<>(), "", 0, "notFound.png",
+                    false, new ArrayList<>(), new ArrayList<>());
 
-			String[][] fos2 = { { "IFC", "2x0", "strict" }, { "DWG", "5", "flexible" } };
-			formatOut = createFormatList(fos2);
 
-			Service s2 = new Service("3D-Modeller", "3", tags, "IGD", 1531573788, "IGD_Modeller.png", false, formatIn,
-					formatOut);
+            serviceRepo.save(dummyService);
 
-			serviceRepo.save(s2);
 
-			CompositionNode n1 = new CompositionNode(5, 5, s1);
-			CompositionNode n2 = new CompositionNode(50, 50, s2);
 
-			CompositionEdge e = new CompositionEdge(n1, n2);
+			// create dummy Service
 
-			List<CompositionNode> nodes = new ArrayList<>();
-			nodes.add(n1);
-			nodes.add(n2);
+			serviceRepo.save(new Service("Service nicht existent","",new ArrayList<>(), "",0,"service_not_found.png",false, new ArrayList<>(), new ArrayList<>()));
 
-			List<CompositionEdge> edges = new ArrayList<>();
-			edges.add(e);
 
-			Composition c = new Composition(dark, "MyComp", true, nodes, edges);
-			compRepo.save(c);
 
-			List<Composition> owns = dark.getOwnsComp();
-			owns.add(c);
-			dark.setOwnsComp(owns);
-		}
-	}
+            // create Composition
+            CompositionNode n1 = new CompositionNode(5, 5, s1);
+            CompositionNode n2 = new CompositionNode(50, 50, s2);
 
-	private List<Format> createFormatList(String[][] fis) {
-		List<Format> formats = new ArrayList<>();
-		for (String[] s : fis) {
-			Format f = new Format(s[0], s[1], s[2]);
-			Format existing = formatRepo.findOneByTypeAndVersion(s[0], s[1]);
-			if (existing == null) {
-				formatRepo.save(f);
-			} else {
-				f.setId(existing.getId());
-			}
-			formats.add(f);
-		}
-		return formats;
-	}
+            CompositionEdge e = new CompositionEdge(n1, n2);
 
-	private List<Tag> createTagList(String[] ts) {
-		List<Tag> tags = new ArrayList<>();
-		for (String s : ts) {
-			Tag t = new Tag(s);
-			tagRepo.save(t);
-			tags.add(t);
-		}
-		return tags;
-	}
+            List<CompositionNode> nodes = new ArrayList<>();
+            nodes.add(n1);
+            nodes.add(n2);
+
+            List<CompositionEdge> edges = new ArrayList<>();
+            edges.add(e);
+
+            Composition c = new Composition(user, "MyComp", true, nodes, edges);
+            compRepo.save(c);
+
+            List<Composition> owns = user.getOwnsComp();
+            owns.add(c);
+            user.setOwnsComp(owns);
+        }
+    }
+
+    /**
+     * saves and creates a list of formats given by {@code fis}
+     *
+     * @param fis array that contains the formats that should be saved given as
+     *            three Strings
+     * @return a list of formats
+     */
+    private List<Format> createFormatList(String[][] fis) {
+        List<Format> formats = new ArrayList<>();
+        for (String[] s : fis) {
+            Format f = new Format(s[0], s[1], s[2]);
+            Format existing = formatRepo.findOneByTypeAndVersion(s[0], s[1]);
+            if (existing == null) {
+                formatRepo.save(f);
+            } else {
+                f.setId(existing.getId());
+            }
+            formats.add(f);
+        }
+        return formats;
+    }
+
+    /**
+     * saves and creates a list of tags given by {@code ts}
+     *
+     * @param ts array that contains the strings that should be saved as tags
+     * @return a list of tags
+     */
+    private List<Tag> createTagList(String[] ts) {
+        List<Tag> tags = new ArrayList<>();
+        for (String s : ts) {
+            Tag t = new Tag(s);
+            tagRepo.save(t);
+            tags.add(t);
+        }
+        return tags;
+    }
 }

@@ -1,8 +1,20 @@
 <template>
   <div class = "out">
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+      <!-- delete button which is only available if a service is edited and opens a confirmation dialogue -->
+      <b-button v-b-modal.Prevent variant="danger" style="float:left;" v-if="pedit">Löschen</b-button>
+      <b-modal id="Prevent"
+            cancel-title = "Abbrechen"
+            ok-variant = "danger"
+            ok-title =  "Löschen"
+            @ok="onDelete"
+            title = "Bestätigen">
+            Sind Sie sicher, dass Sie löschen wollen?
+      </b-modal>
+
       <b-button type="submit" variant="primary" style="float:right;margin-left: 0.5vw;">Speichern</b-button>
-      <b-button type="reset" variant="danger" style="float:right;">Reset</b-button>
+      <b-button type="reset" variant="warning" style="float:right;">Reset</b-button>
+      <br><br>
       <h4>Dienst Informationen</h4>
       <b-form-group id="GeneralName"
                     label="Name:"
@@ -56,38 +68,46 @@
 
 
 
-      <b-button class="small" style="float: right; margin-left: 0.5vw;" @click = "deleteTag">-</b-button>
-      <b-button class="small" style="float: right;"  @click = "addTag">+</b-button>
+      <b-button id="deleteTag" class="small" style="float: right; margin-left: 0.5vw;" @click = "deleteTag">-</b-button>
+      <b-button  id="addTag" class="small" style="float: right;"  @click = "addTag">+</b-button>
 
 
-      <br>
-      <div v-for= "(tag,index) in form.tags">
-       <!-- <b-form> -->
-        <b-form-group :id="'GeneralTag' + index"
-                      label="Tag:"
-                      :label-for="'genTag' + index">
+      <br> <br>
+      <!-- dynamic generation of tags with appended dropdown to show suggestions -->
+      <div v-for= "(tag,index) in form.tags" v-if = "showTag">
+
+        <b-input-group prepend="Tag">
           <b-form-input :id="'genTag' + index"
                         type="text"
                         v-model="form.tags[index]"
                         required>
           </b-form-input>
-        </b-form-group>
+          <b-input-group-append>
+            <!-- before opening the dropdown a fitting list of approximatly matching tags is computed -->
+            <b-dropdown id="ddown-buttons" text="Vorschlag" v-on:show="selectTags(index)">
+              <!-- each button calls a method taking the index of the tag it belongs to an the id of the selected Tag within the tagSelection-List as arguments -->
+               <b-dropdown-item-button v-for="(tag,id) in tagSelection" v-on:click="dropdownClick(index,id)"> {{tagSelection[id].name}} </b-dropdown-item-button>
+            </b-dropdown>
 
+    </b-input-group-append>
+  </b-input-group>
+      <br>
       </div>
 
      <br>
 
-    <b-button class="small" style="float:left; margin-right: 0.5vw;" @click = "addInputFormat">+ Input</b-button>
-    <b-button class="small" style="float:left;" @click = "deleteInputFormat">- Input</b-button>
-    <b-button class= "small" style="float:right; margin-left: 0.5vw;" @click = "deleteOutputFormat">- Output</b-button>
-    <b-button class= "small" style="float:right;" @click = "addOutputFormat">+ Output</b-button>
+     <!-- dynamic gerneration of in- and outputformat miniforms -->
+    <b-button id="addIn" class="small" style="float:left; margin-right: 0.5vw;" @click = "addInputFormat">+ Input</b-button>
+    <b-button id="deleteIn" class="small" style="float:left;" @click = "deleteInputFormat">- Input</b-button>
+    <b-button id="deleteOut" class= "small" style="float:right; margin-left: 0.5vw;" @click = "deleteOutputFormat">- Output</b-button>
+    <b-button id="addIn" class= "small" style="float:right;" @click = "addOutputFormat">+ Output</b-button>
 
     <br><br>
 
     <div>
       <div  class = "left" style.overflow= "hidden">
         <div v-for="(inputFormat, index) in form.formatIn" class = "lefter">
-          <!-- <b-form> -->
+
           <h5>{{index + 1}}. Input Format</h5>
           <b-form-group :id="'InpFormatType' + index"
                         label="Typ:"
@@ -165,6 +185,7 @@
 export default {
 
   created() {
+    //if the component is not used in editing mode no empty in- and output Format is shown
     if(!this.pedit) {
       this.deleteInputFormat();
       this.deleteOutputFormat();
@@ -172,12 +193,23 @@ export default {
     },
 
   watch: {
+
     pform: function () {
-      this.form = JSON.parse(JSON.stringify(this.pform))
-      }
+      this.form = JSON.parse(JSON.stringify(this.pform));
+      this.tagUpdate();
+    },
+
+    tupdate: function() {
+      this.tagUpdate();
+
+    }
     },
 
   props: {
+    tupdate:{
+      type: Boolean,
+      default: false,
+    },
     pedit:{
       type: Boolean,
       default: false,
@@ -218,6 +250,9 @@ export default {
 
   data () {
     return {
+      showTag: true,
+       tagSelection: [],
+       tags:[],
        form: JSON.parse(JSON.stringify(this.pform)),
         comps: [
         { text: 'Wählen Sie aus', value: "" },
@@ -229,15 +264,69 @@ export default {
     }
   },
   methods: {
+
+    tagUpdate() {
+      this.axios.get('/tags')
+               .then(response => {
+               this.tags = response.data;}
+                   )
+               .catch(function (error) {
+                alert("Fehler beim Laden der Tags. Es werden keine Tags vorgeschlagen.");
+
+                   });
+
+    },
+
+    dropdownClick(index,id){
+      //tag input is updated to the selected tag
+      this.form.tags[index] = this.tagSelection[id].name;
+
+      //updating tag form fields to directly show the changed input
+      this.showTag = false;
+      this.$nextTick(() => { this.showTag = true });
+
+    },
+
+    selectTags(index) {
+
+      var options = {
+      shouldSort: true,
+      threshold: 0.6,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: ["name"]
+  };
+  this.$search(this.form.tags[index], this.tags, options).then(results => {
+    this.tagSelection = results
+  })
+
+},
+
+    onDelete () {
+
+      this.axios.delete('/services/'+ this.form.id)
+               .then(response => {
+               alert("Dienst wurde gelöscht");
+               this.$emit('noForm');
+               this.tagUpdate();}
+                   )
+               .catch(function (error) {
+                alert("Fehler beim Löschen");
+               console.log(error);
+                   });
+
+    },
     onSubmit (evt) {
       evt.preventDefault();
 
       try{
+        //preventing services without in and output Formats
         if(this.form.formatIn.length == 0 && this.form.formatOut.length == 0) {throw "Bitte geben Sie mindestens ein Ein- oder Ausgabeformat an."}
 
         if(this.pedit) {
-
-
+          //if component is in edit mode the date won't be changed
         this.axios({
           url: '/services/' + this.form.id,
           method: 'put',
@@ -245,10 +334,12 @@ export default {
           headers: {
             "Content-Type": "application/json"
           }
-        }).then(response => { alert("Erfolg"); this.$emit('noForm');})
+          //tags are updated so the new ones will be seen if the component is used continuously
+        }).then(response => { alert("Erfolg"); this.$emit('noForm'); this.tagUpdate();})
           .catch(function (error) {alert(error);});
 
         } else {
+          //a service is newly introduced and needs a date
         this.form.date = Date.now();
 
         this.axios({
@@ -258,7 +349,7 @@ export default {
           headers: {
             "Content-Type": "application/json"
           }
-        }).then(response => { alert("Erfolgreich gespeichert"); this.onReset(evt);})
+        }).then(response => { alert("Erfolgreich gespeichert"); this.onReset(evt); this.tagUpdate();})
           .catch(function (error) {alert(error);});
         }
 
@@ -269,11 +360,12 @@ export default {
     },
     onReset (evt) {
       evt.preventDefault();
-      /* Reset our form values */
+      // Reset our form values to the unchanged ones if editing mode is active
       if(this.pedit){
        this.form = JSON.parse(JSON.stringify(this.pform));
 
       } else {
+        //Reset to blank form if service is newly entered
             this.form.organisation = ""
             this.form.name = "";
             this.form.certified = "";

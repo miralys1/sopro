@@ -1,46 +1,61 @@
 <template>
-    <div class="node" :style="nodeStyle" @mousedown.self="mouseDown" @click.ctrl="deleteNode">
+<div class="node" :style="nodeStyle"
+     @mousedown.self="mouseDown"
+     @mouseover="showButtons = true"
+     @mouseleave="showButtons = false"
+     @click.ctrl="deleteNode">
+       <div
+           v-if="!noIcons && showButtons && !drag"
+           id="deleteIcon"
+           @click="deleteNode">
+           <v-icon name="minus-square" scale="2" color="red"/>
+       </div>
+
+       <div>
+         <b-btn v-if="!noIcons && showButtons && !drag"
+              variant="primary"
+              :id="'info'+$vnode.key"
+              style="position:absolute; top: -20px; left: -20px">
+                <v-icon name="info" scale="1"/>
+         </b-btn>
+         <b-popover :target="'info'+$vnode.key"
+                 placement="topright"
+                 title="Dienst Informationen"
+                 triggers="hover focus"
+                 >
+              <div> name: {{ service.name }} </div>
+              <div> version: {{ service.version }} </div>
+              <div> organisation: {{ service.organisation }} </div>
+              <div> created: {{ service.date }} </div>
+              <div> in:
+                  <li v-for="input in service.formatIn">
+                  {{
+                      input.type +
+                      (input.compatibilityDegree==="flexible" ? '<=' : '=') +
+                      (input.version==="" ? '?' : input.version )
+                  }}
+                  </li>
+              </div>
+              <div> out:
+                  <li v-for="output in service.formatOut">
+                  {{
+                      output.type +
+                      (output.compatibilityDegree==="flexible" ? '<=' : '=') +
+                      (output.version==="" ? '?' : output.version )
+                  }}
+                  </li>
+              </div>
+        </b-popover>
+       </div>
+
        <div class="noselect servicename" pointer-events="none" @mousedown.self="mouseDown">
          {{ service.name }}
        </div>
-       <div v-if="!noHandles" class="noselect draghandle" :style="dragStyle"
+
+       <div class="noselect draghandle"
+            :style="dragStyle"
             @mousedown.self="dummy ? mouseDown($event) : startDrag($event)"
             @mouseup="endDrag"/>
-       <b-btn v-if="!dummy"
-              variant="primary"
-              :id="'info'+$vnode.key"
-              style="position:absolute; top: 72%; left: 75%"
-              >
-           <v-icon name="info"/>
-        </b-btn>
-        <b-popover :target="'info'+$vnode.key"
-                   placement="topright"
-                   title="Dienst Informationen"
-                   triggers="hover focus"
-                   >
-          <div> name: {{ service.name }} </div>
-          <div> version: {{ service.version }} </div>
-          <div> organisation: {{ service.organisation }} </div>
-          <div> created: {{ service.date }} </div>
-          <div> in:
-            <li v-for="input in service.formatIn">
-              {{
-                 input.type +
-                 (input.compatibilityDegree==="flexible" ? '<=' : '=') +
-                 (input.version==="" ? '?' : input.version )
-              }}
-            </li>
-          </div>
-          <div> out:
-            <li v-for="output in service.formatOut">
-              {{
-                 output.type +
-                 (output.compatibilityDegree==="flexible" ? '<=' : '=') +
-                 (output.version==="" ? '?' : output.version )
-              }}
-            </li>
-          </div>
-        </b-popover>
 
     </div>
 </template>
@@ -49,7 +64,7 @@
 export default {
     props: {
         showDetails: Boolean,
-        noHandles: Boolean,
+        noIcons: Boolean,
         params: Object,
         service: Object,
         dummy: Boolean,
@@ -59,6 +74,7 @@ export default {
     data () {
         return {
             drag: false,
+            showButtons: false,
             height: 200,
             width: 200,
 
@@ -90,20 +106,30 @@ export default {
         }
     },
     methods: {
+      mouseUp: function () {
+          this.drag = false;
+      },
       mouseDown: function (event) {
-          console.log('mouse Down')
+          this.drag=true;
           this.$emit('mouseDown', {x: this.ix, y: this.iy, id: this.$vnode.key, serviceId: this.service.id, clientX: event.clientX, clientY: event.clientY});
       },
       startDrag: function (event) {
-          console.log('start Drag')
+          this.drag=true;
           this.$emit('startDrag', this.$vnode.key);
       },
       endDrag: function (event) {
+          this.drag=true;
           this.$emit('endDrag', this.$vnode.key);
       },
       deleteNode: function (event) {
           this.$emit('deleteNode', this.$vnode.key);
       }
+    },
+    mounted () {
+        document.documentElement.addEventListener('mouseup', this.mouseUp, true)
+    },
+    beforeDestroy () {
+        document.documentElement.removeEventListener('mouseup', this.mouseUp, true)
     }
 }
 </script>
@@ -124,6 +150,12 @@ export default {
   background: lightgreen;
   box-shadow: 0px 8px 3px #101010;
   z-index: 1;
+}
+
+#deleteIcon {
+    position: absolute;
+    left: 180px;
+    top: -20px;
 }
 
 .noselect {
@@ -154,6 +186,7 @@ export default {
     border-radius: 5px;
     width:  120px;
     height: 120px;
+    background-repeat: no-repeat;
 }
 .draghandle:active {
     background: orange;

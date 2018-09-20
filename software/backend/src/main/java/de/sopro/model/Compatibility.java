@@ -1,23 +1,30 @@
 package de.sopro.model;
 
-import de.sopro.model.send.Alternative;
-import de.sopro.model.send.CompatibilityAnswer;
-import de.sopro.repository.ServiceRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
 
+import de.sopro.model.send.Alternative;
+import de.sopro.model.send.CompatibilityAnswer;
+import de.sopro.repository.ServiceRepository;
+
+/**
+ * offers a method to check the compatibility between two services
+ * 
+ * @author HRS3-R.105B
+ *
+ */
 @Component
 public class Compatibility {
 
+	// required repositories
 	@Autowired
-	ServiceRepository serviceRepo;
+	private ServiceRepository serviceRepo;
 
+	/* class variables */
 	private static final String FLEXIBLE_MARKER = "flexible";
 	private static final String VERSION_DELIMS = "xX.";
 	private static final Tag CONVERTER_TAG = new Tag("Converter");
@@ -83,19 +90,31 @@ public class Compatibility {
 
 	}
 
+	/**
+	 * checks whether in {@code tags} exists a tag that matches the
+	 * {@code converterTag}
+	 * 
+	 * @param tags
+	 *            list of tags that should be checked whether one of them matches
+	 *            {@code converterTag}
+	 * @param converterTag
+	 *            the tag the list of tags should be compared with
+	 * @return whether in {@code tags} exists a tag that matches the
+	 *         {@code converterTag}
+	 */
 	private boolean myContains(List<Tag> tags, Tag converterTag) {
-    
-	  for(Tag tag : tags) {
-	    if(tag.equals(converterTag)) {
-	      return true;
-	    }
-	  }
-	  
-	  return false;
-	  
-  }
 
-  /**
+		for (Tag tag : tags) {
+			if (tag.getName().equals(converterTag.getName())) {
+				return true;
+			}
+		}
+
+		return false;
+
+	}
+
+	/**
 	 * computes the intersection of two given lists
 	 * 
 	 * @param list1
@@ -123,11 +142,15 @@ public class Compatibility {
 	}
 
 	/**
-	 * Checks
+	 * Checks whether the two formats {@code f1} and {@code f2} are compatible
 	 * 
 	 * @param f1
+	 *            a format which compatibility with the other format should be
+	 *            checked
 	 * @param f2
-	 * @return
+	 *            a format which compatibility with the other format should be
+	 *            checked
+	 * @return whether the two formats {@code f1} and {@code f2} are compatible
 	 */
 	private static boolean isCompatible(Format f1, Format f2) {
 
