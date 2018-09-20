@@ -136,22 +136,28 @@
       :params="{originX: 0, originY: 0, scale: scale}"
       style="z-index: 2;opacity: 0.4;border: 4px dotted black; background-color: lightgreen"
       noIcons="true"
-      :service="(services.filter(e => e.id==newNodeId))[0]"
+      :service="services.find(e => e.id==newNodeId)"
       :ix="newNodeX"
       :iy="newNodeY"
   />
 
-  <b-modal v-if="alternative!==null" ref="alternativeModal" id="altModal" title="Bootstrap-Vue">
-    <p class="my-4">There are alternatives available</p>
-    <b-list-group>
-      <b-list-group-item v-for="alt in alternative.compatibleService"
-                         :key="alt.ids[0]"
-                         >
-        {{ alt.names[0] }}
-      </b-list-group-item>
-    </b-list-group>
+  <b-modal ref="alternativeModal" title="Alternatives available!">
+        <b-container fluid>
+        <b-row class="mb-1">
+          <b-col v-for="alt in alternative">
+                <Node :key="alt.ids[0]"
+                       noIcons="true"
+                       :params="{originX: 0, originY: 0, scale: 1}"
+                       :service="services.find(e => e.id == alt.ids[0])"
+                       :dummy="true"
+                       :ix="0"
+                       :iy="0"
+                       @mouseDown="createNewNode"
+                       />
+          </b-col>
+         </b-row>
+        </b-container>
   </b-modal>
-
 </div>
 </template>
 <script>
@@ -343,7 +349,6 @@ export default {
           }
       },
       showLinkAlt: function (event) {
-          console.log('show Modal')
           this.alternative = event
           this.$refs.alternativeModal.show()
       },
