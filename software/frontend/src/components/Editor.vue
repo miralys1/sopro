@@ -318,6 +318,7 @@ export default {
           this.dragNode=event.id;
       },
       createNewNode: function (event) {
+          this.$refs.alternativeModal.hide()
           this.newNodeX = (event.clientX*(1/this.scale))
           this.newNodeY = ((event.clientY - 80) *(1/this.scale))
           this.newNodeId = event.serviceId
