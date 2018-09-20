@@ -1,5 +1,5 @@
 <template>
-  <div class="mainlayout">
+  <div class="mainlayout" v-if="show">
     <b-card no-body>
       <b-tabs pills card>
         <b-tab title="Login" active>
@@ -92,11 +92,13 @@
                               label-class="text-sm-right"
                               :label-cols="3"
                               label="Titel:"
-                              label-for="title" >
-                  <b-form-select id="register.title"
-                                 :options="titles"
-                                 v-model="form.title">
-                  </b-form-select>
+                              label-for="register.title" >
+                  <b-form-input id="register.title"
+                                type="text"
+                                v-model="form.title"
+                                required
+                                placeholder="Titel eingeben">
+                  </b-form-input>
                 </b-form-group>
                 <b-form-group horizontal
                               breakpoint="lg"
@@ -143,6 +145,7 @@
 export default {
     data() {
       return {
+        show: true,
         login: {
           email: '',
           password: ''
@@ -150,14 +153,10 @@ export default {
         form: {
           email: '',
           password: '',
-          title: null,
+          title: '',
           firstName: '',
           lastName: ''
         },
-        titles: [
-          { text: 'optional', value: null },
-          'Prof.', 'Dr.'
-        ],
         user: {
           fullName: '',
           id: -1,
@@ -200,12 +199,15 @@ export default {
         firstName: this.form.firstName,
         lastName: this.form.lastName
       })
-      .then(response => {
-        alert('Registrierung erfolgreich')
-        this.$router.push('/login')
-      }
-      )
+      .then(() => {
+        alert('Registrierung erfolgreich');
+        this.reload();
+      })
       .catch(error => alert('Registrierung fehlgeschlagen'))
+    },
+    reload() {
+      this.show = false;
+      this.$nextTick(() => {this.show = true});
     }
   }
 }
