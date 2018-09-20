@@ -172,10 +172,14 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
      * @param v
      */
     public void sendComposition(View v) {
-        //TODO create PDF, open share_dialog
         if(comp != null) {
             String path = PDFCreator.createPDF(this, this, comp);
-            openShareDialog(path);
+            if(path == null){
+                Toast.makeText(getApplicationContext(), getText(R.string.err_text_filesave), Toast.LENGTH_LONG).show();
+            } else {
+                Log.i("PDF", "saved to "+path);
+                openShareDialog(path);
+            }
         }
     }
 
@@ -193,7 +197,12 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         //permission to write to storage has been granted
         String path = PDFCreator.createPDF(this, this, comp);
-        openShareDialog(path);
+        if(path == null){
+            Toast.makeText(getApplicationContext(), getText(R.string.err_text_filesave), Toast.LENGTH_LONG).show();
+        } else {
+            Log.i("PDF", "saved to "+path);
+            openShareDialog(path);
+        }
     }
 
     @Override

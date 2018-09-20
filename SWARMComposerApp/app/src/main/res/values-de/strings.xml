@@ -63,6 +63,7 @@
     <string name="err_text_serveraddressmissing">Bitte eine Serveradresse eingeben.</string>
     <string name="err_text_logout">Das Ausloggen ist fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung sowie den Status des Servers.</string>
     <string name="err_text_login">Das Einloggen ist fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung sowie den Status des Servers.</string>
+    <string name="err_text_filesave">Das Speichern und Senden der PDF ist fehlgeschlagen.</string>
     <string name="err_text_serveraddress">Die Kommunikation mit dem Server unter der neuen Adresse ist fehlgeschlagen.
         Bitte überprüfen Sie Ihre Internetverbindung sowie die Korrektheit der eingegebenen Serveradresse.</string>
     <string name="err_text_list">Die Kommunikation mit dem Server ist während der Abfrage der Übersichtsliste fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung sowie den Status des Servers.</string>

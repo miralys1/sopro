@@ -85,7 +85,6 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:paddingLeft="15dp"
-            android:text="Title"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="30sp" />
 
@@ -96,7 +95,6 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:paddingLeft="15dp"
-            android:text="TextView"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp" />
 
@@ -105,7 +103,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
-            android:text="TextView"
             android:textAlignment="viewStart"
             android:textColor="@color/textColorPrimary" />
 
@@ -148,7 +145,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="15dp"
-                    android:text="TextView"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="16sp" />
 

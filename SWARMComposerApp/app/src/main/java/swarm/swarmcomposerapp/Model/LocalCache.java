@@ -23,8 +23,7 @@ public class LocalCache implements ICache {
     private String email;
     private String password;
     private long lastUpdate;
-    //public static final String TEST_SERVER = "http://134.245.1.240:9061/composer-0.0.1-SNAPSHOT/";
-    public static final String TEST_SERVER = "http://134.245.1.240:9061/composer-0.0.1-AUTH/";
+    public static final String TEST_SERVER = "https://134.245.1.240:9061/";
     private String serverAddress = TEST_SERVER;
     private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy HH:mm");
 

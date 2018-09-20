@@ -5,9 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
@@ -60,6 +58,7 @@ public class PDFCreator {
     public static String createPDF(Activity activity, Context context, Composition comp){
 
         if(verifyStoragePermissions(activity)) {
+            Toast.makeText(context, context.getText(R.string.loading), Toast.LENGTH_SHORT).show();
             return writePDFtoFile(context, comp);
         }
         return null;
@@ -112,6 +111,7 @@ public class PDFCreator {
 
         float offset_top = 2*PADDING;
 
+
         canvas.drawText(comp.getName(), PADDING, offset_top, paint_title);
         offset_top += textSize_title;
         canvas.drawText(comp.getOwner().getFullName(), PADDING, offset_top, paint_subtitle);
@@ -155,7 +155,7 @@ public class PDFCreator {
         PdfDocument.Page page2 = document.startPage(pageInfo2);
 
         // draw something on the page
-        Canvas canvas2 = page2.getCanvas();
+        canvas = page2.getCanvas();
         offset_top = 2*PADDING;
         canvas.drawText(comp.getName(), PADDING, offset_top, paint_title);
         offset_top += textSize_title;
@@ -245,10 +245,14 @@ public class PDFCreator {
 
         // write the document content
         //File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        //File path = Environment.getDataDirectory();
-        //File path = context.getExternalFilesDir(null);
-        //"/"+context.getText(R.string.compositions).toString()+"/";
-        File file = new File(context.getExternalFilesDir(null), comp.getName()+".pdf");
+        //File file = new File(context.getExternalFilesDir(null), comp.getName()+".pdf");
+        File root = Environment.getExternalStorageDirectory();
+        File dir = new File(root.getAbsolutePath()+"/"+context.getText(R.string.compositions));
+        if(!dir.exists()){
+            dir.mkdirs(); //or mkdir();
+        }
+        //File file = new File(dir, comp.getName()+".pdf");
+        File file = new File(dir, comp.getName()+".pdf");
 
         try{
             FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -261,6 +265,7 @@ public class PDFCreator {
         } catch (IOException e){
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
+
         return null;
     }
 
@@ -272,10 +277,12 @@ public class PDFCreator {
      * @param activity
      */
     private static boolean verifyStoragePermissions(Activity activity) {
+
         // Check if we have write permission
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         if (permission != PackageManager.PERMISSION_GRANTED) {
+
             // We don't have permission so prompt the user
             ActivityCompat.requestPermissions(
                     activity,
@@ -285,35 +292,5 @@ public class PDFCreator {
             return false;
         }
         return true;
-    }
-
-    private static Bitmap resizeImage(Bitmap bitmap, int newSize){
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-
-        int newWidth = 0;
-        int newHeight = 0;
-
-        if(width > height){
-            newWidth = newSize;
-            newHeight = (newSize * height)/width;
-        } else if(width < height){
-            newHeight = newSize;
-            newWidth = (newSize * width)/height;
-        } else if (width == height){
-            newHeight = newSize;
-            newWidth = newSize;
-        }
-
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-
-        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
-                width, height, matrix, true);
-
-        return resizedBitmap;
     }
 }

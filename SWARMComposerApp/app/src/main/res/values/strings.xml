@@ -91,8 +91,11 @@
     <string name="err_text">There are no details about the error.</string>
     <string name="err_text_emailpasswordmissing">Email or password missing.</string>
     <string name="err_text_serveraddressmissing">Server address missing.</string>
-    <string name="err_text_logout">Logout failed.</string>
-    <string name="err_text_login">Login failed.</string>
+    <string name="err_text_logout">Logout failed. Please check your internet connection and the status of your server.</string>
+    <string name="err_text_login">Login failed.
+        Please check your internet connection as well as the status of your server
+        and the correctness of the credentials you\'ve entered.</string>
+    <string name="err_text_filesave">PDF export failed.</string>
     <string name="err_text_serveraddress">Server connection failed while testing changed server address.
         Please check your internet connection and the correctness of the server address you\'ve entered.</string>
     <string name="err_text_list">Server connection failed while requesting the list.

@@ -37,6 +37,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
     private static final String PREFERENCE_NAME = "app_settings";
     private SharedPreferences preferences;
     private LocalCache cache = LocalCache.getInstance();
+    private boolean firstStart = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
         String address = preferences.getString("SERVERADDRESS", null);
         if (address == null) {
             //it's the very first start of the app
+            firstStart = true;
             showWelcomeScreen();
         } else {
             cache.setServerAddress(address);
@@ -87,9 +89,6 @@ public class ListActivity extends AppCompatActivity implements IResponse {
         addRecyclerTouchListener(recycler_owned, 0);
         addRecyclerTouchListener(recycler_viewable, 1);
         addRecyclerTouchListener(recycler_public, 2);
-
-        //Intent start = new Intent(getApplicationContext(),MainActivity.class);
-        //startActivity(start);
     }
 
     private void addRecyclerTouchListener(RecyclerView recyclerView, final int listID){
@@ -117,9 +116,10 @@ public class ListActivity extends AppCompatActivity implements IResponse {
     @Override
     protected void onResume() {
         super.onResume();
-        //refresh the list with latest data from LocalCache every time the user returns to ListActitvity.
+        //refresh the list with latest data from LocalCache every time the user returns to ListActivity.
         //also called when the app is started
-        updateList();
+        if(!firstStart)
+            updateList();
     }
 
     /**
@@ -178,7 +178,6 @@ public class ListActivity extends AppCompatActivity implements IResponse {
             compList = LocalCache.getInstance().getCompositions(this, LocalCache.ListIdentifier.PUBLIC);
             tPublic.setVisibility((compList == null || compList.isEmpty()) ? View.GONE : View.VISIBLE);
             if(compList == null){
-                //TODO handle fatal event
                 Toast.makeText(getApplicationContext(), getText(R.string.err_text_detail), Toast.LENGTH_SHORT).show();
                 return;
             } else {
@@ -191,7 +190,6 @@ public class ListActivity extends AppCompatActivity implements IResponse {
             tLastUpdate.setText(getText(R.string.lastupdate)+": "+cache.getLastUpdate());
         } else {
             //server request failed
-            //TODO show error dialog with tips
             Toast.makeText(getApplicationContext(), getText(R.string.err_text_list), Toast.LENGTH_SHORT).show();
         }
         showLoading(false);
