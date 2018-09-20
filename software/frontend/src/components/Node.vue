@@ -15,9 +15,37 @@
          <b-btn v-if="!noIcons && showButtons && !drag"
               variant="primary"
               :id="'info'+$vnode.key"
-              style="position:absolute; top: -20px; left: 0px">
+              style="position:absolute; top: -20px; left: -20px">
                 <v-icon name="info" scale="1"/>
          </b-btn>
+         <b-popover :target="'info'+$vnode.key"
+                 placement="topright"
+                 title="Dienst Informationen"
+                 triggers="hover focus"
+                 >
+              <div> name: {{ service.name }} </div>
+              <div> version: {{ service.version }} </div>
+              <div> organisation: {{ service.organisation }} </div>
+              <div> created: {{ service.date }} </div>
+              <div> in:
+                  <li v-for="input in service.formatIn">
+                  {{
+                      input.type +
+                      (input.compatibilityDegree==="flexible" ? '<=' : '=') +
+                      (input.version==="" ? '?' : input.version )
+                  }}
+                  </li>
+              </div>
+              <div> out:
+                  <li v-for="output in service.formatOut">
+                  {{
+                      output.type +
+                      (output.compatibilityDegree==="flexible" ? '<=' : '=') +
+                      (output.version==="" ? '?' : output.version )
+                  }}
+                  </li>
+              </div>
+        </b-popover>
        </div>
 
        <div class="noselect servicename" pointer-events="none" @mousedown.self="mouseDown">
@@ -28,35 +56,6 @@
             :style="dragStyle"
             @mousedown.self="dummy ? mouseDown($event) : startDrag($event)"
             @mouseup="endDrag"/>
-
-           <b-popover :target="'info'+$vnode.key"
-                   placement="topright"
-                   title="Dienst Informationen"
-                   triggers="hover focus"
-                   >
-          <div> name: {{ service.name }} </div>
-          <div> version: {{ service.version }} </div>
-          <div> organisation: {{ service.organisation }} </div>
-          <div> created: {{ service.date }} </div>
-          <div> in:
-            <li v-for="input in service.formatIn">
-              {{
-                 input.type +
-                 (input.compatibilityDegree==="flexible" ? '<=' : '=') +
-                 (input.version==="" ? '?' : input.version )
-              }}
-            </li>
-          </div>
-          <div> out:
-            <li v-for="output in service.formatOut">
-              {{
-                 output.type +
-                 (output.compatibilityDegree==="flexible" ? '<=' : '=') +
-                 (output.version==="" ? '?' : output.version )
-              }}
-            </li>
-          </div>
-        </b-popover>
 
     </div>
 </template>

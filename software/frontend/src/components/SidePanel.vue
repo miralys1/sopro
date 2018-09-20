@@ -10,6 +10,12 @@
                 scale="1.7"
                 />
             </span>
+
+            <b-form-checkbox id="certifiedButton"
+                             v-model="certifiedOnly"
+                            >
+                Show certified only
+            </b-form-checkbox>
         </b-dropdown>
         <div class="inputfield">
             <b-form-textarea
@@ -61,6 +67,7 @@ export default {
             }
         },
         filteredServices: function () {
+            console.log("I will only show certified")
             return this.certifiedOnly ? this.services.filter(e => e.certified) : this.services
         }
     },
