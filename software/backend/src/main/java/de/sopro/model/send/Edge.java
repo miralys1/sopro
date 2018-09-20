@@ -1,5 +1,7 @@
 package de.sopro.model.send;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,7 +18,9 @@ public class Edge {
 
 	/* required variables */
 	private long id;
+	@NotNull
 	private Node source;
+	@NotNull
 	private Node target;
 	private CompatibilityAnswer compatibility;
 

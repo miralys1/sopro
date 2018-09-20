@@ -1,5 +1,7 @@
 package de.sopro.model.send;
 
+import javax.validation.constraints.NotBlank;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,6 +16,7 @@ import de.sopro.model.User.User;
 public class DetailUser extends SimpleUser {
 
 	/* required variables */
+	@NotBlank
 	private String email;
 	private boolean admin;
 

@@ -1,5 +1,7 @@
 package de.sopro.model.send;
 
+import javax.validation.constraints.NotBlank;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,7 +15,9 @@ public class SimpleUser {
 
 	/* required variables */
 	private long id;
+	@NotBlank
 	private String firstName;
+	@NotBlank
 	private String lastName;
 	private String title;
 
