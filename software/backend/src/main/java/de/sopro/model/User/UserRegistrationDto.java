@@ -4,6 +4,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Class to retrieve the information necessary to register a new User.
+ */
 public class UserRegistrationDto{
 
     @NotEmpty
@@ -21,6 +24,14 @@ public class UserRegistrationDto{
     @NotEmpty
     private String email;
 
+    /**
+     * Creates new UserRegistrationDto
+     * @param firstName first name of user
+     * @param lastName last name of user
+     * @param password password for the new user
+     * @param title optional title of new user
+     * @param email email with which the new User wants to register
+     */
     public UserRegistrationDto(@NotEmpty String firstName, @NotEmpty String lastName,
                                @NotEmpty String password, @NotNull String title,
                                @Email @NotEmpty String email) {
@@ -30,6 +41,10 @@ public class UserRegistrationDto{
         this.title = title;
         this.email = email;
     }
+
+    ///////////////////////
+    // Setter and Getter //
+    ///////////////////////
 
     public void setFirstName(String firstName){
         this.firstName= firstName;
