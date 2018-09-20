@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import de.sopro.model.*;
+import de.sopro.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,16 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.sopro.model.Compatibility;
-import de.sopro.model.Format;
-import de.sopro.model.Service;
-import de.sopro.model.Tag;
 import de.sopro.model.send.CompatibilityAnswer;
 import de.sopro.model.send.SendService;
-import de.sopro.repository.FormatRepository;
-import de.sopro.repository.ServiceRepository;
-import de.sopro.repository.TagRepository;
-import de.sopro.repository.UserRepository;
 
 /**
  * handles requests about services
@@ -45,7 +39,14 @@ public class ServiceController {
 	private UserRepository userRepo;
 
 	@Autowired
+	private CompositionRepository compRepo;
+
+	@Autowired
 	private Compatibility compa;
+
+
+	private String dummyServiceName = "Service nicht existent";
+
 
 	/**
 	 * Method to get the existing services stored in the Database
@@ -54,9 +55,14 @@ public class ServiceController {
 	 */
 	@RequestMapping(value = "/services", method = RequestMethod.GET)
 	public ResponseEntity<Iterable<SendService>> getServices() {
+
+		Service dummyService = serviceRepo.findByName(dummyServiceName);
+
 		List<SendService> answer = new ArrayList<>();
 		for (Service service : serviceRepo.findAll()) {
-			answer.add(service.createSendService());
+			if(service != dummyService) {
+				answer.add(service.createSendService());
+			}
 		}
 
 		return new ResponseEntity<>(answer, HttpStatus.OK);
@@ -95,6 +101,26 @@ public class ServiceController {
 		if (principal == null || !userRepo.findByEmail(principal.getName()).isAdmin()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
+
+		if(!serviceRepo.findById(id).isPresent()){
+			return ResponseEntity.notFound().build();
+		}
+
+
+		Iterable<Composition> comps = compRepo.findAll();
+
+		Service dummyService = serviceRepo.findByName(dummyServiceName);
+
+		for(Composition comp : comps){
+			for(CompositionNode node : comp.getNodes()){
+				if(node.getService().getId() == id){
+					node.setService(dummyService);
+				}
+			}
+		}
+
+
+
 
 		serviceRepo.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.OK);
