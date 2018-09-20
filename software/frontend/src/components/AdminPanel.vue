@@ -1,5 +1,6 @@
 <template>
-  <div class="mainlayout">
+  <!-- tabs to choose between the different admin actions with v-if to reset them -->
+  <div class="mainlayout" v-if="show">
   <b-card no-body>
   <b-tabs pills card vertical>
     <b-tab title="Dienste aus JSON laden" active @click="toggle">
@@ -27,11 +28,31 @@ import AdminUserBearbeiten from '@/components/AdminUserBearbeiten'
 
 export default {
 
+  mounted() {
+    //preventing people from accessing /admin by entering it directly
+    this.axios.get('/authentification')
+             .then(response => {
+               var us = response.data;
+               if(us.admin == false){
+                 this.$router.push("/");
+                 alert("Sie sind nicht berechtigt auf diese Seite zuzugreifen.");
+               }
+               this.show = true;
+           }
+                 )
+             .catch(error => {
+              this.$router.push("/");
+              alert("Sie sind nicht berechtigt auf diese Seite zuzugreifen.");
+                 });
+
+  },
+
   props: ['user'],
   data() {
     return {
       toggly: true,
       update: true,
+      show: false,
     }
   },
    components: { AdminDienstForm, JsonEinlesen, AdminDienstBearbeiten, AdminUserBearbeiten
@@ -44,6 +65,7 @@ export default {
      },
 
      toggleUpdate() {
+       //provoke change in AdminDienstBearbeiten
        this.toggle;
        this.update = !this.update;
      }
@@ -52,6 +74,3 @@ export default {
    }
 }
 </script>
-
-<style scoped="true">
-</style>

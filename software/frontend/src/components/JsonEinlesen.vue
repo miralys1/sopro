@@ -1,7 +1,7 @@
 <template>
 <div>
-  <!-- Styled -->
-  <b-form-file v-if= "showBrowser" v-model="file" :state="!unvalid" placeholder="Wählen Sie eine JSON aus oder legen Sie eine hier ab..."  accept=".json"></b-form-file>
+
+  <b-form-file v-if= "showBrowser" v-model="file" :state="!unvalid" placeholder="Wählen Sie eine JSON aus..."  accept=".json"></b-form-file>
   <br> <br>
   <div style= "float:left;" v-if="show">
     {{numberOfServices}} Dienste wurden erkannt.
@@ -29,6 +29,7 @@ export default {
       this.show = false;
 
       try{
+        //reading JSON as text
         this.unvalid = false;
         if(this.file == null) throw "Es wurde keine Datei geladen.";
         const reader = new FileReader();
@@ -39,14 +40,18 @@ export default {
         alert(err);
       }
     },
+
     setText: function(e) {
+      //setting text to the read string if loading was successfull
       this.text = e.target.result;
       this.readJson();
     },
+
     readJson: function() {
       this.show = true;
 
       try{
+        //the server accepts a list of objects not a single object with an array
         var start = this.text.indexOf('[');
         var end = this.text.lastIndexOf('}');
         this.text = this.text.slice(start, end);
@@ -58,6 +63,7 @@ export default {
         var numberUnvalid = 0;
         var err = "";
 
+        //regarding all services to show a complete error string
         for(var i = 0; i < n; i++){
           var srvs = this.services[i];
           var unvalid = false;
@@ -75,7 +81,7 @@ export default {
 
           if(unvalid) {numberUnvalid++, err = err + errMsg+ '\n'}
         }
-
+        //determinating how many services are valid
         if(numberUnvalid != 0) {this.numberOfServices= this.numberOfServices - numberUnvalid; throw err}
       } catch(err) {
         this.unvalid = true;
@@ -90,7 +96,7 @@ export default {
       }
     },
     sendJson: function() {
-
+      //only sending data to server if JSON was valid
       if(!this.unvalid){
       this.axios({
         url: '/services',
@@ -100,6 +106,7 @@ export default {
           'Content-Type': 'application/json'
         }
       }).then(response => { alert('Dienste erfolgreich eingelesen');
+      //clearing brose field
                             this.showBrowser = false;
                             this.$nextTick(() => { this.showBrowser = true });})
            .catch(function (error) {alert('Irgendetwas ist schief gelaufen');});

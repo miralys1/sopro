@@ -1,5 +1,6 @@
 <template>
 <div>
+  <!-- radio buttons to select between certified and non-certified services -->
   <b-form-group >
      <b-form-radio-group id="btnradios"
                          buttons
@@ -14,6 +15,8 @@
   <input type="text" class="search" placeholder="Suche.." v-model="searchedService" @keyup.enter="search" @click="serviceSelected=false">
   <br><br>
   <h3> {{this.msg}} </h3>
+
+  <!-- dynamic generation of buttons to select a matching service out of the proposed ones -->
   <ul class="list-group list-group-flush" style="overflow-y: scroll; max-height:200px;">
   <button type="button" class="list-group-item list-group-item-action" style="display: inline-block; margin: auto auto; min-height: 10vh;" v-for="(service,index) in foundServices" @click="onClick(index)">
     {{service.name}} ({{service.version}}) {{service.organisation}}
@@ -21,6 +24,7 @@
 </ul>
 </div
 <br><br>
+<!-- using the service form in editing mode (see pedit) and passing the selectedService so that it can be preloaded into the form-->
 <AdminDienstForm v-if="serviceSelected" v-bind:tupdate="upd" v-bind:pform="selectedService" v-bind:pedit='true' v-on:noForm="mupdate"/>
 
 </div>
@@ -37,12 +41,13 @@ watch: {
   pupdate: function () {
     this.mupdate()
   },
+  // when the search field is empty all preselected services are shown again
   searchedService: function() {
     if(this.searchedService == ""){
       this.foundServices = this.preSearched;
     }
   },
-
+  //listening for changes of the radio button selection and filtering all services accordingly into the preSearched array
   cert: function() {
     if(this.cert == 1) {
       this.preSearched = this.services;
@@ -80,6 +85,7 @@ methods: {
   },
 
   mupdate(){
+    //hide the form and request services from the server
     this.serviceSelected = false;
     this.axios.get('/services')
              .then(response => {
@@ -94,6 +100,7 @@ methods: {
   },
 
   search() {
+  //preventing an empty search as no service would be shown
   if(this.searchedService != "") {
     var options = {
     shouldSort: true,
@@ -109,6 +116,7 @@ methods: {
     "formatOut.type"
     ]
 };
+//approximate search with searchedService-String in preSearched-Array
 this.$search(this.searchedService, this.preSearched, options).then(results => {
   this.foundServices = results
 })
@@ -124,9 +132,11 @@ this.$search(this.searchedService, this.preSearched, options).then(results => {
    return{
      upd: false,
      preSearched: [],
+     //radio button options
      certOptions: [
        {text: "Alle", value: 1},{text: "Zertifizierte", value: 2},{text: "Nicht Zertifizierte", value:3}
      ],
+     //all services selected (default)
      cert: 1,
      searchedService: "",
      serviceSelected: false,

@@ -4,6 +4,7 @@
     <input class="search" type="text" placeholder="Suche.." v-model="searchedUser" @keyup.enter="search">
 
     <br><br>
+    <!-- dynamic generation of user list -->
     <div v-if="showList" class="list-group list-group-flush" style="overflow-y:scroll; max-height: 200px;">
     <button type="button" class="list-group-item list-group-item-action" style="display: inline-block; margin: auto auto; min-height: 10vh;" v-for="(user,index) in users" @click="onClick(index)">
     {{user.title}} {{user.firstName}} {{user.lastName}}
@@ -11,7 +12,7 @@
   </div>
   <br><br>
     <b-form @submit="onSubmit" @reset="onReset" v-if="showForm">
-
+   <!-- delete button with confirmation dialogue -->
       <b-button v-b-modal.Prevent variant="danger" style="float:left;" >Löschen</b-button>
         <b-modal id="Prevent"
               cancel-title = "Abbrechen"
@@ -64,11 +65,13 @@
         </b-form-input>
       </b-form-group>
 
+      <!-- an admin cannot change his/her own admin status (to guarantee that there is always at least one user)-->
       <b-form-group id="Admin"
                     label="Administrator:"
                     label-for="genAdmin">
         <b-form-select id="genAdmin"
                        :options="admin"
+                       :disabled = "userSeesHimself"
                        required
                        v-model="user.admin">
         </b-form-select>
@@ -97,7 +100,7 @@ export default {
 
 data() {
   return {
-
+  userSeesHimself: false,
   searchedUser: "",
   user: {
     id: "",
@@ -107,6 +110,7 @@ data() {
     title:"",
     admin: false
   },
+  //to reset without changes
   backupUser: {
     id: "",
     firstName: "",
@@ -131,7 +135,8 @@ methods: {
 
   onDelete(){
 
-    if(this.user.id != this.loggedInUser.id) {
+    //preventing admin from deleting him/herselfs
+    if(!this.userSeesHimself) {
     this.axios.delete('/users/'+ this.user.id)
              .then(response => {
              alert("User wurde gelöscht");
@@ -139,13 +144,14 @@ methods: {
            this.search();}
                  )
              .catch(function (error) {
-              alert("Fehler beim Löschen");
+              alert("Fehler beim Löschen, Dienst wurde nicht gelöscht.");
                  });
     } else {
       alert("Sie versuchen sich selbst zu löschen, dies ist nur von einem anderen Administrator-Konto aus möglich.");
     }
 
   },
+
   onSubmit (evt) {
 
       evt.preventDefault();
@@ -175,6 +181,7 @@ methods: {
    this.showList = true;
    this.showForm = false;
 
+ //after entering a search string the server has to select fitting users
    this.axios.get('/users?search='+ this.searchedUser)
             .then(response =>
             this.users = response.data
@@ -188,7 +195,7 @@ methods: {
   },
 
   onClick(index) {
-
+//if a user is selected, detailed information are requested from the server
      var id = this.users[index].id;
 
      this.axios.get('/users/' + id)
@@ -196,10 +203,11 @@ methods: {
               this.user = response.data;
               this.backupUser = JSON.parse(JSON.stringify(this.user)) ;
               this.showForm = true;
+              this.userSeesHimself = (this.user.id == this.loggedInUser.id);
             }
                   )
               .catch(function (error) {
-               alert("Fehler");
+               alert("Die genauen Userdaten konnten nicht vom Server abgefragt werden");
                   });
   }
 
