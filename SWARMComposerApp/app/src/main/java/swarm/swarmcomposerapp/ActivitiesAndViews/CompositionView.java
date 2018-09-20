@@ -9,6 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
@@ -73,11 +74,11 @@ public class CompositionView extends View {
     /**
      * Initial X coordinate for drawing
      */
-    private float initX = 100;
+    private float initX;
     /**
      * Initial Y coordinate for drawing
      */
-    private float initY = 100;
+    private float initY;
 
 
     /**
@@ -96,6 +97,8 @@ public class CompositionView extends View {
     private int minX = 0;
     private int minY = 0;
     private boolean onStartUp = true;
+    private float currentWidth = 1000;
+    private float currentHeight = 1000;
 
     /**
      * Returns the currently selected Node. Attention: It returns NULL if no node is selected.
@@ -295,9 +298,6 @@ public class CompositionView extends View {
         canvas.save();
 
 
-        int contentWidth = getWidth() - paddingLeft - paddingRight;
-        int contentHeight = getHeight() - paddingTop - paddingBot;
-
 
         if (comp != null) {
 
@@ -319,13 +319,31 @@ public class CompositionView extends View {
 //
 //            Log.i("Werte",""+maxX+" "+maxY );
 
-
+            currentWidth = canvas.getClipBounds().right;
+            currentHeight = canvas.getClipBounds().bottom;
             //translate for moving the canvas
             //scale for zooming
             Matrix matrix = new Matrix();
+            if(onStartUp){
+                initX = -minX + currentWidth / 5;
+                initY = -minY + currentHeight / 5;
+                float xD = Math.abs(minX-currentWidth / 5-initialLength-maxX);
+                float yD = Math.abs(minY-currentHeight / 5-initialLength-maxY);
+
+                if(xD > currentWidth || yD>currentHeight){
+                    Log.i("Scale CHANGEEE","bla");
+                    scaleFactor = Math.min(currentWidth/xD, currentHeight/yD);
+                }
+                onStartUp = false;
+            }
             matrix.postTranslate(initX, initY);
             matrix.postScale(scaleFactor, scaleFactor, focusPoint.x, focusPoint.y);
             canvas.concat(matrix);
+            Rect rec = new Rect();
+
+
+
+
 
             //Invert the matrix and store it for later reverse calculations
             inverse = new Matrix(matrix);
@@ -478,8 +496,7 @@ public class CompositionView extends View {
         int minw = paddingLeft + paddingRight + getSuggestedMinimumWidth();
         int w = resolveSizeAndState(minw, widthMeasureSpec, 1);
 
-        // Whatever the width ends up being, ask for a height that would let the pie
-        // get as big as it can
+
         int minh = MeasureSpec.getSize(w) + paddingBot + paddingTop;
         int h = resolveSizeAndState(MeasureSpec.getSize(w), heightMeasureSpec, 0);
 
@@ -510,14 +527,9 @@ public class CompositionView extends View {
                     minY = tY;
                 }
             }
-            Log.i("DRAW", "minX: " + minX + ", maxX: " + maxX + ", minY: " + minY + ", maxY" + maxY);
 
 
-            if(onStartUp) {
-                initX = minX + w / 5;
-                initY = minY + h / 5;
-                onStartUp = false;
-            }
+
 
 
         }
@@ -525,8 +537,6 @@ public class CompositionView extends View {
 
         setMeasuredDimension(w, h);
     }
-
-
 
 
     /**
