@@ -45,6 +45,7 @@ export default {
         this.user.id = -1
         this.user.isAdmin = false
         this.user.fullName = ''
+        this.$router.push('/')
         // otherwise don't do anything
       }).catch(res => alert('Etwas ist schiefgelaufen'))
 
