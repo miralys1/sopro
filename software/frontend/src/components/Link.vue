@@ -3,14 +3,12 @@
     :d="svgPath"
     :marker-mid="'url(#arrow-' + state + ')'"
     @click.ctrl="deleteLink"
+    @click="clickArrow"
     :style="style">
   </path>
 </template>
 
 <script>
-function invalidStyle () {
-}
-
 export default {
     props: {
         // containing origin and more
@@ -28,7 +26,8 @@ export default {
         style: function () {
             return {
                 stroke: this.color,
-                strokeWidth: 20 * this.params.scale
+                strokeWidth: 20 * this.params.scale,
+                border: "2px solid black"
             }
         },
         color: function () {
@@ -88,6 +87,16 @@ export default {
     methods: {
         deleteLink: function (event) {
             this.$emit('deleteLink', this.$vnode.key)
+        },
+        extraInfo: function (event) {
+            if(this.state==='alternative') {
+                console.log(this.compatibility.compatibleServices)
+            }
+        },
+        clickArrow: function (event) {
+            if(this.state==='alternative') {
+                this.$emit('showAlternative', this.compatibleServices)
+            }
         }
     }
 }

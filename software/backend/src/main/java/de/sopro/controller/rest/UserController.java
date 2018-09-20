@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.sopro.model.User;
+import de.sopro.model.User.User;
 import de.sopro.model.send.DetailUser;
 import de.sopro.model.send.SimpleUser;
 import de.sopro.repository.UserRepository;
-import de.sopro.security.UserRegistrationDto;
-import de.sopro.security.UserService;
+import de.sopro.model.User.UserRegistrationDto;
+import de.sopro.model.User.UserService;
 
 /**
  * handles the requests about Users
