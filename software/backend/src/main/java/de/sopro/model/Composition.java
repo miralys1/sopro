@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import de.sopro.model.User.User;
 import de.sopro.model.send.DetailComp;
 import de.sopro.model.send.Edge;
 import de.sopro.model.send.Node;
@@ -21,9 +22,17 @@ import de.sopro.model.send.SimpleComp;
 import de.sopro.model.send.SimpleUser;
 import de.sopro.model.send.UserAuthorizations;
 
+/**
+ * A Composition represents a combination of several services and is saved as a
+ * graph
+ * 
+ * @author HRS3-R.105B
+ *
+ */
 @Entity
 public class Composition {
 
+	/* required attributes */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -58,6 +67,20 @@ public class Composition {
 
 	}
 
+	/**
+	 * creates a Composition with the given values
+	 * 
+	 * @param owner
+	 *            User that created/owns the Composition
+	 * @param name
+	 *            name of the Composition
+	 * @param isPublic
+	 *            determines whether the Composition should be public
+	 * @param nodes
+	 *            nodes of the Composition
+	 * @param edges
+	 *            edges of the Composition
+	 */
 	public Composition(User owner, String name, boolean isPublic, List<CompositionNode> nodes,
 			List<CompositionEdge> edges) {
 		this.owner = owner;
@@ -69,6 +92,7 @@ public class Composition {
 		this.edges = edges;
 	}
 
+	/* getter and setter */
 	public Long getId() {
 		return id;
 	}
@@ -133,8 +157,15 @@ public class Composition {
 		this.edges = edges;
 	}
 
-	// TODO: userID �bergeben?
+	/**
+	 * converts the Composition in a SimpleComp
+	 * 
+	 * @param userID
+	 *            id of the user that should get the SimpleComp
+	 * @return a SimpleComp that represents the Composition
+	 */
 	public SimpleComp createSimpleComp(long userID) {
+		// editable determines whether the user is allowed to edit the composition
 		boolean editable = false;
 		for (User user : editors) {
 			if (user.getId() == userID) {
@@ -144,48 +175,69 @@ public class Composition {
 		return new SimpleComp(this.id, this.owner.createSimpleUser(), this.name, editable);
 	}
 
-	// TODO: userID �bergeben?
+	/**
+	 * converts the Composition in a DetailComp
+	 * 
+	 * @param userID
+	 *            id of the user that should get the DetailComp
+	 * @return a DetailComp that represents the Composition
+	 */
 	public DetailComp createDetailComp(long userID) {
+		// user is allowed to edit the COmposition if he is the owner or have edit
+		// permissions
 		boolean editable = false;
 		boolean owner = false;
-		if(userID == getOwner().getId()){
+		if (userID == getOwner().getId()) {
 			editable = true;
 			owner = true;
-			
-		}else {
+		} else {
+
 			for (User user : editors) {
 				if (user.getId() == userID) {
 					editable = true;
 				}
 			}
 		}
+
+		// create nodes and edges for the DetialComp
 		List<Node> nodes = new ArrayList<>();
 		for (CompositionNode node : this.nodes) {
 			nodes.add(node.createNode());
 		}
-
 		List<Edge> edges = new ArrayList<>();
 		for (CompositionEdge edge : this.edges) {
 			edges.add(edge.createEdge());
 		}
-		
+
 		DetailComp dComp = new DetailComp(this.id, this.owner.createSimpleUser(), this.name, editable, nodes, edges);
 		dComp.setIsOwner(owner);
 		return dComp;
 	}
 
+	/**
+	 * creates an UserAuthorizations object that contains the users with edit
+	 * permission and the users with view permission for the Composition
+	 * 
+	 * @return UserAuthorizations for the Composition
+	 */
 	public UserAuthorizations createUserAuths() {
+		// collect editors
 		List<SimpleUser> editors = new ArrayList<>();
 		for (User user : this.editors) {
 			editors.add(user.createSimpleUser());
 		}
+		// collect viewers
 		List<SimpleUser> viewers = new ArrayList<>();
 		for (User user : this.viewers) {
 			viewers.add(user.createSimpleUser());
 		}
+
 		return new UserAuthorizations(editors, viewers);
 	}
 
+	/**
+	 * convert the Composition to a String
+	 */
 	public String toString() {
 		return owner.getFullName() + ": " + name;
 	}

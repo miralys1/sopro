@@ -7,9 +7,16 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+/**
+ * A Format serves as Input and/or Output Format of services
+ * 
+ * @author HRS3-R.105B
+ *
+ */
 @Entity
 public class Format {
 
+	/* required variables */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -28,12 +35,23 @@ public class Format {
 
 	}
 
+	/**
+	 * creates a Format with the given values
+	 * 
+	 * @param name
+	 *            name of the Format
+	 * @param version
+	 *            version of the Format
+	 * @param compatibilityDegree
+	 *            determines whether the Format is strict or flexible compatible;
+	 */
 	public Format(String name, String version, String compatibilityDegree) {
 		this.type = name;
 		this.version = version;
 		this.compatibilityDegree = compatibilityDegree;
 	}
 
+	/* getter and setters */
 	public Long getId() {
 		return id;
 	}
@@ -66,6 +84,9 @@ public class Format {
 		this.compatibilityDegree = compatibilityDegree;
 	}
 
+	/**
+	 * converts the Format to a String
+	 */
 	public String toString() {
 		return type + ", Version: " + version;
 	}

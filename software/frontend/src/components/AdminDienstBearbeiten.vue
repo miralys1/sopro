@@ -21,7 +21,7 @@
 </ul>
 </div
 <br><br>
-<AdminDienstForm v-if="serviceSelected" v-bind:pform=selectedService v-bind:pedit='true' v-on:noForm="mupdate"/>
+<AdminDienstForm v-if="serviceSelected" v-bind:tupdate="upd" v-bind:pform=selectedService v-bind:pedit='true' v-on:noForm="mupdate"/>
 
 </div>
 
@@ -73,6 +73,10 @@ methods: {
     //creating a copy of the object to not pass a reference
     this.selectedService = JSON.parse(JSON.stringify(this.foundServices[index]));
     this.serviceSelected = true;
+
+    //do not replace this with this.upd = !this.upd as it will not trigger a change event 
+    this.upd = false;
+    this.$nextTick(() => { this.upd = true });
   },
 
   mupdate(){
@@ -119,6 +123,7 @@ this.$search(this.searchedService, this.preSearched, options).then(results => {
 
  data() {
    return{
+     upd: false,
      preSearched: [],
      certOptions: [
        {text: "Alle", value: 1},{text: "Zertifizierte", value: 2},{text: "Nicht Zertifizierte", value:3}
