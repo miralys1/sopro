@@ -32,18 +32,16 @@ import swarm.swarmcomposerapp.Model.Service;
 import swarm.swarmcomposerapp.Utils.RetrofitClients;
 import swarm.swarmcomposerapp.Utils.ServerCommunication;
 
+import static java.lang.Thread.sleep;
 import static org.junit.Assert.*;
 
 /**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ * Tests whether our Retrofit interface is correctly defined. Additionally, it indirectly tests whether an
+ * old products.json is  parsed to a list of services.
+ * Besides, this test was really useful in order to understand how Retrofit requests work.
  */
 public class ExampleUnitTest {
-    @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
-    }
+
 
     MockWebServer mocky;
     String url;
@@ -63,10 +61,8 @@ public class ExampleUnitTest {
     }
 
 
-
-
     @Test
-    public void test() throws IOException {
+    public void test() throws IOException, InterruptedException {
         System.out.println("Begin of test: ");
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -92,8 +88,8 @@ public class ExampleUnitTest {
         }
 
         System.out.println("Begin of response enqueue");
-        mocky.enqueue(new MockResponse().setResponseCode(200).setBody(input).setBodyDelay(6,TimeUnit.SECONDS));
-
+        mocky.enqueue(new MockResponse().setResponseCode(200).setBody(input).setBodyDelay(2, TimeUnit.SECONDS));
+        mocky.enqueue(new MockResponse().setResponseCode(200).setBody(input).setBodyDelay(2, TimeUnit.SECONDS));
 
         Call<ArrayList<Service>> servicesRequest = com.requestServices();
 

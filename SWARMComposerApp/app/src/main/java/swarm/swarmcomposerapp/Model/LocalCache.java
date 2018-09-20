@@ -195,6 +195,18 @@ public class LocalCache implements ICache {
         return compositions;
     }
 
+    public ArrayList<Composition> getPublicComps() {
+        return publicComps;
+    }
+
+    public ArrayList<Composition> getViewableComps() {
+        return viewableComps;
+    }
+
+    public ArrayList<Composition> getOwnedComps() {
+        return ownedComps;
+    }
+
     /**
      * Returns the compositions.
      * If there hasn't been any requests yet, it will request the composition list from backend.
