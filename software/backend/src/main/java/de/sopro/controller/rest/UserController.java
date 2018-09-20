@@ -149,6 +149,13 @@ public class UserController {
 		oldUser.setLastName(detailUser.getLastName());
 		oldUser.setEmail(detailUser.getEmail());
 		oldUser.setTitle(detailUser.getTitle());
+
+
+		//update adminStatus, if user is admin and user is not himself
+		if(loggedUser.isAdmin() && loggedUser.getId() != id){
+			oldUser.setAdmin(detailUser.isAdmin());
+		}
+
 		userRepo.save(oldUser);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
