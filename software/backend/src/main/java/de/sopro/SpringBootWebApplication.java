@@ -111,7 +111,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 
 			// create dummy Service
 
-			serviceRepo.save(new Service("Service nicht existent","",new ArrayList<>(), "",0,"service_not_found.png",false, new ArrayList<>(), new ArrayList<>()));
+//			serviceRepo.save(new Service("Service nicht existent","",new ArrayList<>(), "",0,"service_not_found.png",false, new ArrayList<>(), new ArrayList<>()));
 
 
 
