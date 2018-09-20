@@ -58,8 +58,8 @@
 
 
 
-      <b-button class="small" style="float: right; margin-left: 0.5vw;" @click = "deleteTag">-</b-button>
-      <b-button class="small" style="float: right;"  @click = "addTag">+</b-button>
+      <b-button id="deleteTag" class="small" style="float: right; margin-left: 0.5vw;" @click = "deleteTag">-</b-button>
+      <b-button  id="addTag" class="small" style="float: right;"  @click = "addTag">+</b-button>
 
 
       <br> <br>
@@ -83,10 +83,10 @@
 
      <br>
 
-    <b-button class="small" style="float:left; margin-right: 0.5vw;" @click = "addInputFormat">+ Input</b-button>
-    <b-button class="small" style="float:left;" @click = "deleteInputFormat">- Input</b-button>
-    <b-button class= "small" style="float:right; margin-left: 0.5vw;" @click = "deleteOutputFormat">- Output</b-button>
-    <b-button class= "small" style="float:right;" @click = "addOutputFormat">+ Output</b-button>
+    <b-button id="addIn" class="small" style="float:left; margin-right: 0.5vw;" @click = "addInputFormat">+ Input</b-button>
+    <b-button id="deleteIn" class="small" style="float:left;" @click = "deleteInputFormat">- Input</b-button>
+    <b-button id="deleteOut" class= "small" style="float:right; margin-left: 0.5vw;" @click = "deleteOutputFormat">- Output</b-button>
+    <b-button id="addIn" class= "small" style="float:right;" @click = "addOutputFormat">+ Output</b-button>
 
     <br><br>
 
@@ -180,7 +180,6 @@ export default {
   watch: {
 
     pform: function () {
-      alert("watch pform");
       this.form = JSON.parse(JSON.stringify(this.pform));
       this.tagUpdate();
     },
@@ -238,7 +237,7 @@ export default {
     return {
       showTag: true,
        tagSelection: [],
-       tags:[{name: "first"},{name: "second"},{name: "third"},{name: "fourth"}],
+       tags:[],
        form: JSON.parse(JSON.stringify(this.pform)),
         comps: [
         { text: 'Wählen Sie aus', value: "" },
