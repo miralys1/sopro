@@ -125,6 +125,18 @@ export default {
             console.log('config changed');
             console.log(this.config);
             this.$emit("optionsChanged", this.config)
+        },
+        isPublic () {
+            this.axios({
+                    method: 'put',
+                    url: '/compositions/' + this.compId + '/public',
+                    headers: {"Content-Type": "application/json" },
+                    data: this.isPublic
+                })
+                .then(response => {
+                    console.log('made ' + (this.isPublic ? 'public' : 'private'))
+                })
+                .catch(error => alert( error + " Maybe User doesn't' exist"))
         }
     },
     mounted () {
