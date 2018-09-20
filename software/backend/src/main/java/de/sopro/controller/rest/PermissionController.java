@@ -119,13 +119,13 @@ public class PermissionController {
 		// saves permission for the user
 		switch (permission) {
 		case "editor":
-			if (!inList(comp.getEditors(), user)) {
+			if (!inList(comp.getEditors(), user) && !inList(comp.getViewers(), user)) {
 				user.getEditable().add(comp);
 				comp.getEditors().add(user);
 			}
 			break;
 		case "viewer":
-			if (!inList(comp.getViewers(), user)) {
+			if (!inList(comp.getViewers(), user) && !inList(comp.getEditors(), user)) {
 				user.getViewable().add(comp);
 				comp.getViewers().add(user);
 			}
