@@ -5,7 +5,7 @@
      @mouseleave="showButtons = false"
      @click.ctrl.exact="deleteNode">
        <div
-           v-if="!noIcons && showButtons && !drag"
+           v-if="editable && !noIcons && showButtons && !drag"
            id="deleteIcon"
            @click="deleteNode">
            <v-icon name="minus-square" scale="2" color="red"/>
@@ -16,7 +16,7 @@
                  :target="'info'+$vnode.key"
                  placement="topright"
                  title="Dienst Informationen"
-                 triggers="click"
+                 triggers="hover"
                  >
               <div> name: {{ service.name }} </div>
               <div> version: {{ service.version }} </div>
@@ -55,7 +55,7 @@
        <div class="noselect serviceversion" pointer-events="none" @mousedown.self="mouseDown">
          {{ service.version }}
        </div>
-       <div v-show="!noIcons"
+       <div v-show="!noIcons && !drag"
             :id="'info'+$vnode.key"
             class="infoicon">
           <v-icon name="info" scale="2"/>
@@ -66,8 +66,8 @@
 <script>
 export default {
     props: {
-        showDetails: Boolean,
         noIcons: Boolean,
+        editable: Boolean,
         params: Object,
         service: Object,
         dummy: Boolean,
@@ -78,6 +78,7 @@ export default {
         return {
             drag: false,
             showButtons: false,
+            details: false,
             height: 200,
             width: 200,
 
