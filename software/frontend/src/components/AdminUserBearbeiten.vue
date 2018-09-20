@@ -6,7 +6,7 @@
     <br><br>
     <div v-if="showList" class="list-group list-group-flush" style="overflow-y:scroll; max-height: 200px;">
     <button type="button" class="list-group-item list-group-item-action" style="display: inline-block; margin: auto auto; min-height: 10vh;" v-for="(user,index) in users" @click="onClick(index)">
-      {{user.firstName}} {{user.lastName}}
+    {{user.title}} {{user.firstName}} {{user.lastName}}
     </button>
   </div>
   <br><br>

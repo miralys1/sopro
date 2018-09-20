@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.sopro.model.Composition;
 import de.sopro.model.CompositionEdge;
 import de.sopro.model.CompositionNode;
-import de.sopro.model.User;
+import de.sopro.model.User.User;
 
 /**
  * A DetailComp represents a Composition with detail information
@@ -22,6 +22,7 @@ public class DetailComp extends SimpleComp {
 	/* required variables */
 	private List<Node> nodes;
 	private List<Edge> edges;
+	private boolean isOwner;
 
 	/**
 	 * creates a DetailComp with the given values
@@ -51,6 +52,14 @@ public class DetailComp extends SimpleComp {
 	}
 
 	/* getter and setter */
+	public void setIsOwner(boolean owner) {
+		this.isOwner = owner;
+	}
+
+	public boolean getIsOwner() {
+		return isOwner;
+	}
+
 	public List<Node> getNodes() {
 		return nodes;
 	}

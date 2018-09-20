@@ -58,31 +58,35 @@
 
 
 
-      <b-button class="small" style="float: right; margin-left: 0.5vw;" @click = "deleteTag">-</b-button>
-      <b-button class="small" style="float: right;"  @click = "addTag">+</b-button>
+      <b-button id="deleteTag" class="small" style="float: right; margin-left: 0.5vw;" @click = "deleteTag">-</b-button>
+      <b-button  id="addTag" class="small" style="float: right;"  @click = "addTag">+</b-button>
 
 
-      <br>
-      <div v-for= "(tag,index) in form.tags">
-       <!-- <b-form> -->
-        <b-form-group :id="'GeneralTag' + index"
-                      label="Tag:"
-                      :label-for="'genTag' + index">
+      <br> <br>
+      <div v-for= "(tag,index) in form.tags" v-if = "showTag">
+
+        <b-input-group prepend="Tag">
           <b-form-input :id="'genTag' + index"
                         type="text"
                         v-model="form.tags[index]"
                         required>
           </b-form-input>
-        </b-form-group>
+          <b-input-group-append>
+            <b-dropdown id="ddown-buttons" text="Vorschlag" v-on:show="selectTags(index)">
+               <b-dropdown-item-button v-for="(tag,id) in tagSelection" v-on:click="dropdownClick(index,id)"> {{tagSelection[id].name}} </b-dropdown-item-button>
+            </b-dropdown>
 
+    </b-input-group-append>
+  </b-input-group>
+      <br>
       </div>
 
      <br>
 
-    <b-button class="small" style="float:left; margin-right: 0.5vw;" @click = "addInputFormat">+ Input</b-button>
-    <b-button class="small" style="float:left;" @click = "deleteInputFormat">- Input</b-button>
-    <b-button class= "small" style="float:right; margin-left: 0.5vw;" @click = "deleteOutputFormat">- Output</b-button>
-    <b-button class= "small" style="float:right;" @click = "addOutputFormat">+ Output</b-button>
+    <b-button id="addIn" class="small" style="float:left; margin-right: 0.5vw;" @click = "addInputFormat">+ Input</b-button>
+    <b-button id="deleteIn" class="small" style="float:left;" @click = "deleteInputFormat">- Input</b-button>
+    <b-button id="deleteOut" class= "small" style="float:right; margin-left: 0.5vw;" @click = "deleteOutputFormat">- Output</b-button>
+    <b-button id="addIn" class= "small" style="float:right;" @click = "addOutputFormat">+ Output</b-button>
 
     <br><br>
 
@@ -174,12 +178,23 @@ export default {
     },
 
   watch: {
+
     pform: function () {
-      this.form = JSON.parse(JSON.stringify(this.pform))
-      }
+      this.form = JSON.parse(JSON.stringify(this.pform));
+      this.tagUpdate();
+    },
+
+    tupdate: function() {
+      this.tagUpdate();
+
+    }
     },
 
   props: {
+    tupdate:{
+      type: Boolean,
+      default: false,
+    },
     pedit:{
       type: Boolean,
       default: false,
@@ -220,6 +235,9 @@ export default {
 
   data () {
     return {
+      showTag: true,
+       tagSelection: [],
+       tags:[],
        form: JSON.parse(JSON.stringify(this.pform)),
         comps: [
         { text: 'Wählen Sie aus', value: "" },
@@ -231,12 +249,51 @@ export default {
     }
   },
   methods: {
+
+    tagUpdate() {
+      this.axios.get('/tags')
+               .then(response => {
+               this.tags = response.data;}
+                   )
+               .catch(function (error) {
+                alert("Fehler beim Laden der Tags. Es werden keine Tags vorgeschlagen.");
+
+                   });
+
+    },
+
+    dropdownClick(index,id){
+      this.form.tags[index] = this.tagSelection[id].name;
+
+      this.showTag = false;
+      this.$nextTick(() => { this.showTag = true });
+
+    },
+
+    selectTags(index) {
+
+      var options = {
+      shouldSort: true,
+      threshold: 0.6,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: ["name"]
+  };
+  this.$search(this.form.tags[index], this.tags, options).then(results => {
+    this.tagSelection = results
+  })
+
+},
+
     onDelete () {
 
       this.axios.delete('/services/'+ this.form.id)
                .then(response => {
                alert("Dienst wurde gelöscht");
-               this.$emit('noForm');}
+               this.$emit('noForm');
+               this.tagUpdate();}
                    )
                .catch(function (error) {
                 alert("Fehler beim Löschen");
@@ -260,7 +317,7 @@ export default {
           headers: {
             "Content-Type": "application/json"
           }
-        }).then(response => { alert("Erfolg"); this.$emit('noForm');})
+        }).then(response => { alert("Erfolg"); this.$emit('noForm'); this.tagUpdate();})
           .catch(function (error) {alert(error);});
 
         } else {
@@ -273,7 +330,7 @@ export default {
           headers: {
             "Content-Type": "application/json"
           }
-        }).then(response => { alert("Erfolgreich gespeichert"); this.onReset(evt);})
+        }).then(response => { alert("Erfolgreich gespeichert"); this.onReset(evt); this.tagUpdate();})
           .catch(function (error) {alert(error);});
         }
 

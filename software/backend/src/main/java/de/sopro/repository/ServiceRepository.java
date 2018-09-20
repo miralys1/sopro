@@ -12,4 +12,6 @@ import de.sopro.model.Service;
  */
 public interface ServiceRepository extends CrudRepository<Service, Long> {
 
+    public Service findByName(String name);
+
 }

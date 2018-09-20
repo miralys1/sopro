@@ -3,7 +3,7 @@ package de.sopro.model.send;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import de.sopro.model.User;
+import de.sopro.model.User.User;
 
 /**
  * A DetailUser represents a User and contains detail information
