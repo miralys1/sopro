@@ -25,31 +25,37 @@ import de.sopro.repository.ServiceRepository;
 import de.sopro.repository.TagRepository;
 import de.sopro.repository.UserRepository;
 
+/**
+ * handles requests about services
+ * 
+ * @author HRS3-R.105B
+ *
+ */
 @RestController
 public class ServiceController {
 
-	// Repositories to save transmitted data
+	// required repositories
 	@Autowired
 	private ServiceRepository serviceRepo;
 	@Autowired
 	private TagRepository tagRepo;
 	@Autowired
 	private FormatRepository formatRepo;
+	@Autowired
+	private UserRepository userRepo;
 
 	@Autowired
 	private Compatibility compa;
 
-	@Autowired
-	private UserRepository userRepo;
-
 	/**
 	 * Method to get the existing services stored in the Database
+	 * 
 	 * @return all services with the given string contained in tags or name
 	 */
 	@RequestMapping(value = "/services", method = RequestMethod.GET)
 	public ResponseEntity<Iterable<SendService>> getServices() {
 		List<SendService> answer = new ArrayList<>();
-		for(Service service : serviceRepo.findAll()){
+		for (Service service : serviceRepo.findAll()) {
 			answer.add(service.createSendService());
 		}
 
@@ -78,11 +84,15 @@ public class ServiceController {
 	 * 
 	 * @param id
 	 *            the id ID of the service that is to be deleted
-	 * @return HTTP-Response ok, if the deletion was a success
+	 * @param principal
+	 *            contains information about the logged in user. {@code null} means
+	 *            nobody is logged in.
+	 * @return {@code HttpStatus.OK} on success
 	 */
 	@RequestMapping(value = "/services/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteService(@PathVariable("id") long id, Principal principal) {
-		if(principal == null || !userRepo.findByEmail(principal.getName()).isAdmin()){
+		// logged in user must be an admin
+		if (principal == null || !userRepo.findByEmail(principal.getName()).isAdmin()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
@@ -91,21 +101,24 @@ public class ServiceController {
 	}
 
 	/**
-	 * Creates a new service entry in the database
+	 * creates new service entries in the database
 	 * 
-	 * @param service
-	 *            the service without an id
-	 * @return HTTP-response ok, if creation was a success
+	 * @param services
+	 *            services that should be saved
+	 * @param principal
+	 *            contains information about the logged in user. {@code null} means
+	 *            nobody is logged in.
+	 * @return {@code HttpStatus.CREATED} on success
 	 */
 	@RequestMapping(value = "/services", method = RequestMethod.POST)
 	public ResponseEntity<Void> createServices(@RequestBody List<SendService> services, Principal principal) {
 
-		if(principal == null || !userRepo.findByEmail(principal.getName()).isAdmin()){
+		// logged in user must be an admin
+		if (principal == null || !userRepo.findByEmail(principal.getName()).isAdmin()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
 		for (SendService sendService : services) {
-
 			Service service = sendService.createService();
 
 			// first save all tags and services, that are referenced
@@ -128,6 +141,8 @@ public class ServiceController {
 					f.setId(fSaved.getId());
 				}
 			}
+
+			// save service
 			serviceRepo.save(service);
 		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
@@ -143,10 +158,24 @@ public class ServiceController {
 	 * @return {@code HttpStatus.OK} if the service was already saved else
 	 *         {@code HttpStatus.NOT_FOUND}
 	 */
+	/**
+	 * Method to manipulate a service that is already in the database
+	 * 
+	 * @param id
+	 *            the id of the service that should be manipulated
+	 * @param sendService
+	 *            the new service that is to be saved
+	 * @param principal
+	 *            contains information about the logged in user. {@code null} means
+	 *            nobody is logged in.
+	 * @return {@code HttpStatus.OK} on success, else {@code HttpStatus.NOT_FOUND}
+	 */
 	@RequestMapping(value = "/services/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> editService(@PathVariable long id, @RequestBody SendService sendService, Principal principal) {
+	public ResponseEntity<Void> editService(@PathVariable long id, @RequestBody SendService sendService,
+			Principal principal) {
 
-		if(principal == null || !userRepo.findByEmail(principal.getName()).isAdmin()){
+		// logged in user must be an admin
+		if (principal == null || !userRepo.findByEmail(principal.getName()).isAdmin()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
@@ -173,17 +202,32 @@ public class ServiceController {
 				}
 			}
 
+			// save service
 			serviceRepo.save(service);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
+	/**
+	 * checks whether the two services indicated by {@code id1} and {@code id2} are
+	 * compatible
+	 * 
+	 * @param id1
+	 *            id that indicates the service that is the source
+	 * @param id2
+	 *            id that indicates the service that is the target
+	 * @return a CompatibilityAnswer that contains whether the two services are
+	 *         compatible
+	 */
 	@RequestMapping(value = "/services/{id1}/{id2}", method = RequestMethod.GET)
 	public ResponseEntity<CompatibilityAnswer> checkCompatibility(@PathVariable long id1, @PathVariable long id2) {
+		// the services indicated by the ids must exist
 		if (!serviceRepo.existsById(id1) || !serviceRepo.existsById(id2)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+
+		// check compatibility
 		CompatibilityAnswer answer = compa.checkCompatibility(id1, id2);
 		return new ResponseEntity<>(answer, HttpStatus.OK);
 	}

@@ -91,11 +91,9 @@ export default {
     },
     methods: {
       mouseDown: function (event) {
-          console.log('mouse Down')
           this.$emit('mouseDown', {x: this.ix, y: this.iy, id: this.$vnode.key, serviceId: this.service.id, clientX: event.clientX, clientY: event.clientY});
       },
       startDrag: function (event) {
-          console.log('start Drag')
           this.$emit('startDrag', this.$vnode.key);
       },
       endDrag: function (event) {
@@ -154,6 +152,7 @@ export default {
     border-radius: 5px;
     width:  120px;
     height: 120px;
+    background-repeat: no-repeat;
 }
 .draghandle:active {
     background: orange;

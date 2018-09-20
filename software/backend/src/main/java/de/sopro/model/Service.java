@@ -13,9 +13,16 @@ import javax.validation.constraints.NotNull;
 
 import de.sopro.model.send.SendService;
 
+/**
+ * A Service represents a real-life service
+ * 
+ * @author HRS3-R.105B
+ *
+ */
 @Entity
 public class Service {
 
+	/* required variables */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -49,6 +56,28 @@ public class Service {
 	public Service() {
 	}
 
+	/**
+	 * creates a service with the given values
+	 * 
+	 * @param name
+	 *            name of the service
+	 * @param version
+	 *            version of the service
+	 * @param tags
+	 *            tags the service should contain
+	 * @param organisation
+	 *            organization of the service
+	 * @param date
+	 *            date of the service
+	 * @param logo
+	 *            logo that should be used to display the service
+	 * @param certified
+	 *            determines whether the service is certified
+	 * @param formatIn
+	 *            input formats of the service
+	 * @param formatOut
+	 *            output formats of the service
+	 */
 	public Service(String name, String version, List<Tag> tags, String organisation, long date, String logo,
 			boolean certified, List<Format> formatIn, List<Format> formatOut) {
 		this.name = name;
@@ -62,6 +91,7 @@ public class Service {
 		this.formatOut = formatOut;
 	}
 
+	/* getetr and setters */
 	public Long getId() {
 		return id;
 	}
@@ -142,11 +172,19 @@ public class Service {
 		this.formatOut = formatOut;
 	}
 
+	/**
+	 * converts the service to a SendService
+	 * 
+	 * @return a SendService that represents the Service
+	 */
 	public SendService createSendService() {
+		// convert list of tags to list of strings
 		List<String> ts = new ArrayList<String>(tags.size());
 		for (Tag t : tags) {
 			ts.add(t.getName());
 		}
+
+		// convert certified to a String
 		String c = "false";
 		if (certified) {
 			c = "true";
@@ -155,6 +193,9 @@ public class Service {
 				this.formatIn, this.formatOut);
 	}
 
+	/**
+	 * converts the Service to a String
+	 */
 	public String toString() {
 		return name;
 	}
