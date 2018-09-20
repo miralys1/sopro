@@ -11,15 +11,22 @@ import de.sopro.model.CompositionEdge;
 import de.sopro.model.CompositionNode;
 import de.sopro.model.User;
 
+/**
+ * A DetailComp represents a Composition with detail information
+ * 
+ * @author HRS3-R.105B
+ *
+ */
 public class DetailComp extends SimpleComp {
 
+	/* required variables */
 	private List<Node> nodes;
 	private List<Edge> edges;
 
 	@JsonCreator
 	public DetailComp(@JsonProperty("id") long id, @JsonProperty("owner") SimpleUser owner,
 			@JsonProperty("name") String name, @JsonProperty("editable") boolean editable,
-			@JsonProperty("nodes") List<Node> nodes, @JsonProperty("edges")List<Edge> edges) {
+			@JsonProperty("nodes") List<Node> nodes, @JsonProperty("edges") List<Edge> edges) {
 		super(id, owner, name, editable);
 		this.nodes = nodes;
 		this.edges = edges;
