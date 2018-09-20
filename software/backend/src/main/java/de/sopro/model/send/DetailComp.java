@@ -23,6 +23,24 @@ public class DetailComp extends SimpleComp {
 	private List<Node> nodes;
 	private List<Edge> edges;
 
+	/**
+	 * creates a DetailComp with the given values
+	 * 
+	 * @param id
+	 *            id of the composition the DetailComp should represent
+	 * @param owner
+	 *            owner of the Composition
+	 * @param name
+	 *            name of the Composition
+	 * @param editable
+	 *            determines whether the DetailComp can be edited by user
+	 * @param nodes
+	 *            nodes of the DetailComp that represents the CompositionNodes of
+	 *            the Composition
+	 * @param edges
+	 *            edges of the DetailComp that represents the CompositionEdges of
+	 *            the Composition
+	 */
 	@JsonCreator
 	public DetailComp(@JsonProperty("id") long id, @JsonProperty("owner") SimpleUser owner,
 			@JsonProperty("name") String name, @JsonProperty("editable") boolean editable,
@@ -32,6 +50,7 @@ public class DetailComp extends SimpleComp {
 		this.edges = edges;
 	}
 
+	/* getter and setter */
 	public List<Node> getNodes() {
 		return nodes;
 	}
@@ -48,10 +67,20 @@ public class DetailComp extends SimpleComp {
 		this.edges = edges;
 	}
 
+	/**
+	 * converts the DetailComp to a String
+	 */
 	public String toString() {
 		return super.toString();
 	}
 
+	/**
+	 * creates a Composition that represents the DetailComp
+	 * 
+	 * @param owner
+	 *            User that should own the Composition
+	 * @return
+	 */
 	public Composition createComposition(User owner) {
 		List<CompositionEdge> edges = new ArrayList<>();
 		List<CompositionNode> nodes = new ArrayList<>();
