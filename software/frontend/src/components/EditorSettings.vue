@@ -167,11 +167,11 @@ export default {
 .wideform {
   margin-left: 20px;
   margin-right: 20px;
-  width: 250px;
+  width: 300px;
 }
 
 .emailinput {
-  width: 300px !important;
+  width: 300px;
   margin-top: 10px;
   margin-bottom: 10px;
 }
