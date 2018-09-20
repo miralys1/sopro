@@ -6,9 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.DateFormat;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import swarm.swarmcomposerapp.Model.Composition;
@@ -26,8 +25,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 
         public MyViewHolder(View view) {
             super(view);
-            name = (TextView) view.findViewById(R.id.name);
-            author = (TextView) view.findViewById(R.id.author);
+            name = view.findViewById(R.id.name);
+            author = view.findViewById(R.id.author);
         }
     }
 

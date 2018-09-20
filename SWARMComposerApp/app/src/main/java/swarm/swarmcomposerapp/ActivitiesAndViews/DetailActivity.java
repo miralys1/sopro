@@ -1,14 +1,15 @@
 package swarm.swarmcomposerapp.ActivitiesAndViews;
 
-import android.app.ActivityManager;
+
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -76,7 +77,8 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
         try {
             comp = cache.getCompAtPos(position, this, listID);
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getText(R.string.err_text), Toast.LENGTH_LONG).show();
             goBackToList(null);
         }
         if (comp != null && comp.getNodeList() != null && comp.getEdgeList() != null) {
@@ -218,18 +220,28 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
             tOwner.setText(comp.getOwner().getFullName());
             tLastUpdated.setText(getText(R.string.lastupdate)+": "+dateFormat.format(comp.getLastUpdate()));
             col1.setText(getText(R.string.lastupdate) + " " + dateFormat.format(comp.getLastUpdate()));
-            Log.i("DetailActivity", "View should receive Comp with " + comp.getNodeList().size() + " nodes");
             compositionView.setComp(comp);
             setEdgeList();
         } else {
             if (noNodes) {
-                Toast.makeText(getApplicationContext(), "There are no nodes within this composition", Toast.LENGTH_SHORT).show();
-
+                showErrorDialog(getText(R.string.err_nonodes).toString());
             } else {
-                //TODO show error message
-                Toast.makeText(getApplicationContext(), "server connection failed when requesting details", Toast.LENGTH_SHORT).show();
+                showErrorDialog(getText(R.string.err_text_detail).toString());
             }
         }
         showLoading(false);
+    }
+
+    private void showErrorDialog(String message){
+        LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.fragment_dialog, null);
+        ((TextView) layout.findViewById(R.id.d_title)).setText(getText(R.string.err_title));
+        ((TextView) layout.findViewById(R.id.d_text)).setText(message);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setNeutralButton(getText(R.string.d_button_close), null);
+        alertDialogBuilder.setView(layout);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

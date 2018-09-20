@@ -73,7 +73,7 @@
         When looking at the list, tap on an entry in one of the lists to open the detail view.
         There you can inspect the composition. Tap on single services to get more information.
         You can also share the composition as a PDF containing the image and useful information.
-        The file will be safed in the Downloads directory of your device.
+        The file will be saved in the internal storage of your device.
         All data requested from the server is saved on your device until you close the app.
         If you want the latest data, tap the reload icon on the list page.
     </string>
@@ -88,6 +88,7 @@
 
     <!-- Text for error messages -->
     <string name="err_title">An error occurred</string>
+    <string name="err_nonodes">There is nothing to see in this composition.</string>
     <string name="err_text">There are no details about the error.</string>
     <string name="err_text_emailpasswordmissing">Email or password missing.</string>
     <string name="err_text_serveraddressmissing">Server address missing.</string>

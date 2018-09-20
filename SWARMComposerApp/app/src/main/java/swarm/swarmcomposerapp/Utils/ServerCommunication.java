@@ -13,8 +13,6 @@ import swarm.swarmcomposerapp.Model.Service;
 
 /**
  * Proposed class for managing requests to the backend.
- * TODO: Find out if this is compatible with Retrofit.
- * TODO: Implement
  */
 public interface ServerCommunication {
 

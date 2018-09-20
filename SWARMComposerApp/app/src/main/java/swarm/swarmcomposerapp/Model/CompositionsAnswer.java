@@ -1,6 +1,5 @@
 package swarm.swarmcomposerapp.Model;
 
-import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -30,7 +29,16 @@ public class CompositionsAnswer {
      * @return concatenation of editable and viewable compositions
      */
     public List<Composition> getViewable() {
-        viewable.addAll(editable);
+        boolean b = true;
+        for (Composition c : editable) {
+            b = true;
+            for (Composition d : viewable) {
+                if(c.getId() == d.getId())
+                    b = false;
+            }
+            if(b)
+                viewable.add(c);
+        }
         return viewable;
     }
 

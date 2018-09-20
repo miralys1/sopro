@@ -244,14 +244,11 @@ public class PDFCreator {
         ////////////////// End Of Document /////////////
 
         // write the document content
-        //File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        //File file = new File(context.getExternalFilesDir(null), comp.getName()+".pdf");
         File root = Environment.getExternalStorageDirectory();
         File dir = new File(root.getAbsolutePath()+"/"+context.getText(R.string.compositions));
         if(!dir.exists()){
             dir.mkdirs(); //or mkdir();
         }
-        //File file = new File(dir, comp.getName()+".pdf");
         File file = new File(dir, comp.getName()+".pdf");
 
         try{

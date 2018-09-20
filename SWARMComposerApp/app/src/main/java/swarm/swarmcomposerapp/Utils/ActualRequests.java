@@ -1,7 +1,5 @@
 package swarm.swarmcomposerapp.Utils;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -28,8 +26,6 @@ public class ActualRequests {
 
 
     public static void refreshServerCommunication() {
-        //ActualRequests.com = RetrofitClients.newRetrofitInstance(LocalCache.getInstance()
-        //        .getServerAddress()).create(ServerCommunication.class);
 
         ActualRequests.com = RetrofitClients.getRetrofitInstance()
                 .create(ServerCommunication.class);
@@ -107,7 +103,6 @@ public class ActualRequests {
 
 
                 if (response.isSuccessful()) {
-                    //compsL.addAll(response.body().getSeeableComps());
                     publicComps.addAll(response.body().getPublicComps());
                     ownedComps.addAll(response.body().getOwns());
                     viewableComps.addAll(response.body().getViewable());

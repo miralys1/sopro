@@ -2,8 +2,6 @@ package swarm.swarmcomposerapp.Utils;
 
 import android.util.Log;
 
-import java.io.IOException;
-import java.net.SocketTimeoutException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
@@ -16,15 +14,11 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import swarm.swarmcomposerapp.Model.LocalCache;
 
-import static android.support.constraint.Constraints.TAG;
 
 /**
  * Manages the OkHttpClient and the Retrofit client for network communication.
@@ -60,8 +54,6 @@ public class RetrofitClients {
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(url)
                 .build();
-        Log.i("ServerAddressRetrofitCl", "set to: " + url);
-
         retrofitClient = retrofitClientL;
 
         return retrofitClientL;

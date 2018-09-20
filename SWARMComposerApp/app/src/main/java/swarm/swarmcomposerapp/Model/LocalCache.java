@@ -1,6 +1,5 @@
 package swarm.swarmcomposerapp.Model;
 
-import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,8 +22,7 @@ public class LocalCache implements ICache {
     private String email;
     private String password;
     private long lastUpdate;
-    public static final String TEST_SERVER = "https://134.245.1.240:9061/";
-    private String serverAddress = TEST_SERVER;
+    private String serverAddress = ""; //could be null?
     private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy HH:mm");
 
     public String getEmail() {
@@ -53,13 +51,12 @@ public class LocalCache implements ICache {
 
     public void setServerAddress(String serverAddress) {
         this.serverAddress = serverAddress;
-        Log.i("ServerAddressLocalCache", "set to: " + serverAddress);
         RetrofitClients.newRetrofitInstance(serverAddress);
         ActualRequests.refreshServerCommunication();
     }
 
     private static LocalCache instance = new LocalCache();
-    private ArrayList<Composition> compositions = new ArrayList(); //TODO remove
+    private ArrayList<Composition> compositions = new ArrayList(); //could be removed
     private ArrayList<Composition> publicComps = new ArrayList();
     private ArrayList<Composition> viewableComps = new ArrayList();
     private ArrayList<Composition> ownedComps = new ArrayList();
@@ -82,7 +79,6 @@ public class LocalCache implements ICache {
     /**
      * Tries to receive a service from the LocalCache by its id.
      * It doesn't request it from the backend if its null at the moment!
-     * Be careful!
      *
      * @param id
      * @return
@@ -101,17 +97,10 @@ public class LocalCache implements ICache {
      */
     public Composition getCompAtPos(int pos, IResponse caller, int listID) throws IllegalArgumentException {
 
-//        if (compositions.size() < pos) {
-//            throw new IllegalArgumentException("This request would lead to an index out of " +
-//                    "bounds exception!");
-//        }
-
         if (pos < 0) {
             throw new IllegalArgumentException("Something went wrong: A list has no positions < 0.");
         }
 
-
-        Log.i("DETAIL", "in cache: getCompAtPos " + pos + " in list " + listID);
         switch (listID) {
             case 2:
                 posChecker(publicComps, pos);
@@ -163,8 +152,6 @@ public class LocalCache implements ICache {
             //Comp is detailed
             return tempOwnedComp;
         }
-
-
     }
 
 
@@ -175,7 +162,6 @@ public class LocalCache implements ICache {
      * @return
      */
     public ArrayList<Composition> getCompositions(IResponse caller) {
-        //TODO also hand over an enum which represents one of the four lists. Return the needed ArrayList. Only hardRefresh if public list is empty.
         if (compositions.isEmpty()) {
             hardRefresh(caller);
             return null;
@@ -224,7 +210,6 @@ public class LocalCache implements ICache {
      */
     public void hardRefresh(IResponse caller) {
         lastUpdate = System.currentTimeMillis();
-        Log.i("AddressHardRefresh", "Caller: " + caller.getClass().getName());
 
         publicComps = new ArrayList<>();
         ownedComps = new ArrayList<>();

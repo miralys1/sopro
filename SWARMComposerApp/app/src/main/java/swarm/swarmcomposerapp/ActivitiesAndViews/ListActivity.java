@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 
 import swarm.swarmcomposerapp.Model.Composition;
 import swarm.swarmcomposerapp.Model.LocalCache;
-import swarm.swarmcomposerapp.Model.SimpleUser;
 import swarm.swarmcomposerapp.R;
 
 /**
@@ -37,7 +35,6 @@ public class ListActivity extends AppCompatActivity implements IResponse {
     private static final String PREFERENCE_NAME = "app_settings";
     private SharedPreferences preferences;
     private LocalCache cache = LocalCache.getInstance();
-    private boolean firstStart = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +46,6 @@ public class ListActivity extends AppCompatActivity implements IResponse {
         String address = preferences.getString("SERVERADDRESS", null);
         if (address == null) {
             //it's the very first start of the app
-            firstStart = true;
             showWelcomeScreen();
         } else {
             cache.setServerAddress(address);
@@ -109,8 +105,6 @@ public class ListActivity extends AppCompatActivity implements IResponse {
 
             }
         }));
-
-
     }
 
     @Override
@@ -118,8 +112,8 @@ public class ListActivity extends AppCompatActivity implements IResponse {
         super.onResume();
         //refresh the list with latest data from LocalCache every time the user returns to ListActivity.
         //also called when the app is started
-        if(!firstStart)
-            updateList();
+        if(preferences.getString("SERVERADDRESS", null) != null)
+            updateList(); //do not start a server request when no address is set
     }
 
     /**
@@ -178,7 +172,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
             compList = LocalCache.getInstance().getCompositions(this, LocalCache.ListIdentifier.PUBLIC);
             tPublic.setVisibility((compList == null || compList.isEmpty()) ? View.GONE : View.VISIBLE);
             if(compList == null){
-                Toast.makeText(getApplicationContext(), getText(R.string.err_text_detail), Toast.LENGTH_SHORT).show();
+                showErrorDialog(getText(R.string.err_text_detail).toString());
                 return;
             } else {
                 adapter_public.setCompList(compList);
@@ -190,7 +184,7 @@ public class ListActivity extends AppCompatActivity implements IResponse {
             tLastUpdate.setText(getText(R.string.lastupdate)+": "+cache.getLastUpdate());
         } else {
             //server request failed
-            Toast.makeText(getApplicationContext(), getText(R.string.err_text_list), Toast.LENGTH_SHORT).show();
+            showErrorDialog(getText(R.string.err_text_list).toString());
         }
         showLoading(false);
     }
@@ -213,6 +207,19 @@ public class ListActivity extends AppCompatActivity implements IResponse {
                 startSettingsActivity(null);
             }
         });
+        alertDialogBuilder.setView(layout);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void showErrorDialog(String message){
+        LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.fragment_dialog, null);
+        ((TextView) layout.findViewById(R.id.d_title)).setText(getText(R.string.err_title));
+        ((TextView) layout.findViewById(R.id.d_text)).setText(message);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setNeutralButton(getText(R.string.d_button_close), null);
         alertDialogBuilder.setView(layout);
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();

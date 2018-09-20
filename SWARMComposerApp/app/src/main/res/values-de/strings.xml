@@ -45,7 +45,7 @@
         Dort können Sie die Komposition genauer betrachten.
         Sie können einzelne Dienste antippen, um mehr Informationen zu erhalten.
         Außerdem können Sie die Komposition als PDF speichern und verschicken.
-        Das Dokument wird in Downloads-Ordner Ihres Gerätes gespeichert und enthält die Komposition als Bild sowie nützliche Informationen.
+        Das Dokument wird im internen Speicher Ihres Gerätes gespeichert und enthält die Komposition als Bild sowie nützliche Informationen.
         Alle vom Server erhaltenen Daten werden bis zum Beenden der App zwischengespeichert.
         Wenn Sie die aktuellsten Versionen der Kompositionen laden möchten, tippen Sie bitte auf das Symbol oben links in der Listenansicht.
     </string>
@@ -58,11 +58,12 @@
     </string>
     <string name="d_detailviewguide_title">Anleitung</string>
     <string name="err_title">Fehler!</string>
-    <string name="err_text">Es gibt keine weiteren Informationen zu diesem Fehler.</string>
+    <string name="err_nonodes">Diese Komposition ist leer.</string>
+    <string name="err_text">Ein Fehler ist aufgetreten.</string>
     <string name="err_text_emailpasswordmissing">Die E-Mail-Adresse oder das Passwort fehlen.</string>
     <string name="err_text_serveraddressmissing">Bitte eine Serveradresse eingeben.</string>
     <string name="err_text_logout">Das Ausloggen ist fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung sowie den Status des Servers.</string>
-    <string name="err_text_login">Das Einloggen ist fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung sowie den Status des Servers.</string>
+    <string name="err_text_login">Das Einloggen ist fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung sowie den Status des Servers und die Korrekthet der eingegebenen Einloggdaten.</string>
     <string name="err_text_filesave">Das Speichern und Senden der PDF ist fehlgeschlagen.</string>
     <string name="err_text_serveraddress">Die Kommunikation mit dem Server unter der neuen Adresse ist fehlgeschlagen.
         Bitte überprüfen Sie Ihre Internetverbindung sowie die Korrektheit der eingegebenen Serveradresse.</string>

@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -85,7 +84,6 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
      * change the views to show the logout button as well as the username
      */
     private void setLogoutView(){
-        //TODO get username
         bLogin.setVisibility(View.GONE);
         bLogout.setVisibility(View.VISIBLE);
         tLogin.setText(getString(R.string.logged_in_as)+cache.getEmail());
@@ -101,7 +99,7 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
         password = tPassword.getText().toString();
         email = tEmail.getText().toString();
         if(email.isEmpty() || password.isEmpty()){
-            Toast.makeText(getApplicationContext(), getText(R.string.err_text_emailpasswordmissing), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getText(R.string.err_text_emailpasswordmissing), Toast.LENGTH_LONG).show();
         } else {
             //invalidate all data in LocalCache and try to reload with new user information
             showLoading(true);
@@ -120,7 +118,6 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
         showLoading(true);
         state = LastRequest.LOGOUT;
         //remove user information in cache
-        cache.setPassword(null);
         cache.setEmail(null);
         cache.hardRefresh(this);
     }
@@ -130,20 +127,20 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
      * @param v
      */
     public void updateServerAddress(View v){
-        //TODO also log out if logged in??
         serverAddress = tServerAddress.getText().toString();
         if(serverAddress.isEmpty()){
-            Toast.makeText(getApplicationContext(), getText(R.string.err_text_serveraddressmissing), Toast.LENGTH_SHORT).show();
+            showErrorDialog(getText(R.string.err_text_serveraddressmissing).toString());
         } else {
             try {
+                cache.setEmail(null);
+                cache.setPassword(null);
                 cache.setServerAddress(serverAddress);
                 cache.hardRefresh(this);
                 showLoading(true);
                 state = LastRequest.ADDRESS_CHANGE;
             } catch(Exception e){
-                Toast.makeText(getApplicationContext(), getText(R.string.err_text_illegalserveraddress), Toast.LENGTH_SHORT).show();
+                showErrorDialog(getText(R.string.err_text_illegalserveraddress).toString());
             }
-
         }
     }
 
@@ -191,7 +188,6 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
     @Override
     public void notify(boolean successful) {
         if(successful){
-            LocalCache cache = LocalCache.getInstance();
             switch (state){
                 case LOGIN: {
                     //login was successful; store new email in preferences
@@ -202,12 +198,15 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
                 case LOGOUT: {
                     //logout was successfull; remove email in preferences
                     setLoginView();
+                    cache.setPassword(null);
                     editor.putString("EMAIL", null);
                     editor.commit();
                 }; break;
                 case ADDRESS_CHANGE: {
                     //address change was successfull; store new server address in preferences
+                    setLoginView();
                     editor.putString("SERVERADDRESS", serverAddress);
+                    editor.putString("EMAIL", null);
                     editor.commit();
                 }; break;
             }
@@ -216,22 +215,20 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
             switch (state){
                 case LOGOUT: {
                     //logout failed
-                    //TODO show error dialog with tips
-                    Toast.makeText(getApplicationContext(), getText(R.string.err_text_logout), Toast.LENGTH_SHORT).show();
+                    showErrorDialog(getText(R.string.err_text_logout).toString());
                     cache.setEmail(preferences.getString("EMAIL", ""));
                 }; break;
                 case LOGIN: {
                     //login failed, remove faulty user data
-                    //TODO show error dialog with tips
-                    Toast.makeText(getApplicationContext(), getText(R.string.err_text_login), Toast.LENGTH_SHORT).show();
+                    showErrorDialog(getText(R.string.err_text_login).toString());
                     cache.setEmail(null);
                     cache.setPassword(null);
                 }; break;
                 case ADDRESS_CHANGE: {
                     //address change failed; remove faulty address
-                    //TODO show error dialog with tips
-                    Toast.makeText(getApplicationContext(), getText(R.string.err_text_serveraddress), Toast.LENGTH_SHORT).show();
-                    cache.setServerAddress(preferences.getString("SERVERADDRESS", "http://default.de/"));
+                    showErrorDialog(getText(R.string.err_text_serveraddress).toString());
+                    cache.setServerAddress(preferences.getString("SERVERADDRESS", ""));
+                    cache.setEmail(preferences.getString("EMAIL", ""));
                 }; break;
             }
         }
@@ -252,6 +249,19 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
         serverAddress = cache.getServerAddress();
         if(serverAddress != null)
             tServerAddress.setText(serverAddress);
+    }
+
+    private void showErrorDialog(String message){
+        LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.fragment_dialog, null);
+        ((TextView) layout.findViewById(R.id.d_title)).setText(getText(R.string.err_title));
+        ((TextView) layout.findViewById(R.id.d_text)).setText(message);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setNeutralButton(getText(R.string.d_button_close), null);
+        alertDialogBuilder.setView(layout);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }
 

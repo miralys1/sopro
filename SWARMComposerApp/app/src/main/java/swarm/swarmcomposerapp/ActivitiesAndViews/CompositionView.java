@@ -1,16 +1,13 @@
 package swarm.swarmcomposerapp.ActivitiesAndViews;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -53,9 +50,6 @@ public class CompositionView extends View {
      * Paint for highlighting objects.
      */
     private Paint highlightPaint;
-
-    private float offsetX;
-    private float offsetY;
 
     /**
      * Inverted View Matrix of the last call of onDraw().
@@ -326,7 +320,6 @@ public class CompositionView extends View {
                 float yD = Math.abs(minY-currentHeight / 5-initialLength-maxY);
 
                 if(xD > currentWidth || yD>currentHeight){
-                    Log.i("Scale CHANGEEE","bla");
                     scaleFactor = Math.min(currentWidth/xD, currentHeight/yD);
                 }
                 onStartUp = false;
@@ -401,7 +394,6 @@ public class CompositionView extends View {
 
                     final Drawable drawable = getContext().getDrawable(drawableID);
 
-                    float halfLength = initialLength/2;
                     drawable.setBounds(0, 0, (int) (1.5*initialLength), (int) (1.5*initialLength));
                     canvas.translate(n.getX() - 0.75f*initialLength, n.getY() - 0.75f*initialLength);
                     drawable.draw(canvas);
@@ -514,8 +506,6 @@ public class CompositionView extends View {
                 }
             }
         }
-
-
         setMeasuredDimension(w, h);
     }
 
@@ -542,7 +532,6 @@ public class CompositionView extends View {
         @Override
         public boolean onScaleBegin(ScaleGestureDetector detector) {
             focusPoint = new PointF(detector.getFocusX(), detector.getFocusY());
-
             return true;
         }
     }
