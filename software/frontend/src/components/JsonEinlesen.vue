@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- Styled -->
-  <b-form-file v-model="file" :state="!unvalid" placeholder="Wählen Sie eine JSON aus oder legen Sie eine hier ab..."  accept=".json"></b-form-file>
+  <b-form-file v-if= "showBrowser" v-model="file" :state="!unvalid" placeholder="Wählen Sie eine JSON aus oder legen Sie eine hier ab..."  accept=".json"></b-form-file>
   <br> <br>
   <div style= "float:left;" v-if="show">
     {{numberOfServices}} Dienste wurden erkannt.
@@ -15,6 +15,7 @@
 export default {
   data () {
     return {
+      showBrowser: true,
       file: null,
       services: null,
       text: "default",
@@ -98,7 +99,9 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         }
-      }).then(function (response) { alert('Dienste erfolgreich eingelesen');})
+      }).then(response => { alert('Dienste erfolgreich eingelesen');
+                            this.showBrowser = false;
+                            this.$nextTick(() => { this.showBrowser = true });})
            .catch(function (error) {alert('Irgendetwas ist schief gelaufen');});
       this.show = false;
       } else {

@@ -21,7 +21,7 @@
 </ul>
 </div
 <br><br>
-<AdminDienstForm v-if="serviceSelected" v-bind:tupdate="upd" v-bind:pform=selectedService v-bind:pedit='true' v-on:noForm="mupdate"/>
+<AdminDienstForm v-if="serviceSelected" v-bind:tupdate="upd" v-bind:pform="selectedService" v-bind:pedit='true' v-on:noForm="mupdate"/>
 
 </div>
 
@@ -74,7 +74,7 @@ methods: {
     this.selectedService = JSON.parse(JSON.stringify(this.foundServices[index]));
     this.serviceSelected = true;
 
-    //do not replace this with this.upd = !this.upd as it will not trigger a change event 
+    //do not replace this with this.upd = !this.upd as it will not trigger a change event
     this.upd = false;
     this.$nextTick(() => { this.upd = true });
   },
@@ -85,8 +85,7 @@ methods: {
              .then(response => {
              this.services = response.data;
              this.preSearched = this.services
-             this.foundServices = this.preSearched;
-             this.cert= 1;}
+             this.foundServices = this.preSearched;}
                  )
              .catch(function (error) {
               alert("Fehler beim Abfragen der Dienste vom Server.");

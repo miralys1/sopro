@@ -1,7 +1,18 @@
 <template>
   <div class = "out">
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-      <b-button variant="danger" style="float:left;" v-if="pedit" v-on:click="onDelete">Löschen</b-button>
+      <b-button v-b-modal.Prevent variant="danger" style="float:left;" v-if="pedit">Löschen</b-button>
+      <b-modal id="Prevent"
+            cancel-title = "Abbrechen"
+            ok-variant = "danger"
+            ok-title =  "Löschen"
+            title="Sind Sie sicher, dass Sie löschen wollen?"
+            @ok="onDelete">
+      </b-modal>
+
+
+
+
       <b-button type="submit" variant="primary" style="float:right;margin-left: 0.5vw;">Speichern</b-button>
       <b-button type="reset" variant="warning" style="float:right;">Reset</b-button>
       <br><br>

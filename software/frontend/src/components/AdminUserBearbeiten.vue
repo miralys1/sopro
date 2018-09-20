@@ -11,7 +11,18 @@
   </div>
   <br><br>
     <b-form @submit="onSubmit" @reset="onReset" v-if="showForm">
-      <b-button variant="danger" style="float:left;" v-on:click="onDelete">Löschen</b-button>
+
+      <b-button v-b-modal.Prevent variant="danger" style="float:left;" >Löschen</b-button>
+        <b-modal id="Prevent"
+              cancel-title = "Abbrechen"
+              ok-variant = "danger"
+              ok-title =  "Löschen"
+              title="Sind Sie sicher, dass Sie löschen wollen?"
+              @ok="onDelete">
+        </b-modal>
+
+
+
       <b-button type="submit" variant="primary" style="float:right ;margin-left: 0.5vw;">Speichern</b-button>
       <b-button type="reset" variant="warning" style="float:right;">Reset</b-button>
       <br><br>
@@ -72,6 +83,7 @@
 <script>
 
 export default {
+  props: ["loggedInUser"],
 
   watch: {
     searchedUser: function() {
@@ -117,6 +129,8 @@ showList: false,
 methods: {
 
   onDelete(){
+    
+    if(this.user.id != this.loggedInUser.id) {
     this.axios.delete('/users/'+ this.user.id)
              .then(response => {
              alert("User wurde gelöscht");
@@ -126,6 +140,9 @@ methods: {
              .catch(function (error) {
               alert("Fehler beim Löschen");
                  });
+    } else {
+      alert("Sie versuchen sich selbst zu löschen, dies ist nur von einem anderen Administrator-Konto aus möglich.");
+    }
 
   },
   onSubmit (evt) {
