@@ -14,6 +14,9 @@ import swarm.swarmcomposerapp.ActivitiesAndViews.DetailActivity;
 @RunWith(RobolectricTestRunner.class)
 public class DetailActivityTest {
 
+    /**
+     * Tests whether getIdentifier() works as expected and if the Android SDK finds a Drawable resource.
+     */
     @Test
     public void resourceIDTest(){
         DetailActivity detail = Robolectric.setupActivity(DetailActivity.class);
@@ -23,6 +26,8 @@ public class DetailActivityTest {
         Drawable drawable = detail.getResources().getDrawable(id);
         Assert.assertNotNull(drawable);
     }
+
+
 
 
 
