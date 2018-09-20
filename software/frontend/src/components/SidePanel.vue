@@ -13,12 +13,12 @@
             <b-form-group
                 id="filtersettings"
                 class="settingsform"
-                label="settings">
+                label="Filtereinstellungen">
 
                 <b-form-checkbox id="certifiedButton"
                                 v-model="certifiedOnly"
                                 >
-                    only certified
+                    nur Zertifizierte Dienste
                 </b-form-checkbox>
 
             </b-form-group>
@@ -26,7 +26,7 @@
         <div class="inputfield">
             <b-form-textarea
                 v-model="query"
-                placeholder="Filter for tags, names, format..."
+                placeholder="Dienste filtern"
                 :no-resize="true"
                 :rows="1"
                 :max-rows="2">
@@ -73,7 +73,6 @@ export default {
             }
         },
         filteredServices: function () {
-            console.log("I will only show certified")
             if(this.certifiedOnly) return this.result.filter(e => e.certified==='true')
             else return this.result
         }
@@ -163,7 +162,7 @@ export default {
 }
 
 .settingsform {
-  width: 200px;
+  width: 250px;
   margin-left: 20px;
   margin-right: 20px;
 }

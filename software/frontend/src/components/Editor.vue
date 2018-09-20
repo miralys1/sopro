@@ -26,7 +26,6 @@
         :style="originStyle"
         class="noselect"
       >
-      origin
     </div>
 
     <svg
@@ -131,6 +130,12 @@
         :owner="isOwner"
         @optionsChanged="options=$event"/>
     </b-dropdown>
+    <b-button v-b-modal.helpmodal>
+        <v-icon
+          name="question-circle"
+          scale="1.7"
+        />
+    </b-button>
   </b-button-group>
   </b-button-toolbar>
 
@@ -167,6 +172,23 @@
         es fehlen die nötigen Berechtigungen zum Anschauen.</h4>
     </div>
     <b-btn class="mt-3" variant="outline-info" block @click="$router.push('/')">Zurück zum Workspace</b-btn>
+  </b-modal>
+  <b-modal no-fade id="helpmodal" ref="helpModalRef" hide-footer title="Hilfe" header-bg-variant="info">
+    <div class="d-block text-center">
+     <p align="left">
+      <h3>Kanten</h3> <br />
+        <span style="color:#28a745">Grüne Kante</span> - Diese Verbindung ist kompatibel <br />
+        <span style="color:#dc3545">Rote Kante</span>  - Diese Verbindung ist inkompatibel <br />
+        <span style="color:#ffc107">Gelbe Kante</span> - Diese Verbindung ist inkompatibel, es existieren aber Konverter zur herstellung der Kompatibilität
+      <h3>Bedienung</h3> <br />
+        <code> Linksklick </code> auf Kante mit alternative  - Zeige Alternativen an <br />
+        <code> Strg + Linksklick </code>  auf Knoten/Kante   - lösche Kante oder Knoten <br />
+        <code> Linksklick + Drag </code>  auf Knoten         - Knoten im Editor bewegen <br />
+        <code> Linksklick + Drag </code>  auf Bild im Knoten - neue Kante ziehen <br />
+        <code> Linksklick + Drag </code>  auf Hintergrund    - Hintergrund verschieben <br />
+        <code> Mausrad </code>                               - Zoom
+       </p>
+    </div>
   </b-modal>
 </div>
 </template>
@@ -265,7 +287,7 @@ export default {
   methods: {
       wheelEvent: function (event) {
           console.log("scale: " + this.scale)
-          this.zoom(5/event.deltaY);
+          this.zoom((-1)*(5/event.deltaY));
       },
       zoom: function (factor) {
           if(this.scale + factor >= 0.15
@@ -443,8 +465,8 @@ export default {
     border-width: 3px 1 1 1;
     border-color: black;
     border-style: solid;
-    width: 10px;
-    height: 10px;
+    width: 15px;
+    height: 15px;
     background-color:black;
 }
 

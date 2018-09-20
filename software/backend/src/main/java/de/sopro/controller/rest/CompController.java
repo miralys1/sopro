@@ -175,6 +175,11 @@ public class CompController {
 	 */
 	@RequestMapping(value = "/compositions/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> editComposition(@RequestBody DetailComp dComp, Principal principal) {
+
+		if (principal == null) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
 		// new composition must contain the id of an existing composition
 		if (dComp == null || !compRepo.findById(dComp.getId()).isPresent()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -196,6 +201,7 @@ public class CompController {
 
 		// update the old composition
 		newComp.setId(dComp.getId());
+		newComp.setPublic(opComp.get().isPublic());
 		compRepo.save(newComp);
 
 		return new ResponseEntity<>(HttpStatus.OK);

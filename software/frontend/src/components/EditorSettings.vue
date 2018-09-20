@@ -2,12 +2,12 @@
   <div class="wideform form-group">
   <b-form-group
       id="editorsettings"
-      label="Settings"
+      label="Einstellungen"
       label-for="input1">
     <b-form-checkbox id="origincheckbox"
                      v-model="showOrigin"
                      >
-      Show Origin
+      Ursprung anzeigen
     </b-form-checkbox>
   </b-form-group>
 
@@ -167,6 +167,7 @@ export default {
 .wideform {
   margin-left: 20px;
   margin-right: 20px;
+  width: 300px;
 }
 
 .emailinput {

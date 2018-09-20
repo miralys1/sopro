@@ -52,16 +52,16 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
         // populate empty repositories with example data
         if (userRepo.count() == 0) {
 
-            UserRegistrationDto dark = new UserRegistrationDto("drake",
-                    "dunkel", "123", "Dr.", "d@d.de");
+            UserRegistrationDto dark = new UserRegistrationDto("Armin",
+                    "Admin", "passwort", "Dr.", "admin@admin.com");
             User user = userservice.save(dark);
             user.setAdmin(true);
             userRepo.save(user);
             // add users
 
-            UserRegistrationDto dum = new UserRegistrationDto("dummi", "dumm",
-                    "password",
-                    "Prof.", "du@d.com");
+            UserRegistrationDto dum = new UserRegistrationDto("Max", "Mustermann",
+                    "passwort",
+                    "Prof.", "max@mustermann.de");
 
             userservice.save(dum);
 

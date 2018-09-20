@@ -66,6 +66,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail(registration.getEmail());
         user.setPassword(passwordEncoder.encode(registration.getPassword()));
 
+        user.setOwnsComp(new ArrayList<>());
+        user.setEditable(new ArrayList<>());
+        user.setViewable(new ArrayList<>());
 
         if(registration.getTitle() == null){
             user.setTitle("");
