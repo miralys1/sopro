@@ -202,6 +202,38 @@ public class CompController {
 	}
 
 	/**
+	 * Allows to change the public status of the Compostition
+	 * 
+	 * @param id
+	 *            id of the COmposition which public status should be set
+	 * @param principal
+	 *            contains information about the logged in user. {@code null} means
+	 *            nobody is logged in.
+	 * @param pub
+	 *            determines whether the Composition should be public or not
+	 * @return {@code HttpStatus.OK} on success
+	 */
+	@RequestMapping(value = "/compositions/{id}/public", method = RequestMethod.PUT)
+	public ResponseEntity<Void> setPublic(@PathVariable long id, Principal principal, @RequestBody boolean pub) {
+		Optional<Composition> opComp = compRepo.findById(id);
+		// composition that should be deleted must exist
+		if (!opComp.isPresent()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		Composition comp = opComp.get();
+
+		// logged in user must have the rights to deleted the composition
+		if (principal == null || userRepo.findByEmail(principal.getName()).getId() != comp.getOwner().getId()) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
+		comp.setPublic(pub);
+		compRepo.save(comp);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	/**
 	 * Allows to delete a composition.
 	 * 
 	 * @param compId
