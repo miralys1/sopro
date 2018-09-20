@@ -10,6 +10,7 @@
           :params="params"
           :key="node.id"
           :service="node.sendService"
+          :editable="editable"
           :ix="node.x"
           :iy="node.y"
           @startDrag="startDrag"
@@ -76,14 +77,15 @@
     />
   </svg>
   <SidePanel
-        v-if="services!==null"
+        v-if="services!==null && editable"
         v-show="sidePanelShow"
         style="position:absolute;top:0px;left:0px"
         :services="services"
         @newNode="createNewNode"
   />
   <b-button-toolbar style="position:absolute;top:10px;right: 40px;" key-nav aria-label="Editor toolbar">
-  <b-button-group class="mx-1">
+    <b-button-group class="mx-1"
+                    v-if="editable">
     <b-button :pressed.sync="sidePanelShow" variant="primary">
         <v-icon
           name="columns"
@@ -109,7 +111,8 @@
     </b-button>
   </b-button-group>
   <b-button-group class="mx-1">
-    <b-button @click="save" variant="success">
+    <b-button @click="save" variant="success"
+              v-if="editable">
         <v-icon
           name="save"
           scale="1.7"
@@ -157,6 +160,13 @@
           </b-col>
          </b-row>
         </b-container>
+  </b-modal>
+  <b-modal no-fade ref="noPermissions" hide-footer title="Hoppla! Etwas ist schiefgelaufen" header-bg-variant="danger">
+    <div class="d-block text-center">
+      <h4>Fehler! <br /> Entweder existiert diese Komposition nicht oder
+        es fehlen die nötigen Berechtigungen zum Anschauen.</h4>
+    </div>
+    <b-btn class="mt-3" variant="outline-info" block @click="$router.push('/')">Zurück zum Workspace</b-btn>
   </b-modal>
 </div>
 </template>
@@ -226,6 +236,7 @@ export default {
           insertingNode: false,
 
           isOwner: false,
+          editable: false,
           newNodeX: 0,
           newNodeY: 0,
           newNodeId: null,
@@ -326,11 +337,15 @@ export default {
           this.sidePanelShow = false
       },
       handleDeleteLink: function (event) {
-          this.links = this.links.filter(e => (e.id + '-link') != event)
+          if(this.editable) {
+            this.links = this.links.filter(e => (e.id + '-link') != event)
+          }
       },
       handleDeleteNode: function (event) {
-          this.nodes = this.nodes.filter(e => e.id != event)
-          this.links = this.links.filter(e => e.node1 != event && e.node2 != event)
+          if(this.editable) {
+            this.nodes = this.nodes.filter(e => e.id != event)
+            this.links = this.links.filter(e => e.node1 != event && e.node2 != event)
+          }
       },
       setLinkComp: function (event) {
           this.links.find(e => (e.id + '-link')===event.id).compatibility = event.comp;
@@ -388,12 +403,13 @@ export default {
           .then(response => {
                     this.isOwner = response.data.isOwner
                     this.composition = response.data
+                    this.editable = response.data.editable
                     this.nodes = this.composition.nodes //.map(e => ({id: e.id, x: e.x, y: e.y, sendService: e.sendService}))
                     this.links = this.composition.edges.map(e => ({id: e.id, node1: e.source.id, node2: e.target.id, compatibility: e.compatibility}))
                     this.gotData = true
                 }
                )
-          .catch(error => console.log(error))
+          .catch(error => this.$refs.noPermissions.show())
 
     document.documentElement.addEventListener('mousemove', this.mouseMove, true)
     this.originX = this.$el.clientWidth / 2
