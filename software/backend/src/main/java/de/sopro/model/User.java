@@ -183,7 +183,7 @@ public class User {
 	}
 
 	public String getFullName() {
-		return firstname + " " + lastname;
+		return title + " " + firstname + " " + lastname;
 	}
 
 	/**
@@ -192,7 +192,7 @@ public class User {
 	 * @return a SimpleUser that represents the User
 	 */
 	public SimpleUser createSimpleUser() {
-		return new SimpleUser(this.id, this.firstname, this.lastname);
+		return new SimpleUser(this.id, this.firstname, this.lastname, this.title);
 	}
 
 	/**
