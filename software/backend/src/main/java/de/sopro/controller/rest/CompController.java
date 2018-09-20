@@ -82,10 +82,19 @@ public class CompController {
 		// if user is logged in, editable, viewable, owning and public composition are
 		// shown
 
+		// the compositions the logged in user owns should not be in the public list
+		List<Composition> publicComps = compRepo.findByIsPublic(true);
+		List<Composition> newPublics = new ArrayList<>();
+		for (Composition comp : publicComps) {
+			if (comp.getOwner().getId() != user.getId()) {
+				newPublics.add(comp);
+			}
+		}
+
 		return new ResponseEntity<CompLists>(new CompLists(convertListToSimple(user.getOwnsComp(), user.getId()),
 				convertListToSimple(user.getEditable(), user.getId()),
-				convertListToSimple(user.getViewable(), user.getId()),
-				convertListToSimple(compRepo.findByIsPublic(true), user.getId())), HttpStatus.OK);
+				convertListToSimple(user.getViewable(), user.getId()), convertListToSimple(newPublics, user.getId())),
+				HttpStatus.OK);
 
 	}
 
@@ -338,7 +347,7 @@ public class CompController {
 	 * @param comps
 	 *            list of Compositions that should be converted
 	 * @param userID
-	 *            id of the owner of the Compositions in {@code comps}
+	 *            id of the user that is logged in
 	 * @return a list of SimpleComp representing {@code comps}.
 	 */
 	private List<SimpleComp> convertListToSimple(Iterable<Composition> comps, long userID) {
