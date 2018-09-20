@@ -3,22 +3,42 @@ package de.sopro.model.send;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * A SimpleComp represents a Composition with less information
+ * 
+ * @author HRS3-R.105B
+ *
+ */
 public class SimpleComp {
 
+	/* required variables */
 	private SimpleUser owner;
 	private long id;
 	private String name;
 	private boolean editable;
 
+	/**
+	 * creates a SimpleComp with the given values.
+	 * 
+	 * @param id
+	 *            id of the Composition that should be represented
+	 * @param owner
+	 *            owner of the Composition
+	 * @param name
+	 *            name of the Composition
+	 * @param editable
+	 *            determines whether the Composition is editable by a user
+	 */
 	@JsonCreator
 	public SimpleComp(@JsonProperty("id") long id, @JsonProperty("owner") SimpleUser owner,
-			@JsonProperty("name") String name, @JsonProperty("editable")boolean editable) {
+			@JsonProperty("name") String name, @JsonProperty("editable") boolean editable) {
 		this.id = id;
 		this.owner = owner;
 		this.name = name;
 		this.editable = editable;
 	}
 
+	/* getter and setter */
 	public SimpleUser getOwner() {
 		return owner;
 	}
@@ -51,6 +71,9 @@ public class SimpleComp {
 		this.editable = editable;
 	}
 
+	/**
+	 * converts the SimpleComp to a String
+	 */
 	public String toString() {
 		return name;
 	}
