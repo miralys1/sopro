@@ -12,6 +12,7 @@
             </span>
             <b-form-group
                 id="filtersettings"
+                class="settingsform"
                 label="settings">
 
                 <b-form-checkbox id="certifiedButton"
@@ -34,8 +35,8 @@
       </div>
       <b-container class="nodegrid">
       <b-row>
-        <b-col v-for="service in result" >
-          <Node :params="{originX: 0, originY: 0, scale: 0.9}"
+        <b-col v-for="service in filteredServices" >
+          <Node   :params="{originX: 0, originY: 0, scale: 0.9}"
                   :noIcons="true"
                   :service="service"
                   :key="service.id"
@@ -73,13 +74,14 @@ export default {
         },
         filteredServices: function () {
             console.log("I will only show certified")
-            return this.certifiedOnly ? this.services.filter(e => e.certified) : this.services
+            if(this.certifiedOnly) return this.result.filter(e => e.certified==='true')
+            else return this.result
         }
     },
     watch: {
         query: function () {
-            if(this.query=='') this.result = this.filteredServices;
-            else return this.$search(this.query, this.filteredServices, this.options)
+            if(this.query=='') this.result = this.services;
+            else return this.$search(this.query, this.services, this.options)
                         .then(e => this.result = e);
         }
     },
@@ -158,6 +160,12 @@ export default {
 /* .slide-fade-leave-active below version 2.1.8 */ {
   transform: translateX(10px);
   opacity: 0;
+}
+
+.settingsform {
+  width: 200px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .nodegrid {

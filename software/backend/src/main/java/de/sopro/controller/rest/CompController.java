@@ -175,12 +175,19 @@ public class CompController {
 	 */
 	@RequestMapping(value = "/compositions/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> editComposition(@RequestBody DetailComp dComp, Principal principal) {
+
+		if(principal == null){
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
 		// new composition must contain the id of an existing composition
 		if (dComp == null || !compRepo.findById(dComp.getId()).isPresent()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 		Optional<Composition> opComp = compRepo.findById(dComp.getId());
+
+
 
 		User user = userRepo.findByEmail(principal.getName());
 		// User is not logged in or not authorized to edit the composition

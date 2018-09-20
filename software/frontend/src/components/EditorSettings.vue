@@ -40,7 +40,6 @@
           <ul class="list-group">
               <li v-for="user in users"
                   class="list-group-item">
-
                     <b-form-checkbox :id="user.id + '-edit'"
                                      :checked="{id: user.id, permissions: user.canEdit ? 'editor' : 'viewer'}"
                                      @change="setPermissions"
@@ -50,6 +49,9 @@
                     edit
                     </b-form-checkbox>
                     {{ user.name }}
+                    <div  @click="deleteUser(user.id)" type="display:inline-block" >
+                        <v-icon name="minus-square" scale="1" color="red"/>
+                    </div>
               </li>
           </ul>
       </div>
@@ -95,12 +97,28 @@ export default {
                 })
                 .catch(error => alert( error + " Maybe User doesn't' exist"))
         },
+        deleteUser(id) {
+            this.axios({
+                    method: 'delete',
+                    url: '/compositions/' + this.compId + '/users/' + id,
+                })
+                .then(response => {
+                    console.log('user deleted')
+                    this.users = this.users.filter(u => u.id!==id)
+                })
+                .catch(error => alert( error + " Maybe User doesn't' exist"))
+        },
         getPermissions () {
             if(this.owner) {
                 this.axios.get('/compositions/' + this.compId + '/users')
                 .then(response => {
                     this.users = response.data.viewers.map(u => ({id: u.id, name: u.fullName, canEdit: false}))
                         .concat(response.data.editors.map(u => ({id: u.id, name: u.fullName, canEdit: true})))
+                })
+                .catch(error => console.log(error))
+                this.axios.get('/compositions/' + this.compId + '/public')
+                .then(response => {
+                    this.isPublic = response.data
                 })
                 .catch(error => console.log(error))
             }
@@ -125,6 +143,18 @@ export default {
             console.log('config changed');
             console.log(this.config);
             this.$emit("optionsChanged", this.config)
+        },
+        isPublic () {
+            this.axios({
+                    method: 'put',
+                    url: '/compositions/' + this.compId + '/public',
+                    headers: {"Content-Type": "application/json" },
+                    data: this.isPublic
+                })
+                .then(response => {
+                    console.log('made ' + (this.isPublic ? 'public' : 'private'))
+                })
+                .catch(error => alert( error + " Maybe User doesn't' exist"))
         }
     },
     mounted () {
@@ -140,7 +170,7 @@ export default {
 }
 
 .emailinput {
-  width: 250px;
+  width: 300px;
   margin-top: 10px;
   margin-bottom: 10px;
 }
