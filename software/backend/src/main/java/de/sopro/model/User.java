@@ -18,11 +18,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import de.sopro.model.send.DetailUser;
 import de.sopro.model.send.SimpleUser;
 
+/**
+ * A User represents a User of our application
+ * 
+ * @author HRS3-R.105B
+ *
+ */
 @Entity
 public class User {
 
+	/* class variables */
 	public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
+	/* required variables */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -44,10 +52,8 @@ public class User {
 	@NotBlank
 	private String password;
 
-	private String [] roles;
+	private String[] roles;
 
-	// CascadeType.ALL => if you delete an User then all compositions associated
-	// with that User also be deleted
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	private List<Composition> ownsComp;
 
@@ -62,6 +68,20 @@ public class User {
 
 	}
 
+	/**
+	 * creates a User with the given values
+	 * 
+	 * @param firstname
+	 *            first name of the User
+	 * @param lastname
+	 *            last name of the User
+	 * @param email
+	 *            email of the user
+	 * @param title
+	 *            title of the user
+	 * @param isAdmin
+	 *            determines whether the user is an admin
+	 */
 	public User(String firstname, String lastname, String email, String title, boolean isAdmin) {
 		this.firstname = firstname;
 		this.lastname = lastname;
@@ -73,6 +93,7 @@ public class User {
 		this.editableComps = new ArrayList<Composition>();
 	}
 
+	/* getter and setter */
 	public Long getId() {
 		return id;
 	}
@@ -145,19 +166,19 @@ public class User {
 		this.editableComps = editable;
 	}
 
-	public String getPassword(){
+	public String getPassword() {
 		return password;
 	}
-	
-	public void setPassword(String password){
+
+	public void setPassword(String password) {
 		this.password = PASSWORD_ENCODER.encode(password);
 	}
 
-	public String[] getRole(){
+	public String[] getRole() {
 		return roles;
 	}
 
-	public void setRole(String[] roles){
+	public void setRole(String[] roles) {
 		this.roles = roles;
 	}
 
@@ -165,14 +186,27 @@ public class User {
 		return firstname + " " + lastname;
 	}
 
+	/**
+	 * converts the User to a SimpleUser
+	 * 
+	 * @return a SimpleUser that represents the User
+	 */
 	public SimpleUser createSimpleUser() {
 		return new SimpleUser(this.id, this.firstname, this.lastname);
 	}
 
+	/**
+	 * converts the User to a DetailUser
+	 * 
+	 * @return a DetailUser that represents the User
+	 */
 	public DetailUser createDetailUser() {
 		return new DetailUser(this.email, this.title, this.admin, this.firstname, this.lastname, this.id);
 	}
 
+	/**
+	 * converts the User to a String
+	 */
 	public String toString() {
 		return getFullName();
 	}
