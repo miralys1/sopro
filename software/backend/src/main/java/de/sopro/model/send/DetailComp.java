@@ -79,7 +79,7 @@ public class DetailComp extends SimpleComp {
 	 * 
 	 * @param owner
 	 *            User that should own the Composition
-	 * @return
+	 * @return a COmposition representing the DetailComp
 	 */
 	public Composition createComposition(User owner) {
 		List<CompositionEdge> edges = new ArrayList<>();
