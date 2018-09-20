@@ -100,7 +100,7 @@
     <b-button id="addIn" class="small" style="float:left; margin-right: 0.5vw;" @click = "addInputFormat">+ Input</b-button>
     <b-button id="deleteIn" class="small" style="float:left;" @click = "deleteInputFormat">- Input</b-button>
     <b-button id="deleteOut" class= "small" style="float:right; margin-left: 0.5vw;" @click = "deleteOutputFormat">- Output</b-button>
-    <b-button id="addIn" class= "small" style="float:right;" @click = "addOutputFormat">+ Output</b-button>
+    <b-button id="addOut" class= "small" style="float:right;" @click = "addOutputFormat">+ Output</b-button>
 
     <br><br>
 
