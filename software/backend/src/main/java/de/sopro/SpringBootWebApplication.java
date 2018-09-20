@@ -3,6 +3,8 @@ package de.sopro;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.sopro.security.UserRegistrationDto;
+import de.sopro.security.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -39,6 +41,9 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 	@Autowired
 	private CompositionRepository compRepo;
 
+	@Autowired
+	UserService userservice;
+
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(SpringBootWebApplication.class, args);
 	}
@@ -48,17 +53,18 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 		// populate empty repositories with example data
 		if (userRepo.count() == 0) {
 
+			UserRegistrationDto dark = new UserRegistrationDto("drake",
+					"dunkel", "123", "Dr.", "d@d.de");
+			User user = userservice.save(dark);
+			user.setAdmin(true);
+			userRepo.save(user);
 			// add users
-			User dark = new User("drake", "dunkel", "d@d.de", "Dr.", true);
-			dark.setPassword("123");
-			dark.setRole(new String[] { "ADMIN" });
 
-			User dum = new User("dummi", "dumm", "du@d.com", "Prof.", false);
-			dum.setPassword("password");
-			dum.setRole(new String[] { "USER" });
+			UserRegistrationDto dum = new UserRegistrationDto("dummi", "dumm",
+					"password",
+					"Prof.",	"du@d.com");
 
-			userRepo.save(dark);
-			userRepo.save(dum);
+			userservice.save(dum);
 
 			// add tags
 			String[] ts = { "3D", "Modeller", "Visualisierung", "Modellierung" };
@@ -107,12 +113,12 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 			List<CompositionEdge> edges = new ArrayList<>();
 			edges.add(e);
 
-			Composition c = new Composition(dark, "MyComp", true, nodes, edges);
+			Composition c = new Composition(user, "MyComp", true, nodes, edges);
 			compRepo.save(c);
 
-			List<Composition> owns = dark.getOwnsComp();
+			List<Composition> owns = user.getOwnsComp();
 			owns.add(c);
-			dark.setOwnsComp(owns);
+			user.setOwnsComp(owns);
 		}
 	}
 
