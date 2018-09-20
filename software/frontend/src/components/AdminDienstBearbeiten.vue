@@ -90,8 +90,25 @@ methods: {
     this.axios.get('/services')
              .then(response => {
              this.services = response.data;
-             this.preSearched = this.services
-             this.foundServices = this.preSearched;}
+             if(this.cert == 1) {
+               this.preSearched = this.services;
+               this.foundServices = this.preSearched;
+               this.serviceSelected = false;
+               this.search();
+             }
+             if(this.cert == 2) {
+               this.preSearched = this.services.filter(object => object.certified == "true");
+               this.foundServices = this.preSearched;
+               this.serviceSelected = false;
+               this.search();
+             }
+             if(this.cert == 3) {
+               this.preSearched = this.services.filter(object => object.certified == "false");
+               this.foundServices = this.preSearched;
+               this.serviceSelected = false;
+               this.search();
+             }
+           }
                  )
              .catch(function (error) {
               alert("Fehler beim Abfragen der Dienste vom Server.");
