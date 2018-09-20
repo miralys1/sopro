@@ -3,7 +3,7 @@
     :d="svgPath"
     :marker-mid="'url(#arrow-' + state + ')'"
     @click.ctrl="deleteLink"
-    @click="clickArrow"
+    @click.exact="clickArrow"
     :style="style">
   </path>
 </template>
@@ -26,8 +26,7 @@ export default {
         style: function () {
             return {
                 stroke: this.color,
-                strokeWidth: 20 * this.params.scale,
-                border: "2px solid black"
+                strokeWidth: 20 * this.params.scale
             }
         },
         color: function () {
