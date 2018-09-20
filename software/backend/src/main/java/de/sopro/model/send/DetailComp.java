@@ -9,12 +9,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.sopro.model.Composition;
 import de.sopro.model.CompositionEdge;
 import de.sopro.model.CompositionNode;
-import de.sopro.model.User;
+import de.sopro.model.User.User;
 
 public class DetailComp extends SimpleComp {
 
 	private List<Node> nodes;
 	private List<Edge> edges;
+	private boolean isOwner;
 
 	@JsonCreator
 	public DetailComp(@JsonProperty("id") long id, @JsonProperty("owner") SimpleUser owner,
@@ -24,6 +25,15 @@ public class DetailComp extends SimpleComp {
 		this.nodes = nodes;
 		this.edges = edges;
 	}
+
+	public void setIsOwner(boolean owner){
+		this.isOwner= owner;
+	}
+
+	public boolean getIsOwner(){
+		return isOwner;
+	}
+
 
 	public List<Node> getNodes() {
 		return nodes;
