@@ -1,7 +1,17 @@
 <template>
   <div class = "out">
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-      <b-button variant="danger" style="float:left;" v-if="pedit" v-on:click="onDelete">Löschen</b-button>
+      <!-- delete button which is only available if a service is edited and opens a confirmation dialogue -->
+      <b-button v-b-modal.Prevent variant="danger" style="float:left;" v-if="pedit">Löschen</b-button>
+      <b-modal id="Prevent"
+            cancel-title = "Abbrechen"
+            ok-variant = "danger"
+            ok-title =  "Löschen"
+            @ok="onDelete"
+            title = "Bestätigen">
+            Sind Sie sicher, dass Sie löschen wollen?
+      </b-modal>
+
       <b-button type="submit" variant="primary" style="float:right;margin-left: 0.5vw;">Speichern</b-button>
       <b-button type="reset" variant="warning" style="float:right;">Reset</b-button>
       <br><br>
@@ -63,6 +73,7 @@
 
 
       <br> <br>
+      <!-- dynamic generation of tags with appended dropdown to show suggestions -->
       <div v-for= "(tag,index) in form.tags" v-if = "showTag">
 
         <b-input-group prepend="Tag">
@@ -72,7 +83,9 @@
                         required>
           </b-form-input>
           <b-input-group-append>
+            <!-- before opening the dropdown a fitting list of approximatly matching tags is computed -->
             <b-dropdown id="ddown-buttons" text="Vorschlag" v-on:show="selectTags(index)">
+              <!-- each button calls a method taking the index of the tag it belongs to an the id of the selected Tag within the tagSelection-List as arguments -->
                <b-dropdown-item-button v-for="(tag,id) in tagSelection" v-on:click="dropdownClick(index,id)"> {{tagSelection[id].name}} </b-dropdown-item-button>
             </b-dropdown>
 
@@ -83,6 +96,7 @@
 
      <br>
 
+     <!-- dynamic gerneration of in- and outputformat miniforms -->
     <b-button id="addIn" class="small" style="float:left; margin-right: 0.5vw;" @click = "addInputFormat">+ Input</b-button>
     <b-button id="deleteIn" class="small" style="float:left;" @click = "deleteInputFormat">- Input</b-button>
     <b-button id="deleteOut" class= "small" style="float:right; margin-left: 0.5vw;" @click = "deleteOutputFormat">- Output</b-button>
@@ -93,7 +107,7 @@
     <div>
       <div  class = "left" style.overflow= "hidden">
         <div v-for="(inputFormat, index) in form.formatIn" class = "lefter">
-          <!-- <b-form> -->
+
           <h5>{{index + 1}}. Input Format</h5>
           <b-form-group :id="'InpFormatType' + index"
                         label="Typ:"
@@ -171,6 +185,7 @@
 export default {
 
   created() {
+    //if the component is not used in editing mode no empty in- and output Format is shown
     if(!this.pedit) {
       this.deleteInputFormat();
       this.deleteOutputFormat();
@@ -263,8 +278,10 @@ export default {
     },
 
     dropdownClick(index,id){
+      //tag input is updated to the selected tag
       this.form.tags[index] = this.tagSelection[id].name;
 
+      //updating tag form fields to directly show the changed input
       this.showTag = false;
       this.$nextTick(() => { this.showTag = true });
 
@@ -305,11 +322,11 @@ export default {
       evt.preventDefault();
 
       try{
+        //preventing services without in and output Formats
         if(this.form.formatIn.length == 0 && this.form.formatOut.length == 0) {throw "Bitte geben Sie mindestens ein Ein- oder Ausgabeformat an."}
 
         if(this.pedit) {
-
-
+          //if component is in edit mode the date won't be changed
         this.axios({
           url: '/services/' + this.form.id,
           method: 'put',
@@ -317,10 +334,12 @@ export default {
           headers: {
             "Content-Type": "application/json"
           }
+          //tags are updated so the new ones will be seen if the component is used continuously
         }).then(response => { alert("Erfolg"); this.$emit('noForm'); this.tagUpdate();})
           .catch(function (error) {alert(error);});
 
         } else {
+          //a service is newly introduced and needs a date
         this.form.date = Date.now();
 
         this.axios({
@@ -341,11 +360,12 @@ export default {
     },
     onReset (evt) {
       evt.preventDefault();
-      /* Reset our form values */
+      // Reset our form values to the unchanged ones if editing mode is active
       if(this.pedit){
        this.form = JSON.parse(JSON.stringify(this.pform));
 
       } else {
+        //Reset to blank form if service is newly entered
             this.form.organisation = ""
             this.form.name = "";
             this.form.certified = "";

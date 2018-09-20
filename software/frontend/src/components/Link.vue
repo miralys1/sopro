@@ -95,7 +95,7 @@ export default {
         },
         clickArrow: function (event) {
             if(this.state==='alternative') {
-                this.$emit('showAlternative', this.compatibleServices)
+                this.$emit('showAlternative', this.compatibility.compatibleServices)
             }
         }
     }
