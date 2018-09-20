@@ -2,12 +2,17 @@ package swarm.swarmcomposerapp.ActivitiesAndViews;
 
 import android.app.ActivityManager;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +20,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import swarm.swarmcomposerapp.Model.Composition;
+import swarm.swarmcomposerapp.Model.Edge;
 import swarm.swarmcomposerapp.Model.LocalCache;
 import swarm.swarmcomposerapp.Model.Node;
 import swarm.swarmcomposerapp.Model.Service;
@@ -27,8 +33,10 @@ import swarm.swarmcomposerapp.Utils.PDFCreator;
 public class DetailActivity extends AppCompatActivity implements IResponse {
 
     private Composition comp;
-    private TextView tTitle, tLoading, tOwner;
-    private TextView col1, col2, col3, col4;
+    private TextView tTitle, tLoading, tOwner, tLastUpdated;
+    private TextView col1, col2, col3, col4, col5;
+    private LinearLayout serviceInfo;
+    private ScrollView scrollView;
     private ProgressBar progressBar;
     private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy HH:mm");
     private int position; //(app-)internal id
@@ -50,8 +58,12 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
         col2 = findViewById(R.id.text_col2);
         col3 = findViewById(R.id.text_col3);
         col4 = findViewById(R.id.text_col4);
+        col5 = findViewById(R.id.text_col5);
+        scrollView = findViewById(R.id.edge_list);
         tLoading = findViewById(R.id.text_loading3);
         tOwner = findViewById(R.id.text_owner);
+        serviceInfo = findViewById(R.id.serviceInfo);
+        tLastUpdated = findViewById(R.id.lastUpdate);
 
         //retrieve the (app-)internal id of the composition
         Intent intent = getIntent();
@@ -75,37 +87,63 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
             tOwner.setText(comp.getOwner().getFullName());
             col1.setText(getText(R.string.lastupdate) + " " + dateFormat.format(comp.getLastUpdate()));
             compositionView.setComp(comp);
+            tLastUpdated.setText(getText(R.string.lastupdate)+": "+dateFormat.format(comp.getLastUpdate()*1000));
+            setEdgeList();
         } else {
             showLoading(true);
         }
     }
 
-    public void onNodeSelected(Node node) {
-        String col1text = getText(R.string.lastupdate) + ": ";
+    public void onNodeSelected(Node node){
+        String col1text = "";
         String col2text = "";
-        String col3text = "";
-        String col4text = "";
-        if (node != null) {
+        if(node != null) {
             col1text = getText(R.string.service_name) + ": \n" + getText(R.string.service_organisation) + ": \n"
-                    + getText(R.string.service_version) + ": \n" + getText(R.string.service_date)
-                    + ": \n" + getText(R.string.service_certified) + ": \n" + col1text;
+                            +getText(R.string.service_version) + ": \n"+getText(R.string.service_date)
+                            + ": \n"+getText(R.string.service_certified) + ": \n";
 
             Service service = node.getSendService();
-            col2text += service.getServiceName() + "\n";
-            col2text += service.getOrganisation() + "\n";
-            col2text += service.getVersion() + "\n";
-            col2text += dateFormat.format(service.getDate()) + "\n";
-            if (service.getCertified() != null && service.getCertified().equals("true")) {
-                col2text += getText(R.string.service_certified_yes) + "\n";
+            col2text +=  service.getServiceName()+"\n";
+            col2text +=  service.getOrganisation()+"\n";
+            col2text +=  service.getVersion()+"\n";
+            col2text +=  dateFormat.format(service.getDate()*1000)+"\n";
+            if(service.getCertified() != null && service.getCertified().equals("true")){
+                col2text +=  getText(R.string.service_certified_yes)+"\n";
             } else {
                 col2text += getText(R.string.service_certified_no) + "\n";
             }
         }
-        col2text += dateFormat.format(comp.getLastUpdate());
         col1.setText(col1text);
         col2.setText(col2text);
+
+        scrollView.setVisibility((node == null) ? View.VISIBLE : View.GONE);
+        serviceInfo.setVisibility((node == null) ? View.GONE : View.VISIBLE);
+    }
+
+    private void setEdgeList(){
+        String col3text = "";
+        String col4text = "";
+        String col5text = "";
+
+        for(Edge e : comp.getEdgeList()){
+            col3text += e.getOut().getSendService().getServiceName()+"\n";
+            col5text += e.getIn().getSendService().getServiceName()+"\n";
+            if(e.getCompatibility().isCompatible()){
+                //compatible
+                col4text+="<font color='green'>"+getText(R.string.ic_compatible)+"</font><br>";
+            } else if (e.getCompatibility().getAlternatives().isEmpty()){
+                //incompatible
+                col4text+="<font color='red'>"+getText(R.string.ic_incompatible)+"</font><br>";
+            } else {
+                //alternative
+                col4text+="<font color='#ffa500'>"+getText(R.string.ic_alternative)+"</font><br>";
+            }
+        }
         col3.setText(col3text);
-        col4.setText(col4text);
+        col4.setText(Html.fromHtml(col4text));
+        col5.setText(col5text);
+        scrollView.setVisibility(View.VISIBLE);
+        serviceInfo.setVisibility(View.GONE);
     }
 
     /**
@@ -115,10 +153,10 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
      */
     private void showLoading(boolean activate) {
         tLoading.setVisibility(activate ? View.VISIBLE : View.GONE);
+        serviceInfo.setVisibility(View.GONE);
         col1.setVisibility(activate ? View.GONE : View.VISIBLE);
         col2.setVisibility(activate ? View.GONE : View.VISIBLE);
-        col3.setVisibility(activate ? View.GONE : View.VISIBLE);
-        col4.setVisibility(activate ? View.GONE : View.VISIBLE);
+        scrollView.setVisibility(activate ? View.GONE : View.VISIBLE);
         tTitle.setVisibility(activate ? View.GONE : View.VISIBLE);
         progressBar.setVisibility(activate ? View.VISIBLE : View.GONE);
         compositionView.setVisibility(activate ? View.GONE : View.VISIBLE);
@@ -135,13 +173,36 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
      */
     public void sendComposition(View v) {
         //TODO create PDF, open share_dialog
-        if (comp != null) {
-            String path = PDFCreator.createPDF(this, this, comp);
+        if(comp != null) {
+
+            String path = PDFCreator.createPDF(this, this, comp, getBitmapFromView(compositionView));
             openShareDialog(path);
         }
     }
 
-    private void openShareDialog(String path) {
+    private Bitmap getBitmapFromView(View view) {
+        //Define a bitmap with the same size as the view
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+        //Bind a canvas to it
+        Canvas canvas = new Canvas(returnedBitmap);
+        /*
+        //Get the view's background
+        Drawable bgDrawable =view.getBackground();
+        if (bgDrawable!=null) {
+            //has background drawable, then draw it on the canvas
+            bgDrawable.draw(canvas);
+        }   else{
+            //does not have background drawable, then draw white background on the canvas
+            canvas.drawColor(Color.WHITE);
+        }
+        */
+        // draw the view on the canvas
+        view.draw(canvas);
+        //return the bitmap
+        return returnedBitmap;
+    }
+
+    private void openShareDialog(String path){
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("application/pdf");
 
@@ -154,7 +215,7 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         //permission to write to storage has been granted
-        String path = PDFCreator.createPDF(this, this, comp);
+        String path = PDFCreator.createPDF(this, this, comp, getBitmapFromView(compositionView));
         openShareDialog(path);
     }
 
@@ -179,6 +240,7 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
             col1.setText(getText(R.string.lastupdate) + " " + dateFormat.format(comp.getLastUpdate()));
             Log.i("DetailActivity", "View should receive Comp with " + comp.getNodeList().size() + " nodes");
             compositionView.setComp(comp);
+            setEdgeList();
         } else {
             if (noNodes) {
                 Toast.makeText(getApplicationContext(), "There are no nodes within this composition", Toast.LENGTH_SHORT).show();

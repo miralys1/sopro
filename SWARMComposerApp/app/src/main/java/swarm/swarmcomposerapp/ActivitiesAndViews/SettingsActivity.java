@@ -29,7 +29,7 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
     }
     private LastRequest state = LastRequest.NONE;
     private Button bLogin, bLogout, bAddress;
-    private EditText tEmail, tPassword, tServerAdress;
+    private EditText tEmail, tPassword, tServerAddress;
     private TextView tLogin, tLoading, bList, bHelp;
     private ProgressBar progressBar;
     private String email;
@@ -55,7 +55,7 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
         tLogin = findViewById(R.id.text_login);
         tPassword = findViewById(R.id.text_password);
         tEmail = findViewById(R.id.text_username);
-        tServerAdress = findViewById(R.id.text_serverAddress);
+        tServerAddress = findViewById(R.id.text_serverAddress);
         bLogin = findViewById(R.id.button_login);
         bLogout = findViewById(R.id.button_logout);
         bAddress = findViewById(R.id.button_address);
@@ -131,7 +131,7 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
      */
     public void updateServerAddress(View v){
         //TODO also log out if logged in??
-        serverAddress = tServerAdress.getText().toString();
+        serverAddress = tServerAddress.getText().toString();
         if(serverAddress.isEmpty()){
             Toast.makeText(getApplicationContext(), getText(R.string.err_text_serveraddressmissing), Toast.LENGTH_SHORT).show();
         } else {
@@ -181,7 +181,7 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
         bHelp.setEnabled(!activate);
         bList.setEnabled(!activate);
         tPassword.setEnabled(!activate);
-        tServerAdress.setEnabled(!activate);
+        tServerAddress.setEnabled(!activate);
         tEmail.setEnabled(!activate);
         bLogout.setEnabled(!activate);
         bLogin.setEnabled(!activate);
@@ -252,7 +252,7 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
             tEmail.setText(email);
         serverAddress = cache.getServerAddress();
         if(serverAddress != null)
-            tServerAdress.setText(serverAddress);
+            tServerAddress.setText(serverAddress);
     }
 }
 
