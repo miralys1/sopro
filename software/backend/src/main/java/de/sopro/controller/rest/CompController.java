@@ -26,8 +26,6 @@ import de.sopro.model.send.DetailComp;
 import de.sopro.model.send.Edge;
 import de.sopro.model.send.Node;
 import de.sopro.model.send.SimpleComp;
-import de.sopro.repository.CompositionEdgeRepository;
-import de.sopro.repository.CompositionNodeRepository;
 import de.sopro.repository.CompositionRepository;
 import de.sopro.repository.ServiceRepository;
 import de.sopro.repository.UserRepository;
@@ -46,10 +44,6 @@ public class CompController {
 	private CompositionRepository compRepo;
 	@Autowired
 	private UserRepository userRepo;
-	@Autowired
-	private CompositionNodeRepository nodeRepo;
-	@Autowired
-	private CompositionEdgeRepository edgeRepo;
 	@Autowired
 	private ServiceRepository serviceRepo;
 
@@ -261,7 +255,6 @@ public class CompController {
 			CompositionNode node = new CompositionNode(n.getX(), n.getY(),
 					serviceRepo.findById(n.getSendService().getId()).get());
 			nodes.add(node);
-			nodeRepo.save(node);
 			nodeIds.put(oldId, node);
 		}
 		// change Edge to CompositionEdges without ids
@@ -277,7 +270,6 @@ public class CompController {
 
 			CompositionEdge edge = new CompositionEdge(source, target);
 			edges.add(edge);
-			edgeRepo.save(edge);
 		}
 
 		// owner of the composition must exist
