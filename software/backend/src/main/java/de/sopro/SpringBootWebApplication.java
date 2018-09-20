@@ -44,6 +44,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 	@Autowired
 	UserService userservice;
 
+
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(SpringBootWebApplication.class, args);
 	}
@@ -62,19 +63,19 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 
 			UserRegistrationDto dum = new UserRegistrationDto("dummi", "dumm",
 					"password",
-					"Prof.",	"du@d.com");
+                    "Prof.", "du@d.com");
 
 			userservice.save(dum);
 
 			// add tags
-			String[] ts = { "3D", "Modeller", "Visualisierung", "Modellierung" };
+            String[] ts = {"3D", "Modeller", "Visualisierung", "Modellierung"};
 			List<Tag> tags = createTagList(ts);
 
 			// add formats
-			String[][] fis = { { "IFC", "2x0", "strict" }, { "BCF", "1.0", "strict" } };
+            String[][] fis = {{"IFC", "2x0", "strict"}, {"BCF", "1.0", "strict"}};
 			List<Format> formatIn = createFormatList(fis);
 
-			String[][] fos = { { "IFC", "2x0", "strict" }, { "DWG", "5", "strict" } };
+            String[][] fos = {{"IFC", "2x0", "strict"}, {"DWG", "5", "strict"}};
 			List<Format> formatOut = createFormatList(fos);
 
 			// add service
@@ -84,14 +85,14 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 			serviceRepo.save(s1);
 
 			// add tags
-			String[] ts2 = { "3D", "Modeller", "IFC" };
+            String[] ts2 = {"3D", "Modeller", "IFC"};
 			tags = createTagList(ts2);
 
 			// add formats
-			String[][] fis2 = { { "IFC", "2x0", "strict" }, { "gbXML", "2", "strict" } };
+            String[][] fis2 = {{"IFC", "2x0", "strict"}, {"gbXML", "2", "strict"}};
 			formatIn = createFormatList(fis2);
 
-			String[][] fos2 = { { "IFC", "2x0", "strict" }, { "DWG", "5", "flexible" } };
+            String[][] fos2 = {{"IFC", "2x0", "strict"}, {"DWG", "5", "flexible"}};
 			formatOut = createFormatList(fos2);
 
 			// add service
@@ -100,17 +101,17 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 
 			serviceRepo.save(s2);
 
-			// create Composition
-			CompositionNode n1 = new CompositionNode(5, 5, s1);
-			CompositionNode n2 = new CompositionNode(50, 50, s2);
+            // create Composition
+            CompositionNode n1 = new CompositionNode(5, 5, s1);
+            CompositionNode n2 = new CompositionNode(50, 50, s2);
 
-			CompositionEdge e = new CompositionEdge(n1, n2);
+            CompositionEdge e = new CompositionEdge(n1, n2);
 
-			List<CompositionNode> nodes = new ArrayList<>();
+            List<CompositionNode> nodes = new ArrayList<>();
 			nodes.add(n1);
 			nodes.add(n2);
 
-			List<CompositionEdge> edges = new ArrayList<>();
+            List<CompositionEdge> edges = new ArrayList<>();
 			edges.add(e);
 
 			Composition c = new Composition(user, "MyComp", true, nodes, edges);
@@ -125,8 +126,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 	/**
 	 * saves and creates a list of formats given by {@code fis}
 	 * 
-	 * @param fis
-	 *            array that contains the formats that should be saved given as
+     * @param fis array that contains the formats that should be saved given as
 	 *            three Strings
 	 * @return a list of formats
 	 */
@@ -148,8 +148,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer imple
 	/**
 	 * saves and creates a list of tags given by {@code ts}
 	 * 
-	 * @param ts
-	 *            array that contains the strings that should be saved as tags
+     * @param ts array that contains the strings that should be saved as tags
 	 * @return a list of tags
 	 */
 	private List<Tag> createTagList(String[] ts) {
