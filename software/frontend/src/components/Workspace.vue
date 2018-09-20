@@ -1,7 +1,16 @@
 <template>
   <div>
-    <b-jumbotron class="jumbo" v-if="!user.loggedIn && publicComps.length == 0" header="Keine öffentlichen Kompositionen verfügbar" lead="Registrieren Sie sich jetzt um Kompositionen zu erstellen" >
+    <b-jumbotron class="jumbo" v-if="!user.loggedIn && publicComps.length == 0" header="Keine öffentlichen Kompositionen verfügbar :(" lead="Registrieren Sie sich jetzt, um Kompositionen zu erstellen">
       <b-btn variant="primary" :to="'Login'">Hier registrieren</b-btn>
+    </b-jumbotron>
+    <div v-else>
+    <b-jumbotron class="jumbo" v-if="user.loggedIn && publicComps.length == 0 && ownComps.length == 0 && editableComps.length == 0 && viewableComps.length == 0" header="Keine Kompositionen verfügbar :(" lead="Erstellen Sie jetzt ihre erste Komposition" >
+      <b-input-group style="width: 30vw">
+        <b-form-input v-model="name" type="text" placeholder="Kompositionsname" />
+        <b-input-group-append>
+          <b-btn @click="createComp" variant="success">erstellen</b-btn>
+        </b-input-group-append>
+      </b-input-group>
     </b-jumbotron>
     <div v-else class="mainlayout" style="overflow: hidden">
     <b-input-group style="float: right; width: 15vw" v-if="user.loggedIn">
@@ -30,7 +39,7 @@
       <b-row class="comprow">
         <b-col v-for="comp in editableComps"
                :key="comp.id"
-               class="compcol round"
+               class="compcol round link"
                cols="2"
                @click="open(comp.id)">
 
@@ -44,7 +53,7 @@
       <b-row class="comprow">
         <b-col v-for="comp in viewableComps"
                :key="comp.id"
-               class="compcol round"
+               class="compcol round link"
                cols="2"
                @click="open(comp.id)">
               <span class="title">{{comp.name}} <br/></span>
@@ -57,7 +66,7 @@
       <b-row class="comprow">
         <b-col v-for="comp in publicComps"
                :key="comp.id"
-               class="compcol round"
+               class="compcol round link"
                cols="2"
                @click="open(comp.id)">
               <span class="title">{{comp.name}} <br/></span>
@@ -66,6 +75,7 @@
       </b-row>
     </b-container>
   </div>
+</div>
   </div>
 </template>
 
@@ -95,7 +105,6 @@ export default {
         }
       }).then(res => {
         this.$router.push('/editor/' + res.data)
-        alert('Komposition erfolgreich erstellt')
       })
       .catch(err => alert('Komposition erstellen fehlgeschlagen'))
     },
@@ -113,19 +122,30 @@ export default {
         alert('Kompowosition ' + id + ' uwurde gelöscht');
         this.ownComps = this.ownComps.filter(comp => comp.id !== id);
       }).catch(err => alert('Oopsie someeeething went wrong uwu'))
+    },
+    getComps() {
+      this.axios({
+        url: '/compositions',
+        method: 'get'
+      }).then(response => {
+        this.ownComps = response.data.owns
+        this.editableComps = response.data.editable
+        this.viewableComps = response.data.viewable
+        this.publicComps = response.data.publicComps
+      })
+      .catch(error => alert('Server nicht verfügbar'))
+    }
+  },
+  watch: {
+    user: {
+      handler() {
+        this.getComps();
+      },
+      deep: true
     }
   },
   mounted() {
-    this.axios({
-      url: '/compositions',
-      method: 'get'
-    }).then(response => {
-      this.ownComps = response.data.owns
-      this.editableComps = response.data.editable
-      this.viewableComps = response.data.viewable
-      this.publicComps = response.data.publicComps
-    })
-    .catch(error => alert('Server nicht verfügbar'))
+    this.getComps()
   }
 }
 </script>
