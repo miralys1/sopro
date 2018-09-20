@@ -1,8 +1,5 @@
 <template>
   <div class="wideform form-group">
-
-                     <!-- vunchecked-value="false" -->
-                     <!-- value="true" -->
   <b-form-group
       id="editorsettings"
       label="Settings"
@@ -20,25 +17,32 @@
       @submit="addUser"
       label="Permissions"
       label-for="input1">
-      <b-form-input v-model="useremail"
-                    type="email"
-                    required
-                    class="emailinput"
-                    placeholder="Enter email of user to add">
-      </b-form-input>
-      <b-button size="sm" variant="success" @click="addUser">
-        <v-icon name="plus"/>
-      </b-button>
       <div>
-        <ul class="list-group">
-          <li v-for="user in editors"
-              class="list-group-item">
-            Cras justo odio
-          </li>
-          <li v-for="user in viewers"
-              class="list-group-item">
-          </li>
-        </ul>
+        <b-form-input v-model="useremail"
+                        type="email"
+                        required
+                        class="emailinput"
+                        placeholder="Enter email of user to add">
+        </b-form-input>
+        <b-button id="addButton" size="sm" variant="success" @click="addUser">
+            <v-icon name="plus"/>
+        </b-button>
+        </div>
+        <div>
+            <ul class="list-group">
+                <li v-for="user in users"
+                    class="list-group-item">
+
+                      <b-form-checkbox :id="user.id + '-edit'"
+                                       @change="setPermissions"
+                                       :value="{id: user.id, permissions: 'viewer'}"
+                                       :unchecked-value="{id: user.id, permissions: 'editor'}"
+                                      >
+                      edit
+                      </b-form-checkbox>
+                    {{ user.name }}
+                </li>
+            </ul>
       </div>
   </b-form-group>
   </div>
@@ -60,22 +64,51 @@ export default {
     data () {
         return {
             useremail: '',
-            editors: [],
-            viewer: [],
+            users: [],
             showOrigin: false
         }
     },
     methods: {
         addUser () {
-            alert('added new user')
-            this.axios.post('/compositions/' + this.compId + '/users')
-                .then(response => {
-                    console.log(response)
+            this.axios({
+                    method: 'post',
+                    url: '/compositions/' + this.compId + '/users/' + this.useremail,
+                    headers: {"Content-Type": "application/json" },
+                    data: 'viewer'
                 })
-                .catch(error => console.log("User doesn't' exist"))
-
-            if(this.viewer.find(e => !(e===this.useremail))) this.viewers.push(useremail)
+                .then(response => {
+                    if(this.users.filter(e => e.id===response.data.id).length == 0) {
+                        console.log('pushed new email')
+                        this.getPermissions()
+                    }
+                })
+                .catch(error => alert( error + " Maybe User doesn't' exist"))
         },
+        getPermissions () {
+            if(this.owner) {
+                this.axios.get('/compositions/' + this.compId + '/users')
+                .then(response => {
+                    this.users = response.data.viewers.map(u => ({id: u.id, name: u.fullName, canEdit: false}))
+                        .concat(response.data.editors.map(u => ({id: u.id, name: u.fullName, canEdit: true})))
+                })
+                .catch(error => console.log(error))
+            }
+        },
+        setPermissions (perms) {
+            this.axios({
+                    method: 'put',
+                    url: '/compositions/' + this.compId + '/users/' + perms.id,
+                    headers: {"Content-Type": "application/json" },
+                    data: perms.permissions
+                })
+                .then(response => {
+                    if(this.users.filter(e => e.id===response.data.id).length == 0) {
+                        console.log('pushed new email')
+                        this.getPermissions()
+                    }
+                })
+                .catch(error => alert( error + " Maybe User doesn't' exist"))
+        }
     },
     watch: {
         config () {
@@ -85,12 +118,7 @@ export default {
         }
     },
     mounted () {
-        this.axios.get('/compositions/' + this.compId + '/users')
-            .then(response => {
-                this.editors = response.data.editors;
-                this.viewers = response.data.viewers;
-            })
-            .catch(error => console.log(error))
+        this.getPermissions()
     }
 }
 </script>
@@ -99,6 +127,12 @@ export default {
   .wideform {
     margin-left: 20px;
     margin-right: 20px;
+  }
+
+  .addButton {
+    position: absolute;
+    top: 0px;
+    right: 10px;
   }
 
   .emailinput {

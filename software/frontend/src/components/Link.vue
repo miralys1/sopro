@@ -3,18 +3,12 @@
     :d="svgPath"
     :marker-mid="'url(#arrow-' + state + ')'"
     @click.ctrl="deleteLink"
-    @click="extraInfo"
+    @click="clickArrow"
     :style="style">
   </path>
-  <b-modal id="modal1" title="Bootstrap-Vue">
-    <p class="my-4">Hello from modal!</p>
-  </b-modal>
 </template>
 
 <script>
-function invalidStyle () {
-}
-
 export default {
     props: {
         // containing origin and more
@@ -32,7 +26,8 @@ export default {
         style: function () {
             return {
                 stroke: this.color,
-                strokeWidth: 20 * this.params.scale
+                strokeWidth: 20 * this.params.scale,
+                border: "2px solid black"
             }
         },
         color: function () {
@@ -96,6 +91,11 @@ export default {
         extraInfo: function (event) {
             if(this.state==='alternative') {
                 console.log(this.compatibility.compatibleServices)
+            }
+        },
+        clickArrow: function (event) {
+            if(this.state==='alternative') {
+                this.$emit('showAlternative', this.compatibleServices)
             }
         }
     }

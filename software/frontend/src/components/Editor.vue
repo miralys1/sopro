@@ -61,6 +61,7 @@
           @deleteLink="handleDeleteLink"
           @mouseup.self="mouseUp"
           @wheel.self="wheelEvent"
+          @showAlternative="showLinkAlt"
           @gotComp="setLinkComp"
           />
 
@@ -122,6 +123,7 @@
           />
       </span>
       <EditorSettings
+        v-if="gotData"
         :compId="$route.params.compId"
         :owner="isOwner"
         @optionsChanged="options=$event"/>
@@ -133,10 +135,23 @@
       v-if="insertingNode"
       :params="{originX: 0, originY: 0, scale: scale}"
       style="z-index: 2;opacity: 0.4;border: 4px dotted black; background-color: lightgreen"
+      noIcons="true"
       :service="(services.filter(e => e.id==newNodeId))[0]"
       :ix="newNodeX"
       :iy="newNodeY"
   />
+
+  <b-modal v-if="alternative!==null" ref="alternativeModal" id="altModal" title="Bootstrap-Vue">
+    <p class="my-4">There are alternatives available</p>
+    <b-list-group>
+      <b-list-group-item v-for="alt in alternative.compatibleService"
+                         :key="alt.ids[0]"
+                         >
+        {{ alt.names[0] }}
+      </b-list-group-item>
+    </b-list-group>
+  </b-modal>
+
 </div>
 </template>
 <script>
@@ -216,6 +231,8 @@ export default {
           scale: 1,
           links: [],
 
+          gotData: false,
+
           // we haven't got something like event.deltaX
           // so we need to calculate that ourselfes
           lastX: 0,
@@ -224,7 +241,8 @@ export default {
           ofX: 0,
           ofY: 0,
 
-          newLinkCords: null
+          newLinkCords: null,
+          alternative: null
       }
   },
   methods: {
@@ -324,6 +342,11 @@ export default {
             }
           }
       },
+      showLinkAlt: function (event) {
+          console.log('show Modal')
+          this.alternative = event
+          this.$refs.alternativeModal.show()
+      },
       save: function (event) {
           var nodes = this.nodes;
           var comps = this.composition;
@@ -357,10 +380,11 @@ export default {
 
     this.axios.get('/compositions/' + this.$route.params.compId)
           .then(response => {
-                    this.isOwner = response.data.owner;
+                    this.isOwner = response.data.isOwner
                     this.composition = response.data
                     this.nodes = this.composition.nodes //.map(e => ({id: e.id, x: e.x, y: e.y, sendService: e.sendService}))
                     this.links = this.composition.edges.map(e => ({id: e.id, node1: e.source.id, node2: e.target.id, compatibility: e.compatibility}))
+                    this.gotData = true
                 }
                )
           .catch(error => console.log(error))
