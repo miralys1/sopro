@@ -6,7 +6,7 @@ import java.util.List;
 
 public class CompatibilityAnswer {
 
-    @SerializedName("compatibility")
+    @SerializedName("compatible")
     private boolean isCompatible;
     @SerializedName("suitingFormats")
     List<String> suitingFormats;
@@ -23,7 +23,7 @@ public class CompatibilityAnswer {
         return alternatives;
     }
 
-    @SerializedName("alternatives")
+    @SerializedName("compatibleServices")
     List<Alternative> alternatives;
 
 

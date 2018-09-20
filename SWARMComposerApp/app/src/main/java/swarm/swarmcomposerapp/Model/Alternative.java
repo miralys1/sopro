@@ -5,10 +5,10 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class Alternative {
-    @SerializedName("name")
+    @SerializedName("names")
     List<String> names;
-    @SerializedName("version")
+    @SerializedName("versions")
     List<String> versions;
-    @SerializedName("id")
+    @SerializedName("ids")
     List<String> ids;
 }

@@ -333,8 +333,8 @@ public class CompositionView extends View {
 
             //Draw the edges - drawing the edges first eases the task.
             for (Edge e : comp.getEdgeList()) {
-                Node source = e.getIn();
-                Node target = e.getOut();
+                Node source = e.getOut();
+                Node target = e.getIn();
                 float sX = source.getX();
                 float sY = source.getY();
 
