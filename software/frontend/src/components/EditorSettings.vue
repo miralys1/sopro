@@ -5,7 +5,7 @@
       label="Settings"
       label-for="input1">
     <b-form-checkbox id="origincheckbox"
-                     v-model="config.showOrigin"
+                     v-model="showOrigin"
                      >
       Show Origin
     </b-form-checkbox>
@@ -18,21 +18,20 @@
       label="Permissions"
       label-for="input1">
       <b-form-checkbox id="publicButton"
-                      v-model="config.isPublic"
+                      v-model="isPublic"
                       >
         Public
       </b-form-checkbox>
-      <div class="wideform emailinput">
+      <div class="emailinput">
         <b-input-group prepend="Email" class="emailinput">
             <b-form-input v-model="useremail"
                             type="email"
                             required
-                            class="emailinput"
                             placeholder="Enter email of user to add">
             </b-form-input>
             <b-input-group-append>
                 <b-btn variant="success" @click="addUser">
-                    <v-icon name="plus"/>
+                    <v-icon name="plus" />
                 </b-btn>
             </b-input-group-append>
         </b-input-group>
@@ -67,8 +66,8 @@ export default {
     computed: {
         config () {
             return {
-               showOrigin: true,
-               isPublic: false
+               showOrigin: this.showOrigin,
+               isPublic: this.isPublic
             }
         }
     },
@@ -76,7 +75,8 @@ export default {
         return {
             useremail: '',
             users: [],
-            showOrigin: false
+            showOrigin: true,
+            isPublic: false
         }
     },
     methods: {
@@ -115,7 +115,6 @@ export default {
                 .then(response => {
                     if(this.users.filter(e => e.id===response.data.id).length == 0) {
                         console.log('pushed new email')
-                        // this.getPermissions()
                     }
                 })
                 .catch(error => alert( error + " Maybe User doesn't' exist"))

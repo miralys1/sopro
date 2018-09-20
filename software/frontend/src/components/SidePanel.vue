@@ -10,12 +10,17 @@
                 scale="1.7"
                 />
             </span>
+            <b-form-group
+                id="filtersettings"
+                label="settings">
 
-            <b-form-checkbox id="certifiedButton"
-                             v-model="certifiedOnly"
-                            >
-                Show certified only
-            </b-form-checkbox>
+                <b-form-checkbox id="certifiedButton"
+                                v-model="certifiedOnly"
+                                >
+                    only certified
+                </b-form-checkbox>
+
+            </b-form-group>
         </b-dropdown>
         <div class="inputfield">
             <b-form-textarea
@@ -27,22 +32,22 @@
             </b-form-textarea>
         </div>
       </div>
-        <b-container class="nodegrid">
-        <b-row>
-          <b-col v-for="service in result" >
-            <Node :params="{originX: 0, originY: 0, scale: 0.9}"
-                    :noIcons="true"
-                    :service="service"
-                    :key="service.id"
-                    :dummy="true"
-                    :ix="0"
-                    :iy="0"
-                    @mouseDown="dragNode"
-                  >
-            </Node>
-          </b-col>
-         </b-row>
-        </b-container>
+      <b-container class="nodegrid">
+      <b-row>
+        <b-col v-for="service in result" >
+          <Node :params="{originX: 0, originY: 0, scale: 0.9}"
+                  :noIcons="true"
+                  :service="service"
+                  :key="service.id"
+                  :dummy="true"
+                  :ix="0"
+                  :iy="0"
+                  @mouseDown="dragNode"
+                >
+           </Node>
+         </b-col>
+        </b-row>
+       </b-container>
     </div>
 </transition>
 </template>
