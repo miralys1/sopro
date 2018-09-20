@@ -60,7 +60,7 @@ public class TestData {
 
   public void setUp() {
 
-    lukas = new User("Lukas", "der Lokomotivführer", "lukas@lummerland", "Herr", true);
+    lukas = new User("Lukas", "der Lokomotivfuehrer", "lukas@lummerland", "Herr", true);
     jim = new User("Jim", "Knopf", "jim@lummerland.de", "Herr", false);
     liSi = new User("Li", "Si", "lisi@ping.cn", "Prinzessin", false);
     lukas.setPassword("emma");

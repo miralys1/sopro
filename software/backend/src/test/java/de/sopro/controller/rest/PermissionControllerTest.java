@@ -57,7 +57,7 @@ public class PermissionControllerTest {
     Principal lukasPrincipal = Mockito.mock(java.security.Principal.class);
     Principal jimPrincipal = Mockito.mock(java.security.Principal.class);
     Principal nonExistingUserPrincipal = Mockito.mock(java.security.Principal.class);
-    Mockito.when(nonExistingUserPrincipal.getName()).thenReturn("$(ß$)%/&(ß%(/&()");
+    Mockito.when(nonExistingUserPrincipal.getName()).thenReturn("$(nadk√∂niof");
 
     // create example data
     User lukas =  testData.getLukas();
@@ -116,7 +116,7 @@ public class PermissionControllerTest {
     Principal lukasPrincipal = Mockito.mock(java.security.Principal.class);
     Principal jimPrincipal = Mockito.mock(java.security.Principal.class);
     Principal nonExistingUserPrincipal = Mockito.mock(java.security.Principal.class);
-    Mockito.when(nonExistingUserPrincipal.getName()).thenReturn("$(ß$)%/&(ß%(/&()");
+    Mockito.when(nonExistingUserPrincipal.getName()).thenReturn("$NJKLAJFKAL");
 
     // create example data
     User lukas =  testData.getLukas();
@@ -135,7 +135,7 @@ public class PermissionControllerTest {
     assertFalse(comp.getEditors().contains(jim));
 
     // Check if the method acts correct if a permission for a non existing user is added
-    ResponseEntity<Void> response2 = controller.createUserPermission(comp.getId(), "ß()$ß%$$$$&", "viewer",
+    ResponseEntity<Void> response2 = controller.createUserPermission(comp.getId(), "NVJAFPIOUFRA", "viewer",
         lukasPrincipal);
     assertEquals(HttpStatus.NOT_FOUND, response2.getStatusCode());
 
@@ -165,7 +165,7 @@ public class PermissionControllerTest {
     Principal lukasPrincipal = Mockito.mock(java.security.Principal.class);
     Principal jimPrincipal = Mockito.mock(java.security.Principal.class);
     Principal nonExistingUserPrincipal = Mockito.mock(java.security.Principal.class);
-    Mockito.when(nonExistingUserPrincipal.getName()).thenReturn("$(ß$)%/&(ß%(/&()");
+    Mockito.when(nonExistingUserPrincipal.getName()).thenReturn("$(vfsjuhia)");
 
     // create example data
     User lukas =  testData.getLukas();
@@ -215,7 +215,7 @@ public class PermissionControllerTest {
     Principal lukasPrincipal = Mockito.mock(java.security.Principal.class);
     Principal jimPrincipal = Mockito.mock(java.security.Principal.class);
     Principal nonExistingUserPrincipal = Mockito.mock(java.security.Principal.class);
-    Mockito.when(nonExistingUserPrincipal.getName()).thenReturn("$(ß$)%/&(ß%(/&()");
+    Mockito.when(nonExistingUserPrincipal.getName()).thenReturn("$jauiem");
 
     // create example data
     User lukas =  testData.getLukas();
