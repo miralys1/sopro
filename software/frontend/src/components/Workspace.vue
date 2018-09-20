@@ -1,6 +1,10 @@
 <template>
-  <div class="mainlayout" style="overflow: hidden">
-    <b-input-group style="float: right; width: 15vw">
+  <div>
+    <b-jumbotron class="jumbo" v-if="!user.loggedIn && publicComps.length == 0" header="Keine öffentlichen Kompositionen verfügbar" lead="Registrieren Sie sich jetzt um Kompositionen zu erstellen" >
+      <b-btn variant="primary" :to="'Login'">Hier registrieren</b-btn>
+    </b-jumbotron>
+    <div v-else class="mainlayout" style="overflow: hidden">
+    <b-input-group style="float: right; width: 15vw" v-if="user.loggedIn">
       <b-form-input v-model="name" type="text" placeholder="Kompositionsname" />
       <b-input-group-append>
         <b-btn @click="createComp" variant="success">erstellen</b-btn>
@@ -61,6 +65,7 @@
         </b-col>
       </b-row>
     </b-container>
+  </div>
   </div>
 </template>
 
@@ -170,5 +175,9 @@ h3 {
   color: black;
   color: blue;
   text-decoration: none;
+}
+.jumbo {
+  margin: 20vh auto;
+  width: 65vw;
 }
 </style>

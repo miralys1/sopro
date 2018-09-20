@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="show">
     <NavBar :user="user" @logout="logout"/>
     <router-view @login="login" :user="user"></router-view>
   </div>
@@ -11,6 +11,7 @@ import NavBar from '@/components/NavBar'
 export default {
   data() {
     return {
+      show: true,
       user: {
         loggedIn: false,
         userId: -1,
@@ -40,8 +41,8 @@ export default {
         this.user.id = -1
         this.user.isAdmin = false
         this.user.fullName = ''
-        this.$router.push('/')
-        alert('Sie wurden erfolgreich ausgeloggt!')
+        this.show = false
+        this.$nextTick(() => this.show = true)
       }).catch(res => alert('Etwas ist schiefgelaufen'))
 
     }
@@ -55,7 +56,6 @@ export default {
       this.user.id = res.data.id
       this.user.isAdmin = res.data.admin
       this.user.fullName = res.data.fullName
-      alert('Willkommen ' + this.user.fullName + '!')
     }).catch(function(err) {console.log(err)})
   }
 }
