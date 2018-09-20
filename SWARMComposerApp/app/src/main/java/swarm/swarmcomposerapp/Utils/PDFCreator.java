@@ -5,18 +5,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
-import android.util.Log;
-import android.util.Xml;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -27,7 +27,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import swarm.swarmcomposerapp.ActivitiesAndViews.CompositionView;
-import swarm.swarmcomposerapp.Model.Alternative;
 import swarm.swarmcomposerapp.Model.Composition;
 import swarm.swarmcomposerapp.Model.Edge;
 import swarm.swarmcomposerapp.Model.Node;
@@ -41,7 +40,6 @@ public class PDFCreator {
     private static Paint paint_title, paint_subtitle, paint_text, paint_divider, paint_compatible, paint_alternative, paint_incompatible;
     private static int textSize_title = 30, textSize_subtitle = 20, textSize = 14;
     private static DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy HH:mm");
-    private static Typeface font_awesome;
 
 
 
@@ -59,16 +57,15 @@ public class PDFCreator {
      * @param comp composition
      * @return path of the saved pdf
      */
-    public static String createPDF(Activity activity, Context context, Composition comp, Bitmap bitmap){
-        //font_awesome = Typeface.createFromAsset(activity.getAssets(), "fonts/font_awesome.otf");
-        //font_awesome = Typeface.createFromAsset()
+    public static String createPDF(Activity activity, Context context, Composition comp){
+
         if(verifyStoragePermissions(activity)) {
-            return writePDFtoFile(context, comp, bitmap);
+            return writePDFtoFile(context, comp);
         }
         return null;
     }
 
-    private static String writePDFtoFile(Context context, Composition comp, Bitmap bitmap){
+    private static String writePDFtoFile(Context context, Composition comp){
         // create a new document
         PdfDocument document = new PdfDocument();
 
@@ -90,16 +87,16 @@ public class PDFCreator {
         paint_divider.setStrokeWidth(2);
 
         paint_compatible = new Paint();
-        paint_compatible.setColor(Color.GREEN);
+        paint_compatible.setColor(ContextCompat.getColor(context, R.color.compatibility_green));
         Typeface typeface = ResourcesCompat.getFont(context, R.font.font_awesome);
         paint_compatible.setTypeface(typeface);
 
         paint_alternative = new Paint();
-        paint_alternative.setColor(Color.YELLOW);
+        paint_alternative.setColor(ContextCompat.getColor(context, R.color.compatibility_yellow));
         paint_alternative.setTypeface(typeface);
 
         paint_incompatible = new Paint();
-        paint_incompatible.setColor(Color.RED);
+        paint_incompatible.setColor(ContextCompat.getColor(context, R.color.compatibility_red));
         paint_incompatible.setTypeface(typeface);
 
 
@@ -112,18 +109,39 @@ public class PDFCreator {
 
         // draw something on the page
         Canvas canvas = page.getCanvas();
+
         float offset_top = 2*PADDING;
+
         canvas.drawText(comp.getName(), PADDING, offset_top, paint_title);
         offset_top += textSize_title;
         canvas.drawText(comp.getOwner().getFullName(), PADDING, offset_top, paint_subtitle);
         offset_top += textSize_subtitle;
+        canvas.drawText(context.getText(R.string.lastupdate)+": "+dateFormat.format(comp.getLastUpdate()), PADDING, offset_top, paint_text);
+        offset_top += textSize;
 
-        CompositionView compositionView = new CompositionView(context);
-        compositionView.setComp(comp);
-        bitmap = getBitmapFromView(compositionView, ACTUAL_WIDTH, (int)(HEIGHT-offset_top-PADDING));
 
-        canvas.drawBitmap(bitmap, PADDING, offset_top, new Paint());
+        //create a temporary CompositionView, convert to Bitmap and add to PDF
+        View view = LayoutInflater.from(context).inflate(R.layout.pdf_graph, null);
+        view.layout(0, 0, WIDTH, (int)(HEIGHT-offset_top));
 
+        ((CompositionView) view.findViewById(R.id.pdf_compview)).setComp(comp);
+        //Get the dimensions of the view so we can re-layout the view at its current size and create a bitmap of the same size
+        int width = view.getWidth();
+        int height = view.getHeight();
+
+        int measuredWidth = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY);
+        int measuredHeight = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY);
+
+        //Cause the view to re-layout
+        view.measure(measuredWidth, measuredHeight);
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+
+        //Create a bitmap backed Canvas to draw the view into
+        Bitmap b = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(b);
+        view.draw(c);
+
+        canvas.drawBitmap(b, 0, offset_top, new Paint());
 
         // finish the page
         document.finishPage(page);
@@ -193,7 +211,7 @@ public class PDFCreator {
                 context.getText(R.string.service_date) + ": ",
                 context.getText(R.string.service_certified) + ": "};
 
-        //TODO show graph as text " A -> B,C -> D"; alternatives (if any); service infos
+
         float offset_left = PADDING;
         ArrayList<Node> nodes = new ArrayList<>();
         nodes.addAll(comp.getNodeList());
@@ -244,22 +262,6 @@ public class PDFCreator {
     }
 
     /**
-     * creates a bitmap from a given view
-     * @param view
-     * @return bitmap
-     */
-    private static Bitmap getBitmapFromView(View view, int width, int height) {
-        //Define a bitmap with the same size as the view
-        Bitmap returnedBitmap = Bitmap.createBitmap(width, height,Bitmap.Config.ARGB_8888);
-        //Bind a canvas to it
-        Canvas canvas = new Canvas(returnedBitmap);
-        // draw the view on the canvas
-        view.draw(canvas);
-        //return the bitmap
-        return returnedBitmap;
-    }
-
-    /**
      * Checks if the app has permission to write to device storage
      *
      * If the app does not has permission then the user will be prompted to grant permissions
@@ -282,5 +284,33 @@ public class PDFCreator {
         return true;
     }
 
-//TODO check if content overflows the page; create new page then
+    private static Bitmap resizeImage(Bitmap bitmap, int newSize){
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        int newWidth = 0;
+        int newHeight = 0;
+
+        if(width > height){
+            newWidth = newSize;
+            newHeight = (newSize * height)/width;
+        } else if(width < height){
+            newHeight = newSize;
+            newWidth = (newSize * width)/height;
+        } else if (width == height){
+            newHeight = newSize;
+            newWidth = newSize;
+        }
+
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
+                width, height, matrix, true);
+
+        return resizedBitmap;
+    }
 }
