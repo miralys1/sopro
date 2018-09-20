@@ -1,4 +1,4 @@
-package de.sopro.model;
+package de.sopro.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import de.sopro.model.Composition;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

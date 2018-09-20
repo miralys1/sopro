@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import de.sopro.model.User.User;
 import de.sopro.model.send.DetailComp;
 import de.sopro.model.send.Edge;
 import de.sopro.model.send.Node;

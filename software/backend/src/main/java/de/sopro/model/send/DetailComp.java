@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.sopro.model.Composition;
 import de.sopro.model.CompositionEdge;
 import de.sopro.model.CompositionNode;
-import de.sopro.model.User;
+import de.sopro.model.User.User;
 
 public class DetailComp extends SimpleComp {
 

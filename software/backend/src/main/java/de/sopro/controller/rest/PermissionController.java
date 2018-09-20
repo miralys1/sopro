@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.sopro.model.Composition;
-import de.sopro.model.User;
+import de.sopro.model.User.User;
 import de.sopro.model.send.SimpleUser;
 import de.sopro.model.send.UserAuthorizations;
 import de.sopro.repository.CompositionRepository;
