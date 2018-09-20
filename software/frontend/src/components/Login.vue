@@ -1,10 +1,13 @@
 <template>
+  <div>
   <div class="mainlayout" v-if="show">
     <b-card no-body>
       <b-tabs pills card>
+        <!-- login form -->
         <b-tab title="Login" active>
           <b-card bg-variant="light">
             <b-form @submit="signin">
+              <!-- email -->
               <b-form-group horizontal
                             breakpoint="lg"
                             label-class="text-sm-right"
@@ -19,6 +22,7 @@
                   </b-form-input>
                 </b-input-group>
               </b-form-group>
+              <!-- password -->
               <b-form-group horizontal
                             breakpoint="lg"
                             label-class="text-sm-right"
@@ -43,6 +47,7 @@
             </b-form>
           </b-card>
         </b-tab>
+        <!-- register form -->
         <b-tab title="Registrieren" style="overflow: hidden">
           <b-form @submit="register">
             <b-card bg-variant="light" >
@@ -51,6 +56,7 @@
                             label="Anmeldedaten"
                             label-class="font-weight-bold pt-0"
                             class="mb-0">
+              <!-- email -->
               <b-form-group horizontal
                             breakpoint="lg"
                             label-class="text-sm-right"
@@ -64,6 +70,7 @@
                               placeholder="Email eingeben">
                 </b-form-input>
               </b-form-group>
+              <!-- password -->
               <b-form-group horizontal
                             breakpoint="lg"
                             label-class="text-sm-right"
@@ -87,6 +94,7 @@
                             label="Pers&ouml;nliche Daten"
                             label-class="font-weight-bold pt-0"
                             class="mb-0">
+                <!-- title -->
                 <b-form-group horizontal
                               breakpoint="lg"
                               label-class="text-sm-right"
@@ -96,10 +104,10 @@
                   <b-form-input id="register.title"
                                 type="text"
                                 v-model="form.title"
-                                required
-                                placeholder="Titel eingeben">
+                                placeholder="(optional) Titel eingeben">
                   </b-form-input>
                 </b-form-group>
+                <!-- first name -->
                 <b-form-group horizontal
                               breakpoint="lg"
                               label-class="text-sm-right"
@@ -113,6 +121,7 @@
                                 placeholder="Vorname eingeben">
                   </b-form-input>
                 </b-form-group>
+                <!-- last name -->
                 <b-form-group horizontal
                               breakpoint="lg"
                               label-class="text-sm-right"
@@ -139,6 +148,26 @@
       </b-tabs>
     </b-card>
   </div>
+  <!-- modals as alerts -->
+  <b-modal no-fade ref="registerModal" hide-footer title="Registrierung">
+    <div class="d-block text-center">
+      <h4>Erfolgreich registriert! <br /> Sie können sich jetzt einloggen.</h4>
+    </div>
+    <b-btn class="mt-3" variant="outline-info" block @click="hideRegisterModal">Zum Login</b-btn>
+  </b-modal>
+  <b-modal no-fade ref="registerFailModal" hide-footer title="Registrierung">
+    <div class="d-block text-center">
+      <h4>Registrierung fehlgeschlagen! <br /> Vielleicht ist die Email bereits vergeben oder versuchen Sie es später noch einmal.</h4>
+    </div>
+    <b-btn class="mt-3" variant="outline-info" block @click="hideRegisterFailModal">Zurück</b-btn>
+  </b-modal>
+  <b-modal no-fade ref="loginFailModal" hide-footer title="Login">
+    <div class="d-block text-center">
+      <h4>Login fehlgeschlagen! <br /> Bitte versuchen Sie es noch einmal.</h4>
+    </div>
+    <b-btn class="mt-3" variant="outline-info" block @click="hideLoginFailModal">Zurück</b-btn>
+  </b-modal>
+</div>
 </template>
 
 <script>
@@ -146,10 +175,12 @@ export default {
     data() {
       return {
         show: true,
+        // login form data
         login: {
           email: '',
           password: ''
         },
+        // register form data
         form: {
           email: '',
           password: '',
@@ -157,6 +188,7 @@ export default {
           firstName: '',
           lastName: ''
         },
+        // after login to notify app.vue
         user: {
           fullName: '',
           id: -1,
@@ -165,11 +197,15 @@ export default {
       }
     },
     methods: {
+      // when login button is pressed
     signin (event) {
+      // generate base64 token from username and password
       var token = 'Basic ' +
         btoa(decodeURIComponent(encodeURIComponent(this.login.email +
         ':' + this.login.password)))
       event.preventDefault()
+
+      // make request to server
       this.axios({
         url: '/authentification',
         method: 'get',
@@ -179,6 +215,7 @@ export default {
         }
       })
       .then(response => {
+        // if successful set user and notify parent to update everything
         this.user.token = token
         this.user.fullName = response.data.fullName
         this.user.id = response.data.id
@@ -186,10 +223,10 @@ export default {
         this.$emit('login', this.user)
         this.$router.push('/')
       })
-      .catch(error => {
-        alert('Authentifizierung fehlgeschlagen')
-      })
+      // if not, show alert
+      .catch(() => this.$refs.loginFailModal.show())
     },
+    // when register button is pressed
     register (event) {
       event.preventDefault()
       this.axios.post('/users', {
@@ -199,15 +236,26 @@ export default {
         firstName: this.form.firstName,
         lastName: this.form.lastName
       })
-      .then(() => {
-        alert('Registrierung erfolgreich');
-        this.reload();
-      })
-      .catch(error => alert('Registrierung fehlgeschlagen'))
+      // puts you back to login form
+      .then(() => this.reload())
+      // show failure alert
+      .catch(() => this.$refs.registerFailModal.show())
     },
+    // reload page and show that registering was successful
     reload() {
       this.show = false;
       this.$nextTick(() => {this.show = true});
+      this.$refs.registerModal.show()
+    },
+    // modals
+    hideRegisterModal() {
+      this.$refs.registerModal.hide()
+    },
+    hideRegisterFailModal() {
+      this.$refs.registerFailModal.hide()
+    },
+    hideLoginFailModal() {
+      this.$refs.loginFailModal.hide()
     }
   }
 }

@@ -7,6 +7,7 @@
               class="navbar">
       <b-container>
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+      <!-- logo -->
       <b-navbar-brand :to="'/'">
         <b-img height="40vh"
                :src="require('../assets/logo.svg')"
@@ -14,11 +15,15 @@
         </b-navbar-brand>
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav class="big" style="margin-left: 20px">
+          <!-- workspace link -->
           <b-nav-item :to="'/'">Workspace</b-nav-item>
-          <b-nav-item :to="'/admin'" v-if="user.isAdmin">Adminpanel</b-nav-item> <!-- && isLoggedIn -->
+          <!-- admin link, only shown if user is admin -->
+          <b-nav-item :to="'/admin'" v-if="user.isAdmin && user.loggedIn">Adminpanel</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
+          <!-- login button when user is not logged in -->
           <b-nav-item :to="'/login'" v-if="!user.loggedIn">Login</b-nav-item>
+          <!-- when not logged in show user info and dropdown to logout -->
           <b-nav-item-dropdown right v-else>
             <template slot="button-content">
               Sie sind eingeloggt als: {{ user.fullName }}
