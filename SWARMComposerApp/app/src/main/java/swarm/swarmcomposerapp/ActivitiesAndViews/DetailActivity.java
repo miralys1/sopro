@@ -174,32 +174,9 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
     public void sendComposition(View v) {
         //TODO create PDF, open share_dialog
         if(comp != null) {
-
-            String path = PDFCreator.createPDF(this, this, comp, getBitmapFromView(compositionView));
+            String path = PDFCreator.createPDF(this, this, comp);
             openShareDialog(path);
         }
-    }
-
-    private Bitmap getBitmapFromView(View view) {
-        //Define a bitmap with the same size as the view
-        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
-        //Bind a canvas to it
-        Canvas canvas = new Canvas(returnedBitmap);
-        /*
-        //Get the view's background
-        Drawable bgDrawable =view.getBackground();
-        if (bgDrawable!=null) {
-            //has background drawable, then draw it on the canvas
-            bgDrawable.draw(canvas);
-        }   else{
-            //does not have background drawable, then draw white background on the canvas
-            canvas.drawColor(Color.WHITE);
-        }
-        */
-        // draw the view on the canvas
-        view.draw(canvas);
-        //return the bitmap
-        return returnedBitmap;
     }
 
     private void openShareDialog(String path){
@@ -215,7 +192,7 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         //permission to write to storage has been granted
-        String path = PDFCreator.createPDF(this, this, comp, getBitmapFromView(compositionView));
+        String path = PDFCreator.createPDF(this, this, comp);
         openShareDialog(path);
     }
 
@@ -224,12 +201,6 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
         if (successful && !noNodes && comp != null) {
             //needed composition details are in LocalCache now
             comp = cache.getCompAtPos(position, this, listID);
-//            if (comp == null) {
-//                //TODO handle fatal event
-//                Toast.makeText(getApplicationContext(), getText(R.string.err_text_detail), Toast.LENGTH_SHORT).show();
-//                goBackToList(null);
-//                return;
-//            }
 
             if (comp.getNodeList() == null || comp.getNodeList().isEmpty()) {
                 noNodes = true;
@@ -247,14 +218,10 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
                 Toast.makeText(getApplicationContext(), "There are no nodes within this composition", Toast.LENGTH_SHORT).show();
 
             } else {
-
-                //server communication failed
                 //TODO show error message
                 Toast.makeText(getApplicationContext(), "server connection failed when requesting details", Toast.LENGTH_SHORT).show();
             }
         }
         showLoading(false);
     }
-
-
 }

@@ -3,7 +3,9 @@ package swarm.swarmcomposerapp.ActivitiesAndViews;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -97,6 +99,7 @@ public class CompositionView extends View {
     private int minX = 0;
     private int minY = 0;
     private boolean onStartUp = true;
+
     private float currentWidth = 1000;
     private float currentHeight = 1000;
 
@@ -139,6 +142,14 @@ public class CompositionView extends View {
         this.parent = parent;
     }
 
+    public float getCurrentWidth() {
+        return currentWidth;
+    }
+
+    public float getCurrentHeight() {
+        return currentHeight;
+    }
+
     public CompositionView(Context context) {
         super(context);
         init(null, 0);
@@ -153,7 +164,6 @@ public class CompositionView extends View {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
     }
-
 
     /**
      * Gesture Detector for selecting edges or nodes and panning.
@@ -252,12 +262,12 @@ public class CompositionView extends View {
         edgePaint.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
         edgePaint.setStyle(Paint.Style.FILL);
         edgePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        edgePaint.setStrokeWidth(4);
+        edgePaint.setStrokeWidth(15);
 
         highlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         highlightPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         highlightPaint.setStyle(Paint.Style.STROKE);
-        highlightPaint.setStrokeWidth(3);
+        highlightPaint.setStrokeWidth(10);
 
     }
 
@@ -297,27 +307,12 @@ public class CompositionView extends View {
         super.onDraw(canvas);
         canvas.save();
 
-
-
         if (comp != null) {
 
             List<Node> nodes = comp.getNodeList();
 
 
             int initialLength = (int) radius;
-            float halfLength = initialLength / (float) 2;
-
-
-//
-//            float dX = maxX-minX;
-//            float dY = maxY-minY;
-//
-//            float xS = contentWidth/dX;
-//            float xY = contentHeight/dY;
-//
-//            float bigger = xS>xY?xS : xY;
-//
-//            Log.i("Werte",""+maxX+" "+maxY );
 
             currentWidth = canvas.getClipBounds().right;
             currentHeight = canvas.getClipBounds().bottom;
@@ -339,11 +334,6 @@ public class CompositionView extends View {
             matrix.postTranslate(initX, initY);
             matrix.postScale(scaleFactor, scaleFactor, focusPoint.x, focusPoint.y);
             canvas.concat(matrix);
-            Rect rec = new Rect();
-
-
-
-
 
             //Invert the matrix and store it for later reverse calculations
             inverse = new Matrix(matrix);
@@ -393,7 +383,6 @@ public class CompositionView extends View {
             for (Node n : nodes) {
                 //draw the current node as a filled, grey circle
                 canvas.drawCircle(n.getX(), n.getY(), initialLength, drawPaint);
-                //Log.d("Node", "X: " + n.getX() + " Y: " + n.getY());
 
                 //The current node has been selected be a single tap event.
                 if (n == selectedNode) {
@@ -412,19 +401,15 @@ public class CompositionView extends View {
 
                     final Drawable drawable = getContext().getDrawable(drawableID);
 
-                    drawable.setBounds(0, 0, (int) initialLength, (int) initialLength);
-                    canvas.translate(n.getX() - halfLength, n.getY() - halfLength);
+                    float halfLength = initialLength/2;
+                    drawable.setBounds(0, 0, (int) (1.5*initialLength), (int) (1.5*initialLength));
+                    canvas.translate(n.getX() - 0.75f*initialLength, n.getY() - 0.75f*initialLength);
                     drawable.draw(canvas);
-                    canvas.translate(-n.getX() + halfLength, -n.getY() + halfLength);
+                    canvas.translate(-n.getX() + 0.75f*initialLength, -n.getY() + 0.75f*initialLength);
                 }
             }
-
-
         }
-
         canvas.restore();
-
-
     }
 
     /**
@@ -508,6 +493,7 @@ public class CompositionView extends View {
             minX = Integer.MAX_VALUE;
             minY = Integer.MAX_VALUE;
 
+
             for (Node n : comp.getNodeList()) {
                 int tX = n.getX();
                 int tY = n.getY();
@@ -527,11 +513,6 @@ public class CompositionView extends View {
                     minY = tY;
                 }
             }
-
-
-
-
-
         }
 
 
@@ -564,9 +545,5 @@ public class CompositionView extends View {
 
             return true;
         }
-
-
     }
-
-
 }
