@@ -55,11 +55,11 @@ public class Composition {
 	private List<User> editors;
 
 	@NotNull
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CompositionNode> nodes;
 
 	@NotNull
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CompositionEdge> edges;
 
 	// Hibernate requires a no-arg constructor
