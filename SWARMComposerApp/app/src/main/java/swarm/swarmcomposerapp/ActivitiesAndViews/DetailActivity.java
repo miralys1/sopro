@@ -87,7 +87,7 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
             tOwner.setText(comp.getOwner().getFullName());
             col1.setText(getText(R.string.lastupdate) + " " + dateFormat.format(comp.getLastUpdate()));
             compositionView.setComp(comp);
-            tLastUpdated.setText(getText(R.string.lastupdate)+": "+dateFormat.format(comp.getLastUpdate()*1000));
+            tLastUpdated.setText(getText(R.string.lastupdate)+": "+dateFormat.format(comp.getLastUpdate()));
             setEdgeList();
         } else {
             showLoading(true);
@@ -130,13 +130,13 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
             col5text += e.getIn().getSendService().getServiceName()+"\n";
             if(e.getCompatibility().isCompatible()){
                 //compatible
-                col4text+="<font color='green'>"+getText(R.string.ic_compatible)+"</font><br>";
+                col4text+="<font color='"+getColor(R.color.compatibility_green)+"'>"+getText(R.string.ic_compatible)+"</font><br>";
             } else if (e.getCompatibility().getAlternatives().isEmpty()){
                 //incompatible
-                col4text+="<font color='red'>"+getText(R.string.ic_incompatible)+"</font><br>";
+                col4text+="<font color='"+getColor(R.color.compatibility_red)+"'>"+getText(R.string.ic_incompatible)+"</font><br>";
             } else {
                 //alternative
-                col4text+="<font color='#ffa500'>"+getText(R.string.ic_alternative)+"</font><br>";
+                col4text+="<font color='"+getColor(R.color.compatibility_yellow)+"'>"+getText(R.string.ic_alternative)+"</font><br>";
             }
         }
         col3.setText(col3text);
@@ -237,6 +237,7 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
 
             tTitle.setText(comp.getName());
             tOwner.setText(comp.getOwner().getFullName());
+            tLastUpdated.setText(getText(R.string.lastupdate)+": "+dateFormat.format(comp.getLastUpdate()));
             col1.setText(getText(R.string.lastupdate) + " " + dateFormat.format(comp.getLastUpdate()));
             Log.i("DetailActivity", "View should receive Comp with " + comp.getNodeList().size() + " nodes");
             compositionView.setComp(comp);

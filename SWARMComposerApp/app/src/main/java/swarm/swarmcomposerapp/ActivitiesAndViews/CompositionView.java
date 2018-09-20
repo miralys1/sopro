@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 
 import android.util.Log;
@@ -242,17 +242,17 @@ public class CompositionView extends View {
         paddingBot = getPaddingBottom();
 
         drawPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        drawPaint.setColor(Color.GRAY);
+        drawPaint.setColor(ContextCompat.getColor(getContext(), R.color.background_light));
         drawPaint.setStyle(Paint.Style.FILL);
 
         edgePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        edgePaint.setColor(Color.BLUE);
+        edgePaint.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
         edgePaint.setStyle(Paint.Style.FILL);
         edgePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         edgePaint.setStrokeWidth(4);
 
         highlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        highlightPaint.setColor(Color.BLUE);
+        highlightPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         highlightPaint.setStyle(Paint.Style.STROKE);
         highlightPaint.setStrokeWidth(3);
 
@@ -346,15 +346,15 @@ public class CompositionView extends View {
                 // Draw the edge in a color indicating the compatibility
                 if (compatibilityN.isCompatible()) {
                     //nodes are compatible
-                    edgePaint.setColor(Color.GREEN);
+                    edgePaint.setColor(ContextCompat.getColor(getContext(), R.color.compatibility_green));
                 } else {
                     if (compatibilityN.getAlternatives() == null
                             || compatibilityN.getAlternatives().isEmpty()) {
                         //nodes are not compatible
-                        edgePaint.setColor(Color.RED);
+                        edgePaint.setColor(ContextCompat.getColor(getContext(), R.color.compatibility_red));
                     } else {
                         //nodes are not compatible, but there are alternatives
-                        edgePaint.setColor(Color.YELLOW);
+                        edgePaint.setColor(ContextCompat.getColor(getContext(), R.color.compatibility_yellow));
                     }
                 }
 

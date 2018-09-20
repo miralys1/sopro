@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.util.Xml;
@@ -90,16 +91,16 @@ public class PDFCreator {
         paint_divider.setStrokeWidth(2);
 
         paint_compatible = new Paint();
-        paint_compatible.setColor(Color.GREEN);
+        paint_compatible.setColor(ContextCompat.getColor(context, R.color.compatibility_green));
         Typeface typeface = ResourcesCompat.getFont(context, R.font.font_awesome);
         paint_compatible.setTypeface(typeface);
 
         paint_alternative = new Paint();
-        paint_alternative.setColor(Color.YELLOW);
+        paint_alternative.setColor(ContextCompat.getColor(context, R.color.compatibility_yellow));
         paint_alternative.setTypeface(typeface);
 
         paint_incompatible = new Paint();
-        paint_incompatible.setColor(Color.RED);
+        paint_incompatible.setColor(ContextCompat.getColor(context, R.color.compatibility_red));
         paint_incompatible.setTypeface(typeface);
 
 

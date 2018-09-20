@@ -83,7 +83,7 @@
         <TextView
             android:id="@+id/text_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:paddingLeft="15dp"
             android:text="Title"
             android:textColor="@color/colorPrimaryDark"
@@ -94,7 +94,7 @@
         <TextView
             android:id="@+id/text_owner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:paddingLeft="15dp"
             android:text="TextView"
             android:textColor="@color/colorPrimary"
@@ -113,7 +113,7 @@
             android:id="@+id/divider6"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:background="?android:attr/listDivider" />
 
         <swarm.swarmcomposerapp.ActivitiesAndViews.CompositionView
@@ -126,14 +126,13 @@
             android:id="@+id/divider7"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
             android:background="?android:attr/listDivider" />
 
         <LinearLayout
             android:id="@+id/layout_table"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_height="108dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -165,7 +164,7 @@
             <ScrollView
                 android:id="@+id/edge_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:padding="5dp"
                 android:visibility="gone">

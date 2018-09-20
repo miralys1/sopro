@@ -5,5 +5,10 @@
     <color name="colorAccent">#0275d8</color>
     <color name="textColorPrimary">#454545</color>
     <color name="textColorPrimaryDark">#252525</color>
+    <color name="compatibility_red">#00bb00</color>
+    <color name="compatibility_green">#ee0000</color>
+    <color name="compatibility_yellow">#ffa500</color>
+    <color name="background_light">#bbbbbb</color>
+
 
 </resources>
