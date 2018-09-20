@@ -147,15 +147,15 @@ public class PermissionController {
 	 * @param id
 	 *            id of the composition for which the permissions of the user should
 	 *            be changed
-	 * @param email
-	 *            email of the user which permission should be changed.
+	 * @param userID
+	 *            id of the user which permission should be changed.
 	 * @param principal
 	 *            contains information about the logged in user. {@code null} means
 	 *            nobody is logged in.
 	 * @return {@code HttpStatus.OK} on success
 	 */
-	@RequestMapping(value = "/compositions/{id}/users/{email}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> editUserPermission(@PathVariable long id, @PathVariable String email,
+	@RequestMapping(value = "/compositions/{id}/users/{userID}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> editUserPermission(@PathVariable long id, @PathVariable long userID,
 			Principal principal) {
 
 		// composition must exist
@@ -171,10 +171,11 @@ public class PermissionController {
 		}
 
 		// user which permission should be changed must exist
-		User user = userRepo.findByEmail(email);
-		if (user == null) {
+		Optional<User> opUser = userRepo.findById(userID);
+		if (!opUser.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+		User user = opUser.get();
 
 		// user must be either viewer or editor
 		boolean editor = inList(comp.getEditors(), user);
