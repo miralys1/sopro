@@ -17,32 +17,41 @@
       @submit="addUser"
       label="Permissions"
       label-for="input1">
+      <b-form-checkbox id="publicButton"
+                      v-model="isPublic"
+                      >
+        Public
+      </b-form-checkbox>
+      <div class="emailinput">
+        <b-input-group prepend="Email" class="emailinput">
+            <b-form-input v-model="useremail"
+                            type="email"
+                            required
+                            placeholder="Enter email of user to add">
+            </b-form-input>
+            <b-input-group-append>
+                <b-btn variant="success" @click="addUser">
+                    <v-icon name="plus" />
+                </b-btn>
+            </b-input-group-append>
+        </b-input-group>
+      </div>
       <div>
-        <b-form-input v-model="useremail"
-                        type="email"
-                        required
-                        class="emailinput"
-                        placeholder="Enter email of user to add">
-        </b-form-input>
-        <b-button id="addButton" size="sm" variant="success" @click="addUser">
-            <v-icon name="plus"/>
-        </b-button>
-        </div>
-        <div>
-            <ul class="list-group">
-                <li v-for="user in users"
-                    class="list-group-item">
+          <ul class="list-group">
+              <li v-for="user in users"
+                  class="list-group-item">
 
-                      <b-form-checkbox :id="user.id + '-edit'"
-                                       @change="setPermissions"
-                                       :value="{id: user.id, permissions: 'viewer'}"
-                                       :unchecked-value="{id: user.id, permissions: 'editor'}"
-                                      >
-                      edit
-                      </b-form-checkbox>
+                    <b-form-checkbox :id="user.id + '-edit'"
+                                     :checked="{id: user.id, permissions: user.canEdit ? 'editor' : 'viewer'}"
+                                     @change="setPermissions"
+                                     :value="{id: user.id, permissions: 'editor'}"
+                                     :unchecked-value="{id: user.id, permissions: 'viewer'}"
+                                    >
+                    edit
+                    </b-form-checkbox>
                     {{ user.name }}
-                </li>
-            </ul>
+              </li>
+          </ul>
       </div>
   </b-form-group>
   </div>
@@ -57,7 +66,8 @@ export default {
     computed: {
         config () {
             return {
-               showOrigin: this.showOrigin
+               showOrigin: this.showOrigin,
+               isPublic: this.isPublic
             }
         }
     },
@@ -65,7 +75,8 @@ export default {
         return {
             useremail: '',
             users: [],
-            showOrigin: false
+            showOrigin: true,
+            isPublic: false
         }
     },
     methods: {
@@ -104,7 +115,6 @@ export default {
                 .then(response => {
                     if(this.users.filter(e => e.id===response.data.id).length == 0) {
                         console.log('pushed new email')
-                        this.getPermissions()
                     }
                 })
                 .catch(error => alert( error + " Maybe User doesn't' exist"))
@@ -124,18 +134,14 @@ export default {
 </script>
 
 <style scoped>
-  .wideform {
-    margin-left: 20px;
-    margin-right: 20px;
-  }
+.wideform {
+  margin-left: 20px;
+  margin-right: 20px;
+}
 
-  .addButton {
-    position: absolute;
-    top: 0px;
-    right: 10px;
-  }
-
-  .emailinput {
-    width: 250px;
-  }
+.emailinput {
+  width: 250px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 </style>
