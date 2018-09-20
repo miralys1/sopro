@@ -8,11 +8,15 @@ public class SimpleUser {
 	private long id;
 	private String firstName;
 	private String lastName;
+	private String title;
 
-	@JsonCreator public SimpleUser(@JsonProperty("id")long id, @JsonProperty("firstName")String firstName, @JsonProperty("lastName")String lastName) {
+	@JsonCreator
+	public SimpleUser(@JsonProperty("id") long id, @JsonProperty("firstName") String firstName,
+			@JsonProperty("lastName") String lastName, @JsonProperty("title") String title) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.title = title;
 	}
 
 	public long getId() {
@@ -40,11 +44,19 @@ public class SimpleUser {
 	}
 
 	public String getFullName() {
-		return firstName + " " + lastName;
+		return "title" + "" + firstName + " " + lastName;
 	}
 
 	public String toString() {
 		return getFullName();
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 }
