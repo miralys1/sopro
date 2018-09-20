@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * CompatibilityAnswer stores the information about the compatibility of an edge.
+ */
 public class CompatibilityAnswer {
 
     @SerializedName("compatible")

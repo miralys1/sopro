@@ -117,34 +117,15 @@ public class LocalCache implements ICache {
                 posChecker(publicComps, pos);
                 return compositionRetrieveHelper(publicComps, pos, caller);
 
-//                final Composition tempPublicComp = publicComps.get(pos);
-//                if (tempPublicComp.getNodeList() == null || tempPublicComp.getNodeList().isEmpty()) {
-//                    ActualRequests.actualCompDetailsRequest(tempPublicComp, caller);
-//                    return null;
-//                } else {
-//                    return tempPublicComp;
-//                }
             case 1:
                 posChecker(viewableComps, pos);
                 return compositionRetrieveHelper(viewableComps, pos, caller);
 
-//                final Composition tempViewableComp = viewableComps.get(pos);
-//                if (tempViewableComp.getNodeList() == null || tempViewableComp.getNodeList().isEmpty()) {
-//                    ActualRequests.actualCompDetailsRequest(tempViewableComp, caller);
-//                    return null;
-//                } else {
-//                    return tempViewableComp;
-//                }
+
             case 0:
                 posChecker(ownedComps, pos);
                 return compositionRetrieveHelper(ownedComps, pos, caller);
-//                final Composition tempOwnedComp = ownedComps.get(pos);
-//                if (tempOwnedComp.getNodeList() == null || tempOwnedComp.getNodeList().isEmpty()) {
-//                    ActualRequests.actualCompDetailsRequest(tempOwnedComp, caller);
-//                    return null;
-//                } else {
-//                    return tempOwnedComp;
-//                }
+
             default:
                 return null;
         }
@@ -163,6 +144,14 @@ public class LocalCache implements ICache {
         }
     }
 
+    /**
+     * Starts the actual request for a specific compositions list
+     *
+     * @param specificCompList
+     * @param pos
+     * @param caller
+     * @return
+     */
     public Composition compositionRetrieveHelper(List<Composition> specificCompList, int pos, IResponse caller) {
         final Composition tempOwnedComp = specificCompList.get(pos);
         if (tempOwnedComp.getNodeList() == null || tempOwnedComp.getNodeList().isEmpty()) {
@@ -264,6 +253,10 @@ public class LocalCache implements ICache {
         PUBLIC, OWNED, VIEWABLE;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean hasData() {
         return ((publicComps != null && !publicComps.isEmpty()) || (viewableComps != null && !viewableComps.isEmpty()) || (ownedComps != null && !ownedComps.isEmpty()));
     }

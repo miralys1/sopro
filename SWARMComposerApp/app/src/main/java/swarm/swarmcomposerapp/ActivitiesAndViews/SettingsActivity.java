@@ -190,7 +190,6 @@ public class SettingsActivity extends AppCompatActivity implements IResponse {
 
     @Override
     public void notify(boolean successful) {
-        Log.i("LOGIN", "settings notify successful = "+successful+", state "+state);
         if(successful){
             LocalCache cache = LocalCache.getInstance();
             switch (state){

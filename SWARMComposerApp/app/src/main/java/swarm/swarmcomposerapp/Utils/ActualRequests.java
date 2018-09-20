@@ -33,8 +33,6 @@ public class ActualRequests {
 
         ActualRequests.com = RetrofitClients.getRetrofitInstance()
                 .create(ServerCommunication.class);
-        Log.i("ServerAddressChange", "RefreshCom ");
-
     }
 
     /**
@@ -100,7 +98,6 @@ public class ActualRequests {
         } else {
             compAnswer = com.requestList();
         }
-        Log.i("Request", compAnswer.request().url().toString() + " by " + caller.getClass().getName());
         final IResponse localCaller = caller;
 
         compAnswer.enqueue(new Callback<CompositionsAnswer>() {
@@ -108,8 +105,7 @@ public class ActualRequests {
             public void onResponse(Call<CompositionsAnswer> call,
                                    Response<CompositionsAnswer> response) {
 
-                Log.i("RequestC", "Response " + call.request() + " was successful?: " + response.isSuccessful() + " response Code: " + response.code()
-                        + " error: " + response.errorBody() + " auth? " + call.request().header("Authorization"));
+
                 if (response.isSuccessful()) {
                     //compsL.addAll(response.body().getSeeableComps());
                     publicComps.addAll(response.body().getPublicComps());
@@ -124,7 +120,6 @@ public class ActualRequests {
 
             @Override
             public void onFailure(Call<CompositionsAnswer> call, Throwable t) {
-                Log.i("RequestC", "Failure " + call.request() + " cause: " + t.getCause() + " bla");
                 localCaller.notify(false);
             }
         });
@@ -179,9 +174,6 @@ public class ActualRequests {
 
             @Override
             public void onFailure(Call<Composition> call, Throwable t) {
-
-                Log.i("RquestFailure", call.request() + " cause: " + t.getCause() + " message: " + t.getMessage() + "type: " + t.getClass().toString());
-
                 localResponse.notify(false);
             }
         });
