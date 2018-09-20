@@ -73,7 +73,6 @@ public class DetailActivity extends AppCompatActivity implements IResponse {
         compositionView.setParentActivity(this);
 
         listID = intent.getIntExtra("LIST_ID", -1);
-        Log.i("DETAIL", "called position " + position + " of list " + listID);
         try {
             comp = cache.getCompAtPos(position, this, listID);
         } catch (Exception e) {

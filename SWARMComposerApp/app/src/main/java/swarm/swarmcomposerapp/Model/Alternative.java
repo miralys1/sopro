@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * Alternative models Service alternatives for an incompatible edge.
+ */
 public class Alternative {
     public List<String> getNames() {
         return names;

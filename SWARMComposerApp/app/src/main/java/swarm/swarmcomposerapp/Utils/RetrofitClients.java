@@ -26,11 +26,19 @@ import swarm.swarmcomposerapp.Model.LocalCache;
 
 import static android.support.constraint.Constraints.TAG;
 
+/**
+ * Manages the OkHttpClient and the Retrofit client for network communication.
+ */
 public class RetrofitClients {
 
     private static Retrofit retrofitClient;
     private static OkHttpClient okHttpClient;
 
+    /**
+     * Returns the instance of the Retrofit client.
+     *
+     * @return
+     */
     public static Retrofit getRetrofitInstance() {
         if (retrofitClient == null) {
             newRetrofitInstance(LocalCache.getInstance().getServerAddress());
@@ -40,6 +48,12 @@ public class RetrofitClients {
 
     }
 
+    /**
+     * Creates a new Retrofit instance. This is used for changing the base url.
+     *
+     * @param url
+     * @return
+     */
     public static Retrofit newRetrofitInstance(String url) {
         Retrofit retrofitClientL = new retrofit2.Retrofit.Builder()
                 .client(getOkHttpClientInstance())
@@ -53,13 +67,18 @@ public class RetrofitClients {
         return retrofitClientL;
     }
 
+    /**
+     * Returns the instance of the OkHttpClient. It sets a timeout of 5 seconds and is configured for SSL usage.
+     *
+     * @return
+     */
     public static OkHttpClient getOkHttpClientInstance() {
         if (okHttpClient == null) {
 
             try {
 
                 // TrustManager that ignores who certificated the ssl certificates
-                final TrustManager[] trustAllCerts = new TrustManager[] {
+                final TrustManager[] trustAllCerts = new TrustManager[]{
                         new X509TrustManager() {
                             @Override
                             public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
@@ -86,7 +105,7 @@ public class RetrofitClients {
 
                 OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
-                builder.sslSocketFactory(sslSocketFactory, (X509TrustManager)trustAllCerts[0]);
+                builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
 
                 builder.hostnameVerifier(new HostnameVerifier() {
                     @Override
@@ -94,7 +113,6 @@ public class RetrofitClients {
                         return true;
                     }
                 });
-
 
 
                 builder.connectTimeout(5, TimeUnit.SECONDS)
@@ -112,19 +130,9 @@ public class RetrofitClients {
             } catch (KeyManagementException e) {
                 e.printStackTrace();
             }
-
-
-
-    }
-
-
+        }
         return okHttpClient;
     }
-
-
-
-
-
 
 
 }
