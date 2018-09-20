@@ -57,7 +57,7 @@ public class UserController {
 
 		// filter users
 		for (User u : user) {
-			if (u.getFullName().contains(searchString) || searchString.equals("")) {
+			if (u.getFullName().toLowerCase().contains(searchString.toLowerCase()) || searchString.equals("")) {
 				simpUsers.add(u.createSimpleUser());
 			}
 		}
