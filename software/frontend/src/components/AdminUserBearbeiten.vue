@@ -17,8 +17,9 @@
               cancel-title = "Abbrechen"
               ok-variant = "danger"
               ok-title =  "Löschen"
-              title="Sind Sie sicher, dass Sie löschen wollen?"
-              @ok="onDelete">
+              @ok="onDelete"
+              title = "Bestätigen">
+              Sind Sie sicher, dass Sie löschen wollen?
         </b-modal>
 
 
@@ -129,7 +130,7 @@ showList: false,
 methods: {
 
   onDelete(){
-    
+
     if(this.user.id != this.loggedInUser.id) {
     this.axios.delete('/users/'+ this.user.id)
              .then(response => {

@@ -6,12 +6,10 @@
             cancel-title = "Abbrechen"
             ok-variant = "danger"
             ok-title =  "Löschen"
-            title="Sind Sie sicher, dass Sie löschen wollen?"
-            @ok="onDelete">
+            @ok="onDelete"
+            title = "Bestätigen">
+            Sind Sie sicher, dass Sie löschen wollen?
       </b-modal>
-
-
-
 
       <b-button type="submit" variant="primary" style="float:right;margin-left: 0.5vw;">Speichern</b-button>
       <b-button type="reset" variant="warning" style="float:right;">Reset</b-button>
