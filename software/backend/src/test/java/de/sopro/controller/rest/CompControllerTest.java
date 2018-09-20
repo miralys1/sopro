@@ -86,12 +86,12 @@ public class CompControllerTest {
     // Admin should be able to access composition details
     ResponseEntity<DetailComp> c = controller.getCompositionDetail(comp.getId(), userPrincipal);
     assertEquals(c.getStatusCode(), HttpStatus.OK);
-    assertEquals(comp.createDetailComp(user.getId()), c.getBody());
+    assertEquals(comp.createDetailComp(user.getId()).getId(), c.getBody().getId());
 
     // An editor should get all
     ResponseEntity<DetailComp> c2 = controller.getCompositionDetail(comp.getId(), user2Principal);
     assertEquals(c2.getStatusCode(), HttpStatus.OK);
-    assertEquals(comp.createDetailComp(user2.getId()), c2.getBody());
+    assertEquals(comp.createDetailComp(user2.getId()).getId(), c2.getBody().getId());
 
     // A user that is not a viewer should not get the composition
     ResponseEntity<DetailComp> c3 = controller.getCompositionDetail(comp.getId(), user3Principal);
@@ -128,21 +128,40 @@ public class CompControllerTest {
     assertEquals(HttpStatus.OK, response.getStatusCode());
     CompLists lists1 = response.getBody();
     List<SimpleComp> owns = StreamSupport.stream(lists1.getOwns().spliterator(), false).collect(Collectors.toList());
-    assertTrue(owns.contains(comp.createSimpleComp(user.getId())));
+
+    List<Long> ownsId = new ArrayList<>();
+    for (SimpleComp com: owns){
+      ownsId.add(com.getId());
+    }
+
+    assertTrue(ownsId.contains(comp.createSimpleComp(user.getId()).getId()));
 
     // if a person can edit a comp, it should be in the editablelist
     ResponseEntity<CompLists> response2 = controller.getCompositions(user2Principal);
     assertEquals(HttpStatus.OK, response2.getStatusCode());
     List<SimpleComp> edit = StreamSupport.stream(response2.getBody().getEditable().spliterator(), false)
         .collect(Collectors.toList());
-    assertTrue(edit.contains(comp.createSimpleComp(user.getId())));
+
+    List<Long> editId = new ArrayList<>();
+    for (SimpleComp com: edit){
+      editId.add(com.getId());
+    }
+
+
+    assertTrue(editId.contains(comp.createSimpleComp(user.getId()).getId()));
 
     // If a person can view a comp, it should be in the viewable list
     ResponseEntity<CompLists> response3 = controller.getCompositions(user3Principal);
     assertEquals(HttpStatus.OK, response3.getStatusCode());
     List<SimpleComp> view = StreamSupport.stream(response3.getBody().getviewable().spliterator(), false)
         .collect(Collectors.toList());
-    assertTrue(view.contains(comp.createSimpleComp(user.getId())));
+
+    List<Long> viewId = new ArrayList<>();
+    for (SimpleComp com: view){
+      viewId.add(com.getId());
+    }
+
+    assertTrue(viewId.contains(comp.createSimpleComp(user.getId()).getId()));
 
     // An unregistered user only gets public comps
     ResponseEntity<CompLists> response4 = controller.getCompositions(null);
