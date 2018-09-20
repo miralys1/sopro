@@ -44,7 +44,7 @@ public class SimpleUser {
 	}
 
 	public String getFullName() {
-		return "title" + "" + firstName + " " + lastName;
+		return title + " " + firstName + " " + lastName;
 	}
 
 	public String toString() {
