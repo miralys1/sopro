@@ -244,8 +244,11 @@ public class PDFCreator {
         ////////////////// End Of Document /////////////
 
         // write the document content
-        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        File file = new File(path, comp.getName()+".pdf");
+        //File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        //File path = Environment.getDataDirectory();
+        //File path = context.getExternalFilesDir(null);
+        //"/"+context.getText(R.string.compositions).toString()+"/";
+        File file = new File(context.getExternalFilesDir(null), comp.getName()+".pdf");
 
         try{
             FileOutputStream fileOutputStream = new FileOutputStream(file);
