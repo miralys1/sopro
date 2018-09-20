@@ -28,6 +28,11 @@ export default new Router({
       path: '/editor/:compId',
       name: 'Editor',
       component: Editor
+    },
+    // default route
+    {
+      path: '*',
+      redirect: '/'
     }
   ]
 })

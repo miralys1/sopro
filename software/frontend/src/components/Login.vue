@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="mainlayout" v-if="show">
     <b-card no-body>
       <b-tabs pills card>
@@ -96,8 +97,7 @@
                   <b-form-input id="register.title"
                                 type="text"
                                 v-model="form.title"
-                                required
-                                placeholder="Titel eingeben">
+                                placeholder="(optional) Titel eingeben">
                   </b-form-input>
                 </b-form-group>
                 <b-form-group horizontal
@@ -138,7 +138,27 @@
         </b-tab>
       </b-tabs>
     </b-card>
+
   </div>
+  <b-modal no-fade ref="registerModal" hide-footer title="Registrierung">
+    <div class="d-block text-center">
+      <h4>Erfolgreich registriert! <br /> Sie können sich jetzt einloggen.</h4>
+    </div>
+    <b-btn class="mt-3" variant="outline-info" block @click="hideRegisterModal">Zum Login</b-btn>
+  </b-modal>
+  <b-modal no-fade ref="registerFailModal" hide-footer title="Registrierung">
+    <div class="d-block text-center">
+      <h4>Registrierung fehlgeschlagen! <br /> Vielleicht ist die Email bereits vergeben oder versuchen Sie es später noch einmal.</h4>
+    </div>
+    <b-btn class="mt-3" variant="outline-info" block @click="hideRegisterFailModal">Zurück</b-btn>
+  </b-modal>
+  <b-modal no-fade ref="loginFailModal" hide-footer title="Login">
+    <div class="d-block text-center">
+      <h4>Login fehlgeschlagen! <br /> Bitte versuchen Sie es noch einmal.</h4>
+    </div>
+    <b-btn class="mt-3" variant="outline-info" block @click="hideLoginFailModal">Zurück</b-btn>
+  </b-modal>
+</div>
 </template>
 
 <script>
@@ -186,9 +206,7 @@ export default {
         this.$emit('login', this.user)
         this.$router.push('/')
       })
-      .catch(error => {
-        alert('Authentifizierung fehlgeschlagen')
-      })
+      .catch(() => this.$refs.loginFailModal.show())
     },
     register (event) {
       event.preventDefault()
@@ -199,15 +217,22 @@ export default {
         firstName: this.form.firstName,
         lastName: this.form.lastName
       })
-      .then(() => {
-        alert('Registrierung erfolgreich');
-        this.reload();
-      })
-      .catch(error => alert('Registrierung fehlgeschlagen'))
+      .then(() => this.reload())
+      .catch(() => this.$refs.registerFailModal.show())
     },
     reload() {
       this.show = false;
       this.$nextTick(() => {this.show = true});
+      this.$refs.registerModal.show()
+    },
+    hideRegisterModal() {
+      this.$refs.registerModal.hide()
+    },
+    hideRegisterFailModal() {
+      this.$refs.registerFailModal.hide()
+    },
+    hideLoginFailModal() {
+      this.$refs.loginFailModal.hide()
     }
   }
 }

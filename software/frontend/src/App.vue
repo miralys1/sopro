@@ -29,7 +29,6 @@ export default {
       this.user.id = user.id
       this.user.isAdmin = user.isAdmin
       this.user.fullName = user.fullName
-      alert('Willkommen ' + this.user.fullName + '!')
     },
     logout() {
       this.axios({

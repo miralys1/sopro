@@ -4,7 +4,7 @@
       <b-btn variant="primary" :to="'Login'">Hier registrieren</b-btn>
     </b-jumbotron>
     <div v-else>
-    <b-jumbotron class="jumbo" v-if="user.loggedIn && publicComps.length == 0 && ownComps.length == 0 && editableComps.length == 0 && viewableComps.length == 0" header="Keine Kompositionen verfügbar :(" lead="Erstellen Sie jetzt ihre erste Komposition" >
+    <b-jumbotron class="jumbo" v-if="user.loggedIn && publicComps.length == 0 && ownComps.length == 0 && editableComps.length == 0 && viewableComps.length == 0" header="Keine Komposition verfügbar :(" lead="Erstellen Sie jetzt ihre erste Komposition" >
       <b-input-group style="width: 30vw">
         <b-form-input v-model="name" type="text" placeholder="Kompositionsname" />
         <b-input-group-append>
@@ -107,7 +107,7 @@ export default {
       }).then(res => {
         this.$router.push('/editor/' + res.data)
       })
-      .catch(err => alert('Komposition erstellen fehlgeschlagen'))
+      .catch(() => this.$refs.createCompFailModal.show())
     },
     open(id) {
       this.$router.push({
@@ -141,6 +141,9 @@ export default {
         this.show = true
       })
 
+    },
+    hideCreateCompFailModal() {
+      this.$refs.createCompFailModal.hide()
     }
   },
   watch: {
