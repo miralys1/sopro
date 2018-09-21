@@ -67,3 +67,8 @@ Die Tests selbst können dann über `mvn -Dtest=* test` gestartet werden.
 #### App
 
 Die Tests befinden sich in den Ordnern `SWARMComposerApp\app\src\test` und `SWARMComposerApp\app\src\androidTest`. In Android Studio erscheinen die Dateien im Explorer. Um einen der Tests zu starten, muss nach einem Rechtsklick auf die Datei `Run` ausgewählt werden. 
+
+
+### Anmerkung
+Das Löschen von Kompositionen ist nur dann möglich, wenn kein Nutzer mehr explizite zugangsrechte daran hat, also kein Benutzer eingetragen ist, der diiese Komposition ansehen, bzw. bearbeiten darf.
+Falls also das Löschen fehlschlägt einmal die Zugansrechte entziehen uns dann sollte es funktionieren.
