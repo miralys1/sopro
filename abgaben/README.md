@@ -33,7 +33,7 @@ Die `ROOT.war` Datei im Ordner `abgaben` stellt die finale Version des Webserver
 
 Zum Veröffentlichen auf einem Tomcat-Server gibt es zwei Möglichkeiten:
 
-1. Bei einer laufenden Instanz in der Manger-gui eine eventuell laufende Applikation im `/` Kontext zu undeployen und die `ROOT.war` mit genau diesem Namen mithilfe des Menüs hochzuladen. Damit wird automatisch die Applikation über die Adresse zugänglich.
+1. Bei einer laufenden Instanz in der Manager-gui eine eventuell laufende Applikation im `/` Kontext zu undeployen und die `ROOT.war` mit genau diesem Namen mithilfe des Menüs hochzuladen. Damit wird automatisch die Applikation über die Adresse zugänglich.
 2. Wenn Zugriff auf die Ordnerstruktur des Servers möglich ist, kann der Server heruntergefahren werden, das Verzeichnis `ROOT` gelöscht, die `ROOT.war` Datei hinzugefügt werden und der Server neu gestartet. Damit wird auch die Applikation an der richtigen Adresse deployed.
 
 #### App
