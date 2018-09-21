@@ -70,5 +70,5 @@ Die Tests befinden sich in den Ordnern `SWARMComposerApp\app\src\test` und `SWAR
 
 
 ### Anmerkung
-Das Löschen von Kompositionen ist nur dann möglich, wenn kein Nutzer mehr explizite zugangsrechte daran hat, also kein Benutzer eingetragen ist, der diiese Komposition ansehen, bzw. bearbeiten darf.
-Falls also das Löschen fehlschlägt einmal die Zugansrechte entziehen uns dann sollte es funktionieren.
+Das Löschen von Kompositionen ist nur dann möglich, wenn kein Nutzer mehr explizite Zugangsrechte daran hat, also kein Benutzer eingetragen ist, der diese Komposition ansehen, bzw. bearbeiten darf.
+Falls also das Löschen fehlschlägt einmal die Zugangsrechte entziehen, und dann sollte es funktionieren.
